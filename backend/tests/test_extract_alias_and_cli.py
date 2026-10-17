@@ -56,3 +56,44 @@ def test_brand_candidate_unknown_preserved():
     assert preds.get("brand") == "Coolnewtech"
     # Новый бренд требует подтверждения оператором
     assert res["needs_review"] is True
+
+
+def test_smartphone_with_bundled_headphones_not_misclassified():
+    """Регрессионный тест: смартфон с комплектными наушниками не должен определяться как Наушники."""
+    from extract import extract_attributes
+    text = (
+        "Смартфон Apple iPhone 16 Pro - это современное устройство. "
+        "Конфигурация памяти составляет 256 ГБ. Экран 6.3 дюйма, 2622x1206 пикселей, 120 Гц. "
+        "Аккумулятор емкостью 3355 мА⋅ч. Время заряда составляет 30 минут. "
+        "Корпус смартфона выполнен из титана. В комплекте идут кабель USB C, документация и наушники."
+    )
+    res = extract_attributes(text)
+    assert res["category"] == "Смартфоны"
+    preds = {p["attribute"]: p["value"] for p in res["predictions"]}
+    assert preds.get("brand") == "Apple"
+    assert "iPhone 16 Pro" in preds.get("model", "")
+    assert preds.get("memory_rom") == "256 ГБ"
+    assert preds.get("battery") == "3355 мАч"
+    assert preds.get("color") == "титановый"
+    # Комплектные наушники и время зарядки не должны порождать атрибут "время работы" для наушников
+    assert "working_time" not in preds
+    assert res["needs_review"] is False
+
+
+def test_headphones_for_smartphone_classified_as_headphones():
+    """Тест: наушники с предлогом совместимости 'для смартфона' определяются как Наушники."""
+    from extract import extract_attributes
+    res = extract_attributes("Беспроводные TWS наушники для смартфона Apple iPhone белые")
+    assert res["category"] == "Наушники"
+    preds = {p["attribute"]: p["value"] for p in res["predictions"]}
+    assert preds.get("color") == "белый"
+
+
+def test_vacuum_with_smartphone_app_control_classified_as_vacuum():
+    """Тест: робот-пылесос с фразой 'управление со смартфона' определяется как Пылесосы."""
+    from extract import extract_attributes
+    res = extract_attributes("Робот-пылесос Xiaomi Robot Vacuum E10 белый с управлением со смартфона")
+    assert res["category"] == "Пылесосы"
+    preds = {p["attribute"]: p["value"] for p in res["predictions"]}
+    assert preds.get("brand") == "Xiaomi"
+

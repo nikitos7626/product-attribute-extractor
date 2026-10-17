@@ -124,39 +124,179 @@ class CascadedExtractionPipeline:
         """
         Определяет категорию товара по метаданным или тексту названия и описания.
         Возвращает (category_key, category_name_ru).
-        """
-        raw_cat = (card.get("category") or "").lower()
-        title = (card.get("title") or "").lower()
-        desc = (card.get("description") or "").lower()
-        text_corpus = f"{raw_cat} {title} {desc}"
 
-        # 1. Порядок проверки категорий: специфичные крупные приборы имеют высший приоритет,
-        # чтобы бренд Xiaomi/Samsung не стягивал пылесосы или телевизоры в смартфоны.
-        priority_order = [
+        Архитектура многоуровневой детекции:
+        1. Эксплицитная категория в метаданных (raw_cat).
+        2. Название товара (Title) — определяющий субъект сущности (с маскированием предлогов
+           совместимости 'для смартфона', 'к телефону' и аксессуаров 'чехол для...').
+        3. Описание (Description) — с обязательным подавлением комплектных аксессуаров
+           ('в комплекте наушники') и аудиоразъемов ('разъем для наушников 3.5 мм').
+        4. Аппаратные фингерпринты (экран 5-7.2" + батарея mAh / мобильная ОС / камера -> Смартфоны).
+        """
+        raw_cat = (card.get("category") or "").strip().lower()
+        title = (card.get("title") or "").strip().lower()
+        desc = (card.get("description") or "").strip().lower()
+        raw_text = (card.get("raw_text") or "").strip().lower()
+
+        if not title and raw_text:
+            lines = [line.strip() for line in raw_text.split("\n") if line.strip()]
+            if lines:
+                title = lines[0].lower()
+
+        # ------------------------------------------------------------------
+        # 1. Эксплицитная категория из метаданных (raw_cat)
+        # ------------------------------------------------------------------
+        if raw_cat:
+            for cat_key, schema in CATEGORY_SCHEMAS.items():
+                if cat_key == "default":
+                    continue
+                if schema["name_ru"].lower() in raw_cat or cat_key in raw_cat:
+                    return cat_key, schema["name_ru"]
+            for cat_key in [
+                "vacuum_cleaners",
+                "refrigerators",
+                "tvs",
+                "laptops",
+                "smartphones",
+                "headphones",
+                "powerbanks",
+            ]:
+                schema = CATEGORY_SCHEMAS.get(cat_key)
+                if not schema:
+                    continue
+                for kw in schema["keywords"]:
+                    if re.search(rf"\b{re.escape(kw)}", raw_cat):
+                        return cat_key, schema["name_ru"]
+
+        # ------------------------------------------------------------------
+        # 2. Детекция по названию товара (Title) — принцип Head Noun
+        #    Название — авторитетный источник типа товара.
+        #    Определяющее существительное категории идет в начале названия,
+        #    а предложные конструкции совместимости ('для смартфона', 'к наушникам')
+        #    и комплектные аксессуары пенализируются.
+        # ------------------------------------------------------------------
+        if title:
+            # Подавляем секцию комплектации в названии (если сплошной текст подан в title)
+            clean_title = re.sub(
+                r"(?:в\s+комплекте|комплектаци\w*|комплект\s+поставки|поставляется\s+с|идут\s+в\s+комплекте)[^.!\n;]+",
+                " ",
+                title,
+                flags=re.IGNORECASE,
+            )
+            clean_title = re.sub(
+                r"\b(?:чехол|стекло|пленка|плёнка|ремешок|кабель|адаптер|держатель)\s+(?:для\s+)?",
+                " ",
+                clean_title,
+                flags=re.IGNORECASE,
+            )
+
+            earliest_matches: list[tuple[int, str, str]] = []
+            for cat_key in [
+                "vacuum_cleaners",
+                "refrigerators",
+                "tvs",
+                "laptops",
+                "smartphones",
+                "headphones",
+                "powerbanks",
+            ]:
+                schema = CATEGORY_SCHEMAS.get(cat_key)
+                if not schema:
+                    continue
+                for kw in schema["keywords"]:
+                    for m in re.finditer(rf"\b{re.escape(kw)}", clean_title, flags=re.IGNORECASE):
+                        prefix = clean_title[max(0, m.start() - 15):m.start()].lower()
+                        is_compat = bool(re.search(r"\b(?:для|к|под|со)\s*$", prefix))
+                        pos = m.start() if not is_compat else m.start() + 10000
+                        earliest_matches.append((pos, cat_key, schema["name_ru"]))
+
+            if earliest_matches:
+                earliest_matches.sort(key=lambda x: x[0])
+                if earliest_matches[0][0] < 5000:
+                    return earliest_matches[0][1], earliest_matches[0][2]
+
+        # ------------------------------------------------------------------
+        # 3. Детекция по тексту описания (Description) с подавлением ложных
+        #    срабатываний от комплектных аксессуаров, аудиопортов и софта
+        # ------------------------------------------------------------------
+        corpus = f"{title} {desc} {raw_text}".lower()
+        clean_corpus = corpus
+
+        # Подавляем секцию комплектации: "в комплекте наушники", "комплектация: блок питания, наушники"
+        clean_corpus = re.sub(
+            r"(?:в\s+комплекте|комплектаци\w*|комплект\s+поставки|поставляется\s+с|идут\s+в\s+комплекте)[^.!\n;]+",
+            " ",
+            clean_corpus,
+            flags=re.IGNORECASE,
+        )
+        # Подавляем аудиоразъемы: "разъем для наушников 3.5 мм"
+        clean_corpus = re.sub(
+            r"(?:разъем|разъём|выход|порт|гнездо|вход|аудиовыход|mini-jack|jack\s*3\.5|3\.5\s*мм)\s+(?:для\s+)?(?:наушник\w*|гарнитур\w*|микрофон\w*)",
+            " ",
+            clean_corpus,
+            flags=re.IGNORECASE,
+        )
+        # Подавляем удаленное управление: "управление со смартфона"
+        clean_corpus = re.sub(
+            r"(?:управление|подключение|приложение|синхронизация)\s+(?:с|со|для|через)\s+(?:смартфон\w*|телефон\w*|планшет\w*)",
+            " ",
+            clean_corpus,
+            flags=re.IGNORECASE,
+        )
+        # Подавляем предлоги совместимости: "для смартфона", "к наушникам"
+        clean_corpus = re.sub(
+            r"\b(?:для|к|под)\s+(?:смартфон\w*|телефон\w*|айфон\w*|iphone\w*|ноутбук\w*|наушник\w*|телевизор\w*)",
+            " ",
+            clean_corpus,
+            flags=re.IGNORECASE,
+        )
+
+        for cat_key in [
             "vacuum_cleaners",
             "refrigerators",
             "tvs",
             "laptops",
+            "smartphones",
             "headphones",
             "powerbanks",
-            "smartphones",
-        ]
-        for cat_key in priority_order:
+        ]:
             schema = CATEGORY_SCHEMAS.get(cat_key)
             if not schema:
                 continue
             for kw in schema["keywords"]:
-                if re.search(rf"\b{re.escape(kw)}", text_corpus):
+                if re.search(rf"\b{re.escape(kw)}", clean_corpus):
                     return cat_key, schema["name_ru"]
 
-        # 2. Эвристика: экран <= 7.2" и аккумулятор mAh / мобильные паттерны -> Смартфоны
-        has_mobile_screen = bool(re.search(r"\b(?:[56]\.\d{1,2}|7\.[012])\s*(?:\"|дюйм)", text_corpus))
-        has_battery = bool(re.search(r"(?:\d{3,5}\s*(?:мач|mah|аккум)|(?:мач|mah|аккум)\s*\d{3,5})", text_corpus))
-        if has_mobile_screen and has_battery:
+        # ------------------------------------------------------------------
+        # 4. Аппаратные эвристики и физические маркеры (Hardware Fingerprints)
+        # ------------------------------------------------------------------
+        full_text = f"{title} {desc} {raw_text}".lower()
+
+        # Эвристика смартфона:
+        # Экран 5.0-7.2" + аккумулятор mAh / камера МП / мобильные сети / ОС
+        has_mobile_screen = bool(re.search(r"\b(?:[56]\.\d{1,2}|7\.[012])\s*(?:\"|дюйм)", full_text))
+        has_battery = bool(re.search(r"(?:\d{3,5}\s*(?:мА[·⋅•*.\-\s]?ч|mah|мач|аккум)|(?:мач|mah|аккум)\s*\d{3,5})", full_text, flags=re.IGNORECASE))
+        has_mobile_os_net = bool(re.search(r"\b(?:ios|android|hyperos|miui|one\s*ui|5g|4g\s+lte|lte|sim|esim|сим-карт)\b", full_text, flags=re.IGNORECASE))
+        has_slash_mem = bool(re.search(r"\b\d{1,2}/\d{2,4}\s*(?:гб|gb)?\b", full_text))
+        has_phone_cam = bool(re.search(r"\b(?:камер\w*.*?\d{1,3}\s*мп|\d{1,3}\s*мп)\b", full_text))
+
+        if has_mobile_screen and (has_battery or has_mobile_os_net or has_phone_cam):
             return "smartphones", CATEGORY_SCHEMAS["smartphones"]["name_ru"]
 
-        if re.search(r"\b\d{1,2}/\d{2,4}\s*(?:гб|gb)?\b", text_corpus) and has_battery:
+        if has_slash_mem and has_battery:
             return "smartphones", CATEGORY_SCHEMAS["smartphones"]["name_ru"]
+
+        # Эвристика ноутбука: экран 13-17" + CPU/RAM
+        has_laptop_screen = bool(re.search(r"\b(?:1[3-7]\.\d|1[3-7])\s*(?:\"|дюйм)", full_text))
+        has_pc_cpu = bool(re.search(r"\b(?:intel|ryzen|core\s*i[3579]|apple\s*m[1234])\b", full_text))
+        if has_laptop_screen and has_pc_cpu:
+            return "laptops", CATEGORY_SCHEMAS["laptops"]["name_ru"]
+
+        # Эвристика ТВ: экран >= 24" + Smart TV / 4K / тюнер
+        has_tv_screen = bool(re.search(r"\b(?:[2-9]\d|1[0-1]\d)\s*(?:\"|дюйм)", full_text))
+        has_tv_feature = bool(re.search(r"\b(?:smart\s*tv|смарт\s*тв|dvb-[tcs]|тв-тюнер)\b", full_text))
+        if has_tv_screen and has_tv_feature:
+            return "tvs", CATEGORY_SCHEMAS["tvs"]["name_ru"]
 
         return "default", CATEGORY_SCHEMAS["default"]["name_ru"]
 
@@ -175,18 +315,15 @@ class CascadedExtractionPipeline:
             card["description"] = raw_text
             if not raw_title:
                 lines = [line.strip() for line in raw_text.split("\n") if line.strip()]
-                if lines and len(lines[0]) < 120:
+                if lines:
                     card["title"] = lines[0]
                 else:
                     parts = re.split(r"(?<=[.!?])\s+", raw_text, maxsplit=1)
-                    if len(parts) == 2 and len(parts[0]) < 120:
-                        card["title"] = parts[0]
-                    else:
-                        card["title"] = raw_text
+                    card["title"] = parts[0] if parts else raw_text
         elif raw_title and not raw_desc:
             card["description"] = raw_title
             lines = [line.strip() for line in raw_title.split("\n") if line.strip()]
-            if lines and len(lines[0]) < 120:
+            if lines:
                 card["title"] = lines[0]
             else:
                 card["title"] = raw_title

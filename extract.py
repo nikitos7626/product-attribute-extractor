@@ -65,12 +65,14 @@ def extract_attributes(
     """
     Extract attributes from text/card and return dict matching M.Video JSON schema.
     """
-    final_title = title or text
+    raw_text_val = text if text and not (title and description) else None
+    final_title = title or (text if not description else "")
     card = CardIn(
         external_id=external_id,
         category=category,
         title=final_title,
         description=description,
+        raw_text=raw_text_val,
         seller_attributes=seller_attributes or {},
     )
     out: CardOut = _run(card)
