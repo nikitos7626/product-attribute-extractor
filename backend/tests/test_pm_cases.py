@@ -154,3 +154,24 @@ def test_pm_case_10_powerbank_20000mah(pipeline):
     assert "memory_rom" not in preds
     assert res["needs_review"] is False
 
+
+def test_pm_case_11_tv_strict_attributes_no_os(pipeline):
+    text = (
+        "Телевизор LG OLED evo OLED55C4RLA с диагональю 55 дюймов и разрешением 3840x2160 пикселей 4K. "
+        "Частота обновления экрана составляет 120 Гц. Операционная система webOS 24. "
+        "Мощность акустической системы 40 Вт. Цвет: черный."
+    )
+    res = pipeline.process_card({"raw_text": text})
+    assert res["category"] == "Телевизоры"
+    preds = {p["attribute"]: p["value"] for p in res["predictions"]}
+    assert preds["brand"] == "LG"
+    assert preds["screen_diagonal"] == '55,0"'
+    assert preds["resolution"] == "3840×2160"
+    assert preds["refresh_rate"] == "120 Гц"
+    assert preds["power"] == "40 Вт"
+    assert preds["color"] == "чёрный"
+    # os не входит в схему датасета для ТВ и должна быть строго отфильтрована!
+    assert "os" not in preds
+    assert res["needs_review"] is False
+
+

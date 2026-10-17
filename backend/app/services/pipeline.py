@@ -490,6 +490,11 @@ class CascadedExtractionPipeline:
         # ------------------------------------------------------------------
         # ЭТАП 4: Валидация полноты и расчет взвешенной уверенности
         # ------------------------------------------------------------------
+        # Фильтрация по строгому белому списку атрибутов категории датасета
+        allowed_attrs = AttributeSanityValidator.ALLOWED_ATTRS_BY_CATEGORY.get(cat_key)
+        if allowed_attrs:
+            predictions_map = {k: v for k, v in predictions_map.items() if k in allowed_attrs}
+
         all_preds = list(predictions_map.values())
         final_found = set(predictions_map.keys())
         final_missing = sorted(list(required_attrs - final_found))

@@ -1,7 +1,11 @@
 {
   "smartphones": ["brand", "model", "memory_rom", "memory_ram", "screen_diagonal", "battery", "color", "cpu", "os", "weight"],
   "laptops":     ["brand", "model", "cpu", "memory_ram", "memory_rom", "screen_diagonal", "color", "os", "battery", "weight"],
+  "tvs":         ["brand", "model", "screen_diagonal", "resolution", "refresh_rate", "color", "power"],
   "tv":          ["brand", "model", "screen_diagonal", "resolution", "refresh_rate", "color", "power"],
   "vacuum_cleaners": ["brand", "model", "power", "cleaning_type", "battery", "weight", "color", "working_time", "volume"],
+  "refrigerators": ["brand", "model", "defrost_system", "color", "volume", "warranty"],
+  "headphones":  ["brand", "model", "color", "weight", "working_time"],
+  "powerbanks":  ["brand", "model", "battery", "color", "power", "weight"],
   "default":     ["brand", "model", "color"]
 }

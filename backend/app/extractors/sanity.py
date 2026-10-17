@@ -72,13 +72,25 @@ class AttributeSanityValidator:
         },
         "tvs": {
             "cleaning_type", "defrost_system", "battery", "memory_ram",
-            "working_time", "cpu",
+            "working_time", "cpu", "os", "memory_rom", "volume", "warranty",
         },
         "powerbanks": {
             "memory_rom", "memory_ram", "screen_diagonal", "refresh_rate",
             "resolution", "cpu", "os", "cleaning_type", "defrost_system",
             "working_time", "volume",
         },
+    }
+
+    # Белый список допустимых атрибутов по категориям из датасета
+    ALLOWED_ATTRS_BY_CATEGORY: dict[str, set[str]] = {
+        "smartphones": {"brand", "model", "memory_rom", "memory_ram", "screen_diagonal", "battery", "color", "cpu", "os", "weight"},
+        "laptops": {"brand", "model", "cpu", "memory_ram", "memory_rom", "screen_diagonal", "color", "os", "battery", "weight"},
+        "tvs": {"brand", "model", "screen_diagonal", "resolution", "refresh_rate", "color", "power"},
+        "tv": {"brand", "model", "screen_diagonal", "resolution", "refresh_rate", "color", "power"},
+        "vacuum_cleaners": {"brand", "model", "power", "cleaning_type", "battery", "weight", "color", "working_time", "volume"},
+        "refrigerators": {"brand", "model", "defrost_system", "color", "volume", "warranty"},
+        "headphones": {"brand", "model", "color", "weight", "working_time"},
+        "powerbanks": {"brand", "model", "battery", "color", "power", "weight"},
     }
 
     # Корни реальных цветов
@@ -112,7 +124,12 @@ class AttributeSanityValidator:
 
         val_lower = str(value).lower().strip()
 
-        # 1. Проверка на несовместимость категории и атрибута
+        # 1. Проверка на соответствие белому списку атрибутов категории датасета
+        if category_key and category_key != "default" and category_key in cls.ALLOWED_ATTRS_BY_CATEGORY:
+            if attr_name not in cls.ALLOWED_ATTRS_BY_CATEGORY[category_key]:
+                return False
+
+        # 2. Проверка на несовместимость категории и атрибута
         forbidden = cls.FORBIDDEN_ATTRS_BY_CATEGORY.get(category_key, set())
         if attr_name in forbidden:
             return False
