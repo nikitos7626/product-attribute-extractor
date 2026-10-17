@@ -56,7 +56,11 @@ CATEGORY_SCHEMAS: dict[str, dict[str, Any]] = {
     },
     "headphones": {
         "name_ru": "Наушники",
-        "keywords": ["наушники", "гарнитура", "airpods", "tws", "earbuds"],
+        "keywords": [
+            "наушники", "наушник", "гарнитура", "гарнитуры", "airpods", "tws",
+            "earbuds", "buds", "freebuds", "airdots", "earphones", "headphones",
+            "headset", "вкладыши", "внутриканальные"
+        ],
         "required_attrs": {"brand", "model", "color"},
         "gliner_labels": ["бренд", "модель", "цвет", "время работы"],
     },
