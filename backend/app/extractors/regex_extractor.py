@@ -58,7 +58,8 @@ class RegexExtractor:
 
     _MODEL_PATTERNS = [
         re.compile(r"\b(iphone\s+(?:se|\d{1,2}(?:\s*(?:pro\s*max|pro|plus|mini))?))\b", re.IGNORECASE),
-        re.compile(r"\b(galaxy\s+[szanmfe]\d{1,2}[a-z]?(?:\s*(?:ultra|plus|\+|fe|pro|5g))?)\b", re.IGNORECASE),
+        re.compile(r"\b((?:galaxy|гэлакси)\s+[szanmfe]\d{1,2}[a-z]?(?:\s*(?:ultra|plus|\+|fe|pro|5g))?)\b", re.IGNORECASE),
+        re.compile(r"\b([szanmfe]\d{1,2}[a-z]?(?:\s*(?:ultra|plus|\+|fe|pro|5g)))\b", re.IGNORECASE),
         re.compile(r"(?:samsung|самсунг)\s+([a-zа-я]\d{2}[a-zа-я]?(?:\s*(?:5g|5г|ultra|plus|fe))?)", re.IGNORECASE),
         re.compile(r"\b(redmi(?:\s+note)?\s+\d{1,2}[a-z]?(?:\s*(?:pro\s*\+|pro|plus|\+|s|turbo))?)\b", re.IGNORECASE),
         re.compile(r"\b(poco\s+[xfmc]\d{1,2}[a-z]?(?:\s*(?:pro|gt))?)\b", re.IGNORECASE),
@@ -548,6 +549,7 @@ class RegexExtractor:
         val = re.sub(r"^[сС](?=\d)", "S", val)
         val = re.sub(r"5[гГ]\b", "5G", val)
         val = re.sub(r"\b5g\b", "5G", val, flags=re.IGNORECASE)
+        val = re.sub(r"\bгэлакси\b", "Galaxy", val, flags=re.IGNORECASE)
         words = val.split()
         fixed_words = []
         for w in words:

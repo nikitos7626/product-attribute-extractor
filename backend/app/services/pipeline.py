@@ -23,7 +23,7 @@ CATEGORY_SCHEMAS: dict[str, dict[str, Any]] = {
         "name_ru": "Смартфоны",
         "keywords": [
             "смартфон", "телефон", "iphone", "айфон", "мобильный", "сотовый",
-            "galaxy", "redmi", "poco", "realme", "motorola", "моторола", "infinix", "инфиникс",
+            "galaxy", "гэлакси", "гелакси", "redmi", "poco", "realme", "motorola", "моторола", "infinix", "инфиникс",
             "xperia", "pixel", "пиксель", "oneplus", "oppo", "vivo", "honor", "хонор",
             "huawei", "хуавей", "xiaomi", "сяоми", "samsung", "самсунг", "tecno", "текно",
         ],
@@ -243,6 +243,31 @@ class CascadedExtractionPipeline:
                         continue
                     elif existing.get("confidence", 0) < p["confidence"]:
                         predictions_map[attr] = p
+
+        # Канонизация и валидация бренда через BrandRegistry (с защитой от опечаток и поддержкой кандидатов)
+        if "brand" in predictions_map:
+            raw_b = predictions_map["brand"]["value"]
+            canon_b, conf, is_fuzzy_or_cand = self.brand_registry.match_or_fuzzy_brand(raw_b)
+            if canon_b:
+                predictions_map["brand"]["value"] = canon_b
+                if is_fuzzy_or_cand:
+                    predictions_map["brand"]["confidence"] = min(predictions_map["brand"]["confidence"], conf)
+
+        # Коррекция линеек для смартфонов: Galaxy / Гэлакси -> бренд Samsung
+        if cat_key == "smartphones" and "brand" in predictions_map:
+            if predictions_map["brand"]["value"].lower() in {"galaxy", "гэлакси"}:
+                predictions_map["brand"]["value"] = "Samsung"
+                predictions_map["brand"]["confidence"] = 0.95
+
+        # Если бренд не найден, но в модели указана известная линейка (Galaxy, iPhone, Redmi):
+        if "brand" not in predictions_map and "model" in predictions_map:
+            m_low = predictions_map["model"]["value"].lower()
+            if "galaxy" in m_low or "гэлакси" in m_low or re.match(r"^[szanmfe]\d{1,2}\b", m_low):
+                predictions_map["brand"] = Prediction(attribute="brand", value="Samsung", confidence=0.95, source="rule_subbrand", raw=m_low)
+            elif "iphone" in m_low:
+                predictions_map["brand"] = Prediction(attribute="brand", value="Apple", confidence=0.98, source="rule_subbrand", raw=m_low)
+            elif "redmi" in m_low or "poco" in m_low:
+                predictions_map["brand"] = Prediction(attribute="brand", value="Xiaomi", confidence=0.95, source="rule_subbrand", raw=m_low)
 
         # Очистка названия бренда из начала названия модели ("Sony KD50X85TJ" -> "KD50X85TJ")
         if "brand" in predictions_map and "model" in predictions_map:

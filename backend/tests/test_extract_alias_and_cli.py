@@ -36,3 +36,23 @@ def test_extract_cli_module_import():
     res = extract_attributes("Смартфон Samsung S24 256GB")
     assert res["category"] == "Смартфоны"
     assert any(p["attribute"] == "brand" and p["value"] == "Samsung" for p in res["predictions"])
+
+
+def test_brand_typo_fuzzy_normalization_samsung():
+    """Тест нечеткой канонизации опечаток и сохранения модели Galaxy S24 Ultra."""
+    from extract import extract_attributes
+    res = extract_attributes("смачунг гэлакси S24 Ultra 256gb фиолетовый")
+    assert res["category"] == "Смартфоны"
+    preds = {p["attribute"]: p["value"] for p in res["predictions"]}
+    assert preds.get("brand") == "Samsung"
+    assert "S24 Ultra" in preds.get("model", "")
+
+
+def test_brand_candidate_unknown_preserved():
+    """Тест сохранения нового неизвестного бренда как кандидата на модерацию."""
+    from extract import extract_attributes
+    res = extract_attributes("Смартфон CoolNewTech UltraPhone 256GB синий")
+    preds = {p["attribute"]: p["value"] for p in res["predictions"]}
+    assert preds.get("brand") == "Coolnewtech"
+    # Новый бренд требует подтверждения оператором
+    assert res["needs_review"] is True

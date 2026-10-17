@@ -4,7 +4,7 @@
 > Команда: **Точка сборки (`team-059`)**  
 > 🌐 **Публичное Демо:** [https://tochka-sborki-2026-team-059.hub.gigaschool.ru](https://tochka-sborki-2026-team-059.hub.gigaschool.ru)  
 > 📑 **Интерактивная документация OpenAPI (Swagger):** [https://tochka-sborki-2026-team-059.hub.gigaschool.ru/docs](https://tochka-sborki-2026-team-059.hub.gigaschool.ru/docs)  
-> 🧪 **Статус тестов:** **83 / 83 PASS (100%)** | Скорость офлайн-обработки: **< 3 мс/карточка**
+> 🧪 **Статус тестов:** **85 / 85 PASS (100%)** | Скорость офлайн-обработки: **< 3 мс/карточка**
 
 ---
 
@@ -219,7 +219,7 @@ print(result["predictions"])
 │   ├── scripts/
 │   │   ├── build_catalog_kb.py                # Генератор KB из 546 000 офферов
 │   │   └── pm_cases.py                        # Эталонные кейсы М.Видео
-│   └── tests/                                 # 83 unit- и интеграционных тестов
+│   └── tests/                                 # 85 unit- и интеграционных тестов
 ```
 
 ---

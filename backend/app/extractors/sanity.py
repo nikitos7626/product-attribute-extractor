@@ -255,4 +255,13 @@ class AttributeSanityValidator:
         if attr_name == "display_tech":
             return any(k in val_lower for k in cls.ALLOWED_DISPLAY_TECHS)
 
+        # 14. Бренд (Brand)
+        if attr_name == "brand":
+            bad_brand_words = {
+                "смартфон", "телефон", "ноутбук", "планшет", "телевизор", "наушники",
+                "пылесос", "холодильник", "экран", "дисплей", "память", "батарея",
+                "аккумулятор", "чехол", "стекло", "зарядка", "оригинал", "новый", "гб", "gb", "мач", "mah"
+            }
+            return len(val_lower) >= 2 and val_lower not in bad_brand_words
+
         return True
