@@ -177,3 +177,45 @@ def test_no_hallucination(ext):
     preds = ext.extract({"title": "Наушники беспроводные", "description": ""})
     assert _get(preds, "memory_rom") is None
     assert _get(preds, "screen_diagonal") is None
+
+
+# ---------- Цвет vs Материал и склонения ----------
+
+def test_color_in_color_phrase_wins_over_chassis_material(ext):
+    """'в черном цвете' должно побеждать 'выполнен из титана'."""
+    text = (
+        "Смартфон Apple iPhone 16 Pro 128 ГБ в черном цвете. "
+        "Корпус смартфона выполнен из титана и стекла."
+    )
+    preds = ext.extract({"title": "Apple iPhone 16 Pro", "description": text})
+    color = _get(preds, "color")
+    assert color is not None
+    assert color["value"] == "чёрный"
+
+
+def test_material_titanium_not_recognized_as_color_alone(ext):
+    """'выполнен из титана' не должен ошибочно давать цвет титановый при отсутствии цвета."""
+    text = (
+        "Смартфон Apple iPhone 16 Pro. Корпус смартфона выполнен из титана. "
+        "В комплекте кабель USB-C и наушники."
+    )
+    preds = ext.extract({"title": "Apple iPhone 16 Pro", "description": text})
+    color = _get(preds, "color")
+    assert color is None
+
+
+@pytest.mark.parametrize("desc,expected", [
+    ("Модель представлена в белом цвете", "белый"),
+    ("Доступен в синем цвете", "синий"),
+    ("В серебристом исполнении", "серебристый"),
+    ("В золотом корпусе", "золотой"),
+    ("В зеленом цвете", "зелёный"),
+    ("В фиолетовом цвете", "фиолетовый"),
+    ("Apple iPhone 16 Pro Desert Titanium", "золотой"),
+    ("Apple iPhone 16 Pro Black Titanium", "чёрный"),
+])
+def test_color_declensions_and_compounds(ext, desc, expected):
+    preds = ext.extract({"title": desc, "description": ""})
+    color = _get(preds, "color")
+    assert color is not None
+    assert color["value"] == expected

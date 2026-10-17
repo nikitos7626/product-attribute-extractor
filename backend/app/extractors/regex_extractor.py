@@ -56,6 +56,17 @@ class RegexExtractor:
         re.IGNORECASE,
     )
 
+    # Контекстные маркеры цвета и материала (full_text уже в lower)
+    _COLOR_PREFIX_RE = re.compile(
+        r"(?:(?:в|во)\s+)?(?:цвете?|цвета|оттенк[еа]|color)\s*[:=-]?\s*$"
+    )
+    _COLOR_SUFFIX_RE = re.compile(
+        r"^\s*(?:цвета|цвете|оттенка|color)\b"
+    )
+    _MATERIAL_PREFIX_RE = re.compile(
+        r"(?:(?:сделан|выполнен|изготовлен)\s+(?:полностью\s+)?из|корпус(?:\s+устройства)?\s+из|материал(?:\s+корпуса)?\s*[:=-]?\s*(?:из)?)\s*$"
+    )
+
     _MODEL_PATTERNS = [
         re.compile(r"\b(iphone\s+(?:se|\d{1,2}(?:\s*(?:pro\s*max|pro|plus|mini))?))\b", re.IGNORECASE),
         re.compile(r"\b((?:galaxy|гэлакси)\s+[szanmfe]\d{1,2}[a-z]?(?:\s*(?:ultra|plus|\+|fe|pro|5g))?)\b", re.IGNORECASE),
@@ -255,7 +266,7 @@ class RegexExtractor:
             out.append(brand)
             seen_attrs.add("brand")
 
-        if (color := self._find_color(full_text, seller)):
+        if (color := self._find_color(full_text, seller, title=title)):
             out.append(color)
             seen_attrs.add("color")
 
@@ -307,7 +318,7 @@ class RegexExtractor:
                               confidence=conf, source="flashtext", raw=canon)
         return None
 
-    def _find_color(self, full_text, seller):
+    def _find_color(self, full_text: str, seller: dict, title: str = "") -> Prediction | None:
         for k in ("color", "цвет"):
             v = seller.get(k)
             if v:
@@ -318,9 +329,28 @@ class RegexExtractor:
 
         best: tuple[int, str, str] | None = None
         for pat, canon, prio, alias in self._color_patterns:
-            if pat.search(full_text):
-                if best is None or prio > best[0]:
-                    best = (prio, canon, alias)
+            for m in pat.finditer(full_text):
+                start, end = m.span()
+                prefix = full_text[max(0, start - 30):start]
+                suffix = full_text[end:min(len(full_text), end + 30)]
+
+                effective_prio = prio
+
+                # Явный контекст цвета ("в черном цвете", "цвет: черный", "оттенок черный")
+                if self._COLOR_PREFIX_RE.search(prefix) or self._COLOR_SUFFIX_RE.search(suffix):
+                    effective_prio += 500
+
+                # Контекст материала корпуса ("выполнен из титана", "корпус из стали", "материал: титан")
+                if self._MATERIAL_PREFIX_RE.search(prefix):
+                    effective_prio -= 300
+
+                # Цвет в заголовке товара имеет приоритет над цветом в описании
+                if title and start < len(title):
+                    effective_prio += 50
+
+                if effective_prio > 0:
+                    if best is None or effective_prio > best[0]:
+                        best = (effective_prio, canon, alias)
 
         if best:
             _prio, canon, alias = best
