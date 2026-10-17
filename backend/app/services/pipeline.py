@@ -351,21 +351,29 @@ class CascadedExtractionPipeline:
                     self.brand_registry.register_brand(b_val)
 
         # ------------------------------------------------------------------
-        # ЭТАП 4: Валидация полноты и расчет уверенности
+        # ЭТАП 4: Валидация полноты и расчет взвешенной уверенности
         # ------------------------------------------------------------------
         all_preds = list(predictions_map.values())
         final_found = set(predictions_map.keys())
         final_missing = sorted(list(required_attrs - final_found))
 
+        # Расчет покрытия обязательных характеристик категории (Coverage)
+        total_required = len(required_attrs) if required_attrs else 1
+        found_required_count = len(required_attrs & final_found)
+        coverage_ratio = found_required_count / total_required
+
         if all_preds:
-            avg_conf = sum(p["confidence"] for p in all_preds) / len(all_preds)
+            avg_preds_conf = sum(p["confidence"] for p in all_preds) / len(all_preds)
+            # Итоговая уверенность карточки = средняя уверенность найденных полей * полнота заполнения обязательных полей
+            overall_conf = avg_preds_conf * coverage_ratio
         else:
-            avg_conf = 0.0
+            avg_preds_conf = 0.0
+            overall_conf = 0.0
 
         # Карточка требует проверки человеком (Human-in-the-Loop), если:
-        # 1. Средняя уверенность ниже порога (0.75)
+        # 1. Итоговая уверенность ниже порога (0.87)
         # 2. Не удалось извлечь хотя бы одно обязательное поле категории (final_missing)
-        # 3. Хотя бы один обязательный атрибут имеет уверенность ниже 0.75 (критично для фильтров)
+        # 3. Хотя бы один обязательный атрибут имеет уверенность ниже порога (критично для фильтров)
         # 4. Карточка пустая
         low_conf_required = any(
             p["confidence"] < self.confidence_threshold
@@ -373,7 +381,7 @@ class CascadedExtractionPipeline:
             if p["attribute"] in required_attrs
         )
         needs_review = (
-            (avg_conf < self.confidence_threshold)
+            (overall_conf < self.confidence_threshold)
             or bool(final_missing)
             or low_conf_required
             or (len(all_preds) == 0)
@@ -385,6 +393,6 @@ class CascadedExtractionPipeline:
             "category_key": cat_key,
             "predictions": all_preds,
             "missing": final_missing,
-            "overall_confidence": round(avg_conf, 4),
+            "overall_confidence": round(overall_conf, 4),
             "needs_review": needs_review,
         }
