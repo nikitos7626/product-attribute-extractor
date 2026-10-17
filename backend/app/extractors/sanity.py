@@ -46,13 +46,39 @@ class AttributeSanityValidator:
         "poled": "pOLED",
     }
 
-    # Недопустимые атрибуты по категориям
+    # Недопустимые атрибуты по категориям (защита от мусора и кросс-загрязнения)
     FORBIDDEN_ATTRS_BY_CATEGORY: dict[str, set[str]] = {
-        "vacuum_cleaners": {"memory_rom", "memory_ram", "screen_diagonal", "refresh_rate", "resolution", "cpu", "os", "defrost_system"},
-        "refrigerators": {"memory_rom", "memory_ram", "screen_diagonal", "refresh_rate", "resolution", "cpu", "os", "cleaning_type", "battery"},
-        "headphones": {"screen_diagonal", "refresh_rate", "resolution", "memory_rom", "memory_ram", "cleaning_type", "defrost_system"},
-        "tvs": {"cleaning_type", "defrost_system", "battery", "memory_ram"},
-        "powerbanks": {"memory_rom", "memory_ram", "screen_diagonal", "refresh_rate", "resolution", "cpu", "os", "cleaning_type", "defrost_system"},
+        "smartphones": {
+            "power", "volume", "warranty", "cleaning_type", "defrost_system",
+            "working_time", "bagless", "resolution", "refresh_rate",
+        },
+        "laptops": {
+            "cleaning_type", "defrost_system", "power", "working_time", "volume",
+            "warranty", "bagless",
+        },
+        "vacuum_cleaners": {
+            "memory_rom", "memory_ram", "screen_diagonal", "refresh_rate",
+            "resolution", "cpu", "os", "defrost_system",
+        },
+        "refrigerators": {
+            "memory_rom", "memory_ram", "screen_diagonal", "refresh_rate",
+            "resolution", "cpu", "os", "cleaning_type", "battery", "power",
+            "working_time",
+        },
+        "headphones": {
+            "screen_diagonal", "refresh_rate", "resolution", "memory_rom",
+            "memory_ram", "cleaning_type", "defrost_system", "power", "cpu",
+            "os", "volume",
+        },
+        "tvs": {
+            "cleaning_type", "defrost_system", "battery", "memory_ram",
+            "working_time", "cpu",
+        },
+        "powerbanks": {
+            "memory_rom", "memory_ram", "screen_diagonal", "refresh_rate",
+            "resolution", "cpu", "os", "cleaning_type", "defrost_system",
+            "working_time", "volume",
+        },
     }
 
     # Корни реальных цветов

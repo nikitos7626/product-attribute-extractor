@@ -1,7 +1,7 @@
 {
-  "smartphones": ["brand", "model", "memory_rom", "memory_ram", "screen_diagonal", "battery", "color", "resolution", "refresh_rate"],
-  "laptops":     ["brand", "model", "cpu", "memory_ram", "memory_rom", "screen_diagonal", "color", "os", "battery"],
-  "tv":          ["brand", "model", "screen_diagonal", "resolution", "refresh_rate", "color", "os"],
-  "vacuum_cleaners": ["brand", "model", "power", "bagless", "battery", "weight", "color"],
+  "smartphones": ["brand", "model", "memory_rom", "memory_ram", "screen_diagonal", "battery", "color", "cpu", "os", "weight"],
+  "laptops":     ["brand", "model", "cpu", "memory_ram", "memory_rom", "screen_diagonal", "color", "os", "battery", "weight"],
+  "tv":          ["brand", "model", "screen_diagonal", "resolution", "refresh_rate", "color", "power"],
+  "vacuum_cleaners": ["brand", "model", "power", "cleaning_type", "battery", "weight", "color", "working_time", "volume"],
   "default":     ["brand", "model", "color"]
 }
