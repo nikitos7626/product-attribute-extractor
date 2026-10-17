@@ -4,17 +4,21 @@ apple,Apple
 апл,Apple
 samsung,Samsung
 самсунг,Samsung
-сяоми,Xiaomi
-сяомi,Xiaomi
+самсунг электроникс,Samsung
 xiaomi,Xiaomi
+сяоми,Xiaomi
+ксиоми,Xiaomi
+ксяоми,Xiaomi
 redmi,Xiaomi
 редми,Xiaomi
 poco,Xiaomi
 поко,Xiaomi
 huawei,Huawei
 хуавей,Huawei
+хуавэй,Huawei
 honor,Honor
 хонор,Honor
+хонор,HONOR
 realme,Realme
 реалми,Realme
 oppo,OPPO
@@ -23,80 +27,103 @@ vivo,vivo
 виво,vivo
 oneplus,OnePlus
 ванплас,OnePlus
+one plus,OnePlus
 nothing,Nothing
 google,Google
 pixel,Google
 пиксель,Google
+google pixel,Google
 asus,ASUS
 аsus,ASUS
-аcer,Acer
+аус,ASUS
 acer,Acer
+аcer,Acer
+асер,Acer
 lenovo,Lenovo
 леново,Lenovo
 hp,HP
+hp inc,HP
+hpe,HP
 dell,Dell
 делл,Dell
 msi,MSI
+мси,MSI
 sony,Sony
 сони,Sony
 lg,LG
+элджи,LG
 philips,Philips
 филипс,Philips
 bosch,Bosch
 бош,Bosch
 siemens,Siemens
-siemens,Siemens
+зименс,Siemens
 indesit,Indesit
 индезит,Indesit
 beko,Beko
-бeko,Beko
+беко,Beko
 haier,Haier
 хайер,Haier
 hisense,Hisense
+хайсенс,Hisense
 tcl,TCL
 тисиэль,TCL
 sharp,Sharp
+шарп,Sharp
 toshiba,Toshiba
+тошиба,Toshiba
 panasonic,Panasonic
 панасоник,Panasonic
 canon,Canon
 канон,Canon
 nikon,Nikon
+никон,Nikon
 fujifilm,Fujifilm
 фуджи,Fujifilm
+фуджифильм,Fujifilm
 olympus,Olympus
 gopro,GoPro
+гоупро,GoPro
 dji,DJI
 джиди,DJI
-xiaomi-mi,Xiaomi
+джиай,DJI
 microsoft,Microsoft
 майкрософт,Microsoft
 surface,Microsoft
 logitech,Logitech
 логитек,Logitech
+логитеч,Logitech
 razer,Razer
+рейзер,Razer
 hyperx,HyperX
+гиперкс,HyperX
 kingston,Kingston
 кингстон,Kingston
 seagate,Seagate
 сигейт,Seagate
 wd,Western Digital
 western digital,Western Digital
+вестерн диджитал,Western Digital
 transcend,Transcend
+трансенд,Transcend
+sandisk,Sandisk
+сандиск,Sandisk
 samsung galaxy,Samsung
 dyson,Dyson
 дайсон,Dyson
 rowenta,Rowenta
+ровента,Rowenta
 t-fal,Tefal
 tefal,Tefal
+тефаль,Tefal
 redmond,Redmond
 редмонд,Redmond
 polaris,Polaris
 полярис,Polaris
-bosch siemens,Bosch
 delonghi,DeLonghi
-delonghi,DeLonghi
+делонги,DeLonghi
 kenwood,Kenwood
+кенвуд,Kenwood
 bork,Bork
 борк,Bork
 moulinex,Moulinex
@@ -108,6 +135,7 @@ electrolux,Electrolux
 whirlpool,Whirlpool
 вирпул,Whirlpool
 liebherr,Liebherr
+либхер,Liebherr
 атлант,Атлант
 atlant,Атлант
 vestel,Vestel
@@ -134,8 +162,6 @@ doogee,Doogee
 ulefone,Ulefone
 cubot,Cubot
 umidigi,Umidigi
-google pixel,Google
-essential,Essential
 meizu,Meizu
 мейзу,Meizu
 zte,ZTE
@@ -143,6 +169,7 @@ zte,ZTE
 alcatel,Alcatel
 nokia,Nokia
 нокіа,Nokia
+нокиа,Nokia
 motorola,Motorola
 моторола,Motorola
 fly,Fly
@@ -151,11 +178,11 @@ micromax,Micromax
 wiko,Wiko
 archos,Archos
 gigabyte,Gigabyte
-gigabyte,Gigabyte
-msi gaming,MSI
 asrock,ASRock
 supermicro,Supermicro
 fujitsu,Fujitsu
-тошиба,Toshiba
-panasonic,Panasonic
-sharp,Sharp
+meizu,Meizu
+аsus,ASUS
+днс,DNS
+dns,DNS
+ситилинк,Citilink

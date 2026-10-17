@@ -162,6 +162,104 @@ def test_os_longest_match_wins(ext, text, expected):
     p = _get(ext.extract({"title": text, "description": ""}), "os")
     assert p and p["value"] == expected
 
+# ---------- Категориальные словари ----------
+
+@pytest.mark.parametrize("text,expected", [
+    ("Смартфон алюминий", "алюминий"),
+    ("Корпус из нержавеющей стали", "нержавеющая сталь"),
+    ("Чехол из экокожи", "экокожа"),
+    ("Корпус из титана", "титан"),
+])
+def test_material(ext, text, expected):
+    p = _get(ext.extract({"title": text, "description": ""}), "material")
+    assert p and p["value"] == expected
+
+
+@pytest.mark.parametrize("text,expected", [
+    ("Сделано в Китае", "Китай"),
+    ("Made in Japan", "Япония"),
+    ("Страна производства: Германия", "Германия"),
+    ("Южная Корея", "Южная Корея"),
+])
+def test_country(ext, text, expected):
+    p = _get(ext.extract({"title": text, "description": ""}),
+             "country_of_origin")
+    assert p and p["value"] == expected
+
+
+@pytest.mark.parametrize("text,expected", [
+    ("SSD 512 ГБ", "SSD"),
+    ("NVMe SSD 1 ТБ", "NVMe SSD"),
+    ("Жёсткий диск 2 ТБ", "HDD"),
+    ("UFS 3.1", "UFS 3.1"),
+])
+def test_storage_type(ext, text, expected):
+    p = _get(ext.extract({"title": text, "description": ""}), "storage_type")
+    assert p and p["value"] == expected
+
+
+@pytest.mark.parametrize("text,expected", [
+    ("Экран OLED", "OLED"),
+    ("Матрица IPS", "IPS"),
+    ("QLED телевизор", "QLED"),
+    ("Neo QLED", "Neo QLED"),
+])
+def test_screen_tech(ext, text, expected):
+    p = _get(ext.extract({"title": text, "description": ""}), "screen_tech")
+    assert p and p["value"] == expected
+
+
+@pytest.mark.parametrize("text,expected", [
+    ("Телевизор 4K", "4K"),
+    ("Full HD монитор", "Full HD"),
+    ("Ultra HD", "4K"),
+])
+def test_resolution_class(ext, text, expected):
+    p = _get(ext.extract({"title": text, "description": ""}), "resolution_class")
+    assert p and p["value"] == expected
+
+
+def test_connectivity_multi(ext):
+    preds = ext.extract({
+        "title": "Смартфон",
+        "description": "Wi-Fi 6, Bluetooth 5.3, NFC, USB-C",
+    })
+    p = _get(preds, "connectivity")
+    assert p
+    # все четыре значения должны быть в ответе
+    for part in ["Wi-Fi 6", "Bluetooth 5.3", "NFC", "USB-C"]:
+        assert part in p["value"]
+
+
+def test_features_multi(ext):
+    preds = ext.extract({
+        "title": "Смартфон защита IP68",
+        "description": "Поддержка беспроводной зарядки и ANC",
+    })
+    p = _get(preds, "features")
+    assert p
+    assert "IP68" in p["value"]
+    assert "Беспроводная зарядка" in p["value"]
+    assert "ANC" in p["value"]
+
+
+@pytest.mark.parametrize("text,expected", [
+    ("Футболка мужская", "мужской"),
+    ("Куртка женская", "женский"),
+    ("Свитшот унисекс", "унисекс"),
+])
+def test_gender(ext, text, expected):
+    p = _get(ext.extract({"title": text, "description": ""}), "gender")
+    assert p and p["value"] == expected
+
+
+def test_longest_match_wins_screen(ext):
+    """'Neo QLED' должен победить 'QLED' — длинный алиас выигрывает."""
+    preds = ext.extract({"title": "Телевизор Neo QLED 4K", "description": ""})
+    assert _get(preds, "screen_tech")["value"] == "Neo QLED"
+    assert _get(preds, "resolution_class")["value"] == "4K"
+
+
 # ---------- Прочее ----------
 
 def test_brand_from_seller_overrides_text(ext):

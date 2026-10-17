@@ -1,0 +1,34 @@
+alias,canonical
+ssd,SSD
+ссд,SSD
+твердотельный,SSD
+твердотельный накопитель,SSD
+твердотельного накопителя,SSD
+solid state drive,SSD
+nvme,NVMe
+nvme ssd,NVMe SSD
+nvme накопитель,NVMe SSD
+m.2 nvme,NVMe SSD
+pcie nvme,NVMe SSD
+hdd,HDD
+хдд,HDD
+жесткий диск,HDD
+жёсткий диск,HDD
+жесткого диска,HDD
+жёсткого диска,HDD
+жесткий,HDD
+жёсткий,HDD
+hard disk drive,HDD
+emmc,eMMC
+еммс,eMMC
+ufs,UFS
+ufs 2.0,UFS 2.0
+ufs 2.1,UFS 2.1
+ufs 3.0,UFS 3.0
+ufs 3.1,UFS 3.1
+ufs 4.0,UFS 4.0
+sd-карта,SD-карта
+sd карта,SD-карта
+microsd,microSD
+micro-sd,microSD
+micro sd,microSD
