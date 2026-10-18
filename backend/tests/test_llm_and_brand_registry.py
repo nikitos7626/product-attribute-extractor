@@ -163,3 +163,58 @@ def test_llm_verify_new_brand():
 
     with patch.object(extractor, "_call_llm", return_value="NO"):
         assert extractor.verify_new_brand("СуперДевайс", "купить СуперДевайс со скидкой") is False
+
+
+def test_reasoning_model_fallback_parsing():
+    """
+    Проверяет извлечение JSON из блока reasoning думающих моделей (DeepSeek / Reasoning),
+    когда поле content пустое или None.
+    """
+    extractor = StrictLlmFallbackExtractor(api_key="test-key")
+
+    mock_reasoning_json = '{"brand": "DEMIAND", "model": "Tison Pro DK-2100"}'
+    with patch.object(extractor, "_call_llm", return_value=mock_reasoning_json):
+        b, m = extractor.extract_brand_and_model_for_new_product(
+            title="Аэрогриль DEMIAND Tison Pro DK-2100 5.5л 1800Вт черный",
+            category_name="Аэрогрили",
+        )
+        assert b == "DEMIAND"
+        assert m == "Tison Pro DK-2100"
+
+
+def test_title_structural_heuristic_new_product():
+    """
+    Проверяет синтаксический эвристический парсер заголовка e-commerce
+    [Категория] [Бренд] [Модель] [Характеристики].
+    """
+    b1, m1 = CascadedExtractionPipeline._parse_title_structure(
+        "Аэрогриль DEMIAND Tison Pro DK-2100 5.5л 1800Вт черный",
+        "Аэрогрили",
+    )
+    assert b1 == "DEMIAND"
+    assert m1 == "Tison Pro DK-2100"
+
+    b2, m2 = CascadedExtractionPipeline._parse_title_structure(
+        "Кофеварка HiBREW H10A рожковая серебристая",
+        "Кофеварки",
+    )
+    assert b2 == "HiBREW"
+    assert m2 == "H10A"
+
+
+def test_pipeline_new_unknown_product_end_to_end():
+    """
+    Сквозной тест: полностью незнакомый китайский товар автоматически получает
+    бренд, модель и характеристики без падений.
+    """
+    pipeline = CascadedExtractionPipeline(use_gliner=False, use_catalog_enricher=False, use_llm=False)
+    res = pipeline.process_card({
+        "title": "Аэрогриль DEMIAND Tison Pro DK-2100 5.5л 1800Вт черный",
+        "description": "Мощный аэрогриль с антипригарным покрытием",
+    })
+
+    preds = {p["attribute"]: p["value"] for p in res["predictions"]}
+    assert preds.get("brand") == "DEMIAND"
+    assert preds.get("model") == "Tison Pro DK-2100"
+    assert preds.get("color") in ("черный", "чёрный")
+

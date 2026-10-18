@@ -433,6 +433,76 @@ class CascadedExtractionPipeline:
 
         return "default", CATEGORY_SCHEMAS["default"]["name_ru"]
 
+    @staticmethod
+    def _parse_title_structure(title: str, category_name: str) -> tuple[str | None, str | None]:
+        """
+        Синтаксический эвристический разбор заголовка e-commerce по шаблону:
+        [Категория] [Бренд] [Модель] [Характеристики / Цвет]
+        """
+        if not title or len(title.strip()) < 3:
+            return None, None
+
+        clean_t = title.strip()
+        # Срезаем префиксы вроде "Восстановленный", "Уцененный", "Новый", "Смарт-", "Беспроводной"
+        clean_t = re.sub(
+            r"^(?:восстановленн\w*|уцененн\w*|нов\w*|смарт[\s\-]|беспроводн\w*|портативн\w*|робот[\s\-])\s+",
+            "",
+            clean_t,
+            flags=re.IGNORECASE,
+        ).strip()
+
+        # Срезаем название категории в начале заголовка (например "Смартфон", "Ноутбук", "Аэрогриль", "Кофеварка", "Пылесос")
+        cat_words = [w for w in re.split(r"[^\w]+", category_name.lower()) if len(w) >= 3]
+        for cw in cat_words:
+            stem = re.sub(r"[иыаяеьъ]+$", "", cw)
+            if len(stem) >= 3:
+                clean_t = re.sub(rf"^{re.escape(stem)}\w*\s+", "", clean_t, flags=re.IGNORECASE).strip()
+            else:
+                clean_t = re.sub(rf"^{re.escape(cw)}\w*\s+", "", clean_t, flags=re.IGNORECASE).strip()
+
+        tokens = clean_t.split()
+        if not tokens:
+            return None, None
+
+        # Если первый токен все еще общее русское название техники/подтипа, а следующий — бренд
+        if len(tokens) >= 2 and re.search(r"^[а-яёА-ЯЁ]+$", tokens[0]):
+            if re.search(r"(?:гриль|варк|мойк|печ|сос|маш|фон|бук|визор|чайник|утюг|фен|блендер|миксер|плит|рожков|капельн)", tokens[0], re.IGNORECASE):
+                if re.search(r"^[a-zA-Z]", tokens[1]) or tokens[1].isupper():
+                    tokens = tokens[1:]
+
+        first_token = tokens[0]
+        # Проверяем, что первый токен не является числом или технической спецификацией
+        if re.search(r"^\d", first_token) or re.search(r"^(?:4k|oled|qled|ips|wi-?fi|bluetooth)$", first_token, re.IGNORECASE):
+            return None, None
+
+        candidate_brand = first_token.strip(" ,.-()")
+        if len(candidate_brand) < 2:
+            return None, None
+
+        # Токены после бренда до первого атрибута (память, ватты, цвет, дюймы, запятая)
+        model_tokens = []
+        for tok in tokens[1:]:
+            tok_low = tok.lower().strip(" ,.-()")
+            # Стоп-токены: начало спецификаций, цвета или описательных свойств
+            if (
+                re.search(r"^\d+(?:[.,]\d+)?\s*(?:гб|gb|тб|tb|м[аa]ч|mah|вт|w|л|l|кг|kg|гц|hz|\"|дюйм)", tok_low)
+                or re.search(r"^\d{1,2}/\d{2,4}", tok_low)
+                or re.search(r"^[а-яёА-ЯЁ]+(?:ая|яя|ый|ий|ое|ее|ые|ие)$", tok)
+                or tok_low in (
+                    "черный", "чёрный", "белый", "серый", "синий", "красный",
+                    "серебристый", "золотой", "зеленый", "зелёный", "розовый", "фиолетовый",
+                    "black", "white", "gray", "silver", "blue", "red", "gold", "green"
+                )
+                or tok_low in ("с", "со", "для", "на", "в", "и", "без")
+            ):
+                break
+            model_tokens.append(tok)
+            if len(model_tokens) >= 4:
+                break
+
+        candidate_model = " ".join(model_tokens).strip(" ,.-()") if model_tokens else None
+        return candidate_brand, candidate_model
+
     def process_card(self, card: dict[str, Any]) -> dict[str, Any]:
         """
         Сквозной прогон карточки через 4-этапную воронку.
@@ -542,6 +612,61 @@ class CascadedExtractionPipeline:
                 predictions_map["brand"] = Prediction(attribute="brand", value="Apple", confidence=0.98, source="rule_subbrand", raw=m_low)
             elif "redmi" in m_low or "poco" in m_low:
                 predictions_map["brand"] = Prediction(attribute="brand", value="Xiaomi", confidence=0.95, source="rule_subbrand", raw=m_low)
+
+        # ------------------------------------------------------------------
+        # ЭТАП 2.9: Извлечение бренда и модели для новых/незнакомых товаров
+        # (Heuristic Structural Title Parser + LLM New Product Extractor)
+        # ------------------------------------------------------------------
+        if "brand" not in predictions_map or "model" not in predictions_map:
+            title_str = card.get("title") or ""
+            heur_brand, heur_model = self._parse_title_structure(title_str, cat_name)
+            if heur_brand and "brand" not in predictions_map:
+                canon_b, conf, _ = self.brand_registry.match_or_fuzzy_brand(heur_brand)
+                predictions_map["brand"] = Prediction(
+                    attribute="brand",
+                    value=canon_b or heur_brand,
+                    confidence=0.88,
+                    source="syntax_heuristic",
+                    raw=heur_brand,
+                )
+            if heur_model and "model" not in predictions_map:
+                predictions_map["model"] = Prediction(
+                    attribute="model",
+                    value=heur_model,
+                    confidence=0.85,
+                    source="syntax_heuristic",
+                    raw=heur_model,
+                )
+
+            # Если всё ещё нет бренда или модели — вызываем LLM/Reasoning экстрактор нового товара
+            if (
+                ("brand" not in predictions_map or "model" not in predictions_map)
+                and self.use_llm
+                and self.llm_extractor
+                and self.llm_extractor.is_enabled
+            ):
+                llm_b, llm_m = self.llm_extractor.extract_brand_and_model_for_new_product(
+                    title=title_str,
+                    category_name=cat_name,
+                    raw_text=raw_text or card.get("description", ""),
+                )
+                if llm_b and "brand" not in predictions_map:
+                    canon_b, conf, _ = self.brand_registry.match_or_fuzzy_brand(llm_b)
+                    predictions_map["brand"] = Prediction(
+                        attribute="brand",
+                        value=canon_b or llm_b,
+                        confidence=0.92,
+                        source="llm_new_product",
+                        raw=llm_b,
+                    )
+                if llm_m and "model" not in predictions_map:
+                    predictions_map["model"] = Prediction(
+                        attribute="model",
+                        value=llm_m,
+                        confidence=0.90,
+                        source="llm_new_product",
+                        raw=llm_m,
+                    )
 
         # Очистка названия бренда из начала названия модели ("Sony KD50X85TJ" -> "KD50X85TJ")
         if "brand" in predictions_map and "model" in predictions_map:

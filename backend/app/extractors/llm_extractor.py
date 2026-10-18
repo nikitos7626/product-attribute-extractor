@@ -53,7 +53,7 @@ class StrictLlmFallbackExtractor:
             or os.environ.get("LLM_API_BASE")
             or getattr(settings, "llm_api_base", "https://hub.gigaschool.ru/api/v1/llm/v1")
         ).rstrip("/")
-        self.model = model or os.environ.get("LLM_MODEL") or getattr(settings, "llm_model", "Qwen/Qwen3-Coder-Next")
+        self.model = model or os.environ.get("LLM_MODEL") or getattr(settings, "llm_model", "GigaChat/GigaChat-3-Pro")
         self.timeout = timeout
         self.enforce_grounding = enforce_grounding
         self.is_enabled = bool(self.api_key and self.api_key.strip())
@@ -146,6 +146,11 @@ class StrictLlmFallbackExtractor:
 
         last_error = "All models failed"
         for m in models_to_try:
+            # Для reasoning-моделей (DeepSeek / Reasoning) требуется больший токен-бюджет
+            is_reasoning_model = any(k in m.lower() for k in ("reasoning", "deepseek", "r1"))
+            token_budget = 1200 if is_reasoning_model else 350
+            req_timeout = max(self.timeout, 8.0) if is_reasoning_model else self.timeout
+
             payload = {
                 "model": m,
                 "messages": [
@@ -153,25 +158,38 @@ class StrictLlmFallbackExtractor:
                     {"role": "user", "content": user_prompt},
                 ],
                 "temperature": 0.0,
-                "max_tokens": 250,
+                "max_tokens": token_budget,
             }
 
             try:
-                with httpx.Client(timeout=self.timeout) as client:
+                with httpx.Client(timeout=req_timeout) as client:
                     resp = client.post(url, headers=headers, json=payload)
                     if resp.status_code == 200:
                         data = resp.json()
                         choices = data.get("choices") or []
                         if choices:
-                            raw_c = choices[0].get("message", {}).get("content")
+                            msg = choices[0].get("message") or {}
+                            raw_c = msg.get("content")
                             if raw_c and isinstance(raw_c, str) and raw_c.strip():
                                 self.record_success()
                                 return raw_c.strip()
+
+                            # Поддержка думающих (Reasoning) моделей:
+                            # Если content пустой, извлекаем итоговый JSON из блока reasoning
+                            raw_reasoning = msg.get("reasoning")
+                            if raw_reasoning and isinstance(raw_reasoning, str) and raw_reasoning.strip():
+                                json_m = (
+                                    re.search(r"```(?:json)?\s*(\{[\s\S]*?\})\s*```", raw_reasoning)
+                                    or re.search(r"(\{[\s\S]*?\})(?:\s*```)?\s*$", raw_reasoning.strip())
+                                )
+                                if json_m:
+                                    self.record_success()
+                                    return json_m.group(1).strip()
                     else:
                         logger.warning("LLM API (%s) returned HTTP %d: %s", m, resp.status_code, resp.text[:120])
                         last_error = f"HTTP {resp.status_code}"
             except httpx.TimeoutException:
-                last_error = f"Timeout > {self.timeout}s on {m}"
+                last_error = f"Timeout > {req_timeout}s on {m}"
             except Exception as e:
                 last_error = f"Error calling {m}: {e}"
 
@@ -382,3 +400,70 @@ class StrictLlmFallbackExtractor:
 
         clean_resp = content.strip().upper()
         return "YES" in clean_resp
+
+    def extract_brand_and_model_for_new_product(
+        self,
+        title: str,
+        category_name: str,
+        raw_text: str = "",
+    ) -> tuple[str | None, str | None]:
+        """
+        Извлекает точный бренд производителя и модель устройства для нового или редкого товара
+        с помощью LLM / Reasoning модели с защитой от путаницы категории и бренда.
+        """
+        if not self.is_enabled or self.is_circuit_open() or not title:
+            return None, None
+
+        system_prompt = (
+            "Ты — промышленный экстрактор бренда и модели каталога М.Видео. "
+            "Категория товара строго известна и НЕ является брендом. "
+            "Категорически запрещено возвращать категорию или общие слова вроде 'смартфон', 'ноутбук', 'пылесос', 'аэрогриль', 'товар' как бренд. "
+            "Найди реальную торговую марку (производителя) и точный индекс модели. "
+            "Ответ строго в JSON формате: {\"brand\": \"...\", \"model\": \"...\"} без разметки markdown."
+        )
+
+        user_prompt = (
+            f"Категория товара: {category_name}\n"
+            f"Заголовок карточки: {title}\n"
+            f"Описание: {raw_text[:250]}\n"
+            "Выдели точный бренд производителя и точную модель устройства."
+        )
+
+        content = self._call_llm(system_prompt, user_prompt)
+        if not content:
+            return None, None
+
+        content_clean = re.sub(r"^```(?:json)?\s*", "", content.strip())
+        content_clean = re.sub(r"\s*```$", "", content_clean).strip()
+
+        try:
+            json_match = re.search(r"\{[\s\S]*?\}", content_clean)
+            if json_match:
+                data = json.loads(json_match.group(0))
+            else:
+                data = json.loads(content_clean)
+        except Exception:
+            return None, None
+
+        if not isinstance(data, dict):
+            return None, None
+
+        brand = data.get("brand")
+        model = data.get("model")
+
+        clean_brand = str(brand).strip() if brand else None
+        clean_model = str(model).strip() if model else None
+
+        # Защита от возврата названия категории вместо бренда
+        if clean_brand:
+            b_low = clean_brand.lower()
+            cat_words = set(re.findall(r"\w+", category_name.lower()))
+            if b_low in ("null", "none", "unknown", "н/д", "n/a", "-") or b_low in cat_words:
+                clean_brand = None
+
+        if clean_model:
+            m_low = clean_model.lower()
+            if m_low in ("null", "none", "unknown", "н/д", "n/a", "-"):
+                clean_model = None
+
+        return clean_brand, clean_model
