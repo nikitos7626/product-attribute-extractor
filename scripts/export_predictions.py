@@ -32,6 +32,8 @@ def export_predictions(
     input_path: str,
     output_json_path: str | None = "output/predictions.json",
     output_csv_path: str | None = "output/predictions.csv",
+    use_gliner: bool = True,
+    use_llm: bool = False,
 ) -> list[dict[str, Any]]:
     from app.services.pipeline import CascadedExtractionPipeline
 
@@ -58,8 +60,9 @@ def export_predictions(
 
     print(f"\n🚀 Запуск пакетного экспорта предсказаний для {len(cards_in)} карточек...")
     print(f"📥 Источник: {input_path}")
+    print(f"⚙️ Режим: GLiNER={use_gliner}, CatalogKB=True, LLM={use_llm}")
 
-    pipeline = CascadedExtractionPipeline(use_gliner=True)
+    pipeline = CascadedExtractionPipeline(use_gliner=use_gliner, use_llm=use_llm)
 
     results: list[dict[str, Any]] = []
     t_start = time.perf_counter()
@@ -164,10 +167,14 @@ if __name__ == "__main__":
     parser.add_argument("--output-json", default=os.path.join(BASE_DIR, "output", "predictions.json"), help="Путь к результирующему JSON")
     parser.add_argument("--output-csv", default=os.path.join(BASE_DIR, "output", "predictions.csv"), help="Путь к результирующему CSV")
     parser.add_argument("--format", choices=["json", "csv", "both"], default="both", help="Формат экспорта (json, csv, both)")
+    parser.add_argument("--use-llm", action="store_true", default=False, help="Активировать Tier 4 LLM fallback (по умолчанию выключен для безопасного офлайн-экспорта без 429)")
+    parser.add_argument("--no-gliner", action="store_true", default=False, help="Отключить Tier 2 GLiNER NER (работать только на Tier 1 + Catalog KB на максимальной скорости)")
     args = parser.parse_args()
 
     export_predictions(
         input_path=args.input,
         output_json_path=args.output_json if args.format in ("json", "both") else None,
         output_csv_path=args.output_csv if args.format in ("csv", "both") else None,
+        use_gliner=not args.no_gliner,
+        use_llm=args.use_llm,
     )

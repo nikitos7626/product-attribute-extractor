@@ -1,37 +1,6302 @@
 [
   {
-    "external_id": "sample-01",
-    "title": "Смартфон Apple iPhone 15 Pro Max 256GB Black Titanium",
-    "description": "Смартфон Apple iPhone 15 Pro Max с диагональю 6.7 дюймов Super Retina XDR OLED 120 Гц, чип A17 Pro. Память 256 ГБ. Аккумулятор 4422 мАч."
+    "external_id": "mvideo-20077299",
+    "title": "Холодильник HAIER CEF535ASG",
+    "category": "Холодильники",
+    "vendor": "HAIER",
+    "description": ""
   },
   {
-    "external_id": "sample-02",
-    "title": "Смартфон Samsung Galaxy S24 Ultra 12/512GB Серый",
-    "description": "Экран 6.8\" Dynamic AMOLED 2X 120 Гц, процессор Snapdragon 8 Gen 3, аккумулятор 5000 мАч, вес 232 г. Цвет серый."
+    "external_id": "mvideo-20077298",
+    "title": "Холодильник HAIER CEF535AWG",
+    "category": "Холодильники",
+    "vendor": "HAIER",
+    "description": ""
   },
   {
-    "external_id": "sample-03",
-    "title": "Ноутбук Apple MacBook Air 13 M3 16GB 512GB Темная ночь",
-    "description": "Экран 13.6 дюйма, 16 ГБ оперативной памяти, 512 ГБ SSD, чип Apple M3, macOS, вес 1.24 кг."
+    "external_id": "mvideo-20078182",
+    "title": "Холодильник Gorenje NRK620EABXL4",
+    "category": "Холодильники",
+    "vendor": "Gorenje",
+    "description": ""
   },
   {
-    "external_id": "sample-04",
-    "title": "Телевизор LG OLED evo OLED55C4RLA 55\"",
-    "description": "Экран 55 дюймов 4K Ultra HD (3840x2160), 120 Гц, мощность звука 40 Вт, цвет корпуса черный."
+    "external_id": "mvideo-30080263",
+    "title": "Восстановленный смартфон Samsung Galaxy S22+ 8/128GB фантом белый (SM-S906B), хороший",
+    "category": "Смартфоны",
+    "vendor": "Samsung",
+    "description": ""
   },
   {
-    "external_id": "sample-05",
-    "title": "Робот-пылесос Xiaomi Robot Vacuum S10 White",
-    "description": "Сухая и влажная уборка, мощность 45 Вт, емкость аккумулятора 3200 мАч, время работы 130 минут, контейнер 300 мл, белый цвет."
+    "external_id": "mvideo-30080553",
+    "title": "Восстановленный смартфон Samsung Galaxy M53 8/256GB Green (SM-M536B), хороший",
+    "category": "Смартфоны",
+    "vendor": "Samsung",
+    "description": ""
   },
   {
-    "external_id": "sample-06",
-    "title": "Беспроводные наушники Sony WH-1000XM5 Серебристый",
-    "description": "Полноразмерные наушники с активным шумоподавлением, время автономной работы 30 часов, вес 250 г, серебристый цвет."
+    "external_id": "mvideo-30080752",
+    "title": "Ноутбук Apple MacBook Air 15 M4 24GB/512GB небесно-голубой (MC7D4)",
+    "category": "Ноутбуки",
+    "vendor": "Apple",
+    "description": ""
   },
   {
-    "external_id": "sample-07",
-    "title": "Внешний аккумулятор Xiaomi Mi Power Bank 3 20000 mAh Black",
-    "description": "Портативный аккумулятор емкостью 20000 мАч, мощность 18 Вт, цвет черный, вес 430 г."
+    "external_id": "mvideo-30080758",
+    "title": "Ноутбук Apple MacBook Air 15 M4 16/256GB Sky Blue (MC7A4)",
+    "category": "Ноутбуки",
+    "vendor": "Apple",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-400388000",
+    "title": "Робот-пылесос BBK BV3504",
+    "category": "Роботы-пылесосы",
+    "vendor": "BBK",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-400413637",
+    "title": "Пылесос вертикальный GARTZ VVC221G",
+    "category": "Пылесосы вертикальные",
+    "vendor": "GARTZ",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-400401831",
+    "title": "Холодильник GENCOOL GDCD-595W",
+    "category": "Холодильники",
+    "vendor": "GENCOOL",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-400193855",
+    "title": "Холодильник Sonnen DF-1-15",
+    "category": "Холодильники",
+    "vendor": "Sonnen",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-400403106",
+    "title": "Холодильник GENCOOL GDCD-605W",
+    "category": "Холодильники",
+    "vendor": "GENCOOL",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-400403381",
+    "title": "Пылесос вертикальный FUTULA Wet and Dry Vacuum Cleaner P6",
+    "category": "Пылесосы вертикальные",
+    "vendor": "FUTULA",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-400404135",
+    "title": "Ноутбук Apple MacBook Air 13 M1/8GB/256GB космический серый MGN63RU/A",
+    "category": "Ноутбуки",
+    "vendor": "Apple",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-400243752",
+    "title": "Наушники накладные HIPER Wired Casual HTW-OV3",
+    "category": "Наушники",
+    "vendor": "HIPER",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-400403518",
+    "title": "Холодильник GENCOOL GDCD-595WL",
+    "category": "Холодильники",
+    "vendor": "GENCOOL",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-400403406",
+    "title": "Холодильник GENCOOL GDM-717WH",
+    "category": "Холодильники",
+    "vendor": "GENCOOL",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-400355101",
+    "title": "Холодильник Snowcap MD NF 500 Black",
+    "category": "Холодильники",
+    "vendor": "Snowcap",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-400368061",
+    "title": "Пылесос напольный KIWI KCC-4322RB",
+    "category": "Пылесосы напольные",
+    "vendor": "KIWI",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-400271071",
+    "title": "Пылесос вертикальный Supra VCS-5081",
+    "category": "Пылесосы вертикальные",
+    "vendor": "Supra",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-400327140",
+    "title": "Робот-пылесос Hobot LEGEE-D8",
+    "category": "Роботы-пылесосы",
+    "vendor": "Hobot",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-400381447",
+    "title": "Холодильник Snowcap SBS NF 570 BG",
+    "category": "Холодильники",
+    "vendor": "Snowcap",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-400420248",
+    "title": "Пылесос вертикальный Kitfort КТ-5389",
+    "category": "Пылесосы вертикальные",
+    "vendor": "Kitfort",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-400410876",
+    "title": "Пылесос напольный Kitfort КТ-5258",
+    "category": "Пылесосы напольные",
+    "vendor": "Kitfort",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-400314657",
+    "title": "Робот-пылесос Kitfort КТ-590",
+    "category": "Роботы-пылесосы",
+    "vendor": "Kitfort",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-400113834",
+    "title": "Пылесос ручной (handstick) Kitfort КТ-561",
+    "category": "Пылесосы вертикальные",
+    "vendor": "Kitfort",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-400420077",
+    "title": "Холодильник Korting knfm 94899 xn",
+    "category": "Холодильники",
+    "vendor": "Korting",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-400399127",
+    "title": "Аккумуляторный пылесос Kitfort КТ-5196",
+    "category": "Пылесосы напольные",
+    "vendor": "Kitfort",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-400396019",
+    "title": "Пылесос вертикальный Planta PL-VCD02",
+    "category": "Пылесосы вертикальные",
+    "vendor": "Planta",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-400343046",
+    "title": "Холодильник Harper RH6966BW",
+    "category": "Холодильники",
+    "vendor": "Harper",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-400288502",
+    "title": "Холодильник Tesler RCD-547BI белый",
+    "category": "Холодильники",
+    "vendor": "Tesler",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-4203255",
+    "title": "Пылесос ручной (handstick) Kitfort КТ-543-1",
+    "category": "Пылесосы вертикальные",
+    "vendor": "Kitfort",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-400104761",
+    "title": "Встраиваемый холодильник однодверный Korting KSI 8181",
+    "category": "Встраиваемые холодильники",
+    "vendor": "Korting",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-400165997",
+    "title": "Холодильник Korting KNFC 72337 XN",
+    "category": "Холодильники",
+    "vendor": "Korting",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-400255328",
+    "title": "Пылесос вертикальный Kitfort КТ-5237",
+    "category": "Пылесосы вертикальные",
+    "vendor": "Kitfort",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-400468403",
+    "title": "Мини-бар для охлаждения напитков и косметики Cellar Private CP102AW",
+    "category": "Холодильники",
+    "vendor": "Cellar Private",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-400305074",
+    "title": "Пылесос вертикальный KIWI KVC-4108",
+    "category": "Пылесосы вертикальные",
+    "vendor": "KIWI",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-4215843",
+    "title": "Встраиваемый холодильник Kuppersbusch FK 2545.0i",
+    "category": "Встраиваемые холодильники",
+    "vendor": "Kuppersbusch",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-4218804",
+    "title": "Встраиваемый холодильник Kuppersbusch FK 2540.0i",
+    "category": "Встраиваемые холодильники",
+    "vendor": "Kuppersbusch",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-400165670",
+    "title": "Холодильник Korting KNFC 61869 X",
+    "category": "Холодильники",
+    "vendor": "Korting",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-4106539",
+    "title": "Холодильник однодверный Centek 46л,стеклянная дверь,CT-1701",
+    "category": "Холодильники",
+    "vendor": "Centek",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-400070329",
+    "title": "Холодильник Pozis RK FNF-170 440478",
+    "category": "Холодильники",
+    "vendor": "Pozis",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-20064471",
+    "title": "Холодильник Kraft KF-DF340W",
+    "category": "Холодильники",
+    "vendor": "Kraft",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-400389316",
+    "title": "Пылесос напольный Kitfort КТ-5223",
+    "category": "Пылесосы напольные",
+    "vendor": "Kitfort",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-400340923",
+    "title": "Пылесос напольный Tesler Pure Storm WD-7200",
+    "category": "Пылесосы напольные",
+    "vendor": "Tesler",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-400398103",
+    "title": "Пылесос вертикальный Polaris PVCW 6070",
+    "category": "Пылесосы вертикальные",
+    "vendor": "Polaris",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-400377712",
+    "title": "Пылесос вертикальный Okami M410",
+    "category": "Пылесосы вертикальные",
+    "vendor": "Okami",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-400166026",
+    "title": "Холодильник Korting KNFM 91868 X",
+    "category": "Холодильники",
+    "vendor": "Korting",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-4203261",
+    "title": "Пылесос ручной (handstick) Kitfort КТ-594",
+    "category": "Пылесосы вертикальные",
+    "vendor": "Kitfort",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-400468438",
+    "title": "Мини-бар для охлаждения напитков и косметики Cellar Private CP034B",
+    "category": "Холодильники",
+    "vendor": "Cellar Private",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-400468399",
+    "title": "Мини-бар для охлаждения напитков и косметики Cellar Private CP062AW",
+    "category": "Холодильники",
+    "vendor": "Cellar Private",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-400262845",
+    "title": "Холодильник Korting KNFS 83414 X нержавеющая сталь",
+    "category": "Холодильники",
+    "vendor": "Korting",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-400343061",
+    "title": "Холодильник Harper RH5559BI Stainless steel",
+    "category": "Холодильники",
+    "vendor": "Harper",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-20092442",
+    "title": "Холодильник Hi HODN064044SW",
+    "category": "Холодильники",
+    "vendor": "Hi",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-20092443",
+    "title": "Холодильник Hi HODN064044SS",
+    "category": "Холодильники",
+    "vendor": "Hi",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-400288506",
+    "title": "Холодильник Tesler RCD-547BI графитовый",
+    "category": "Холодильники",
+    "vendor": "Tesler",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-400407981",
+    "title": "Холодильник Tesler RCD-547BI",
+    "category": "Холодильники",
+    "vendor": "Tesler",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-400162586",
+    "title": "Станция самоочистки Hobot LuLu",
+    "category": "Роботы-пылесосы",
+    "vendor": "Hobot",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-400409604",
+    "title": "Пылесос напольный Tesler Pure Storm WD-7300",
+    "category": "Пылесосы напольные",
+    "vendor": "Tesler",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-400397952",
+    "title": "Холодильник Oursson RF1060/WH",
+    "category": "Холодильники",
+    "vendor": "Oursson",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-4203252",
+    "title": "Пылесос ручной (handstick) Kitfort КТ-541-1",
+    "category": "Пылесосы вертикальные",
+    "vendor": "Kitfort",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-400398842",
+    "title": "Пылесос напольный Kitfort КТ-5191",
+    "category": "Пылесосы напольные",
+    "vendor": "Kitfort",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-30082207",
+    "title": "Ноутбук Apple MacBook Air 13 M4 16/512GB Starlight (MW103)",
+    "category": "Ноутбуки",
+    "vendor": "Apple",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-50178189",
+    "title": "Наушники True Wireless Baseus BP1 Pro Earbuds Moon White",
+    "category": "Наушники",
+    "vendor": "Baseus",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-50178188",
+    "title": "Наушники True Wireless Baseus BP1 Pro Earbuds Cosmic Black",
+    "category": "Наушники",
+    "vendor": "Baseus",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-30072074",
+    "title": "Ноутбук HUAWEI MateBook D 14 MDG-X i5/16/512GB DOS космический серый",
+    "category": "Ноутбуки",
+    "vendor": "HUAWEI",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-30072073",
+    "title": "Ноутбук HUAWEI MateBook D 14 MDG-X i5/16/512GB Win 11 космический серый",
+    "category": "Ноутбуки",
+    "vendor": "HUAWEI",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-400015514",
+    "title": "Наушники True Wireless Harper HB-517 черный",
+    "category": "Наушники",
+    "vendor": "Harper",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-400171237",
+    "title": "Наушники накладные Bluetooth JBL Tune 520BT Violet",
+    "category": "Наушники",
+    "vendor": "JBL",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-400200774",
+    "title": "Наушники накладные JBL Tune 520BT Blue",
+    "category": "Наушники",
+    "vendor": "JBL",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-400455914",
+    "title": "Наушники JBL Tune 520BT",
+    "category": "Наушники",
+    "vendor": "JBL",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-400460561",
+    "title": "Наушники накладные JBL Tune 310C White",
+    "category": "Наушники",
+    "vendor": "JBL",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-400460617",
+    "title": "Наушники-вкладыши Audio-Technica ATH-CKR7LTD",
+    "category": "Наушники",
+    "vendor": "Audio-Technica",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-400460635",
+    "title": "Наушники True Wireless Harper HB-534 белый",
+    "category": "Наушники",
+    "vendor": "Harper",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-400388674",
+    "title": "Пылесос вертикальный Polaris PVCW 8090 белый",
+    "category": "Пылесосы вертикальные",
+    "vendor": "Polaris",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-400467190",
+    "title": "Наушники True Wireless realme Buds AIR 7 темно-серый",
+    "category": "Наушники",
+    "vendor": "realme",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-400467337",
+    "title": "Телевизор Haier 65 Smart TV AX Pro",
+    "category": "Телевизоры",
+    "vendor": "Haier",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-400467348",
+    "title": "Холодильник Haier C4F640CCGU1",
+    "category": "Холодильники",
+    "vendor": "Haier",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-400467748",
+    "title": "Холодильник Candy CFN6200G",
+    "category": "Холодильники",
+    "vendor": "Candy",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-400468380",
+    "title": "Мини-бар для охлаждения напитков и косметики Cellar Private CP023AB",
+    "category": "Холодильники",
+    "vendor": "Cellar Private",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-400468386",
+    "title": "Мини-бар для охлаждения напитков и косметики Cellar Private CP023AW",
+    "category": "Холодильники",
+    "vendor": "Cellar Private",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-400263660",
+    "title": "Наушники JBL Tune 520BT Violet",
+    "category": "Наушники",
+    "vendor": "JBL",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-400420208",
+    "title": "Пылесос вертикальный Kitfort КТ-5516",
+    "category": "Пылесосы вертикальные",
+    "vendor": "Kitfort",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-400387460",
+    "title": "Пылесос вертикальный Kitfort КТ-5279",
+    "category": "Пылесосы вертикальные",
+    "vendor": "Kitfort",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-400453279",
+    "title": "Телевизор Haier 65 Smart TV S6",
+    "category": "Телевизоры",
+    "vendor": "Haier",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-400458408",
+    "title": "Смартфон HUAWEI nova Y63 6/128GB черный",
+    "category": "Смартфоны",
+    "vendor": "HUAWEI",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-400460559",
+    "title": "Наушники накладные JBL Tune 310C Blue",
+    "category": "Наушники",
+    "vendor": "JBL",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-400460619",
+    "title": "Наушники-вкладыши Audio-Technica ATH-CKM77",
+    "category": "Наушники",
+    "vendor": "Audio-Technica",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-400460604",
+    "title": "Наушники Audio-Technica ATH-CKS550XiS",
+    "category": "Наушники",
+    "vendor": "Audio-Technica",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-400460553",
+    "title": "Наушники накладные JBL JBLT310C",
+    "category": "Наушники",
+    "vendor": "JBL",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-400460551",
+    "title": "Наушники накладные JBL Tune 310C White",
+    "category": "Наушники",
+    "vendor": "JBL",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-400460555",
+    "title": "Наушники накладные JBL Tune 310C Blue",
+    "category": "Наушники",
+    "vendor": "JBL",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-400460549",
+    "title": "Наушники Bluetooth Harper HB-575 Black",
+    "category": "Наушники",
+    "vendor": "Harper",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-400460581",
+    "title": "Наушники True Wireless Harper HB-555 белый",
+    "category": "Наушники",
+    "vendor": "Harper",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-400460570",
+    "title": "Наушники True Wireless Harper HB-555 черный",
+    "category": "Наушники",
+    "vendor": "Harper",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-400460593",
+    "title": "Наушники Audio-Technica ATH-CKS550XiS",
+    "category": "Наушники",
+    "vendor": "Audio-Technica",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-400460592",
+    "title": "Наушники True Wireless Harper HB-527 черный",
+    "category": "Наушники",
+    "vendor": "Harper",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-400460588",
+    "title": "Наушники True Wireless Harper HB-527 белый",
+    "category": "Наушники",
+    "vendor": "Harper",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-400460636",
+    "title": "Наушники накладные AKG AKG K 72",
+    "category": "Наушники",
+    "vendor": "AKG",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-400460637",
+    "title": "Наушники накладные AKG AKG K 92",
+    "category": "Наушники",
+    "vendor": "AKG",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-400466340",
+    "title": "Наушники Bluetooth IHI накладные с микрофоном",
+    "category": "Наушники",
+    "vendor": "IHI",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-400467146",
+    "title": "Наушники True Wireless realme Buds AIR 7 Silver",
+    "category": "Наушники",
+    "vendor": "realme",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-400467286",
+    "title": "Пылесос вертикальный Haier HVC550",
+    "category": "Пылесосы вертикальные",
+    "vendor": "Haier",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-400467408",
+    "title": "Робот-пылесос Haier HSR Home M3B",
+    "category": "Роботы-пылесосы",
+    "vendor": "Haier",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-400467749",
+    "title": "Холодильник Candy CFN6200C",
+    "category": "Холодильники",
+    "vendor": "Candy",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-400466294",
+    "title": "Наушники Bluetooth IHI накладные с микрофоном",
+    "category": "Наушники",
+    "vendor": "IHI",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-400467316",
+    "title": "Робот-пылесос Haier HSR Pro R2",
+    "category": "Роботы-пылесосы",
+    "vendor": "Haier",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-400467566",
+    "title": "Робот-пылесос Haier HSR Pro Lite",
+    "category": "Роботы-пылесосы",
+    "vendor": "Haier",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-400467996",
+    "title": "Холодильник Haier C2F636CORGU1",
+    "category": "Холодильники",
+    "vendor": "Haier",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-400468131",
+    "title": "Ноутбук Horizont H-book 14MAK 4 Core i5-1155G7 / 8/ 512/ Win 11",
+    "category": "Ноутбуки",
+    "vendor": "Horizont",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-400468130",
+    "title": "Телевизор Haier 50 Smart TV S2 Pro",
+    "category": "Телевизоры",
+    "vendor": "Haier",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-400468242",
+    "title": "Холодильник Haier HTF-456 DM6RU",
+    "category": "Холодильники",
+    "vendor": "Haier",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-400460560",
+    "title": "Наушники накладные JBL JBLT310C",
+    "category": "Наушники",
+    "vendor": "JBL",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-400460611",
+    "title": "Наушники-вкладыши Audio-Technica ATH-CKR7",
+    "category": "Наушники",
+    "vendor": "Audio-Technica",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-400460634",
+    "title": "Наушники накладные AKG AKG K 52",
+    "category": "Наушники",
+    "vendor": "AKG",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-400460645",
+    "title": "Наушники-вкладыши Sennheiser CX 200",
+    "category": "Наушники",
+    "vendor": "Sennheiser",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-400466303",
+    "title": "Наушники Bluetooth IHI накладные с микрофоном",
+    "category": "Наушники",
+    "vendor": "IHI",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-400467116",
+    "title": "Наушники True Wireless realme Buds T200 Lite Purple",
+    "category": "Наушники",
+    "vendor": "realme",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-400467130",
+    "title": "Наушники True Wireless More Choice беспроводные вакуумные BW31 TWS белый",
+    "category": "Наушники",
+    "vendor": "More Choice",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-400467313",
+    "title": "Встраиваемый холодильник Haier BCF5261WRU",
+    "category": "Встраиваемые холодильники",
+    "vendor": "Haier",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-400458405",
+    "title": "Смартфон HUAWEI nova Y63 6/128GB серебристый",
+    "category": "Смартфоны",
+    "vendor": "HUAWEI",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-400467111",
+    "title": "Пылесос вертикальный Kitfort КТ-5232",
+    "category": "Пылесосы вертикальные",
+    "vendor": "Kitfort",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-400467415",
+    "title": "Робот-пылесос Haier HSR Care S3B",
+    "category": "Роботы-пылесосы",
+    "vendor": "Haier",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-400468045",
+    "title": "Телевизор Haier 65 S9 Pro",
+    "category": "Телевизоры",
+    "vendor": "Haier",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-400468157",
+    "title": "Встраиваемый холодильник Candy CBCS7266AFS",
+    "category": "Встраиваемые холодильники",
+    "vendor": "Candy",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-400468460",
+    "title": "Мини-бар для охлаждения напитков и косметики Cellar Private CP034W",
+    "category": "Холодильники",
+    "vendor": "Cellar Private",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-400467466",
+    "title": "Холодильник Haier HRF-600IP7ERU",
+    "category": "Холодильники",
+    "vendor": "Haier",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-400166410",
+    "title": "Холодильник Korting KNFF 82535 XN",
+    "category": "Холодильники",
+    "vendor": "Korting",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-400165138",
+    "title": "Холодильник Korting KNFC 62370 XN",
+    "category": "Холодильники",
+    "vendor": "Korting",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-30085452",
+    "title": "Смартфон Samsung Galaxy Flip7 5G 12/256GB, коралловый",
+    "category": "Смартфоны",
+    "vendor": "Samsung",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-30085449",
+    "title": "Смартфон Samsung Galaxy Fold7 5G 12/512GB, серый",
+    "category": "Смартфоны",
+    "vendor": "Samsung",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-30085447",
+    "title": "Смартфон Samsung Galaxy Fold7 5G 16/1TB, черный",
+    "category": "Смартфоны",
+    "vendor": "Samsung",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-30085457",
+    "title": "Смартфон Samsung Galaxy Flip7 FE 5G 8/256GB, черный",
+    "category": "Смартфоны",
+    "vendor": "Samsung",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-30085446",
+    "title": "Смартфон Samsung Galaxy Fold7 5G 12/512GB, черный",
+    "category": "Смартфоны",
+    "vendor": "Samsung",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-30085448",
+    "title": "Смартфон Samsung Galaxy Fold7 5G 12/256GB, серый",
+    "category": "Смартфоны",
+    "vendor": "Samsung",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-30085453",
+    "title": "Смартфон Samsung Galaxy Flip7 5G 12/512GB, коралловый",
+    "category": "Смартфоны",
+    "vendor": "Samsung",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-30085458",
+    "title": "Смартфон Samsung Galaxy Flip7 FE 5G 8/128GB, белый",
+    "category": "Смартфоны",
+    "vendor": "Samsung",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-30085445",
+    "title": "Смартфон Samsung Galaxy Fold7 5G 12/256GB, черный",
+    "category": "Смартфоны",
+    "vendor": "Samsung",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-30085450",
+    "title": "Смартфон Samsung Galaxy Flip7 5G 12/256GB, cиний",
+    "category": "Смартфоны",
+    "vendor": "Samsung",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-30085455",
+    "title": "Смартфон Samsung Galaxy Flip7 5G 12/512GB, черный",
+    "category": "Смартфоны",
+    "vendor": "Samsung",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-30085459",
+    "title": "Смартфон Samsung Galaxy Flip7 FE 5G 8/256GB, белый",
+    "category": "Смартфоны",
+    "vendor": "Samsung",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-30085444",
+    "title": "Смартфон Samsung Galaxy Fold7 5G 16/1TB, cиний",
+    "category": "Смартфоны",
+    "vendor": "Samsung",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-30085442",
+    "title": "Смартфон Samsung Galaxy Fold7 5G 12/256GB, cиний",
+    "category": "Смартфоны",
+    "vendor": "Samsung",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-30085454",
+    "title": "Смартфон Samsung Galaxy Flip7 5G 12/256GB, черный",
+    "category": "Смартфоны",
+    "vendor": "Samsung",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-30085443",
+    "title": "Смартфон Samsung Galaxy Fold7 5G 12/512GB, cиний",
+    "category": "Смартфоны",
+    "vendor": "Samsung",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-30085456",
+    "title": "Смартфон Samsung Galaxy Flip7 FE 5G 8/128GB, черный",
+    "category": "Смартфоны",
+    "vendor": "Samsung",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-30085451",
+    "title": "Смартфон Samsung Galaxy Flip7 5G 12/512GB, cиний",
+    "category": "Смартфоны",
+    "vendor": "Samsung",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-400108776",
+    "title": "Пылесос ручной (handstick) Kitfort КТ-5157-2",
+    "category": "Пылесосы вертикальные",
+    "vendor": "Kitfort",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-400460623",
+    "title": "Наушники Bluetooth Harper HB-532 new space (black)",
+    "category": "Наушники",
+    "vendor": "Harper",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-400420056",
+    "title": "Пылесос вертикальный Kitfort КТ-5512",
+    "category": "Пылесосы вертикальные",
+    "vendor": "Kitfort",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-400420182",
+    "title": "Холодильник Korting knfs 94099 xn",
+    "category": "Холодильники",
+    "vendor": "Korting",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-30084082",
+    "title": "Восстановленный смартфон Samsung Galaxy S22+ 8/256GB Graphite, хороший",
+    "category": "Смартфоны",
+    "vendor": "Samsung",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-30084151",
+    "title": "Восстановленный смартфон Xiaomi MI 11 ULTRA 8/256GB White, хороший",
+    "category": "Смартфоны",
+    "vendor": "Xiaomi",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-400469229",
+    "title": "Встраиваемый холодильник Gressel UBW36100",
+    "category": "Встраиваемые холодильники",
+    "vendor": "Gressel",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-400469379",
+    "title": "Робот-пылесос Mie Attivo vacuum cleaner+Auto Wash",
+    "category": "Роботы-пылесосы",
+    "vendor": "Mie",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-400469267",
+    "title": "Пылесос вертикальный Kitfort КТ-5315",
+    "category": "Пылесосы вертикальные",
+    "vendor": "Kitfort",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-400337894",
+    "title": "Холодильник Hiberg i-RFS 750G черный",
+    "category": "Холодильники",
+    "vendor": "Hiberg",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-400262841",
+    "title": "Холодильник Korting KNFS 83414 N черный",
+    "category": "Холодильники",
+    "vendor": "Korting",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-400201223",
+    "title": "Пылесос вертикальный Kitfort КТ-5161-1",
+    "category": "Пылесосы вертикальные",
+    "vendor": "Kitfort",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-400381191",
+    "title": "Пылесос вертикальный Kitfort КТ-5278",
+    "category": "Пылесосы вертикальные",
+    "vendor": "Kitfort",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-400343400",
+    "title": "Пылесос вертикальный Tineco PURE ONE Station",
+    "category": "Пылесосы вертикальные",
+    "vendor": "Tineco",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-400263449",
+    "title": "Пылесос напольный Kitfort КТ-5238-2",
+    "category": "Пылесосы напольные",
+    "vendor": "Kitfort",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-400028355",
+    "title": "Холодильник Pozis RK FNF-172",
+    "category": "Холодильники",
+    "vendor": "Pozis",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-400165034",
+    "title": "Холодильник Korting KNFC 62370 GB",
+    "category": "Холодильники",
+    "vendor": "Korting",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-400358711",
+    "title": "Холодильник Liebherr CNd 5203-22 001 NoFrost белый",
+    "category": "Холодильники",
+    "vendor": "Liebherr",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-400334561",
+    "title": "Пылесос напольный Kitfort КТ-5241",
+    "category": "Пылесосы напольные",
+    "vendor": "Kitfort",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-400332255",
+    "title": "Пылесос напольный Kitfort КТ-5240",
+    "category": "Пылесосы напольные",
+    "vendor": "Kitfort",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-400273259",
+    "title": "Наушники-вкладыши Sennheiser MX 375 Black",
+    "category": "Наушники",
+    "vendor": "Sennheiser",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-400247219",
+    "title": "Встраиваемый холодильник Maunfeld MBF17754NFWHGR LUX",
+    "category": "Встраиваемые холодильники",
+    "vendor": "Maunfeld",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-400244425",
+    "title": "Встраиваемый холодильник Maunfeld MBF19369NFWGR LUX",
+    "category": "Встраиваемые холодильники",
+    "vendor": "Maunfeld",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-400345440",
+    "title": "Встраиваемый холодильник Liebherr IRe 3900-22 001",
+    "category": "Встраиваемые холодильники",
+    "vendor": "Liebherr",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-400342002",
+    "title": "Встраиваемый холодильник Liebherr ICBNSd 5123-22 001 BioFresh",
+    "category": "Встраиваемые холодильники",
+    "vendor": "Liebherr",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-400351001",
+    "title": "Встраиваемый холодильник Liebherr ICNSd 5123-22 001",
+    "category": "Встраиваемые холодильники",
+    "vendor": "Liebherr",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-10021266",
+    "title": "Телевизор Olto 24H337",
+    "category": "Телевизоры",
+    "vendor": "Olto",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-400177814",
+    "title": "Холодильник Hiberg RFQ-600DX NFYm бежевый",
+    "category": "Холодильники",
+    "vendor": "Hiberg",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-400193909",
+    "title": "Наушники True Wireless ELFY EPA-BASE-BL-M",
+    "category": "Наушники",
+    "vendor": "ELFY",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-400196499",
+    "title": "Наушники True Wireless Pero TWS05 Colorful Orange (PTWS05OR)",
+    "category": "Наушники",
+    "vendor": "Pero",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-400193910",
+    "title": "Наушники True Wireless ELFY EPA-ATOMY-WH-M",
+    "category": "Наушники",
+    "vendor": "ELFY",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-400194733",
+    "title": "Наушники внутриканальные ELFY EPA-EVERYWHERE-BL-M",
+    "category": "Наушники",
+    "vendor": "ELFY",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-400198244",
+    "title": "Наушники внутриканальные Rombica MySound WH-3 White",
+    "category": "Наушники",
+    "vendor": "Rombica",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-400196812",
+    "title": "Наушники True Wireless Borofone BE34W",
+    "category": "Наушники",
+    "vendor": "Borofone",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-400187403",
+    "title": "Наушники True Wireless Honor Choice Earbuds X5 Pro белый",
+    "category": "Наушники",
+    "vendor": "Honor Choice",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-400207796",
+    "title": "Наушники True Wireless Soundcore Liberty 4 NC White",
+    "category": "Наушники",
+    "vendor": "Soundcore",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-400208612",
+    "title": "Наушники True Wireless Apple AirPods Pro 2 (USB#C)",
+    "category": "Наушники",
+    "vendor": "Apple",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-400193915",
+    "title": "Наушники True Wireless ELFY EPA-ERA-BL-M",
+    "category": "Наушники",
+    "vendor": "ELFY",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-400193914",
+    "title": "Наушники True Wireless ELFY EPA-PRO-BL-M",
+    "category": "Наушники",
+    "vendor": "ELFY",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-400194735",
+    "title": "Наушники внутриканальные ELFY EPA-EVERYWHERE-WH-M",
+    "category": "Наушники",
+    "vendor": "ELFY",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-400194732",
+    "title": "Наушники внутриканальные ELFY EPA-SHAPE-BL-M",
+    "category": "Наушники",
+    "vendor": "ELFY",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-400193912",
+    "title": "Наушники True Wireless ELFY EPA-BASE-WH-M",
+    "category": "Наушники",
+    "vendor": "ELFY",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-400233971",
+    "title": "Наушники True Wireless HIPER TWS SOUL V10 black HTW-S10",
+    "category": "Наушники",
+    "vendor": "HIPER",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-400198246",
+    "title": "Наушники внутриканальные Rombica MySound WH-3 Black",
+    "category": "Наушники",
+    "vendor": "Rombica",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-400219597",
+    "title": "Наушники True Wireless Barn&Hollis B&H-09 White",
+    "category": "Наушники",
+    "vendor": "Barn&Hollis",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-400208556",
+    "title": "Наушники True Wireless Apple AirPods Pro 2 (USB#C)",
+    "category": "Наушники",
+    "vendor": "Apple",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-400207813",
+    "title": "Наушники True Wireless Soundcore Liberty 4 NC Navy Blue (A3947)",
+    "category": "Наушники",
+    "vendor": "Soundcore",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-400195868",
+    "title": "Наушники True Wireless ELFY EPA-SLIDE-BU-M",
+    "category": "Наушники",
+    "vendor": "ELFY",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-400196479",
+    "title": "Наушники True Wireless Pero TWS05 Colorful Burgundy (PTWS05BU)",
+    "category": "Наушники",
+    "vendor": "Pero",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-400194734",
+    "title": "Наушники внутриканальные ELFY EPA-EVERYWHERE-RD-M",
+    "category": "Наушники",
+    "vendor": "ELFY",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-400196485",
+    "title": "Наушники True Wireless Pero PTWS05G зеленый",
+    "category": "Наушники",
+    "vendor": "Pero",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-400233970",
+    "title": "Наушники True Wireless HIPER TWS SOUL V11 white HTW-S11",
+    "category": "Наушники",
+    "vendor": "HIPER",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-400219603",
+    "title": "Наушники True Wireless Hoco RT1 White",
+    "category": "Наушники",
+    "vendor": "Hoco",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-400224060",
+    "title": "Наушники True Wireless HIPER TWS FLAP Black",
+    "category": "Наушники",
+    "vendor": "HIPER",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-400261275",
+    "title": "Спортивные наушники Bluetooth Honor Choice Open-Ear Gold (ORL-ME00)",
+    "category": "Наушники",
+    "vendor": "Honor Choice",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-400261274",
+    "title": "Спортивные наушники Bluetooth Honor Choice Open-Ear Black (ORL-ME00)",
+    "category": "Наушники",
+    "vendor": "Honor Choice",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-400208665",
+    "title": "Наушники True Wireless Apple AirPods Pro 2 (USB#C)",
+    "category": "Наушники",
+    "vendor": "Apple",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-400208720",
+    "title": "Наушники True Wireless Apple AirPods Pro 2 (USB#C)",
+    "category": "Наушники",
+    "vendor": "Apple",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-400208979",
+    "title": "Наушники True Wireless Apple AirPods Pro 2 (USB#C)",
+    "category": "Наушники",
+    "vendor": "Apple",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-400263857",
+    "title": "Наушники True Wireless Xiaomi Redmi Buds 5 Pro White (BHR7662GL)",
+    "category": "Наушники",
+    "vendor": "Xiaomi",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-400273240",
+    "title": "Наушники-вкладыши JBL T205 черный",
+    "category": "Наушники",
+    "vendor": "JBL",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-400273280",
+    "title": "Наушники-вкладыши JBL T205 белый",
+    "category": "Наушники",
+    "vendor": "JBL",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-400321752",
+    "title": "Наушники беспроводные с шумоподавлением TWS Havit TW958 PRO Black",
+    "category": "Наушники",
+    "vendor": "Havit",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-400321754",
+    "title": "Наушники беспроводные TWS Havit TW915E Black",
+    "category": "Наушники",
+    "vendor": "Havit",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-400321757",
+    "title": "Наушники беспроводные TWS Havit TW959 Black",
+    "category": "Наушники",
+    "vendor": "Havit",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-400323038",
+    "title": "Наушники True Wireless realme Buds AIR 6 Silver",
+    "category": "Наушники",
+    "vendor": "realme",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-400048342",
+    "title": "Моющий пылесос Remez RMVC-505",
+    "category": "Пылесосы вертикальные",
+    "vendor": "Remez",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-400283619",
+    "title": "Наушники True Wireless Philips TAT1209WT/00",
+    "category": "Наушники",
+    "vendor": "Philips",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-400333700",
+    "title": "Наушники беспроводные TWS Havit TW905 Beige",
+    "category": "Наушники",
+    "vendor": "Havit",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-400260262",
+    "title": "Наушники True Wireless Xiaomi Redmi Buds 5 White (BHR7628GL)",
+    "category": "Наушники",
+    "vendor": "Xiaomi",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-400261666",
+    "title": "Наушники True Wireless Xiaomi Redmi Buds 5 Pro Purple (BHR7799GL)",
+    "category": "Наушники",
+    "vendor": "Xiaomi",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-400333692",
+    "title": "Наушники беспроводные TWS Havit TW969 Purple пурпурный",
+    "category": "Наушники",
+    "vendor": "Havit",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-400321751",
+    "title": "Наушники беспроводные TWS Havit TW967 Black",
+    "category": "Наушники",
+    "vendor": "Havit",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-400321753",
+    "title": "Наушники игровые беспроводные TWS Havit TW952 PRO RGB Black",
+    "category": "Наушники",
+    "vendor": "Havit",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-400321758",
+    "title": "Наушники игровые беспроводные TWS Havit TW929 PRO Black",
+    "category": "Наушники",
+    "vendor": "Havit",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-400273291",
+    "title": "Наушники-вкладыши JBL C100si",
+    "category": "Наушники",
+    "vendor": "JBL",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-400277794",
+    "title": "Наушники True Wireless vivo 3e (XE W30) белые",
+    "category": "Наушники",
+    "vendor": "vivo",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-400321756",
+    "title": "Наушники беспроводные TWS Havit TW925 Black",
+    "category": "Наушники",
+    "vendor": "Havit",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-400321755",
+    "title": "Наушники беспроводные TWS Havit I98",
+    "category": "Наушники",
+    "vendor": "Havit",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-400281806",
+    "title": "Наушники накладные Sony MDR-ZX310APB Black",
+    "category": "Наушники",
+    "vendor": "Sony",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-400333697",
+    "title": "Наушники беспроводные с шумоподавлением TWS Havit TW958 PRO Beige",
+    "category": "Наушники",
+    "vendor": "Havit",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-400330098",
+    "title": "Наушники True Wireless Infinix TWS EARPHONE XBuds 3 GT XE30 черный",
+    "category": "Наушники",
+    "vendor": "Infinix",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-400333688",
+    "title": "Наушники беспроводные TWS Havit TW969 Blue",
+    "category": "Наушники",
+    "vendor": "Havit",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-400334341",
+    "title": "Наушники беспроводные TWS Havit TW976 голубые",
+    "category": "Наушники",
+    "vendor": "Havit",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-400339743",
+    "title": "Наушники True Wireless Infinix TWS EARPHONE Buds NC XE28 белый",
+    "category": "Наушники",
+    "vendor": "Infinix",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-400348319",
+    "title": "Наушники True Wireless Soundcore P40i A3955 Black",
+    "category": "Наушники",
+    "vendor": "Soundcore",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-400321759",
+    "title": "Наушники беспроводные TWS Havit TW969 Black",
+    "category": "Наушники",
+    "vendor": "Havit",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-400333287",
+    "title": "Наушники беспроводные TWS Havit TW959 Blue",
+    "category": "Наушники",
+    "vendor": "Havit",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-400334318",
+    "title": "Наушники беспроводные TWS Havit TW976 Bl",
+    "category": "Наушники",
+    "vendor": "Havit",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-400357506",
+    "title": "Наушники True Wireless realme Buds T310 Black",
+    "category": "Наушники",
+    "vendor": "realme",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-400350247",
+    "title": "Встраиваемый холодильник Liebherr ICBNdi 5123-22 001 BioFresh",
+    "category": "Встраиваемые холодильники",
+    "vendor": "Liebherr",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-30071909",
+    "title": "Ноутбук Apple MacBook Air 15 M3 8 core/10 core/16/512/серебристый (MXD23)",
+    "category": "Ноутбуки",
+    "vendor": "Apple",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-10025203",
+    "title": "Телевизор Hi VHIX-40F152MSY",
+    "category": "Телевизоры",
+    "vendor": "Hi",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-400356393",
+    "title": "Встраиваемый холодильник Scandilux RBI162",
+    "category": "Встраиваемые холодильники",
+    "vendor": "Scandilux",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-400356331",
+    "title": "Встраиваемый холодильник Liebherr ICSe 5103-22 001",
+    "category": "Встраиваемые холодильники",
+    "vendor": "Liebherr",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-400356263",
+    "title": "Встраиваемый холодильник Scandilux RBI200",
+    "category": "Встраиваемые холодильники",
+    "vendor": "Scandilux",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-400054311",
+    "title": "Ноутбук Apple MacBook Air 13 Late 2020 серебристый (MGN93)",
+    "category": "Ноутбуки",
+    "vendor": "Apple",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-400070317",
+    "title": "Холодильник Liebherr CBNsdc 5753-20 001",
+    "category": "Холодильники",
+    "vendor": "Liebherr",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-400166216",
+    "title": "Холодильник Korting KNFC 62980 GN",
+    "category": "Холодильники",
+    "vendor": "Korting",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-4206670",
+    "title": "Робот-пылесос Dreame Bot Robot Vacuum and Mop D9 Max Black",
+    "category": "Роботы-пылесосы",
+    "vendor": "Dreame",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-10031233",
+    "title": "Телевизор Grundig 50 GGU 7950A",
+    "category": "Телевизоры",
+    "vendor": "Grundig",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-10031536",
+    "title": "Телевизор Grundig 43 GGU 7902A",
+    "category": "Телевизоры",
+    "vendor": "Grundig",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-10031508",
+    "title": "Телевизор Haier 85 Smart TV S8",
+    "category": "Телевизоры",
+    "vendor": "Haier",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-10031854",
+    "title": "Телевизор Haier 50 Smart TV S3",
+    "category": "Телевизоры",
+    "vendor": "Haier",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-10031890",
+    "title": "Телевизор Philips 58PUS8507/60",
+    "category": "Телевизоры",
+    "vendor": "Philips",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-400078421",
+    "title": "Холодильник ATLANT ХМ-4426-000-N белый",
+    "category": "Холодильники",
+    "vendor": "ATLANT",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-400362520",
+    "title": "Наушники True Wireless Xiaomi Redmi Buds 6 Active - Black (BHR8396GL)",
+    "category": "Наушники",
+    "vendor": "Xiaomi",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-4190398",
+    "title": "Холодильник Liebherr CNsdd 5253-20 001",
+    "category": "Холодильники",
+    "vendor": "Liebherr",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-10025098",
+    "title": "Телевизор TCL 65C815",
+    "category": "Телевизоры",
+    "vendor": "TCL",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-400291865",
+    "title": "Холодильник LG GC-B257JLYV/I",
+    "category": "Холодильники",
+    "vendor": "LG",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-10021194",
+    "title": "Телевизор Samsung QE75Q90RAU",
+    "category": "Телевизоры",
+    "vendor": "Samsung",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-400363063",
+    "title": "Наушники True Wireless Xiaomi OpenWear Stereo Cosmic Gray (BHR8474GL)",
+    "category": "Наушники",
+    "vendor": "Xiaomi",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-400363376",
+    "title": "Пылесос ручной (handstick) Haier HVC150",
+    "category": "Пылесосы вертикальные",
+    "vendor": "Haier",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-400366405",
+    "title": "Наушники True Wireless ELFY Slide 10056",
+    "category": "Наушники",
+    "vendor": "ELFY",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-10032094",
+    "title": "Телевизор Samsung UE75CU7100U (2023)",
+    "category": "Телевизоры",
+    "vendor": "Samsung",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-10032190",
+    "title": "OLED Телевизор Samsung QE55S95CAU (2023)",
+    "category": "Телевизоры",
+    "vendor": "Samsung",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-10032187",
+    "title": "QLED Телевизор Samsung QE65Q80CAU (2023)",
+    "category": "Телевизоры",
+    "vendor": "Samsung",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-10032194",
+    "title": "NeoQLED Телевизор Samsung QE55QN90CAU (2023)",
+    "category": "Телевизоры",
+    "vendor": "Samsung",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-10032196",
+    "title": "NeoQLED Телевизор Samsung QE75QN90CAU (2023)",
+    "category": "Телевизоры",
+    "vendor": "Samsung",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-10032195",
+    "title": "NeoQLED Телевизор Samsung QE65QN90CAU (2023)",
+    "category": "Телевизоры",
+    "vendor": "Samsung",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-10032224",
+    "title": "Телевизор LG OLED65C3RLA",
+    "category": "Телевизоры",
+    "vendor": "LG",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-10032227",
+    "title": "Телевизор LG OLED65G3RLA",
+    "category": "Телевизоры",
+    "vendor": "LG",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-10032228",
+    "title": "Телевизор LG OLED77G3RLA",
+    "category": "Телевизоры",
+    "vendor": "LG",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-10028913",
+    "title": "Телевизор Hi VHIX-50U169MSY",
+    "category": "Телевизоры",
+    "vendor": "Hi",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-10028915",
+    "title": "Телевизор Hi VHIX-55U169MSY",
+    "category": "Телевизоры",
+    "vendor": "Hi",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-400383523",
+    "title": "Робот-пылесос Samsung VR50T95735W/EV",
+    "category": "Роботы-пылесосы",
+    "vendor": "Samsung",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-10030416",
+    "title": "QLED Телевизор Toshiba 50C450KE",
+    "category": "Телевизоры",
+    "vendor": "Toshiba",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-10030417",
+    "title": "QLED Телевизор Toshiba 55C450KE",
+    "category": "Телевизоры",
+    "vendor": "Toshiba",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-10030670",
+    "title": "Телевизор Haier 55 Smart TV AX Pro",
+    "category": "Телевизоры",
+    "vendor": "Haier",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-10025219",
+    "title": "Телевизор Hi VHIX-43U169MSY",
+    "category": "Телевизоры",
+    "vendor": "Hi",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-4142717",
+    "title": "Холодильник Korting KNFC 62029 X",
+    "category": "Холодильники",
+    "vendor": "Korting",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-400323068",
+    "title": "Наушники True Wireless realme Buds Air 6 Pro белый",
+    "category": "Наушники",
+    "vendor": "realme",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-30070993",
+    "title": "Восстановленный ноутбук Apple MacBook Air 13 M1 8/256GB космический серый, хороший",
+    "category": "Ноутбуки",
+    "vendor": "Apple",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-10028426",
+    "title": "Телевизор Hi VHIX-32H181MSY",
+    "category": "Телевизоры",
+    "vendor": "Hi",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-400081992",
+    "title": "Холодильник Kuppersberg RFCN 2011 X нержавеющая сталь",
+    "category": "Холодильники",
+    "vendor": "Kuppersberg",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-10031679",
+    "title": "Телевизор Artel A65LU8500",
+    "category": "Телевизоры",
+    "vendor": "Artel",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-10031855",
+    "title": "Телевизор Haier 55 Smart TV S3",
+    "category": "Телевизоры",
+    "vendor": "Haier",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-400166023",
+    "title": "Холодильник Korting KNFM 91868 GN",
+    "category": "Холодильники",
+    "vendor": "Korting",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-400358814",
+    "title": "Встраиваемый холодильник Liebherr IRBci 4150-22 001",
+    "category": "Встраиваемые холодильники",
+    "vendor": "Liebherr",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-400358808",
+    "title": "Встраиваемый холодильник Liebherr IRDdi 5120-22 001",
+    "category": "Встраиваемые холодильники",
+    "vendor": "Liebherr",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-400248676",
+    "title": "Холодильник Korting KNF 1886 W",
+    "category": "Холодильники",
+    "vendor": "Korting",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-10033053",
+    "title": "Восстановленный телевизор Haier 55 Smart TV S7, отличный",
+    "category": "Телевизоры",
+    "vendor": "Haier",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-10033060",
+    "title": "Телевизор Hi HY-50U01FB",
+    "category": "Телевизоры",
+    "vendor": "Hi",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-10033061",
+    "title": "Телевизор Hi HX-50U01FB",
+    "category": "Телевизоры",
+    "vendor": "Hi",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-10033063",
+    "title": "Телевизор Hi HY-55U01FB",
+    "category": "Телевизоры",
+    "vendor": "Hi",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-10033066",
+    "title": "Телевизор Hi HY-65U01FB",
+    "category": "Телевизоры",
+    "vendor": "Hi",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-10033064",
+    "title": "Телевизор Hi HX-55U01FB",
+    "category": "Телевизоры",
+    "vendor": "Hi",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-10033069",
+    "title": "Телевизор Hi HY-43U01FB",
+    "category": "Телевизоры",
+    "vendor": "Hi",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-10033072",
+    "title": "Телевизор Hi HY-32H01FB",
+    "category": "Телевизоры",
+    "vendor": "Hi",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-10033067",
+    "title": "Телевизор Hi HX-65U01FB",
+    "category": "Телевизоры",
+    "vendor": "Hi",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-10033073",
+    "title": "Телевизор Hi HX-32H01FB",
+    "category": "Телевизоры",
+    "vendor": "Hi",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-10033070",
+    "title": "Телевизор Hi HX-43U01FB",
+    "category": "Телевизоры",
+    "vendor": "Hi",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-10033074",
+    "title": "Телевизор Hi HT-32H01FB",
+    "category": "Телевизоры",
+    "vendor": "Hi",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-10033075",
+    "title": "Телевизор Hi HX-32F01FB",
+    "category": "Телевизоры",
+    "vendor": "Hi",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-10033076",
+    "title": "Телевизор Hi HX-43F01FB",
+    "category": "Телевизоры",
+    "vendor": "Hi",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-10033079",
+    "title": "Телевизор Hi HY-24H01FW",
+    "category": "Телевизоры",
+    "vendor": "Hi",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-10033078",
+    "title": "Телевизор Hi HY-24H01FB",
+    "category": "Телевизоры",
+    "vendor": "Hi",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-10033080",
+    "title": "Телевизор Hi HX-24H01FB",
+    "category": "Телевизоры",
+    "vendor": "Hi",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-10033081",
+    "title": "Телевизор Hi HT-24H01FB",
+    "category": "Телевизоры",
+    "vendor": "Hi",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-10033082",
+    "title": "Телевизор Hi HY-40F01FB",
+    "category": "Телевизоры",
+    "vendor": "Hi",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-10033083",
+    "title": "Телевизор Hi HY-43F01FB",
+    "category": "Телевизоры",
+    "vendor": "Hi",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-10033084",
+    "title": "Телевизор Hi HT-40F01FB",
+    "category": "Телевизоры",
+    "vendor": "Hi",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-400427582",
+    "title": "Встраиваемый холодильник Korting KSI 1221",
+    "category": "Встраиваемые холодильники",
+    "vendor": "Korting",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-400358691",
+    "title": "Холодильник Nordfrost NRB 132 S",
+    "category": "Холодильники",
+    "vendor": "Nordfrost",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-10030426",
+    "title": "Телевизор Hisense 55A85H",
+    "category": "Телевизоры",
+    "vendor": "Hisense",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-10030671",
+    "title": "Телевизор Haier 65 Smart TV AX Pro",
+    "category": "Телевизоры",
+    "vendor": "Haier",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-10031390",
+    "title": "Телевизор Artel UA50H3502",
+    "category": "Телевизоры",
+    "vendor": "Artel",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-10031522",
+    "title": "Телевизор Haier 50 Smart TV AX Pro",
+    "category": "Телевизоры",
+    "vendor": "Haier",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-10031857",
+    "title": "Телевизор Haier 75 Smart TV S3",
+    "category": "Телевизоры",
+    "vendor": "Haier",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-10031856",
+    "title": "Телевизор Haier 65 Smart TV S3",
+    "category": "Телевизоры",
+    "vendor": "Haier",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-10031894",
+    "title": "Телевизор Philips 43PUS8057/60",
+    "category": "Телевизоры",
+    "vendor": "Philips",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-400363206",
+    "title": "Пылесос напольный Kitfort КТ-5213",
+    "category": "Пылесосы напольные",
+    "vendor": "Kitfort",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-10032150",
+    "title": "Телевизор LG OLED55C3RLA",
+    "category": "Телевизоры",
+    "vendor": "LG",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-10032186",
+    "title": "QLED Телевизор Samsung QE55Q80CAU (2023)",
+    "category": "Телевизоры",
+    "vendor": "Samsung",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-10032201",
+    "title": "NeoQLED 8K Телевизор Samsung QE75QN900CU (2023)",
+    "category": "Телевизоры",
+    "vendor": "Samsung",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-400367994",
+    "title": "Наушники True Wireless Sony INZONE BUDS (WF-G700N) черные",
+    "category": "Наушники",
+    "vendor": "Sony",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-400369818",
+    "title": "Пылесос вертикальный Supra VCS-5082",
+    "category": "Пылесосы вертикальные",
+    "vendor": "Supra",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-400165989",
+    "title": "Холодильник Korting KNFC 72337 X",
+    "category": "Холодильники",
+    "vendor": "Korting",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-400367527",
+    "title": "Пылесос вертикальный Dreame Cordless Vacuum Cleaner R20 Grey",
+    "category": "Пылесосы вертикальные",
+    "vendor": "Dreame",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-400370098",
+    "title": "Пылесос вертикальный Roidmi Cordless Vacuum cleaner Z1 Purple",
+    "category": "Пылесосы вертикальные",
+    "vendor": "Roidmi",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-400371036",
+    "title": "Пылесос вертикальный Samsung Jet 75 VS20B75ACR5/EV",
+    "category": "Пылесосы вертикальные",
+    "vendor": "Samsung",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-400361491",
+    "title": "Встраиваемый холодильник Liebherr ICSd 5102-22 001",
+    "category": "Встраиваемые холодильники",
+    "vendor": "Liebherr",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-400353530",
+    "title": "Встраиваемый холодильник Liebherr ICSd 5102-22 001",
+    "category": "Встраиваемые холодильники",
+    "vendor": "Liebherr",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-400353566",
+    "title": "Встраиваемый холодильник Scandilux CNFBI210E",
+    "category": "Встраиваемые холодильники",
+    "vendor": "Scandilux",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-400353564",
+    "title": "Встраиваемый холодильник Scandilux CTFBI205E",
+    "category": "Встраиваемые холодильники",
+    "vendor": "Scandilux",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-400374567",
+    "title": "Пылесос напольный Deerma DEM-BY200",
+    "category": "Пылесосы напольные",
+    "vendor": "Deerma",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-400373112",
+    "title": "Наушники True Wireless Apple AirPods 4 Active Noise Cancellation White",
+    "category": "Наушники",
+    "vendor": "Apple",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-400373196",
+    "title": "Наушники True Wireless Apple AirPods 4 Active Noise Cancellation White",
+    "category": "Наушники",
+    "vendor": "Apple",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-400373192",
+    "title": "Наушники True Wireless Apple AirPods 4 Active Noise Cancellation White",
+    "category": "Наушники",
+    "vendor": "Apple",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-400373096",
+    "title": "Наушники True Wireless Apple AirPods 4 Active Noise Cancellation White",
+    "category": "Наушники",
+    "vendor": "Apple",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-400373101",
+    "title": "Наушники True Wireless Apple AirPods 4 Active Noise Cancellation White",
+    "category": "Наушники",
+    "vendor": "Apple",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-400373213",
+    "title": "Наушники True Wireless Apple AirPods 4 Active Noise Cancellation White",
+    "category": "Наушники",
+    "vendor": "Apple",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-400319738",
+    "title": "Пылесос вертикальный RED SOLUTION V3060",
+    "category": "Пылесосы вертикальные",
+    "vendor": "RED SOLUTION",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-400248401",
+    "title": "Пылесос напольный Remez роботизированный IQSelf  RMVC-601",
+    "category": "Пылесосы напольные",
+    "vendor": "Remez",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-20028070",
+    "title": "Холодильник Liebherr CMes 502-20",
+    "category": "Холодильники",
+    "vendor": "Liebherr",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-400365340",
+    "title": "Пылесос ручной (handstick) Haier HVC350",
+    "category": "Пылесосы вертикальные",
+    "vendor": "Haier",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-10024441",
+    "title": "Телевизор Sony KD-65A8",
+    "category": "Телевизоры",
+    "vendor": "Sony",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-20031236",
+    "title": "Пылесос ручной (handstick) Bissell MultiReach Ion+  1311J",
+    "category": "Пылесосы вертикальные",
+    "vendor": "Bissell",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-400293525",
+    "title": "Телевизор Garlyn 55GTV1QLED",
+    "category": "Телевизоры",
+    "vendor": "Garlyn",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-400072666",
+    "title": "Телевизор Kivi 43U740NB",
+    "category": "Телевизоры",
+    "vendor": "Kivi",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-400312450",
+    "title": "Робот-пылесос Hobot LEGEE-D8 + LuLu",
+    "category": "Роботы-пылесосы",
+    "vendor": "Hobot",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-400006482",
+    "title": "Робот-пылесос для мытья полов Hobot LEGEE-7",
+    "category": "Роботы-пылесосы",
+    "vendor": "Hobot",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-400393433",
+    "title": "Робот-пылесос Okami R127",
+    "category": "Роботы-пылесосы",
+    "vendor": "Okami",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-400354132",
+    "title": "Наушники True Wireless Honor Choice Earbuds X7 белые",
+    "category": "Наушники",
+    "vendor": "Honor Choice",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-400354133",
+    "title": "Наушники True Wireless Honor Choice Earbuds X7 синие",
+    "category": "Наушники",
+    "vendor": "Honor Choice",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-400201446",
+    "title": "Холодильник Korting KNFS 93535 XN",
+    "category": "Холодильники",
+    "vendor": "Korting",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-400100639",
+    "title": "Холодильник Korting KNFC 62029 XN",
+    "category": "Холодильники",
+    "vendor": "Korting",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-400165662",
+    "title": "Холодильник Korting KNFC 61869 GW",
+    "category": "Холодильники",
+    "vendor": "Korting",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-400200864",
+    "title": "Холодильник (Side-by-Side) Korting KNFS 93535 X",
+    "category": "Холодильники",
+    "vendor": "Korting",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-4142715",
+    "title": "Холодильник Korting KNFC 62029 GN",
+    "category": "Холодильники",
+    "vendor": "Korting",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-400165145",
+    "title": "Холодильник Korting KNFC 62370 N",
+    "category": "Холодильники",
+    "vendor": "Korting",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-400056101",
+    "title": "Холодильник ATLANT ХМ-4624-149 ND",
+    "category": "Холодильники",
+    "vendor": "ATLANT",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-4142718",
+    "title": "Холодильник Korting KNFC 71863 B",
+    "category": "Холодильники",
+    "vendor": "Korting",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-4199944",
+    "title": "Холодильник Liebherr CUel 2331-22 001",
+    "category": "Холодильники",
+    "vendor": "Liebherr",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-400100641",
+    "title": "Холодильник Korting KNFC 62029 W",
+    "category": "Холодильники",
+    "vendor": "Korting",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-400166392",
+    "title": "Холодильник Korting KNFF 82535 X",
+    "category": "Холодильники",
+    "vendor": "Korting",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-400393449",
+    "title": "Робот-пылесос Okami R125",
+    "category": "Роботы-пылесосы",
+    "vendor": "Okami",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-20036154",
+    "title": "Холодильник Haier C2F637CFMV",
+    "category": "Холодильники",
+    "vendor": "Haier",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-30079749",
+    "title": "Ноутбук Apple MacBook Air 13 M4 16GB/512GB Midnight (MW133)",
+    "category": "Ноутбуки",
+    "vendor": "Apple",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-400142007",
+    "title": "Холодильник (Side-by-Side) Korting KNFS 95780 X",
+    "category": "Холодильники",
+    "vendor": "Korting",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-400164156",
+    "title": "Пылесос моющий Remez МультиКлик Про Аква RMVC-504B",
+    "category": "Пылесосы напольные",
+    "vendor": "Remez",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-4211060",
+    "title": "Робот-пылесос Haier HSR Home",
+    "category": "Роботы-пылесосы",
+    "vendor": "Haier",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-400147370",
+    "title": "Робот-пылесос Gutrend Vision 730",
+    "category": "Роботы-пылесосы",
+    "vendor": "Gutrend",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-4211061",
+    "title": "Робот-пылесос Haier HSR Care",
+    "category": "Роботы-пылесосы",
+    "vendor": "Haier",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-400281455",
+    "title": "Робот-пылесос Gutrend Vision 730 Set 2",
+    "category": "Роботы-пылесосы",
+    "vendor": "Gutrend",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-4207950",
+    "title": "Пылесос ручной (handstick) Kitfort КТ-556",
+    "category": "Пылесосы вертикальные",
+    "vendor": "Kitfort",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-20037268",
+    "title": "Холодильник многодверный Haier HB25FSSAAARU",
+    "category": "Холодильники",
+    "vendor": "Haier",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-4141040",
+    "title": "Холодильник Kuppersberg NRS 186 BK (6241)",
+    "category": "Холодильники",
+    "vendor": "Kuppersberg",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-400165126",
+    "title": "Холодильник Korting KNFC 62370 GW",
+    "category": "Холодильники",
+    "vendor": "Korting",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-4141033",
+    "title": "Холодильник (Side-by-Side) Kuppersberg NFFD 183 BKG черный",
+    "category": "Холодильники",
+    "vendor": "Kuppersberg",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-20037796",
+    "title": "Холодильник комби многодверный Haier A3FE742CGWJRU",
+    "category": "Холодильники",
+    "vendor": "Haier",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-400015595",
+    "title": "Пылесос с контейнером для пыли Аксинья КС-7000 синий",
+    "category": "Пылесосы напольные",
+    "vendor": "Аксинья",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-400124241",
+    "title": "Робот-пылесос Hobot LEGEE-D8",
+    "category": "Роботы-пылесосы",
+    "vendor": "Hobot",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-400293187",
+    "title": "Робот-пылесос Garlyn SR-800 Pro Max",
+    "category": "Роботы-пылесосы",
+    "vendor": "Garlyn",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-400386406",
+    "title": "Пылесос вертикальный Kitfort КТ-5284",
+    "category": "Пылесосы вертикальные",
+    "vendor": "Kitfort",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-400293029",
+    "title": "Робот-пылесос Garlyn SR-1000",
+    "category": "Роботы-пылесосы",
+    "vendor": "Garlyn",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-4201908",
+    "title": "Холодильник Maunfeld MFF182NFSBE",
+    "category": "Холодильники",
+    "vendor": "Maunfeld",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-400005903",
+    "title": "Телевизор Harper 24R470T",
+    "category": "Телевизоры",
+    "vendor": "Harper",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-400241404",
+    "title": "Телевизор Haier 65 Smart TV S4",
+    "category": "Телевизоры",
+    "vendor": "Haier",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-400133950",
+    "title": "Холодильник ATLANT ХМ 4621-141 серебристый",
+    "category": "Холодильники",
+    "vendor": "ATLANT",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-4130825",
+    "title": "Пылесос моющий Arnica Hydra Rain Plus (ET12110)",
+    "category": "Пылесосы напольные",
+    "vendor": "Arnica",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-400231796",
+    "title": "Телевизор Haier 65 OLED S9 ULTRA",
+    "category": "Телевизоры",
+    "vendor": "Haier",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-4165862",
+    "title": "Пылесос моющий Thomas Pet & Family Parquet Pro 788606",
+    "category": "Пылесосы напольные",
+    "vendor": "Thomas",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-400312087",
+    "title": "Беспроводной пылесос с контейнером H H-clean HVC 102 SE",
+    "category": "Пылесосы напольные",
+    "vendor": "H",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-400163621",
+    "title": "Холодильник Korting KNFC 62370 белый",
+    "category": "Холодильники",
+    "vendor": "Korting",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-4211243",
+    "title": "Холодильник Haier C2F637CFMV",
+    "category": "Холодильники",
+    "vendor": "Haier",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-400319044",
+    "title": "Телевизор Skyline 32YST5970",
+    "category": "Телевизоры",
+    "vendor": "Skyline",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-400387592",
+    "title": "Встраиваемый холодильник комби Haier BCFT529TWRU",
+    "category": "Встраиваемые холодильники",
+    "vendor": "Haier",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-4197201",
+    "title": "Встраиваемый холодильник однодверный Maunfeld MBF177NFFW",
+    "category": "Встраиваемые холодильники",
+    "vendor": "Maunfeld",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-400107621",
+    "title": "Холодильник Ascoli ADFRI510W",
+    "category": "Холодильники",
+    "vendor": "Ascoli",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-10030440",
+    "title": "Телевизор Hisense 65A85H",
+    "category": "Телевизоры",
+    "vendor": "Hisense",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-50176112",
+    "title": "Наушники True Wireless Samsung Galaxy Buds FE Graphite (SM-R400N)",
+    "category": "Наушники",
+    "vendor": "Samsung",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-400000486",
+    "title": "Робот-пылесос Clever&Clean AQUA Light",
+    "category": "Роботы-пылесосы",
+    "vendor": "Clever&Clean",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-400000311",
+    "title": "Робот-пылесос Okami U100 Plus",
+    "category": "Роботы-пылесосы",
+    "vendor": "Okami",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-10031240",
+    "title": "Телевизор Grundig 55 GOB 9290",
+    "category": "Телевизоры",
+    "vendor": "Grundig",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-10031241",
+    "title": "Телевизор Grundig 65 GOB 9290",
+    "category": "Телевизоры",
+    "vendor": "Grundig",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-10031389",
+    "title": "Телевизор Haier 65 Smart TV S1",
+    "category": "Телевизоры",
+    "vendor": "Haier",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-400345451",
+    "title": "Встраиваемый холодильник Liebherr IRe 4100-22 001",
+    "category": "Встраиваемые холодильники",
+    "vendor": "Liebherr",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-20030490",
+    "title": "Робот-пылесос LG VRF4041LS",
+    "category": "Роботы-пылесосы",
+    "vendor": "LG",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-400194004",
+    "title": "Наушники накладные ELFY EPA-PASSIM-BL-M",
+    "category": "Наушники",
+    "vendor": "ELFY",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-400198334",
+    "title": "Наушники внутриканальные Rombica MySound WH-1 Rose",
+    "category": "Наушники",
+    "vendor": "Rombica",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-400264648",
+    "title": "Наушники Usams EP-41 белые",
+    "category": "Наушники",
+    "vendor": "Usams",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-400198248",
+    "title": "Наушники внутриканальные Rombica MySound WH-4 Black",
+    "category": "Наушники",
+    "vendor": "Rombica",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-400198251",
+    "title": "Наушники внутриканальные Rombica MySound WH-2 Blue",
+    "category": "Наушники",
+    "vendor": "Rombica",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-400198245",
+    "title": "Наушники внутриканальные Rombica MySound WH-4 White",
+    "category": "Наушники",
+    "vendor": "Rombica",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-400198335",
+    "title": "Наушники внутриканальные Rombica MySound WH-1 White",
+    "category": "Наушники",
+    "vendor": "Rombica",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-400294896",
+    "title": "Наушники-вкладыши Samsung EO-IA500BBEGRU",
+    "category": "Наушники",
+    "vendor": "Samsung",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-400307257",
+    "title": "Наушники-вкладыши Sennheiser IE40PRO Transparent",
+    "category": "Наушники",
+    "vendor": "Sennheiser",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-400307277",
+    "title": "Наушники-вкладыши Sony EX15AP Pink",
+    "category": "Наушники",
+    "vendor": "Sony",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-400307279",
+    "title": "Наушники-вкладыши Sony EX15AP Purple",
+    "category": "Наушники",
+    "vendor": "Sony",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-400307263",
+    "title": "Наушники-вкладыши JBL QUANTUM50 Black",
+    "category": "Наушники",
+    "vendor": "JBL",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-400198249",
+    "title": "Наушники внутриканальные Rombica MySound WH-2 Black",
+    "category": "Наушники",
+    "vendor": "Rombica",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-400310447",
+    "title": "Наушники-вкладыши JBL C200SI Grey",
+    "category": "Наушники",
+    "vendor": "JBL",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-400310455",
+    "title": "Наушники накладные Sennheiser HD 206 Black",
+    "category": "Наушники",
+    "vendor": "Sennheiser",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-400334309",
+    "title": "Наушники проводные Jack 3.5 Havit E48P Black",
+    "category": "Наушники",
+    "vendor": "Havit",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-400293183",
+    "title": "Робот-пылесос Garlyn SR-700",
+    "category": "Роботы-пылесосы",
+    "vendor": "Garlyn",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-400365022",
+    "title": "Наушники проводные Harper HV-IC350 белый",
+    "category": "Наушники",
+    "vendor": "Harper",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-400229779",
+    "title": "Наушники-вкладыши JBL Endurance Run Red",
+    "category": "Наушники",
+    "vendor": "JBL",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-400194005",
+    "title": "Наушники накладные ELFY EPA-DAILY-WH-M White",
+    "category": "Наушники",
+    "vendor": "ELFY",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-400198247",
+    "title": "Наушники внутриканальные Rombica MySound WH-2 White",
+    "category": "Наушники",
+    "vendor": "Rombica",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-400273250",
+    "title": "Наушники-вкладыши JBL Endurance Run",
+    "category": "Наушники",
+    "vendor": "JBL",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-400307252",
+    "title": "Наушники-вкладыши JBL T180A Red",
+    "category": "Наушники",
+    "vendor": "JBL",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-400307256",
+    "title": "Наушники-вкладыши Sennheiser IE40 PRO Black",
+    "category": "Наушники",
+    "vendor": "Sennheiser",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-400059173",
+    "title": "Пылесос ручной (handstick) Kitfort КТ-5154",
+    "category": "Пылесосы вертикальные",
+    "vendor": "Kitfort",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-400307261",
+    "title": "Наушники True Wireless Sennheiser IE80S черный",
+    "category": "Наушники",
+    "vendor": "Sennheiser",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-400307271",
+    "title": "Наушники-вкладыши JBL T180A Red",
+    "category": "Наушники",
+    "vendor": "JBL",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-400280360",
+    "title": "Наушники-вкладыши Panasonic RP-TCM115GCP",
+    "category": "Наушники",
+    "vendor": "Panasonic",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-400310448",
+    "title": "Наушники-вкладыши JBL C200SI Black",
+    "category": "Наушники",
+    "vendor": "JBL",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-400310454",
+    "title": "Наушники накладные JBL JR310 Red",
+    "category": "Наушники",
+    "vendor": "JBL",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-400303129",
+    "title": "Пылесос вертикальный Gutrend VertiQ",
+    "category": "Пылесосы вертикальные",
+    "vendor": "Gutrend",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-400294745",
+    "title": "Пылесос вертикальный Polaris CyclonicPRO PVCS 4050 серый",
+    "category": "Пылесосы вертикальные",
+    "vendor": "Polaris",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-400332645",
+    "title": "Компьютерная гарнитура Sven AP-321M белый",
+    "category": "Наушники для компьютеров",
+    "vendor": "Sven",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-400335439",
+    "title": "Гарнитура EKSA H12",
+    "category": "Наушники для компьютеров",
+    "vendor": "EKSA",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-400335508",
+    "title": "Гарнитура EKSA H12E",
+    "category": "Наушники для компьютеров",
+    "vendor": "EKSA",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-400289598",
+    "title": "Наушники полноразмерные Focal Clear MG",
+    "category": "Наушники",
+    "vendor": "Focal",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-400294890",
+    "title": "Наушники-вкладыши Samsung EO-IA500BBEGRU",
+    "category": "Наушники",
+    "vendor": "Samsung",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-400307276",
+    "title": "Наушники-вкладыши Sennheiser IE40PRO Transparent",
+    "category": "Наушники",
+    "vendor": "Sennheiser",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-400307275",
+    "title": "Наушники-вкладыши Sennheiser IE40 PRO Black",
+    "category": "Наушники",
+    "vendor": "Sennheiser",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-400310429",
+    "title": "Наушники-вкладыши JBL T290 Black",
+    "category": "Наушники",
+    "vendor": "JBL",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-400310430",
+    "title": "Наушники-вкладыши JBL T290 Silver",
+    "category": "Наушники",
+    "vendor": "JBL",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-400075485",
+    "title": "Холодильник (Side-by-Side) Kuppersberg NFFD 183 WG белый",
+    "category": "Холодильники",
+    "vendor": "Kuppersberg",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-30068274",
+    "title": "Как новый Ноутбук Apple MacBook Pro 14 M1 Pro/16/512 серебристый, идеальный (FKGR3LL/A)",
+    "category": "Ноутбуки",
+    "vendor": "Apple",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-400466823",
+    "title": "Ноутбук Thunderobot 911 Plus G2 Pro 7",
+    "category": "Ноутбуки",
+    "vendor": "Thunderobot",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-30073485",
+    "title": "Восстановленный ноутбук Apple MacBook Pro 16 M3 Pro 12/18 core/36/512GB черный космос (MRW23), отличный",
+    "category": "Ноутбуки",
+    "vendor": "Apple",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-4244621",
+    "title": "Ноутбук игровой GIGABYTE AORUS 15 BSF-73KZ754SH",
+    "category": "Ноутбуки",
+    "vendor": "GIGABYTE",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-400390426",
+    "title": "Пылесос вертикальный Polaris PVCS 4010 FusionPRO серый",
+    "category": "Пылесосы вертикальные",
+    "vendor": "Polaris",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-4171683",
+    "title": "Холодильник ATLANT ХМ 6025-080",
+    "category": "Холодильники",
+    "vendor": "ATLANT",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-400358742",
+    "title": "Ноутбук HP EliteBook 640 G10 (736H9A)",
+    "category": "Ноутбуки",
+    "vendor": "HP",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-400379199",
+    "title": "Ноутбук Echips Ace BM160UL",
+    "category": "Ноутбуки",
+    "vendor": "Echips",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-4189533",
+    "title": "Робот-пылесос Xbot L7 Smart",
+    "category": "Роботы-пылесосы",
+    "vendor": "Xbot",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-20033879",
+    "title": "Холодильник с верхней морозильной камерой ATLANT МХМ 2826-90",
+    "category": "Холодильники",
+    "vendor": "ATLANT",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-30072704",
+    "title": "Восстановленный ноутбук игровой Acer Predator Triton 500 PT516-51s-70SB (NH.QAKER.00A), отличный",
+    "category": "Ноутбуки",
+    "vendor": "Acer",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-4062013",
+    "title": "Холодильник Weissgauff WRKI 178 Inverter",
+    "category": "Холодильники",
+    "vendor": "Weissgauff",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-10031790",
+    "title": "Телевизор Artel A75LU6500",
+    "category": "Телевизоры",
+    "vendor": "Artel",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-10031850",
+    "title": "Телевизор Haier 75 Smart TV S1",
+    "category": "Телевизоры",
+    "vendor": "Haier",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-10031891",
+    "title": "Телевизор Philips 50PUS8507/60",
+    "category": "Телевизоры",
+    "vendor": "Philips",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-10031892",
+    "title": "Телевизор Philips 55PUS8057/60",
+    "category": "Телевизоры",
+    "vendor": "Philips",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-10031893",
+    "title": "Телевизор Philips 50PUS8057/60",
+    "category": "Телевизоры",
+    "vendor": "Philips",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-10032312",
+    "title": "Телевизор LG 55QNED816RA",
+    "category": "Телевизоры",
+    "vendor": "LG",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-10032314",
+    "title": "Телевизор LG 86QNED816RA",
+    "category": "Телевизоры",
+    "vendor": "LG",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-10032313",
+    "title": "Телевизор LG 65QNED816RA",
+    "category": "Телевизоры",
+    "vendor": "LG",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-400271992",
+    "title": "Пылесос моющий Remez МультиКлик Про Аква RMVC-544",
+    "category": "Пылесосы вертикальные",
+    "vendor": "Remez",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-400392029",
+    "title": "Пылесос вертикальный JVC JH-VS118",
+    "category": "Пылесосы вертикальные",
+    "vendor": "JVC",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-30064556",
+    "title": "Ноутбук Apple MacBook Pro 16 M1 Pro/16/1Tb космический серый",
+    "category": "Ноутбуки",
+    "vendor": "Apple",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-400348513",
+    "title": "Пылесос вертикальный Garlyn M-4000",
+    "category": "Пылесосы вертикальные",
+    "vendor": "Garlyn",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-30042563",
+    "title": "Ноутбук игровой ASUS GL704GW-EV021T",
+    "category": "Ноутбуки",
+    "vendor": "ASUS",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-400347335",
+    "title": "Встраиваемый холодильник Liebherr ICNe 5103-22 001",
+    "category": "Встраиваемые холодильники",
+    "vendor": "Liebherr",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-400360601",
+    "title": "Встраиваемый холодильник Liebherr IRBd 5120-22 001 BioFresh",
+    "category": "Встраиваемые холодильники",
+    "vendor": "Liebherr",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-20038996",
+    "title": "Робот-пылесос Samsung SR20M7070WD",
+    "category": "Роботы-пылесосы",
+    "vendor": "Samsung",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-20039084",
+    "title": "Холодильник Indesit DS 320 W",
+    "category": "Холодильники",
+    "vendor": "Indesit",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-10028427",
+    "title": "Телевизор Hi VHIX-43F169MSY",
+    "category": "Телевизоры",
+    "vendor": "Hi",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-400071547",
+    "title": "Робот-пылесос Supra VCS-4093",
+    "category": "Роботы-пылесосы",
+    "vendor": "Supra",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-400381674",
+    "title": "Роботизированный вертикальный моющий пылесос Remez IQSelf+ , RMVC-603х",
+    "category": "Пылесосы напольные",
+    "vendor": "Remez",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-10030005",
+    "title": "Телевизор Haier H65S9UG PRO",
+    "category": "Телевизоры",
+    "vendor": "Haier",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-400017650",
+    "title": "Встраиваемый холодильник однодверный Hansa UC150.3",
+    "category": "Встраиваемые холодильники",
+    "vendor": "Hansa",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-20041597",
+    "title": "Пылесос ручной (handstick) Bissell MultiReach 36V XL 2166N",
+    "category": "Пылесосы вертикальные",
+    "vendor": "Bissell",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-400165676",
+    "title": "Холодильник Korting KNFC 61869 GN",
+    "category": "Холодильники",
+    "vendor": "Korting",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-4162858",
+    "title": "Холодильник ATLANT ХМ 4426-049 ND серебристый",
+    "category": "Холодильники",
+    "vendor": "ATLANT",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-400336917",
+    "title": "Холодильник Liebherr CNbed 5703-22 001 NoFrost Beige",
+    "category": "Холодильники",
+    "vendor": "Liebherr",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-400388783",
+    "title": "Пылесос вертикальный Polaris PVCSDC 2001 графитовый",
+    "category": "Пылесосы вертикальные",
+    "vendor": "Polaris",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-400388759",
+    "title": "Пылесос вертикальный Polaris PVCSDC 2001 белый",
+    "category": "Пылесосы вертикальные",
+    "vendor": "Polaris",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-400392153",
+    "title": "Пылесос вертикальный Taurus Homeland Ideal",
+    "category": "Пылесосы вертикальные",
+    "vendor": "Taurus",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-400311601",
+    "title": "Робот-пылесос Garlyn SR-500",
+    "category": "Роботы-пылесосы",
+    "vendor": "Garlyn",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-400333827",
+    "title": "Встраиваемый холодильник ZUGEL ZRI1760FNF",
+    "category": "Встраиваемые холодильники",
+    "vendor": "ZUGEL",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-400314996",
+    "title": "Встраиваемый холодильник Vestel VBI2760",
+    "category": "Встраиваемые холодильники",
+    "vendor": "Vestel",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-4134250",
+    "title": "Встраиваемый холодильник Liebherr ICd 5123-20",
+    "category": "Встраиваемые холодильники",
+    "vendor": "Liebherr",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-400153846",
+    "title": "Встраиваемый холодильник комби Korting KSI 19699 CFNFZ",
+    "category": "Встраиваемые холодильники",
+    "vendor": "Korting",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-4169257",
+    "title": "Встраиваемый холодильник Korting KSI 1855",
+    "category": "Встраиваемые холодильники",
+    "vendor": "Korting",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-10030418",
+    "title": "QLED Телевизор Toshiba 65C450KE",
+    "category": "Телевизоры",
+    "vendor": "Toshiba",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-10031239",
+    "title": "Телевизор Grundig 65 OLED GG 970B",
+    "category": "Телевизоры",
+    "vendor": "Grundig",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-10031238",
+    "title": "Телевизор Grundig 55 OLED GG 970B",
+    "category": "Телевизоры",
+    "vendor": "Grundig",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-10031349",
+    "title": "Телевизор Artel UA43H3502",
+    "category": "Телевизоры",
+    "vendor": "Artel",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-10031678",
+    "title": "Телевизор Artel A55LU8500",
+    "category": "Телевизоры",
+    "vendor": "Artel",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-10032180",
+    "title": "Телевизор Samsung UE75CU8500U (2023)",
+    "category": "Телевизоры",
+    "vendor": "Samsung",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-10032192",
+    "title": "OLED Телевизор Samsung QE77S95CAU (2023)",
+    "category": "Телевизоры",
+    "vendor": "Samsung",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-4134246",
+    "title": "Встраиваемый холодильник Liebherr ICNe 5133-20",
+    "category": "Встраиваемые холодильники",
+    "vendor": "Liebherr",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-10032420",
+    "title": "Телевизор Samsung QE98Q80CAU",
+    "category": "Телевизоры",
+    "vendor": "Samsung",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-400107543",
+    "title": "Встраиваемый холодильник комби Ascoli ADRF250WEMBI",
+    "category": "Встраиваемые холодильники",
+    "vendor": "Ascoli",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-10032570",
+    "title": "Телевизор Samsung The Frame QE32LS03CBUX",
+    "category": "Телевизоры",
+    "vendor": "Samsung",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-10032571",
+    "title": "Телевизор Samsung QE55QN700CUX",
+    "category": "Телевизоры",
+    "vendor": "Samsung",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-10032581",
+    "title": "Телевизор Samsung QE50Q60DAUXRU",
+    "category": "Телевизоры",
+    "vendor": "Samsung",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-400210778",
+    "title": "Холодильник Beko B5RCNK363ZWB",
+    "category": "Холодильники",
+    "vendor": "Beko",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-400225568",
+    "title": "Холодильник Hotpoint HT 5180 MX нержавеющая сталь",
+    "category": "Холодильники",
+    "vendor": "Hotpoint",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-400210782",
+    "title": "Холодильник Beko B3RCNK362HX",
+    "category": "Холодильники",
+    "vendor": "Beko",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-400016842",
+    "title": "Встраиваемый холодильник комби Hansa BK315.3",
+    "category": "Встраиваемые холодильники",
+    "vendor": "Hansa",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-400420215",
+    "title": "Встраиваемый холодильник Korting ksi 19605 cfnf",
+    "category": "Встраиваемые холодильники",
+    "vendor": "Korting",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-400231465",
+    "title": "Холодильник Nordfrost NRB 122 S",
+    "category": "Холодильники",
+    "vendor": "Nordfrost",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-400236273",
+    "title": "Холодильник Maunfeld MBF19354NFWGR LUX",
+    "category": "Холодильники",
+    "vendor": "Maunfeld",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-400334315",
+    "title": "Холодильник Gorenje NRK6202EBXL4",
+    "category": "Холодильники",
+    "vendor": "Gorenje",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-400335243",
+    "title": "Холодильник Maunfeld MFF50RBG",
+    "category": "Холодильники",
+    "vendor": "Maunfeld",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-400341931",
+    "title": "Холодильник Liebherr SRsfd 5220-22 001",
+    "category": "Холодильники",
+    "vendor": "Liebherr",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-400342171",
+    "title": "Холодильник Beko B1RCSK332W",
+    "category": "Холодильники",
+    "vendor": "Beko",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-400343067",
+    "title": "Холодильник Harper RH5559BB White",
+    "category": "Холодильники",
+    "vendor": "Harper",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-400345876",
+    "title": "Холодильник Nordfrost RFC 390D NFGB",
+    "category": "Холодильники",
+    "vendor": "Nordfrost",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-400345444",
+    "title": "Холодильник Liebherr SRsdd 5220-22 001",
+    "category": "Холодильники",
+    "vendor": "Liebherr",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-400331367",
+    "title": "Холодильник Beko B3DRCNK402HXBR",
+    "category": "Холодильники",
+    "vendor": "Beko",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-400331779",
+    "title": "Холодильник Indesit TIA 14",
+    "category": "Холодильники",
+    "vendor": "Indesit",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-400335160",
+    "title": "Холодильник Beko B1RCSK362W",
+    "category": "Холодильники",
+    "vendor": "Beko",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-400307294",
+    "title": "Холодильник Indesit ITS 5180 XB",
+    "category": "Холодильники",
+    "vendor": "Indesit",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-400289640",
+    "title": "Холодильник Beko B5RCNK403ZW",
+    "category": "Холодильники",
+    "vendor": "Beko",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-400291573",
+    "title": "Холодильник Beko B3DRCNK402HW",
+    "category": "Холодильники",
+    "vendor": "Beko",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-400354186",
+    "title": "Холодильник Liebherr SRBsfc 5220-22 001",
+    "category": "Холодильники",
+    "vendor": "Liebherr",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-400358675",
+    "title": "Холодильник Beko B3R0CNK312HG",
+    "category": "Холодильники",
+    "vendor": "Beko",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-400337151",
+    "title": "Холодильник Liebherr CBNsfc 5223-22 001 BioFresh NoFrost серебристый",
+    "category": "Холодильники",
+    "vendor": "Liebherr",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-400340394",
+    "title": "Холодильник Indesit ITS 5180 XB",
+    "category": "Холодильники",
+    "vendor": "Indesit",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-400360936",
+    "title": "Холодильник Maunfeld MFF200NFBG Inverter",
+    "category": "Холодильники",
+    "vendor": "Maunfeld",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-400393434",
+    "title": "Пылесос ручной (handstick) Grundig VCP 8330",
+    "category": "Пылесосы вертикальные",
+    "vendor": "Grundig",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-20054646",
+    "title": "Пылесос ручной (handstick) Hoover Athen Evo ATV18LS/1 019",
+    "category": "Пылесосы вертикальные",
+    "vendor": "Hoover",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-20055514",
+    "title": "Пылесос ручной (handstick) Tefal Air Force TY8913RH",
+    "category": "Пылесосы вертикальные",
+    "vendor": "Tefal",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-10032582",
+    "title": "Телевизор Samsung QE55Q60DAUXRU",
+    "category": "Телевизоры",
+    "vendor": "Samsung",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-10032584",
+    "title": "Телевизор Samsung UE43DU8000UXRU",
+    "category": "Телевизоры",
+    "vendor": "Samsung",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-10032587",
+    "title": "Телевизор Samsung UE50DU8000UXRU",
+    "category": "Телевизоры",
+    "vendor": "Samsung",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-10032586",
+    "title": "Телевизор Samsung UE50DU7100UXRU",
+    "category": "Телевизоры",
+    "vendor": "Samsung",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-10032589",
+    "title": "Телевизор Samsung UE55DU7100UXRU",
+    "category": "Телевизоры",
+    "vendor": "Samsung",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-10032590",
+    "title": "Телевизор Samsung UE55DU8000UXRU",
+    "category": "Телевизоры",
+    "vendor": "Samsung",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-10032591",
+    "title": "Телевизор Samsung UE55DU8500UXRU",
+    "category": "Телевизоры",
+    "vendor": "Samsung",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-10032593",
+    "title": "Телевизор Samsung UE65DU8000UXRU",
+    "category": "Телевизоры",
+    "vendor": "Samsung",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-10032592",
+    "title": "Телевизор Samsung UE65DU7100UXRU",
+    "category": "Телевизоры",
+    "vendor": "Samsung",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-10032596",
+    "title": "Телевизор Samsung UE75DU8000UXRU",
+    "category": "Телевизоры",
+    "vendor": "Samsung",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-10032597",
+    "title": "Телевизор Samsung UE85DU7100UXRU",
+    "category": "Телевизоры",
+    "vendor": "Samsung",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-10032604",
+    "title": "Телевизор Samsung QE55Q70DAUXRU",
+    "category": "Телевизоры",
+    "vendor": "Samsung",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-10032603",
+    "title": "Телевизор Samsung The Frame QE55LS03DAUXRU",
+    "category": "Телевизоры",
+    "vendor": "Samsung",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-10032608",
+    "title": "Телевизор Samsung QE55S90DAUXRU",
+    "category": "Телевизоры",
+    "vendor": "Samsung",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-10032607",
+    "title": "Телевизор Samsung QE55QN90DAUXRU",
+    "category": "Телевизоры",
+    "vendor": "Samsung",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-10032609",
+    "title": "Телевизор Samsung QE55S95DAUXRU",
+    "category": "Телевизоры",
+    "vendor": "Samsung",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-10032612",
+    "title": "Телевизор Samsung QE65Q70DAUXRU",
+    "category": "Телевизоры",
+    "vendor": "Samsung",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-10032616",
+    "title": "Телевизор Samsung QE65QN900DUXRU",
+    "category": "Телевизоры",
+    "vendor": "Samsung",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-10032617",
+    "title": "Телевизор Samsung QE65QN90DAUXRU",
+    "category": "Телевизоры",
+    "vendor": "Samsung",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-10032619",
+    "title": "Телевизор Samsung QE65S95DAUXRU",
+    "category": "Телевизоры",
+    "vendor": "Samsung",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-10032622",
+    "title": "Телевизор Samsung QE75Q70DAUXRU",
+    "category": "Телевизоры",
+    "vendor": "Samsung",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-10032626",
+    "title": "Телевизор Samsung QE77S95DAUXRU",
+    "category": "Телевизоры",
+    "vendor": "Samsung",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-10032627",
+    "title": "Телевизор Samsung QE85Q60DAUXRU",
+    "category": "Телевизоры",
+    "vendor": "Samsung",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-10032625",
+    "title": "Телевизор Samsung QE75QN90DAUXRU",
+    "category": "Телевизоры",
+    "vendor": "Samsung",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-10032629",
+    "title": "Телевизор Samsung QE85QN900DUXRU",
+    "category": "Телевизоры",
+    "vendor": "Samsung",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-10032628",
+    "title": "Телевизор Samsung QE85Q70DAUXRU",
+    "category": "Телевизоры",
+    "vendor": "Samsung",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-10032680",
+    "title": "Телевизор Samsung QE48S90DAEXRU",
+    "category": "Телевизоры",
+    "vendor": "Samsung",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-10032690",
+    "title": "Телевизор Samsung UE98DU9000UXRU",
+    "category": "Телевизоры",
+    "vendor": "Samsung",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-400344528",
+    "title": "Пылесос ручной (handstick) Garlyn MDC-1000",
+    "category": "Пылесосы вертикальные",
+    "vendor": "Garlyn",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-20088501",
+    "title": "Восстановленный робот-пылесос Tefal X-PLORER SERIE 75 ANIMAL RG7675WH, хороший",
+    "category": "Роботы-пылесосы",
+    "vendor": "Tefal",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-20062938",
+    "title": "Пылесос ручной (handstick) моющий Tefal Clean&Steam Multi VP8561RH",
+    "category": "Пылесосы вертикальные",
+    "vendor": "Tefal",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-30071839",
+    "title": "Ноутбук Apple MacBook Air 13 M3 8 core/10 core/8/512/космический серый (MRXP3)",
+    "category": "Ноутбуки",
+    "vendor": "Apple",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-400345706",
+    "title": "Пылесос ручной (handstick) моющий Dyson Wash G1",
+    "category": "Пылесосы вертикальные",
+    "vendor": "Dyson",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-30071859",
+    "title": "Ноутбук Apple MacBook Air 13 M3 8 core/10 core/8/512/серебристый (MRXR3)",
+    "category": "Ноутбуки",
+    "vendor": "Apple",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-30071905",
+    "title": "Ноутбук Apple MacBook Air 15 M3 8 core/10 core/8/512/серебристый (MRYQ3)",
+    "category": "Ноутбуки",
+    "vendor": "Apple",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-20064936",
+    "title": "Робот-пылесос для мытья полов iRobot Braava Jet m6",
+    "category": "Роботы-пылесосы",
+    "vendor": "iRobot",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-30071869",
+    "title": "Ноутбук Apple MacBook Air 15 M3 8 core/10 core/8/512/Midnight (MRYV3)",
+    "category": "Ноутбуки",
+    "vendor": "Apple",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-30079743",
+    "title": "Ноутбук Apple MacBook Air 13 M4 16/256GB Midnight (MW123)",
+    "category": "Ноутбуки",
+    "vendor": "Apple",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-400467869",
+    "title": "Ноутбук Apple MacBook Air 15 M4/16/256GB Midnight MW1L3 (без RuStore)",
+    "category": "Ноутбуки",
+    "vendor": "Apple",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-30077353",
+    "title": "Ноутбук Apple MacBook Pro 14 M4 16/1TB серебристый 2024 MW2X3",
+    "category": "Ноутбуки",
+    "vendor": "Apple",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-400060998",
+    "title": "Робот-пылесос Garlyn SR-700",
+    "category": "Роботы-пылесосы",
+    "vendor": "Garlyn",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-400405970",
+    "title": "Пылесос вертикальный Kitfort КТ-5318",
+    "category": "Пылесосы вертикальные",
+    "vendor": "Kitfort",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-30071819",
+    "title": "Ноутбук Apple MacBook Air 13 M3 8 core/10 core/8/512/Starlight (MRXU3)",
+    "category": "Ноутбуки",
+    "vendor": "Apple",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-30071893",
+    "title": "Ноутбук Apple MacBook Air 15 M3 8 core/10 core/8/512/космический серый (MRYN3)",
+    "category": "Ноутбуки",
+    "vendor": "Apple",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-30079441",
+    "title": "Восстановленный смартфон Samsung Galaxy S20 Ultra 12/128GB Black (SM-G988B/DS), хороший",
+    "category": "Смартфоны",
+    "vendor": "Samsung",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-30079808",
+    "title": "Восстановленный смартфон Samsung Galaxy S23 8/128GB Lavender (SM-S911B/DS), хороший",
+    "category": "Смартфоны",
+    "vendor": "Samsung",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-20066771",
+    "title": "Робот-пылесос xRobot N1",
+    "category": "Роботы-пылесосы",
+    "vendor": "xRobot",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-30074830",
+    "title": "Восстановленный смартфон HONOR X9a 6/128GB (5109ALXS) Green, хороший",
+    "category": "Смартфоны",
+    "vendor": "HONOR",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-30079267",
+    "title": "Восстановленный смартфон Samsung Galaxy S24 8/256GB Marble Gray, хороший",
+    "category": "Смартфоны",
+    "vendor": "Samsung",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-400083918",
+    "title": "Смартфон Samsung Galaxy S23+ 8/256GB фантом черный",
+    "category": "Смартфоны",
+    "vendor": "Samsung",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-30085296",
+    "title": "Восстановленный смартфон OnePlus 12 16/512GB Black, хороший",
+    "category": "Смартфоны",
+    "vendor": "OnePlus",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-400083921",
+    "title": "Смартфон Samsung Galaxy S23 Ultra 512GB Green",
+    "category": "Смартфоны",
+    "vendor": "Samsung",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-400083916",
+    "title": "Смартфон Samsung Galaxy S23 128GB Cream",
+    "category": "Смартфоны",
+    "vendor": "Samsung",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-400257910",
+    "title": "Смартфон POCO M6 Pro 8/256Gb Blue",
+    "category": "Смартфоны",
+    "vendor": "POCO",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-30079266",
+    "title": "Восстановленный смартфон Samsung Galaxy S24 8/256GB Marble Gray, отличный",
+    "category": "Смартфоны",
+    "vendor": "Samsung",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-30079690",
+    "title": "Восстановленный смартфон Samsung Galaxy S21 FE 6/128GB фиолетовый, хороший",
+    "category": "Смартфоны",
+    "vendor": "Samsung",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-20068556",
+    "title": "Пылесос с контейнером для пыли ProfiCare PC-BS 3040",
+    "category": "Пылесосы напольные",
+    "vendor": "ProfiCare",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-20068557",
+    "title": "Пылесос с пылесборником ProfiCare PC-BS 3041",
+    "category": "Пылесосы напольные",
+    "vendor": "ProfiCare",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-30077545",
+    "title": "Восстановленный смартфон Samsung Galaxy A54 6/128GB Awesome Graphite, хороший",
+    "category": "Смартфоны",
+    "vendor": "Samsung",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-30080565",
+    "title": "Восстановленный смартфон Samsung Galaxy S23+ 8/512GB Green (SM-S916/DS), хороший",
+    "category": "Смартфоны",
+    "vendor": "Samsung",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-30080589",
+    "title": "Восстановленный смартфон Infinix Note 30 8/256GB Black, хороший",
+    "category": "Смартфоны",
+    "vendor": "Infinix",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-400244703",
+    "title": "Смартфон Samsung Galaxy S23 FE 8/128GB Cream",
+    "category": "Смартфоны",
+    "vendor": "Samsung",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-30079796",
+    "title": "Восстановленный смартфон Samsung Galaxy S22 8/128GB фантом белый (SM-S901B), хороший",
+    "category": "Смартфоны",
+    "vendor": "Samsung",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-20069351",
+    "title": "Пылесос с контейнером для пыли Philips XB2022/01",
+    "category": "Пылесосы напольные",
+    "vendor": "Philips",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-30079926",
+    "title": "Восстановленный смартфон Samsung Galaxy A55 5G 8/256GB Lavender, хороший",
+    "category": "Смартфоны",
+    "vendor": "Samsung",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-30083964",
+    "title": "Восстановленный смартфон Samsung Galaxy A34 8/256GB Awesome Violet, хороший",
+    "category": "Смартфоны",
+    "vendor": "Samsung",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-30081982",
+    "title": "Восстановленный смартфон Samsung Galaxy S22+ 8/256GB White (SM-S906E/DS), хороший",
+    "category": "Смартфоны",
+    "vendor": "Samsung",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-400444527",
+    "title": "Смартфон POCO F7 Ultra 12/256GB Yellow",
+    "category": "Смартфоны",
+    "vendor": "POCO",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-400368231",
+    "title": "Смартфон Tecno CAMON 30S 8/128GB Dawn Gold",
+    "category": "Смартфоны",
+    "vendor": "Tecno",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-30085671",
+    "title": "Восстановленный смартфон realme 14 Pro+ 12/512GB Grey, как новый",
+    "category": "Смартфоны",
+    "vendor": "realme",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-400020385",
+    "title": "Смартфон Xiaomi Redmi Note 10 Pro 8/128GB (NFC) Bronze",
+    "category": "Смартфоны",
+    "vendor": "Xiaomi",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-400467020",
+    "title": "Пылесос вертикальный Haier HWND Q1",
+    "category": "Пылесосы вертикальные",
+    "vendor": "Haier",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-400247563",
+    "title": "Смартфон Samsung Galaxy S23 Ultra 8/256GB Green",
+    "category": "Смартфоны",
+    "vendor": "Samsung",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-400247572",
+    "title": "Смартфон Samsung Galaxy Z Flip5 8/512GB Lavender",
+    "category": "Смартфоны",
+    "vendor": "Samsung",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-30079399",
+    "title": "Восстановленный смартфон Tecno CAMON 20 Premier 5G 8/512GB Black, хороший",
+    "category": "Смартфоны",
+    "vendor": "Tecno",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-30079419",
+    "title": "Восстановленный смартфон Samsung Galaxy S20 FE 6/128GB Blue (SM-G780F), отличный",
+    "category": "Смартфоны",
+    "vendor": "Samsung",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-30077322",
+    "title": "Восстановленный смартфон Samsung Galaxy S24+ 12/256GB Onyx Black, хороший",
+    "category": "Смартфоны",
+    "vendor": "Samsung",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-400268118",
+    "title": "Смартфон Samsung Galaxy S24 Ultra 12/512GB Titanium Gray",
+    "category": "Смартфоны",
+    "vendor": "Samsung",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-30081088",
+    "title": "Восстановленный смартфон POCO M5s 4/128Gb Blue, хороший",
+    "category": "Смартфоны",
+    "vendor": "POCO",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-30077863",
+    "title": "Восстановленный смартфон HONOR X8 6/128GB Ocean Blue, хороший",
+    "category": "Смартфоны",
+    "vendor": "HONOR",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-30075483",
+    "title": "Восстановленный смартфон Samsung Galaxy S24 Ultra 12/256GB Onyx Black, отличный",
+    "category": "Смартфоны",
+    "vendor": "Samsung",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-30081028",
+    "title": "Восстановленный смартфон Samsung Galaxy A34 6/128GB Awesome Violet, хороший",
+    "category": "Смартфоны",
+    "vendor": "Samsung",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-4080897",
+    "title": "Робот-пылесос Garlyn SR-600",
+    "category": "Роботы-пылесосы",
+    "vendor": "Garlyn",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-30077324",
+    "title": "Восстановленный смартфон Samsung Galaxy S24+ 12/256GB Marble Gray, отличный",
+    "category": "Смартфоны",
+    "vendor": "Samsung",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-30080562",
+    "title": "Восстановленный смартфон Samsung Galaxy S23+ 8/256Gb Green (SM-S916B/DS), хороший",
+    "category": "Смартфоны",
+    "vendor": "Samsung",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-30077986",
+    "title": "Восстановленный смартфон Samsung Galaxy S24 8/256GB Cobalt Violet, хороший",
+    "category": "Смартфоны",
+    "vendor": "Samsung",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-30083061",
+    "title": "Восстановленный смартфон Samsung Galaxy S23+ 8/512GB Lavender (SM-S916/DS), хороший",
+    "category": "Смартфоны",
+    "vendor": "Samsung",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-400386743",
+    "title": "Смартфон POCO C61 4/128GB Black",
+    "category": "Смартфоны",
+    "vendor": "POCO",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-30081034",
+    "title": "Восстановленный смартфон Samsung Galaxy S24 Ultra 12/512GB Onyx Black, хороший",
+    "category": "Смартфоны",
+    "vendor": "Samsung",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-30085718",
+    "title": "Восстановленный смартфон Samsung Galaxy S24 8/256GB Amber Yellow, хороший",
+    "category": "Смартфоны",
+    "vendor": "Samsung",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-30085425",
+    "title": "Восстановленный смартфон Samsung Galaxy A15 6/256GB Blue Black, хороший",
+    "category": "Смартфоны",
+    "vendor": "Samsung",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-400018763",
+    "title": "Смартфон Samsung Galaxy S22+ 5G 128GB Green",
+    "category": "Смартфоны",
+    "vendor": "Samsung",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-400176431",
+    "title": "Смартфон Xiaomi 13 12/256GB Green",
+    "category": "Смартфоны",
+    "vendor": "Xiaomi",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-400008071",
+    "title": "Телевизор Harper 43F660T",
+    "category": "Телевизоры",
+    "vendor": "Harper",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-400144291",
+    "title": "Телевизор Sony KD-32W830K",
+    "category": "Телевизоры",
+    "vendor": "Sony",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-400209651",
+    "title": "Смартфон Tecno PHANTOM V Flip 5G 8/256GB черный",
+    "category": "Смартфоны",
+    "vendor": "Tecno",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-400247451",
+    "title": "Смартфон Samsung Galaxy S22+ 5G 8/256GB Pink Gold",
+    "category": "Смартфоны",
+    "vendor": "Samsung",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-400305691",
+    "title": "Пылесос ручной (handstick) RED evolution RV-UR383",
+    "category": "Пылесосы вертикальные",
+    "vendor": "RED evolution",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-400237776",
+    "title": "Телевизор GoldStar LT-50U900",
+    "category": "Телевизоры",
+    "vendor": "GoldStar",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-400296997",
+    "title": "Телевизор Garlyn 43GTV1QLED",
+    "category": "Телевизоры",
+    "vendor": "Garlyn",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-400357233",
+    "title": "Смартфон Samsung Galaxy S24 5G 8/128GB Purple",
+    "category": "Смартфоны",
+    "vendor": "Samsung",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-400074702",
+    "title": "Телевизор Harper 65U770TS",
+    "category": "Телевизоры",
+    "vendor": "Harper",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-400397034",
+    "title": "Смартфон Nothing CMF Phone 1 8/256GB Black",
+    "category": "Смартфоны",
+    "vendor": "Nothing",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-400397129",
+    "title": "Смартфон Nothing CMF Phone 1 8/128GB Black",
+    "category": "Смартфоны",
+    "vendor": "Nothing",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-400384994",
+    "title": "Телевизор BBK 50LED-8259/UTS2C",
+    "category": "Телевизоры",
+    "vendor": "BBK",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-30063644",
+    "title": "Смартфон Xiaomi Redmi 10 2022 64GB Sea Blue",
+    "category": "Смартфоны",
+    "vendor": "Xiaomi",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-400385323",
+    "title": "Телевизор Kivi K55UD60B",
+    "category": "Телевизоры",
+    "vendor": "Kivi",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-400308789",
+    "title": "Телевизор H H 50LE7563D SMART",
+    "category": "Телевизоры",
+    "vendor": "H",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-20070569",
+    "title": "Пылесос ручной (handstick) моющий Tefal Clean&Steam  VP7777WH",
+    "category": "Пылесосы вертикальные",
+    "vendor": "Tefal",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-400166299",
+    "title": "Телевизор Триколор H50U5500SA",
+    "category": "Телевизоры",
+    "vendor": "Триколор",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-30074412",
+    "title": "Восстановленный смартфон Samsung Galaxy S24 8/256GB Onyx Black, хороший",
+    "category": "Смартфоны",
+    "vendor": "Samsung",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-400385739",
+    "title": "Телевизор BBK 65LED-8259/UTS2C",
+    "category": "Телевизоры",
+    "vendor": "BBK",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-30081036",
+    "title": "Восстановленный смартфон Samsung Galaxy A55 5G 8/256GB Blue Black, отличный",
+    "category": "Смартфоны",
+    "vendor": "Samsung",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-30079402",
+    "title": "Восстановленный смартфон Samsung Galaxy A54 8/256GB Awesome Violet, хороший",
+    "category": "Смартфоны",
+    "vendor": "Samsung",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-30082282",
+    "title": "Восстановленный смартфон Samsung Galaxy A55 5G 8/128GB Lavender, отличный",
+    "category": "Смартфоны",
+    "vendor": "Samsung",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-400104667",
+    "title": "Смартфон Xiaomi X5 5G 6GB+128GB Black (45049)",
+    "category": "Смартфоны",
+    "vendor": "Xiaomi",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-400368020",
+    "title": "Пылесос напольный KIWI KCC-4322",
+    "category": "Пылесосы напольные",
+    "vendor": "KIWI",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-30085643",
+    "title": "Восстановленный смартфон HUAWEI Pura 70 12/256GB Pink, хороший",
+    "category": "Смартфоны",
+    "vendor": "HUAWEI",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-30079919",
+    "title": "Восстановленный смартфон Samsung Galaxy A55 5G 8/128GB Blue Black, отличный",
+    "category": "Смартфоны",
+    "vendor": "Samsung",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-30082139",
+    "title": "Восстановленный смартфон Xiaomi Redmi Note 13 6/128GB Ice Blue, как новый",
+    "category": "Смартфоны",
+    "vendor": "Xiaomi",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-30080574",
+    "title": "Восстановленный смартфон Tecno Phantom X2 5G 8/256GB Stardust Grey, хороший",
+    "category": "Смартфоны",
+    "vendor": "Tecno",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-400456672",
+    "title": "Телевизор Harper 40F590TS",
+    "category": "Телевизоры",
+    "vendor": "Harper",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-30080610",
+    "title": "Восстановленный смартфон Samsung Galaxy S24 8/128GB Cobalt Violet, хороший",
+    "category": "Смартфоны",
+    "vendor": "Samsung",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-4002450",
+    "title": "Телевизор Harper 40F660T",
+    "category": "Телевизоры",
+    "vendor": "Harper",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-400413647",
+    "title": "Телевизор Centek CT-TV0010-40 QLED SMART",
+    "category": "Телевизоры",
+    "vendor": "Centek",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-400247574",
+    "title": "Смартфон Samsung Galaxy Z Fold5 8/256GB Phantom Black",
+    "category": "Смартфоны",
+    "vendor": "Samsung",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-400096820",
+    "title": "Телевизор BQ 55FSU34B Black",
+    "category": "Телевизоры",
+    "vendor": "BQ",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-400298883",
+    "title": "Смартфон Nothing Phone (2) 12/512GB Dark Gray",
+    "category": "Смартфоны",
+    "vendor": "Nothing",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-400292585",
+    "title": "Смартфон Samsung Galaxy S24 8/128GB Sapphire Blue",
+    "category": "Смартфоны",
+    "vendor": "Samsung",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-400297009",
+    "title": "Телевизор Garlyn 65GTV1QLED",
+    "category": "Телевизоры",
+    "vendor": "Garlyn",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-400373052",
+    "title": "Телевизор Akai TA32BH500",
+    "category": "Телевизоры",
+    "vendor": "Akai",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-400260815",
+    "title": "Телевизор LG 32LM558BPLC",
+    "category": "Телевизоры",
+    "vendor": "LG",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-4199529",
+    "title": "Смартфон Tecno Camon 19 6/128Gb Eco Black",
+    "category": "Смартфоны",
+    "vendor": "Tecno",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-400166827",
+    "title": "Телевизор Триколор H55U5500SA",
+    "category": "Телевизоры",
+    "vendor": "Триколор",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-400413998",
+    "title": "Телевизор Centek CT-TV0010-50",
+    "category": "Телевизоры",
+    "vendor": "Centek",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-400414031",
+    "title": "Телевизор Centek CT-TV0010-55",
+    "category": "Телевизоры",
+    "vendor": "Centek",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-20069850",
+    "title": "Робот для мытья полово iRobot Braava jet m613440",
+    "category": "Роботы-пылесосы",
+    "vendor": "iRobot",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-30073864",
+    "title": "Восстановленный смартфон HUAWEI Mate 50 Pro 8/256GB Black (DCO-LX9), хороший",
+    "category": "Смартфоны",
+    "vendor": "HUAWEI",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-400200956",
+    "title": "Телевизор Harper 75Q850TS",
+    "category": "Телевизоры",
+    "vendor": "Harper",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-400216492",
+    "title": "Телевизор LG OLED65B3RLA",
+    "category": "Телевизоры",
+    "vendor": "LG",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-400467294",
+    "title": "Робот-пылесос Haier HSR Pro R2B",
+    "category": "Роботы-пылесосы",
+    "vendor": "Haier",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-400067668",
+    "title": "Телевизор Kivi 40F740NB",
+    "category": "Телевизоры",
+    "vendor": "Kivi",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-400341389",
+    "title": "Телевизор Samsung QE75QN900DUXRU",
+    "category": "Телевизоры",
+    "vendor": "Samsung",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-20073060",
+    "title": "Робот-пылесос Kyvol E20",
+    "category": "Роботы-пылесосы",
+    "vendor": "Kyvol",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-20073815",
+    "title": "Робот-пылесос LG CordZero VR6640LVM",
+    "category": "Роботы-пылесосы",
+    "vendor": "LG",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-400241423",
+    "title": "Телевизор Candy Uno 50",
+    "category": "Телевизоры",
+    "vendor": "Candy",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-400308838",
+    "title": "Телевизор H H 55LE7563D SMART",
+    "category": "Телевизоры",
+    "vendor": "H",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-400263459",
+    "title": "Телевизор Grundig 65 OLED GH 9500",
+    "category": "Телевизоры",
+    "vendor": "Grundig",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-400172579",
+    "title": "Телевизор SKYWORTH 65 QLED 4K 65SUE9500",
+    "category": "Телевизоры",
+    "vendor": "SKYWORTH",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-20074361",
+    "title": "Вертикальный пылесос Maxwell MW-3246",
+    "category": "Пылесосы вертикальные",
+    "vendor": "Maxwell",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-400373053",
+    "title": "Пылесос ручной (handstick) Rombica MyClean Rover Black, черный",
+    "category": "Пылесосы вертикальные",
+    "vendor": "Rombica",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-400293151",
+    "title": "Робот-пылесос Garlyn SR-400",
+    "category": "Роботы-пылесосы",
+    "vendor": "Garlyn",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-20072976",
+    "title": "Пылесос ручной (handstick) Ariete 2723 оранжевый",
+    "category": "Пылесосы вертикальные",
+    "vendor": "Ariete",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-4196038",
+    "title": "Паровая швабра BQ SM2000 Белый",
+    "category": "Пылесосы напольные",
+    "vendor": "BQ",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-20076273",
+    "title": "Робот-пылесос Midea VCR21LDSW",
+    "category": "Роботы-пылесосы",
+    "vendor": "Midea",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-20077480",
+    "title": "Пылесос с контейнером для пыли Tefal Silence Force Cyclonic TW7222EA",
+    "category": "Пылесосы напольные",
+    "vendor": "Tefal",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-30077441",
+    "title": "Ноутбук игровой MSI Vector 17 HX A14VIG-1019XRU-GG91490X32GXXDXX/ 17\"/2560x1600 пикс./IPS/Core i9/RTX4090 16GB/32ГБ/2ТБ/DOS",
+    "category": "Ноутбуки",
+    "vendor": "MSI",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-400389517",
+    "title": "Робот-пылесос Tefal X-Plorer Serie 240+ Animal & Allergy RG9695WH",
+    "category": "Роботы-пылесосы",
+    "vendor": "Tefal",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-30081317",
+    "title": "Восстановленный смартфон POCO F5 8/256GB Blue, как новый",
+    "category": "Смартфоны",
+    "vendor": "POCO",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-20078455",
+    "title": "Пылесос ручной (handstick) Kuppersbusch SA 113 G",
+    "category": "Пылесосы вертикальные",
+    "vendor": "Kuppersbusch",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-20078791",
+    "title": "Робот-пылесос TCL Sweeva 500 B300A черный",
+    "category": "Роботы-пылесосы",
+    "vendor": "TCL",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-20079428",
+    "title": "Робот-пылесос Rombica MyRobot Fly (HWT1D301)",
+    "category": "Роботы-пылесосы",
+    "vendor": "Rombica",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-30081031",
+    "title": "Восстановленный смартфон Samsung Galaxy A34 8/256GB Awesome Graphite, хороший",
+    "category": "Смартфоны",
+    "vendor": "Samsung",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-20073995",
+    "title": "Пылесос ручной (handstick) Electrolux PQ91-50MB",
+    "category": "Пылесосы вертикальные",
+    "vendor": "Electrolux",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-400297520",
+    "title": "Пылесос ручной (handstick) Tineco PURE ONE MINI S4",
+    "category": "Пылесосы вертикальные",
+    "vendor": "Tineco",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-30073453",
+    "title": "Восстановленный смартфон Xiaomi Redmi Note 10 Pro 8/256Gb Glacier Blue, хороший",
+    "category": "Смартфоны",
+    "vendor": "Xiaomi",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-20083081",
+    "title": "Пылесос с контейнером для пыли Artel VCC 0220 черный",
+    "category": "Пылесосы напольные",
+    "vendor": "Artel",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-20083186",
+    "title": "Пылесос с контейнером для пыли Artel VCU 0120 красный",
+    "category": "Пылесосы напольные",
+    "vendor": "Artel",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-20084181",
+    "title": "Пылесос с контейнером для пыли Artel VCC 3507 Grey",
+    "category": "Пылесосы напольные",
+    "vendor": "Artel",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-20084242",
+    "title": "Пылесос ручной (handstick) Timberk T-VCH-65",
+    "category": "Пылесосы вертикальные",
+    "vendor": "Timberk",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-20086958",
+    "title": "Пылесос ручной (handstick) Dyson Gen5 Detect Absolute",
+    "category": "Пылесосы вертикальные",
+    "vendor": "Dyson",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-20078792",
+    "title": "Робот-пылесос TCL Sweeva 500 B300A белый",
+    "category": "Роботы-пылесосы",
+    "vendor": "TCL",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-20078790",
+    "title": "Робот-пылесос TCL Sweeva 2000 B200A белый",
+    "category": "Роботы-пылесосы",
+    "vendor": "TCL",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-20029447",
+    "title": "Пылесос ручной (handstick) Electrolux ERGO11",
+    "category": "Пылесосы вертикальные",
+    "vendor": "Electrolux",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-30077793",
+    "title": "Восстановленный ноутбук Apple MacBook Air 13 M2 8/512GB космический серый (MLXX3), как новый",
+    "category": "Ноутбуки",
+    "vendor": "Apple",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-30067740",
+    "title": "Ноутбук Apple MacBook Air 15 M2 8/256Gb Starlight (MQKU3)",
+    "category": "Ноутбуки",
+    "vendor": "Apple",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-30077373",
+    "title": "Ноутбук Apple MacBook Air 13 M2 16/256GB серебристый MC7V4",
+    "category": "Ноутбуки",
+    "vendor": "Apple",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-30077390",
+    "title": "Ноутбук Apple MacBook Air 15 M3 24/512 сияющая звезда",
+    "category": "Ноутбуки",
+    "vendor": "Apple",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-400191223",
+    "title": "Смартфон Xiaomi 13T 8/256GB Alpine Blue",
+    "category": "Смартфоны",
+    "vendor": "Xiaomi",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-400377051",
+    "title": "Ноутбук Infinix INBOOK Air Pro+ XL434/14\"/Core i7 1355U/32GB/1T/Win/коричневый",
+    "category": "Ноутбуки",
+    "vendor": "Infinix",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-400339746",
+    "title": "Смартфон vivo X100 16/512GB Звездный синий",
+    "category": "Смартфоны",
+    "vendor": "vivo",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-30066888",
+    "title": "Ноутбук Apple MacBook Air 13 M2 8 core/10 core/24/512/космический серый (MLXW3)",
+    "category": "Ноутбуки",
+    "vendor": "Apple",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-400161336",
+    "title": "Смартфон Xiaomi Redmi 12 8/256GB небесно-голубой",
+    "category": "Смартфоны",
+    "vendor": "Xiaomi",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-30069953",
+    "title": "Ноутбук Apple MacBook Pro 16 M3 Pro 12/18 core/36/512 черный космос (MRW23)",
+    "category": "Ноутбуки",
+    "vendor": "Apple",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-30071832",
+    "title": "Ноутбук Apple MacBook Air 13 M3 16/512GB Starlight (MXCU3)",
+    "category": "Ноутбуки",
+    "vendor": "Apple",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-30075211",
+    "title": "Смартфон Motorola Edge 50 Ultra 16GB/1TB Forest Grey",
+    "category": "Смартфоны",
+    "vendor": "Motorola",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-400380195",
+    "title": "Смартфон vivo Y19s 6+128 ГБ Блестящий черный",
+    "category": "Смартфоны",
+    "vendor": "vivo",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-400310589",
+    "title": "Смартфон vivo V30e 8/256GB Мятный",
+    "category": "Смартфоны",
+    "vendor": "vivo",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-400363453",
+    "title": "Смартфон Xiaomi MIX Flip 12/512GB Purple",
+    "category": "Смартфоны",
+    "vendor": "Xiaomi",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-400258000",
+    "title": "Смартфон Xiaomi Redmi Note 13 Pro+ 5G 8/256GB Moonlight White",
+    "category": "Смартфоны",
+    "vendor": "Xiaomi",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-20082889",
+    "title": "Пылесос ручной (handstick) Deerma DX118C серый",
+    "category": "Пылесосы вертикальные",
+    "vendor": "Deerma",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-400037343",
+    "title": "Робот-пылесос с базой очистки Ecovacs DEEBOT T10+ белый",
+    "category": "Роботы-пылесосы",
+    "vendor": "Ecovacs",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-400105459",
+    "title": "Смартфон vivo V27e 8/128GB морской зеленый",
+    "category": "Смартфоны",
+    "vendor": "vivo",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-400104927",
+    "title": "Смартфон vivo V27e 8/128GB черный оникс",
+    "category": "Смартфоны",
+    "vendor": "vivo",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-20079703",
+    "title": "Робот-пылесос Dreame F9 белый",
+    "category": "Роботы-пылесосы",
+    "vendor": "Dreame",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-400227368",
+    "title": "Смартфон vivo Y27 6/128GB Blue (V2249)",
+    "category": "Смартфоны",
+    "vendor": "vivo",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-30077382",
+    "title": "Ноутбук Apple MacBook Air 13 M3 24/512 сияющая звезда",
+    "category": "Ноутбуки",
+    "vendor": "Apple",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-400383922",
+    "title": "Смартфон Infinix NOTE 40 Pro 8/256GB Obsidian Black",
+    "category": "Смартфоны",
+    "vendor": "Infinix",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-30077381",
+    "title": "Ноутбук Apple MacBook Air 13 M3 24/512 серебристый",
+    "category": "Ноутбуки",
+    "vendor": "Apple",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-400339751",
+    "title": "Смартфон vivo X100 Pro 16/512GB Черный астероид",
+    "category": "Смартфоны",
+    "vendor": "vivo",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-30067650",
+    "title": "Смартфон HUAWEI nova Y91 8/128GB Moonlight Silver (STG-LX1)",
+    "category": "Смартфоны",
+    "vendor": "HUAWEI",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-400401576",
+    "title": "Пылесос напольный EUPA TSK-7826RE Blue",
+    "category": "Пылесосы напольные",
+    "vendor": "EUPA",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-400155734",
+    "title": "Смартфон vivo Y36 8/128GB сияние звезд",
+    "category": "Смартфоны",
+    "vendor": "vivo",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-400339749",
+    "title": "Смартфон vivo X100 Pro 16/512GB Звездный синий",
+    "category": "Смартфоны",
+    "vendor": "vivo",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-30069942",
+    "title": "Ноутбук Apple MacBook Pro 14 M3 8/10 core/8/1024 серебристый (MR7K3)",
+    "category": "Ноутбуки",
+    "vendor": "Apple",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-400046865",
+    "title": "Робот-пылесос Redmond RV-R560",
+    "category": "Роботы-пылесосы",
+    "vendor": "Redmond",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-400154123",
+    "title": "Смартфон Xiaomi Redmi 12 4/128GB Polar Silver",
+    "category": "Смартфоны",
+    "vendor": "Xiaomi",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-400351589",
+    "title": "Смартфон Tecno CAMON 30 5G 8/256GB Loewe Edition",
+    "category": "Смартфоны",
+    "vendor": "Tecno",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-400281109",
+    "title": "Смартфон vivo V30 12/256GB Тёмная материя",
+    "category": "Смартфоны",
+    "vendor": "vivo",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-30066832",
+    "title": "Ноутбук Apple MacBook Pro 16 M2 Pro 12/19C 16GB/1TB космический серый",
+    "category": "Ноутбуки",
+    "vendor": "Apple",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-400401575",
+    "title": "Пылесос напольный EUPA TSK-7826RE шампань",
+    "category": "Пылесосы напольные",
+    "vendor": "EUPA",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-400220751",
+    "title": "Смартфон vivo V29e 12/256GB (V2317) Forest Black",
+    "category": "Смартфоны",
+    "vendor": "vivo",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-400368228",
+    "title": "Смартфон Tecno CAMON 30S 8/128GB Nebula Violet",
+    "category": "Смартфоны",
+    "vendor": "Tecno",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-20041870",
+    "title": "Пылесос ручной (handstick) Electrolux EUP84IGM",
+    "category": "Пылесосы вертикальные",
+    "vendor": "Electrolux",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-400289588",
+    "title": "Смартфон vivo Y03 4/128GB Космический чёрный",
+    "category": "Смартфоны",
+    "vendor": "vivo",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-30077388",
+    "title": "Ноутбук Apple MacBook Air 15 M3 24/512 космический серый",
+    "category": "Ноутбуки",
+    "vendor": "Apple",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-400310754",
+    "title": "Смартфон vivo V30e 12/256GB Мятный",
+    "category": "Смартфоны",
+    "vendor": "vivo",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-400310751",
+    "title": "Смартфон vivo V30e 8/256GB кофейный",
+    "category": "Смартфоны",
+    "vendor": "vivo",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-30069950",
+    "title": "Ноутбук Apple MacBook Pro 16 M3 Pro 12/18 core/18/512 серебристый (MRW43)",
+    "category": "Ноутбуки",
+    "vendor": "Apple",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-400191230",
+    "title": "Смартфон Xiaomi 13T 8/256GB Meadow Green",
+    "category": "Смартфоны",
+    "vendor": "Xiaomi",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-30066798",
+    "title": "Ноутбук Apple MacBook Pro 14 M2 Pro 10/16C 16/512Gb Silver",
+    "category": "Ноутбуки",
+    "vendor": "Apple",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-400143538",
+    "title": "Умный робот-пылесос RED SOLUTION RV-R6050S Wi-Fi",
+    "category": "Роботы-пылесосы",
+    "vendor": "RED SOLUTION",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-400170456",
+    "title": "Ноутбук Infinix Inbook X3 Plus XL3/15.6\"/Core i5-1235U/16/512/Win/серый",
+    "category": "Ноутбуки",
+    "vendor": "Infinix",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-400360054",
+    "title": "Ноутбук Infinix INBOOK Air Pro+ XL434/14\"/Core i7 1355U/32GB/1T/Win/серебристый",
+    "category": "Ноутбуки",
+    "vendor": "Infinix",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-20084365",
+    "title": "Пылесос с пылесборником Tefal Silence Force Allergy+ TW7487EA",
+    "category": "Пылесосы напольные",
+    "vendor": "Tefal",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-20039827",
+    "title": "Пылесос ручной (handstick) Gorenje SVC144FBK",
+    "category": "Пылесосы вертикальные",
+    "vendor": "Gorenje",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-400259077",
+    "title": "Смартфон Xiaomi Redmi Note 13 6/128GB Mint Green",
+    "category": "Смартфоны",
+    "vendor": "Xiaomi",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-400404901",
+    "title": "Пылесос ручной (handstick) Deerma Combo DX118C",
+    "category": "Пылесосы вертикальные",
+    "vendor": "Deerma",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-30041813",
+    "title": "Смартфон HUAWEI P Smart 2019 32Gb Blue (POT-LX1)",
+    "category": "Смартфоны",
+    "vendor": "HUAWEI",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-400132595",
+    "title": "Смартфон Xiaomi Redmi Note 12S 128GB Pearl Green",
+    "category": "Смартфоны",
+    "vendor": "Xiaomi",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-30066952",
+    "title": "Ноутбук Apple MacBook Air 13 M2 8/10 core 8/256GB полуночный",
+    "category": "Ноутбуки",
+    "vendor": "Apple",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-30066901",
+    "title": "Ноутбук Apple MacBook Air 13 M2 8/8 core 16/1TB серебристый",
+    "category": "Ноутбуки",
+    "vendor": "Apple",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-30061975",
+    "title": "Ноутбук-трансформер Lenovo ThinkPad X1 Fold Gen 1",
+    "category": "Ноутбуки",
+    "vendor": "Lenovo",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-30066950",
+    "title": "Ноутбук Apple MacBook Air 13 M2 8/8 core 16/2TB полуночный",
+    "category": "Ноутбуки",
+    "vendor": "Apple",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-30071818",
+    "title": "Ноутбук Apple MacBook Air 13 M3 8C CPU/8C GPU/8GB/256/Starlight (MRXT3)",
+    "category": "Ноутбуки",
+    "vendor": "Apple",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-30069831",
+    "title": "Смартфон Samsung Galaxy S23 FE 128GB Purple (SM-S711B/DS)",
+    "category": "Смартфоны",
+    "vendor": "Samsung",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-30066927",
+    "title": "Ноутбук Apple MacBook Air 13 M2 8/8 core 16/2TB сияющая звезда",
+    "category": "Ноутбуки",
+    "vendor": "Apple",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-400280816",
+    "title": "Ноутбук Maibenben M545/15.6\"/AMD Ryzen 5 4500U/8/512/Linux/серебристый (M5451SB0LSRE0)",
+    "category": "Ноутбуки",
+    "vendor": "Maibenben",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-30069945",
+    "title": "Ноутбук Apple MacBook Pro 14 M3 Pro 11/14 core/18/512 черный космос (MRX33)",
+    "category": "Ноутбуки",
+    "vendor": "Apple",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-30069834",
+    "title": "Смартфон Samsung Galaxy S23 FE 256GB Mint (SM-S711B/DS)",
+    "category": "Смартфоны",
+    "vendor": "Samsung",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-400363529",
+    "title": "Ноутбук игровой Infinix GTBOOK GL613/16\"/Core i5 12450H/16 GB/512GB/Win/серебристый",
+    "category": "Ноутбуки",
+    "vendor": "Infinix",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-30064658",
+    "title": "Ноутбук Apple MacBook Air 13 M2 8 core/10 core/8/512/Midnight (MLY43)",
+    "category": "Ноутбуки",
+    "vendor": "Apple",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-30067709",
+    "title": "Ноутбук Apple MacBook Air 15 M2 16/512Gb космический серый",
+    "category": "Ноутбуки",
+    "vendor": "Apple",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-400324710",
+    "title": "Смартфон realme GT 6T 12/256GB серебристый",
+    "category": "Смартфоны",
+    "vendor": "realme",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-400171100",
+    "title": "Ноутбук Infinix Inbook X3 XL422/14\"/Core i5-1235U/16/512/Win/красный",
+    "category": "Ноутбуки",
+    "vendor": "Infinix",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-30069944",
+    "title": "Ноутбук Apple MacBook Pro 14 M3 Pro 11/14 core/18/512 серебристый (MRX63)",
+    "category": "Ноутбуки",
+    "vendor": "Apple",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-400365688",
+    "title": "Смартфон Xiaomi 14T 12/512GB Titan Gray",
+    "category": "Смартфоны",
+    "vendor": "Xiaomi",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-30066983",
+    "title": "Ноутбук Apple MacBook Pro 13 M2 8/10 core 8/2TB серебристый",
+    "category": "Ноутбуки",
+    "vendor": "Apple",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-30082198",
+    "title": "Уцененный ноутбук Infinix Inbook Y2 PLUS XL29/15.6\"/Core i3-1115G4/16/512GB/Win/серый, хороший",
+    "category": "Ноутбуки",
+    "vendor": "Infinix",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-30069835",
+    "title": "Смартфон Samsung Galaxy S23 FE 256GB Purple (SM-S711B/DS)",
+    "category": "Смартфоны",
+    "vendor": "Samsung",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-30078259",
+    "title": "Уцененный смартфон HUAWEI Pura 70 Pro 12/512GB White, отличный",
+    "category": "Смартфоны",
+    "vendor": "HUAWEI",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-400269569",
+    "title": "Смартфон Tecno SPARK 20 Pro+ 8/256GB Green",
+    "category": "Смартфоны",
+    "vendor": "Tecno",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-400373294",
+    "title": "Смартфон vivo V40 Lite 4G 8/128GB Титановое сияние",
+    "category": "Смартфоны",
+    "vendor": "vivo",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-400309474",
+    "title": "Ноутбук игровой Thunderobot Zero G4 Ultra/16\"/Core i9-14900HX/32/2TB/RTX 4080/Win/Grey металлик",
+    "category": "Ноутбуки",
+    "vendor": "Thunderobot",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-400309481",
+    "title": "Ноутбук игровой Thunderobot Zero G4 Radiant/16\"/Core i9-14900HX/64/2TB/RTX 4090/Win/Grey металлик",
+    "category": "Ноутбуки",
+    "vendor": "Thunderobot",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-30075274",
+    "title": "Ноутбук ASUS Vivobook S 15 S5507QA-MA050W/15.6\"/2880x1620 пикс./OLED/Qualcomm/Snapdragon X Plus/Adreno/16ГБ/1ТБ/Windows 11 Home",
+    "category": "Ноутбуки",
+    "vendor": "ASUS",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-400304419",
+    "title": "Смартфон Xiaomi Redmi Note 13 Pro+ 5G 12/512GB Mystic Silver",
+    "category": "Смартфоны",
+    "vendor": "Xiaomi",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-30078211",
+    "title": "Восстановленный смартфон Samsung Galaxy S24 8/128GB Onyx Black, отличный",
+    "category": "Смартфоны",
+    "vendor": "Samsung",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-30065299",
+    "title": "Ноутбук Apple MacBook Air 13 M2 8 core/10 core/8/512/космический серый (MLXX3)",
+    "category": "Ноутбуки",
+    "vendor": "Apple",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-30067547",
+    "title": "Ноутбук HUAWEI MateBook D 15/15.6\"/AMD Ryzen 7 5700U/8/512/NoOS/Mystic серебристый",
+    "category": "Ноутбуки",
+    "vendor": "HUAWEI",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-400235230",
+    "title": "Ноутбук OSiO FocusLine F150a-002/15.6\"/AMD Ryzen 5 5560U/8/256/Win/серый",
+    "category": "Ноутбуки",
+    "vendor": "OSiO",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-400334955",
+    "title": "Ноутбук HONOR MagicBook X16 Plus/16\"/R7-8845HS/32/1T/Win/космический серый (5301AJPH)",
+    "category": "Ноутбуки",
+    "vendor": "HONOR",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-400334956",
+    "title": "Ноутбук HONOR MagicBook X16 2024/16\"/R5 -7640HS/16/512/DOS/космический серый (5301AJYD)",
+    "category": "Ноутбуки",
+    "vendor": "HONOR",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-30075273",
+    "title": "Ноутбук ASUS X1605VA-MB1070/16\"/1920x1200 пикс./IPS/Core i7/Intel Iris Xe Graphics/32ГБ/1ТБ/DOS",
+    "category": "Ноутбуки",
+    "vendor": "ASUS",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-30078212",
+    "title": "Восстановленный смартфон Samsung Galaxy S24 8/128GB Onyx Black, хороший",
+    "category": "Смартфоны",
+    "vendor": "Samsung",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-30071812",
+    "title": "Ноутбук Apple MacBook Air 13 M3 8 core/10 core/16/512/Midnight (MXCV3)",
+    "category": "Ноутбуки",
+    "vendor": "Apple",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-400254767",
+    "title": "Ноутбук игровой Thunderobot 911 X Wild Hunter G2 L/15\"/Core i5-12450H/16/512/RTX 4050/Win/серый",
+    "category": "Ноутбуки",
+    "vendor": "Thunderobot",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-30067655",
+    "title": "Ноутбук HUAWEI MateBook 16S/16\"/Core i7-13700H/16/1TB/Win/космический серый (53013SCY)",
+    "category": "Ноутбуки",
+    "vendor": "HUAWEI",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-30077380",
+    "title": "Ноутбук Apple MacBook Air 13 M3 24/512 космический серый",
+    "category": "Ноутбуки",
+    "vendor": "Apple",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-30077436",
+    "title": "Ноутбук игровой MSI Raider 18 HX A14VIG-486RU-BB91490X64GXXDX11SA/18\"/3840x2400 пикс./IPS/Core i9/RTX4090 16GB/64ГБ/2ТБ/Windows 11 Домашняя",
+    "category": "Ноутбуки",
+    "vendor": "MSI",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-30079980",
+    "title": "Восстановленный смартфон Xiaomi Redmi Note 13 8/256GB черная полночь, хороший",
+    "category": "Смартфоны",
+    "vendor": "Xiaomi",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-30079802",
+    "title": "Восстановленный смартфон Samsung Galaxy S22+ 8/256GB фантом черный (SM-S906E/DS), хороший",
+    "category": "Смартфоны",
+    "vendor": "Samsung",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-30077360",
+    "title": "Ноутбук Apple MacBook Pro 16 M4P 24/512GB черный космос",
+    "category": "Ноутбуки",
+    "vendor": "Apple",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-30069943",
+    "title": "Ноутбук Apple MacBook Pro 14 M3 8/10 core/8/1024 космический серый (MTL83)",
+    "category": "Ноутбуки",
+    "vendor": "Apple",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-400324595",
+    "title": "Ноутбук Machcreator Prime X14/14.1\"/Core i5-12450H/16/1TB/Win/Grey Metallic (JB0C1E001RU)",
+    "category": "Ноутбуки",
+    "vendor": "Machcreator",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-30077321",
+    "title": "Восстановленный смартфон Samsung Galaxy S24+ 12/256GB Onyx Black, отличный",
+    "category": "Смартфоны",
+    "vendor": "Samsung",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-30077959",
+    "title": "Восстановленный смартфон Samsung Galaxy S23 8/256GB Cream (SM-S911/DS), хороший",
+    "category": "Смартфоны",
+    "vendor": "Samsung",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-400333324",
+    "title": "Ноутбук OSiO B150i-004b/N100/8/256/W11H/Black",
+    "category": "Ноутбуки",
+    "vendor": "OSiO",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-400383501",
+    "title": "Ноутбук игровой OSiO CyberLine C150i-002/i5-12600H/RTX4050 6Gb/16/512",
+    "category": "Ноутбуки",
+    "vendor": "OSiO",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-400389267",
+    "title": "Ноутбук игровой Thunderobot Range 17 Pro JT009600HRU",
+    "category": "Ноутбуки",
+    "vendor": "Thunderobot",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-400291389",
+    "title": "Ноутбук OSiO FocusLine F160а-002/16,1\"/AMD Ryzen 5 5500U/16/512/Win/серый",
+    "category": "Ноутбуки",
+    "vendor": "OSiO",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-400191229",
+    "title": "Смартфон Xiaomi 13T 12/256GB Alpine Blue",
+    "category": "Смартфоны",
+    "vendor": "Xiaomi",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-400454176",
+    "title": "Ноутбук Apple MacBook Air 13 M3 8/256 полуночный",
+    "category": "Ноутбуки",
+    "vendor": "Apple",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-400395677",
+    "title": "Смартфон realme GT7 Pro 12/512GB Gray",
+    "category": "Смартфоны",
+    "vendor": "realme",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-400396281",
+    "title": "Смартфон realme GT7 Pro 12/512GB Orange",
+    "category": "Смартфоны",
+    "vendor": "realme",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-400395838",
+    "title": "Ноутбук OSiO FocusLine F140a-007 (R5 5500U/16/512GB/W11H)",
+    "category": "Ноутбуки",
+    "vendor": "OSiO",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-400395620",
+    "title": "Ноутбук игровой Thunderobot 911 Plus SE",
+    "category": "Ноутбуки",
+    "vendor": "Thunderobot",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-400224693",
+    "title": "Смартфон vivo V29 12/512GB Blue (V2250)",
+    "category": "Смартфоны",
+    "vendor": "vivo",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-400324596",
+    "title": "Ноутбук Machcreator Prime X16/16\"/Ryzen 5 7535HS/16/1TB/Win/Grey Metallic (JB0C19001RU)",
+    "category": "Ноутбуки",
+    "vendor": "Machcreator",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-400257991",
+    "title": "Смартфон Xiaomi Redmi Note 13 Pro 8/128GB Lavender Purple",
+    "category": "Смартфоны",
+    "vendor": "Xiaomi",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-400330507",
+    "title": "Ноутбук Digma Pro Sprint N/15.6\"/Ryzen 5 5500U/16/512/Win/темно-серый (DN15R5-ADXW05)",
+    "category": "Ноутбуки",
+    "vendor": "Digma Pro",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-400333325",
+    "title": "Ноутбук OSiO BaseLine B150i-004s/15,6\"/Intel N100/8/256/Win/серебристый",
+    "category": "Ноутбуки",
+    "vendor": "OSiO",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-400334957",
+    "title": "Ноутбук HONOR MagicBook X14 2024/14\"/R5 -7640HS/16/512/DOS/космический серый (5301AKAU)",
+    "category": "Ноутбуки",
+    "vendor": "HONOR",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-400409655",
+    "title": "Ноутбук HONOR MagicBook X14 2025/14\"/Core i5 12450H/16/512Gb/DOS/Серый (5301ALWW)",
+    "category": "Ноутбуки",
+    "vendor": "HONOR",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-400334954",
+    "title": "Ноутбук HONOR MagicBook X16 Plus/16\"/R7-8845HS/16/1T/Win/космический серый (5301AJPF)",
+    "category": "Ноутбуки",
+    "vendor": "HONOR",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-30075308",
+    "title": "Ноутбук ASUS Zenbook 14 UX3405MA-QD919 14\"/OLED/Core Ultra 5-125H/16Гб/1Тб/NoOS(90NB11R1-M01L90)",
+    "category": "Ноутбуки",
+    "vendor": "ASUS",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-30065731",
+    "title": "Ноутбук Apple MacBook Air 13 M2 8/256GB серебристый (MLXY3)",
+    "category": "Ноутбуки",
+    "vendor": "Apple",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-30077387",
+    "title": "Ноутбук Apple MacBook Air 15 M3 16/256 полуночный",
+    "category": "Ноутбуки",
+    "vendor": "Apple",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-400330506",
+    "title": "Ноутбук Digma Pro Sprint N/15.6\"/Ryzen 5 5500U/8/512/Win/темно-серый (DN15R5-8DXW05)",
+    "category": "Ноутбуки",
+    "vendor": "Digma Pro",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-400377129",
+    "title": "Ноутбук игровой Thunderobot 911 Plus G2 Pro 7 JT009800HRU",
+    "category": "Ноутбуки",
+    "vendor": "Thunderobot",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-400366075",
+    "title": "Смартфон Tecno PHANTOM V Fold2 5G 12/512GB Rippling Blue",
+    "category": "Смартфоны",
+    "vendor": "Tecno",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-400331492",
+    "title": "Ноутбук OSiO BaseLine B150i-001c/15,6\"/Intel N100/8/256/Win/синий",
+    "category": "Ноутбуки",
+    "vendor": "OSiO",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-400334953",
+    "title": "Ноутбук HONOR MagicBook X16 Plus/16\"/R7-8845HS/16/512/Win/космический серый (5301AJPD)",
+    "category": "Ноутбуки",
+    "vendor": "HONOR",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-30066907",
+    "title": "Ноутбук Apple MacBook Air 13 M2 8 core/10 core/16/256/серебристый (MLXY3)",
+    "category": "Ноутбуки",
+    "vendor": "Apple",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-30070420",
+    "title": "Ноутбук HUAWEI MateBook D 16/16\"/Core i5 13420H/16/512/noOS/космический серый (53013YDL)",
+    "category": "Ноутбуки",
+    "vendor": "HUAWEI",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-30070421",
+    "title": "Ноутбук HUAWEI MateBook D 16 2024/16\"/Core i3-1215U/8/512/NoOS/космический серый (53013YDN)",
+    "category": "Ноутбуки",
+    "vendor": "HUAWEI",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-30070526",
+    "title": "Ноутбук HUAWEI MateBook D 14/14\"/Core i5 12450H/8/512/Win/космический серый (53013XFA)",
+    "category": "Ноутбуки",
+    "vendor": "HUAWEI",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-30070527",
+    "title": "Ноутбук HUAWEI MateBook D 14/14\"/Core i5 12450H/16/512/Win/космический серый (53013XFP)",
+    "category": "Ноутбуки",
+    "vendor": "HUAWEI",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-30069599",
+    "title": "Смартфон Samsung Galaxy S23 FE 128GB Graphite (SM-S711B/DS)",
+    "category": "Смартфоны",
+    "vendor": "Samsung",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-30071050",
+    "title": "Ноутбук HUAWEI MateBook 14 i5-1340P/16GB/512GB космический серый (53013YGL)",
+    "category": "Ноутбуки",
+    "vendor": "HUAWEI",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-30072281",
+    "title": "Ноутбук ASUS UX5304MA-NQ223W/13.3\"/Core Ultra 7 155U/16/1TB/Win/Grey (90NB12V2-M00DM0)",
+    "category": "Ноутбуки",
+    "vendor": "ASUS",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-400266784",
+    "title": "Смартфон Xiaomi 14 12/256GB White",
+    "category": "Смартфоны",
+    "vendor": "Xiaomi",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-30071799",
+    "title": "Ноутбук Apple MacBook Air 13 M3 8 core/10 core/8/512/Midnight (MRXW3)",
+    "category": "Ноутбуки",
+    "vendor": "Apple",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-30071881",
+    "title": "Ноутбук Apple MacBook Air 15 M3 8 core/10 core/8/512/Starlight (MRYT3)",
+    "category": "Ноутбуки",
+    "vendor": "Apple",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-30077351",
+    "title": "Ноутбук Apple MacBook Pro 14 M4 16/512 серебристый 2024 MW2W3",
+    "category": "Ноутбуки",
+    "vendor": "Apple",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-30077372",
+    "title": "Ноутбук Apple MacBook Air 13 M2 16/256GB космический серый (MC7U4)",
+    "category": "Ноутбуки",
+    "vendor": "Apple",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-30085650",
+    "title": "Восстановленный смартфон Xiaomi Redmi Note 13 8/512GB Ice Blue, как новый",
+    "category": "Смартфоны",
+    "vendor": "Xiaomi",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-30072072",
+    "title": "Ноутбук HUAWEI MateBook D 16 MCLG-X i5/16/1TB DOS космический серый",
+    "category": "Ноутбуки",
+    "vendor": "HUAWEI",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-400377133",
+    "title": "Ноутбук игровой Thunderobot 911 Plus Max 2K JT009A00HRU",
+    "category": "Ноутбуки",
+    "vendor": "Thunderobot",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-400367855",
+    "title": "Ноутбук OSiO FocusLine F150a-009/R5-5500U/8/512Gb/W11H",
+    "category": "Ноутбуки",
+    "vendor": "OSiO",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-400446778",
+    "title": "Смартфон Tecno Camon 40 Pro 8/256GB зеленый",
+    "category": "Смартфоны",
+    "vendor": "Tecno",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-400461995",
+    "title": "Ноутбук Machcreator Vision L16 Origin (JJ00G700HRU)",
+    "category": "Ноутбуки",
+    "vendor": "Machcreator",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-400409656",
+    "title": "Ноутбук HONOR MagicBook X14 2025/14\"/Core i5 12450H/16/512Gb/Win11/Серый (5301ALWU)",
+    "category": "Ноутбуки",
+    "vendor": "HONOR",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-30077430",
+    "title": "Ноутбук игровой MSI Creator A16 AI+A3XVGG-209RU-LGARI370X32GXXDX11PNG/16\"/2560x1600 пикс./IPS/AMD/Ryzen AI 9/RTX4070 8GB/32ГБ/2ТБ/Windows 11 Pro",
+    "category": "Ноутбуки",
+    "vendor": "MSI",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-30075327",
+    "title": "Ноутбук ASUS ProArt H7606WV-ME106X/OLED/AMD Ryzen 9 AI/RTX4060/32ГБ/2ТБ/Windows 11 Pro",
+    "category": "Ноутбуки",
+    "vendor": "ASUS",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-400367856",
+    "title": "Ноутбук OSiO FocusLine F150a-011/R5-5500U/16/512/W11H",
+    "category": "Ноутбуки",
+    "vendor": "OSiO",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-400421428",
+    "title": "Смартфон OPPO Reno 13 5G 12/512GB Белый",
+    "category": "Смартфоны",
+    "vendor": "OPPO",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-400076211",
+    "title": "Смартфон OPPO Reno8 T 8/128GB (CPH2481) оранжевый",
+    "category": "Смартфоны",
+    "vendor": "OPPO",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-400389265",
+    "title": "Ноутбук Machcreator Cosmos R17 JJ00GG00GRU",
+    "category": "Ноутбуки",
+    "vendor": "Machcreator",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-400242809",
+    "title": "Смартфон Xiaomi Redmi 13C 4/128GB Glacier White",
+    "category": "Смартфоны",
+    "vendor": "Xiaomi",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-400324602",
+    "title": "Ноутбук Machcreator Vision L16 Ultimate/16\"/Ryzen 7-7840HS/32/1TB/Win/Grey Metallic (JB0C1C001RU)",
+    "category": "Ноутбуки",
+    "vendor": "Machcreator",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-400411468",
+    "title": "Смартфон realme C75 8/128GB Red",
+    "category": "Смартфоны",
+    "vendor": "realme",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-400236424",
+    "title": "Смартфон OPPO Find N3 Flip 12/256GB Black",
+    "category": "Смартфоны",
+    "vendor": "OPPO",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-400376184",
+    "title": "Смартфон vivo V40 Lite 5G 12/256GB Насыщенный черный",
+    "category": "Смартфоны",
+    "vendor": "vivo",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-30072640",
+    "title": "Ноутбук HUAWEI MateBook D14 MDF-X i3-1215U/8/512GB Win11 Sp серый",
+    "category": "Ноутбуки",
+    "vendor": "HUAWEI",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-30072758",
+    "title": "Ноутбук ASUS Vivobook Go 15 OLED E1504FA-L11198 15.6\"/1920x1080 пикс./Ryzen 5 7520U/AMD Radeon/16ГБ/1ТБ/DOS (90NB0ZR1-M02420)",
+    "category": "Ноутбуки",
+    "vendor": "ASUS",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-30073021",
+    "title": "Ноутбук Lenovo V15 G2 IJL 82QY00PHUE 15.6\"/1920x1080 пикс./TN/Intel Celeron N4500/Intel UHD Graphics/4ГБ/256ГБ/noOS",
+    "category": "Ноутбуки",
+    "vendor": "Lenovo",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-30073022",
+    "title": "Ноутбук Lenovo IdeaPad 1 15IGL7 82V700EMUE/15.6\"/1920x1080 пикс./TN/Celeron/Intel UHD Graphics 600/8ГБ/256ГБ/noOS",
+    "category": "Ноутбуки",
+    "vendor": "Lenovo",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-30073502",
+    "title": "Ноутбук HUAWEI MateBook X PRO 53014DEY Intel Ultra7/32/2TB Win11",
+    "category": "Ноутбуки",
+    "vendor": "HUAWEI",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-30073561",
+    "title": "Ноутбук игровой ASUS TUF F15 FX507VU-LP174/15.6\"/Core i7-13620H/16/1024/RTX4050/NoOS/Grey (90NR0CJ7-M00ND0)",
+    "category": "Ноутбуки",
+    "vendor": "ASUS",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-30075305",
+    "title": "Ноутбук ASUS Vivobook 16X K3604VA-MB256/16\"/1920x1200 пикс./IPS/Core i5/Intel Iris Xe Graphics/8ГБ/512ГБ/не установлена",
+    "category": "Ноутбуки",
+    "vendor": "ASUS",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-400368798",
+    "title": "Ноутбук Maibenben M547 Pro M5471SF0HSRE1",
+    "category": "Ноутбуки",
+    "vendor": "Maibenben",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-30077438",
+    "title": "Ноутбук игровой MSI Sword 17 HX B14VGKG-255XRU-GB71465X32GXXDXX/ 17\"/2560x1600 пикс./IPS/Core i7/RTX4070 8GB/32ГБ/1ТБ/DOS",
+    "category": "Ноутбуки",
+    "vendor": "MSI",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-30079740",
+    "title": "Ноутбук Lenovo IdeaPad 1 15AMN7 82VG00MQUE",
+    "category": "Ноутбуки",
+    "vendor": "Lenovo",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-400405411",
+    "title": "Ноутбук HUAWEI MateBook D16 (53013YJF) I5-12th/16/1T",
+    "category": "Ноутбуки",
+    "vendor": "HUAWEI",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-400405467",
+    "title": "Ноутбук HUAWEI MateBook D16 (53014BKU) I5-13th/16/1TB WIN11",
+    "category": "Ноутбуки",
+    "vendor": "HUAWEI",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-30067658",
+    "title": "Ноутбук HUAWEI MateBook 14S/14\"/Core i7-13700H/16/1TB/Win/космический серый (53013SDK)",
+    "category": "Ноутбуки",
+    "vendor": "HUAWEI",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-30067705",
+    "title": "Ноутбук Apple MacBook Air 15 M2 8/512Gb космический серый (MQKQ3)",
+    "category": "Ноутбуки",
+    "vendor": "Apple",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-30069923",
+    "title": "Ноутбук HUAWEI MateBook D 16/16\"/Core i5-12450H/8/512/Win/космический серый (53013WXE)",
+    "category": "Ноутбуки",
+    "vendor": "HUAWEI",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-30070140",
+    "title": "Ноутбук игровой MSI Katana 17/17.3\"/Core i5-12450H/8/512/RTX2050/noOS/черный (B12UCX-1023XRU)",
+    "category": "Ноутбуки",
+    "vendor": "MSI",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-30070141",
+    "title": "Ноутбук игровой MSI Katana 17/17.3\"/Core i5-12450H/8/512/RTX3050/noOS/черный (B12UCR-1024XRU)",
+    "category": "Ноутбуки",
+    "vendor": "MSI",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-30071838",
+    "title": "Ноутбук Apple MacBook Air 13 M3 8/256GB космический серый (MRXN3)",
+    "category": "Ноутбуки",
+    "vendor": "Apple",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-30071852",
+    "title": "Ноутбук Apple MacBook Air 13 M3 16/512GB космический серый (MXCR3)",
+    "category": "Ноутбуки",
+    "vendor": "Apple",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-30071892",
+    "title": "Ноутбук Apple MacBook Air 15 M3 8 core/10 core/8/256/космический серый (MRYM3)",
+    "category": "Ноутбуки",
+    "vendor": "Apple",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-30071858",
+    "title": "Ноутбук Apple MacBook Air 13 M3 8C CPU/8C GPU/8GB/256/серебристый (MRXQ3)",
+    "category": "Ноутбуки",
+    "vendor": "Apple",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-30071904",
+    "title": "Ноутбук Apple MacBook Air 15 M3 8 core/10 core/8/256/серебристый (MRYP3)",
+    "category": "Ноутбуки",
+    "vendor": "Apple",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-30072065",
+    "title": "Ноутбук HUAWEI MateBook X PRO VGHH-X Intel Ultra7/16/1TB Win 11 черный",
+    "category": "Ноутбуки",
+    "vendor": "HUAWEI",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-30072280",
+    "title": "Ноутбук ASUS TP3402VA-LZ444W/14\"/Core i5-1335U/16/1TB/Win/темно-синий (90NB10W1-M00HR0)",
+    "category": "Ноутбуки",
+    "vendor": "ASUS",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-30072285",
+    "title": "Ноутбук игровой ASUS TUF Gaming F17 FX707VV-HX207/17.3\"/Core i7-13620H/16/1TB/RTX4060/NoOS/Grey (90NR0CH5-M00BL0)",
+    "category": "Ноутбуки",
+    "vendor": "ASUS",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-30072642",
+    "title": "Ноутбук HUAWEI MateBook D16 MCLF-X i3-1215U/8/512GB Win11 Sp серый",
+    "category": "Ноутбуки",
+    "vendor": "HUAWEI",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-30072755",
+    "title": "Ноутбук игровой ASUS TUF A15 FA506NF-HN062/15.6\"/Ryzen 5-7535HS/16/512/RTX2050/NoOS/черный (90NR0JE7-M00570)",
+    "category": "Ноутбуки",
+    "vendor": "ASUS",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-400446721",
+    "title": "Ноутбук Apple MacBook Air 13 M4/16/256GB Starlight MW0Y3 (без RuStore)",
+    "category": "Ноутбуки",
+    "vendor": "Apple",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-30075301",
+    "title": "Ноутбук ASUS X1504ZA-BQ1602 Cool серебристый/15.6\"/1920x1080 пикс./IPS/Core i3/UHD Graphics/16ГБ/512ГБ/DOS",
+    "category": "Ноутбуки",
+    "vendor": "ASUS",
+    "description": ""
+  },
+  {
+    "external_id": "mvideo-30075309",
+    "title": "Ноутбук игровой ASUS TUF Gaming F15 FX507ZC4-HN252 серый/15.6\"/1920x1080 пикс./IPS/Core i5/RTX3050/16ГБ/512ГБ/DOS",
+    "category": "Ноутбуки",
+    "vendor": "ASUS",
+    "description": ""
   }
 ]
