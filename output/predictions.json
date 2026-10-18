@@ -1,0 +1,509 @@
+{
+  "metadata": {
+    "timestamp": "2026-10-18 11:26:32",
+    "total_cards": 7,
+    "avg_latency_ms": 787.0,
+    "pipeline_version": "2.2.0"
+  },
+  "items": [
+    {
+      "external_id": "sample-01",
+      "title": "Смартфон Apple iPhone 15 Pro Max 256GB Black Titanium",
+      "category": "Смартфоны",
+      "overall_confidence": 0.9414,
+      "needs_review": false,
+      "extracted_attributes": {
+        "brand": "Apple",
+        "color": "чёрный",
+        "model": "iPhone 15 Pro Max",
+        "memory_rom": "256 ГБ",
+        "screen_diagonal": "6,7\"",
+        "battery": "4422 мАч",
+        "cpu": "A17 Pro"
+      },
+      "missing_required": [],
+      "latency_ms": 4.16,
+      "detailed_predictions": [
+        {
+          "attribute": "brand",
+          "value": "Apple",
+          "confidence": 0.95,
+          "source": "flashtext",
+          "raw": "Apple"
+        },
+        {
+          "attribute": "color",
+          "value": "чёрный",
+          "confidence": 0.96,
+          "source": "flashtext",
+          "raw": "black titanium"
+        },
+        {
+          "attribute": "model",
+          "value": "iPhone 15 Pro Max",
+          "confidence": 0.96,
+          "source": "regex",
+          "raw": "iPhone 15 Pro Max"
+        },
+        {
+          "attribute": "memory_rom",
+          "value": "256 ГБ",
+          "confidence": 0.9500000000000001,
+          "source": "regex",
+          "raw": "256gb"
+        },
+        {
+          "attribute": "screen_diagonal",
+          "value": "6,7\"",
+          "confidence": 0.92,
+          "source": "regex",
+          "raw": "диагональю 6.7 дюймов"
+        },
+        {
+          "attribute": "battery",
+          "value": "4422 мАч",
+          "confidence": 0.9,
+          "source": "regex",
+          "raw": "аккумулятор 4422 мач"
+        },
+        {
+          "attribute": "cpu",
+          "value": "A17 Pro",
+          "confidence": 0.95,
+          "source": "regex",
+          "raw": "чип a17 pro"
+        }
+      ]
+    },
+    {
+      "external_id": "sample-02",
+      "title": "Смартфон Samsung Galaxy S24 Ultra 12/512GB Серый",
+      "category": "Смартфоны",
+      "overall_confidence": 0.94,
+      "needs_review": false,
+      "extracted_attributes": {
+        "brand": "Samsung",
+        "color": "серый",
+        "model": "Galaxy S24 Ultra",
+        "memory_ram": "12 ГБ",
+        "memory_rom": "512 ГБ",
+        "screen_diagonal": "6,8\"",
+        "battery": "5000 мАч",
+        "weight": "232 г",
+        "cpu": "Snapdragon 8 Gen 3"
+      },
+      "missing_required": [],
+      "latency_ms": 2.48,
+      "detailed_predictions": [
+        {
+          "attribute": "brand",
+          "value": "Samsung",
+          "confidence": 0.95,
+          "source": "flashtext",
+          "raw": "Samsung"
+        },
+        {
+          "attribute": "color",
+          "value": "серый",
+          "confidence": 0.96,
+          "source": "flashtext",
+          "raw": "серый"
+        },
+        {
+          "attribute": "model",
+          "value": "Galaxy S24 Ultra",
+          "confidence": 0.96,
+          "source": "regex",
+          "raw": "Galaxy S24 Ultra"
+        },
+        {
+          "attribute": "memory_ram",
+          "value": "12 ГБ",
+          "confidence": 0.95,
+          "source": "regex",
+          "raw": "12/512gb"
+        },
+        {
+          "attribute": "memory_rom",
+          "value": "512 ГБ",
+          "confidence": 0.9500000000000001,
+          "source": "regex",
+          "raw": "512gb"
+        },
+        {
+          "attribute": "screen_diagonal",
+          "value": "6,8\"",
+          "confidence": 0.92,
+          "source": "regex",
+          "raw": "экран 6.8\""
+        },
+        {
+          "attribute": "battery",
+          "value": "5000 мАч",
+          "confidence": 0.9,
+          "source": "regex",
+          "raw": "аккумулятор 5000 мач"
+        },
+        {
+          "attribute": "weight",
+          "value": "232 г",
+          "confidence": 0.93,
+          "source": "regex",
+          "raw": "вес 232 г"
+        },
+        {
+          "attribute": "cpu",
+          "value": "Snapdragon 8 Gen 3",
+          "confidence": 0.94,
+          "source": "regex",
+          "raw": "snapdragon 8 gen 3"
+        }
+      ]
+    },
+    {
+      "external_id": "sample-03",
+      "title": "Ноутбук Apple MacBook Air 13 M3 16GB 512GB Темная ночь",
+      "category": "Ноутбуки",
+      "overall_confidence": 0.94,
+      "needs_review": false,
+      "extracted_attributes": {
+        "brand": "Apple",
+        "color": "черный",
+        "memory_ram": "16 ГБ",
+        "screen_diagonal": "13,6\"",
+        "weight": "1,24 кг",
+        "cpu": "Apple M3",
+        "os": "macOS",
+        "memory_rom": "512 ГБ",
+        "model": "MacBook Air 13 M3"
+      },
+      "missing_required": [],
+      "latency_ms": 4964.66,
+      "detailed_predictions": [
+        {
+          "attribute": "brand",
+          "value": "Apple",
+          "confidence": 0.95,
+          "source": "flashtext",
+          "raw": "Apple"
+        },
+        {
+          "attribute": "color",
+          "value": "черный",
+          "confidence": 0.96,
+          "source": "flashtext",
+          "raw": "темная ночь"
+        },
+        {
+          "attribute": "memory_ram",
+          "value": "16 ГБ",
+          "confidence": 0.93,
+          "source": "regex",
+          "raw": "16 гб оперативной"
+        },
+        {
+          "attribute": "screen_diagonal",
+          "value": "13,6\"",
+          "confidence": 0.92,
+          "source": "regex",
+          "raw": "экран 13.6 дюйма"
+        },
+        {
+          "attribute": "weight",
+          "value": "1,24 кг",
+          "confidence": 0.93,
+          "source": "regex",
+          "raw": "вес 1.24 кг"
+        },
+        {
+          "attribute": "cpu",
+          "value": "Apple M3",
+          "confidence": 0.95,
+          "source": "regex",
+          "raw": "apple m3"
+        },
+        {
+          "attribute": "os",
+          "value": "macOS",
+          "confidence": 0.92,
+          "source": "regex",
+          "raw": "macos"
+        },
+        {
+          "attribute": "memory_rom",
+          "value": "512 ГБ",
+          "confidence": 0.9544,
+          "source": "gliner",
+          "raw": "512GB"
+        },
+        {
+          "attribute": "model",
+          "value": "MacBook Air 13 M3",
+          "confidence": 0.9453,
+          "source": "gliner",
+          "raw": "MacBook Air 13 M3"
+        }
+      ]
+    },
+    {
+      "external_id": "sample-04",
+      "title": "Телевизор LG OLED evo OLED55C4RLA 55\"",
+      "category": "Телевизоры",
+      "overall_confidence": 0.9257,
+      "needs_review": false,
+      "extracted_attributes": {
+        "brand": "LG",
+        "color": "чёрный",
+        "screen_diagonal": "55,0\"",
+        "refresh_rate": "120 Гц",
+        "resolution": "3840×2160",
+        "power": "40 Вт",
+        "model": "OLED55C4RLA"
+      },
+      "missing_required": [],
+      "latency_ms": 129.34,
+      "detailed_predictions": [
+        {
+          "attribute": "brand",
+          "value": "LG",
+          "confidence": 0.95,
+          "source": "flashtext",
+          "raw": "LG"
+        },
+        {
+          "attribute": "color",
+          "value": "чёрный",
+          "confidence": 0.96,
+          "source": "flashtext",
+          "raw": "черный"
+        },
+        {
+          "attribute": "screen_diagonal",
+          "value": "55,0\"",
+          "confidence": 0.9500000000000001,
+          "source": "regex",
+          "raw": "55\""
+        },
+        {
+          "attribute": "refresh_rate",
+          "value": "120 Гц",
+          "confidence": 0.9,
+          "source": "regex",
+          "raw": "120 гц"
+        },
+        {
+          "attribute": "resolution",
+          "value": "3840×2160",
+          "confidence": 0.9,
+          "source": "regex",
+          "raw": "3840x2160"
+        },
+        {
+          "attribute": "power",
+          "value": "40 Вт",
+          "confidence": 0.9,
+          "source": "regex",
+          "raw": "40 вт"
+        },
+        {
+          "attribute": "model",
+          "value": "OLED55C4RLA",
+          "confidence": 0.92,
+          "source": "gliner",
+          "raw": "OLED55C4RLA"
+        }
+      ]
+    },
+    {
+      "external_id": "sample-05",
+      "title": "Робот-пылесос Xiaomi Robot Vacuum S10 White",
+      "category": "Пылесосы",
+      "overall_confidence": 0.9251,
+      "needs_review": false,
+      "extracted_attributes": {
+        "brand": "Xiaomi",
+        "color": "белый",
+        "battery": "3200 мАч",
+        "power": "45 Вт",
+        "volume": "300 мл",
+        "model": "S10",
+        "working_time": "130 минут",
+        "cleaning_type": "сухая и влажная"
+      },
+      "missing_required": [],
+      "latency_ms": 136.56,
+      "detailed_predictions": [
+        {
+          "attribute": "brand",
+          "value": "Xiaomi",
+          "confidence": 0.95,
+          "source": "flashtext",
+          "raw": "Xiaomi"
+        },
+        {
+          "attribute": "color",
+          "value": "белый",
+          "confidence": 0.96,
+          "source": "flashtext",
+          "raw": "white"
+        },
+        {
+          "attribute": "battery",
+          "value": "3200 мАч",
+          "confidence": 0.9,
+          "source": "regex",
+          "raw": "аккумулятора 3200 мач"
+        },
+        {
+          "attribute": "power",
+          "value": "45 Вт",
+          "confidence": 0.9,
+          "source": "regex",
+          "raw": "45 вт"
+        },
+        {
+          "attribute": "volume",
+          "value": "300 мл",
+          "confidence": 0.89,
+          "source": "regex",
+          "raw": "300 мл"
+        },
+        {
+          "attribute": "model",
+          "value": "S10",
+          "confidence": 0.9307,
+          "source": "gliner",
+          "raw": "S10"
+        },
+        {
+          "attribute": "working_time",
+          "value": "130 минут",
+          "confidence": 0.9421,
+          "source": "gliner",
+          "raw": "130 минут"
+        },
+        {
+          "attribute": "cleaning_type",
+          "value": "сухая и влажная",
+          "confidence": 0.9279,
+          "source": "gliner",
+          "raw": "Сухая и влажная уборка"
+        }
+      ]
+    },
+    {
+      "external_id": "sample-06",
+      "title": "Беспроводные наушники Sony WH-1000XM5 Серебристый",
+      "category": "Наушники",
+      "overall_confidence": 0.9458,
+      "needs_review": false,
+      "extracted_attributes": {
+        "brand": "Sony",
+        "color": "серебристый",
+        "weight": "250 г",
+        "model": "WH-1000XM5",
+        "working_time": "30 часов"
+      },
+      "missing_required": [],
+      "latency_ms": 150.16,
+      "detailed_predictions": [
+        {
+          "attribute": "brand",
+          "value": "Sony",
+          "confidence": 0.95,
+          "source": "flashtext",
+          "raw": "Sony"
+        },
+        {
+          "attribute": "color",
+          "value": "серебристый",
+          "confidence": 0.96,
+          "source": "flashtext",
+          "raw": "серебристый"
+        },
+        {
+          "attribute": "weight",
+          "value": "250 г",
+          "confidence": 0.93,
+          "source": "regex",
+          "raw": "вес 250 г"
+        },
+        {
+          "attribute": "model",
+          "value": "WH-1000XM5",
+          "confidence": 0.9507,
+          "source": "gliner",
+          "raw": "WH-1000XM5"
+        },
+        {
+          "attribute": "working_time",
+          "value": "30 часов",
+          "confidence": 0.9383,
+          "source": "gliner",
+          "raw": "30 часов"
+        }
+      ]
+    },
+    {
+      "external_id": "sample-07",
+      "title": "Внешний аккумулятор Xiaomi Mi Power Bank 3 20000 mAh Black",
+      "category": "Внешние аккумуляторы (Power Bank)",
+      "overall_confidence": 0.9368,
+      "needs_review": false,
+      "extracted_attributes": {
+        "brand": "Xiaomi",
+        "color": "чёрный",
+        "battery": "20000 мАч",
+        "weight": "430 г",
+        "power": "18 Вт",
+        "model": "Mi Power Bank 3"
+      },
+      "missing_required": [],
+      "latency_ms": 121.57,
+      "detailed_predictions": [
+        {
+          "attribute": "brand",
+          "value": "Xiaomi",
+          "confidence": 0.95,
+          "source": "flashtext",
+          "raw": "Xiaomi"
+        },
+        {
+          "attribute": "color",
+          "value": "чёрный",
+          "confidence": 0.96,
+          "source": "flashtext",
+          "raw": "черный"
+        },
+        {
+          "attribute": "battery",
+          "value": "20000 мАч",
+          "confidence": 0.93,
+          "source": "regex",
+          "raw": "20000 mah"
+        },
+        {
+          "attribute": "weight",
+          "value": "430 г",
+          "confidence": 0.93,
+          "source": "regex",
+          "raw": "вес 430 г"
+        },
+        {
+          "attribute": "power",
+          "value": "18 Вт",
+          "confidence": 0.9,
+          "source": "regex",
+          "raw": "18 вт"
+        },
+        {
+          "attribute": "model",
+          "value": "Mi Power Bank 3",
+          "confidence": 0.9506,
+          "source": "gliner",
+          "raw": "Mi Power Bank 3"
+        }
+      ]
+    }
+  ]
+}

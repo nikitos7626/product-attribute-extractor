@@ -1,0 +1,37 @@
+[
+  {
+    "external_id": "sample-01",
+    "title": "Смартфон Apple iPhone 15 Pro Max 256GB Black Titanium",
+    "description": "Смартфон Apple iPhone 15 Pro Max с диагональю 6.7 дюймов Super Retina XDR OLED 120 Гц, чип A17 Pro. Память 256 ГБ. Аккумулятор 4422 мАч."
+  },
+  {
+    "external_id": "sample-02",
+    "title": "Смартфон Samsung Galaxy S24 Ultra 12/512GB Серый",
+    "description": "Экран 6.8\" Dynamic AMOLED 2X 120 Гц, процессор Snapdragon 8 Gen 3, аккумулятор 5000 мАч, вес 232 г. Цвет серый."
+  },
+  {
+    "external_id": "sample-03",
+    "title": "Ноутбук Apple MacBook Air 13 M3 16GB 512GB Темная ночь",
+    "description": "Экран 13.6 дюйма, 16 ГБ оперативной памяти, 512 ГБ SSD, чип Apple M3, macOS, вес 1.24 кг."
+  },
+  {
+    "external_id": "sample-04",
+    "title": "Телевизор LG OLED evo OLED55C4RLA 55\"",
+    "description": "Экран 55 дюймов 4K Ultra HD (3840x2160), 120 Гц, мощность звука 40 Вт, цвет корпуса черный."
+  },
+  {
+    "external_id": "sample-05",
+    "title": "Робот-пылесос Xiaomi Robot Vacuum S10 White",
+    "description": "Сухая и влажная уборка, мощность 45 Вт, емкость аккумулятора 3200 мАч, время работы 130 минут, контейнер 300 мл, белый цвет."
+  },
+  {
+    "external_id": "sample-06",
+    "title": "Беспроводные наушники Sony WH-1000XM5 Серебристый",
+    "description": "Полноразмерные наушники с активным шумоподавлением, время автономной работы 30 часов, вес 250 г, серебристый цвет."
+  },
+  {
+    "external_id": "sample-07",
+    "title": "Внешний аккумулятор Xiaomi Mi Power Bank 3 20000 mAh Black",
+    "description": "Портативный аккумулятор емкостью 20000 мАч, мощность 18 Вт, цвет черный, вес 430 г."
+  }
+]

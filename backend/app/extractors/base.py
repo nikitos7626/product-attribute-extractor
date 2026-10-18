@@ -1,4 +1,6 @@
-from typing import Protocol, TypedDict
+from __future__ import annotations
+
+from typing import Any, Protocol, TypedDict
 
 try:
     from typing import NotRequired
@@ -7,14 +9,26 @@ except ImportError:
 
 
 class Prediction(TypedDict):
-	attribute: str
-	value: str
-	confidence: float
-	source: str
-	raw: NotRequired[str]
+    attribute: str
+    value: str
+    confidence: float
+    source: str
+    raw: NotRequired[str]
+    grounded: NotRequired[bool]
+
 
 class BaseExtractor(Protocol):
-	name: str
-	version: str
-	def health(self) -> bool: ...
-	def extract(self, card: dict) -> list[Prediction]: ...
+    name: str
+    version: str
+
+    def health(self) -> bool: ...
+    def extract(self, card: dict[str, Any], **kwargs: Any) -> list[Prediction]: ...
+    def get_info(self) -> dict[str, Any]: ...
+
+
+class KnowledgeBaseInterface(Protocol):
+    version: str
+
+    def get(self, key: str) -> dict[str, Any] | None: ...
+    def size(self) -> int: ...
+    def reload(self) -> bool: ...

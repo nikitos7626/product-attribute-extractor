@@ -80,6 +80,16 @@ class GlinerExtractor:
             self._model.eval()
         return self._model
 
+    def get_info(self) -> dict[str, Any]:
+        return {
+            "name": self.name,
+            "version": self.version,
+            "model_name": self.model_name,
+            "threshold": self.threshold,
+            "device": str(self.device),
+            "loaded": self._model is not None,
+        }
+
     def health(self) -> bool:
         try:
             self._ensure_model()
@@ -96,30 +106,38 @@ class GlinerExtractor:
     ) -> list[Prediction]:
         title = (card.get("title") or "").strip()
         description = (card.get("description") or "").strip()
-        model = self._ensure_model()
+
+        try:
+            model = self._ensure_model()
+        except Exception as e:
+            logger.warning("GLiNER model unavailable (%s); falling back to rule & KB extractors.", e)
+            return []
 
         predictions: list[Prediction] = []
         seen_attrs: set[str] = set()
 
-        # Пасс 1: Заголовок (Title) — извлекаем все целевые метки категории
-        if title:
-            t_labels = target_labels or self.TITLE_LABELS
-            title_entities = model.predict_entities(title, t_labels, threshold=self.threshold)
-            for ent in sorted(title_entities, key=lambda x: float(x.get("score", 0.0)), reverse=True):
-                pred = self._entity_to_prediction(ent, is_title=True, category_key=category_key)
-                if pred and pred["attribute"] not in seen_attrs:
-                    predictions.append(pred)
-                    seen_attrs.add(pred["attribute"])
+        try:
+            # Пасс 1: Заголовок (Title) — извлекаем все целевые метки категории
+            if title:
+                t_labels = target_labels or self.TITLE_LABELS
+                title_entities = model.predict_entities(title, t_labels, threshold=self.threshold)
+                for ent in sorted(title_entities, key=lambda x: float(x.get("score", 0.0)), reverse=True):
+                    pred = self._entity_to_prediction(ent, is_title=True, category_key=category_key)
+                    if pred and pred["attribute"] not in seen_attrs:
+                        predictions.append(pred)
+                        seen_attrs.add(pred["attribute"])
 
-        # Пасс 2: Описание (Description) — процессор, чипсет, отсутствующие поля
-        if description:
-            d_labels = target_labels or self.DESC_LABELS
-            desc_entities = model.predict_entities(description, d_labels, threshold=self.threshold)
-            for ent in sorted(desc_entities, key=lambda x: float(x.get("score", 0.0)), reverse=True):
-                pred = self._entity_to_prediction(ent, is_title=False, category_key=category_key)
-                if pred and pred["attribute"] not in seen_attrs:
-                    predictions.append(pred)
-                    seen_attrs.add(pred["attribute"])
+            # Пасс 2: Описание (Description) — процессор, чипсет, отсутствующие поля
+            if description:
+                d_labels = target_labels or self.DESC_LABELS
+                desc_entities = model.predict_entities(description, d_labels, threshold=self.threshold)
+                for ent in sorted(desc_entities, key=lambda x: float(x.get("score", 0.0)), reverse=True):
+                    pred = self._entity_to_prediction(ent, is_title=False, category_key=category_key)
+                    if pred and pred["attribute"] not in seen_attrs:
+                        predictions.append(pred)
+                        seen_attrs.add(pred["attribute"])
+        except Exception as e:
+            logger.error("Error during GLiNER prediction: %s; falling back gracefully.", e)
 
         return predictions
 

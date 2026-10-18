@@ -1,4 +1,5 @@
 import os
+from pathlib import Path
 from fastapi import FastAPI, Request
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import FileResponse, JSONResponse
@@ -8,7 +9,13 @@ from app.routers import extract
 from app.schemas import CardIn, CardOut
 
 
-app = FastAPI(title="Attribute Extraction API", version="0.2.0")
+app = FastAPI(
+    title="M.Video Product Attribute Extraction API",
+    description="Промышленный сервис извлечения, валидации и нормализации характеристик товаров М.Видео с многоуровневым каскадом (FastRules -> GLiNER Zero-Shot -> Catalog KB -> Strict LLM Guardrail).",
+    version="0.2.1",
+    docs_url="/docs",
+    redoc_url="/redoc",
+)
 
 app.add_middleware(
     CORSMiddleware,
@@ -21,39 +28,79 @@ app.add_middleware(
 app.include_router(extract.router)
 
 
-@app.post("/extract", response_model=CardOut, include_in_schema=False)
+@app.post("/extract", response_model=CardOut, tags=["extract"], summary="Извлечение характеристик карточки (Root Alias)")
 def extract_alias(card: CardIn) -> CardOut:
-    """Алиас для автоматических тестеров: POST /extract -> CardOut"""
+    """
+    Основной стандартизированный эндпоинт для автоматических тестеров: POST /extract -> CardOut.
+    Дублирует /api/extract для максимальной совместимости со спецификацией М.Видео.
+    """
     return extract._run(card)
 
 
-@app.get("/")
+@app.get("/", summary="Интерактивный веб-интерфейс М.Видео AI")
 def root_ui(request: Request):
     """
     Интерактивный веб-интерфейс М.Видео AI.
-    Если запрос отправлен клиентом API или скриптом (Accept: application/json),
+    Если запрос отправлен клиентом API или скриптом (Accept: application/json без text/html),
     возвращает JSON со схемой и ссылками на эндпоинты.
+    Для браузеров и интеграторов также доступны постоянные маршруты /api и /api/info.
     """
     accept = request.headers.get("accept", "")
     if "application/json" in accept and "text/html" not in accept:
         return JSONResponse({
             "service": "M.Video Product Attribute Extraction API",
-            "version": "0.2.0",
+            "version": "0.2.1",
             "status": "online",
             "endpoints": {
                 "extract": "POST /api/extract",
                 "extract_alias": "POST /extract",
                 "batch": "POST /api/extract/batch",
+                "export": "POST /api/extract/export",
+                "metrics": "GET /api/extract/metrics",
+                "taxonomy": "GET /api/extract/taxonomy",
                 "brand_register": "POST /api/extract/brands/register",
                 "health": "GET /api/extract/health",
                 "swagger_docs": "/docs",
-                "openapi_schema": "/openapi.json"
-            }
+                "openapi_schema": "/openapi.json",
+            },
         })
     static_file = os.path.join(os.path.dirname(__file__), "static", "index.html")
     return FileResponse(static_file)
 
 
-@app.get("/health")
+@app.get("/api", summary="Спецификация и каталог эндпоинтов сервиса")
+@app.get("/api/info", summary="Метаданные сервиса и статус компонентов")
+def api_info() -> dict:
+    """
+    Прямой машиночитаемый дескриптор сервиса для интеграторов и внешних агентов (без зависимости от Accept).
+    """
+    return {
+        "service": "M.Video Product Attribute Extraction API",
+        "version": "0.2.1",
+        "status": "online",
+        "pipeline": "CascadedExtractionPipeline",
+        "architecture_tiers": [
+            "Tier 1: FastRules (Regex + FlashText brands/colors) [< 1ms]",
+            "Tier 2: Targeted Zero-Shot NER (urchade/gliner_multi-v2.1) [model/cpu]",
+            "Tier 3: Catalog Knowledge Base (catalog_models_kb.json) + Strict LLM Guardrail",
+            "Tier 4: SanityValidator (physical bounds, category whitelist, confidence calibration)",
+        ],
+        "endpoints": {
+            "extract_root": "POST /extract",
+            "extract_api": "POST /api/extract",
+            "extract_batch": "POST /api/extract/batch",
+            "export_predictions": "POST /api/extract/export",
+            "metrics": "GET /api/extract/metrics",
+            "taxonomy": "GET /api/extract/taxonomy",
+            "brand_register": "POST /api/extract/brands/register",
+            "health": "GET /health",
+            "health_api": "GET /api/extract/health",
+            "swagger_docs": "/docs",
+            "openapi_schema": "/openapi.json",
+        },
+    }
+
+
+@app.get("/health", summary="Health Check")
 def root_health() -> dict:
-    return {"ok": True}
+    return {"ok": True, "status": "online", "version": "0.2.1"}

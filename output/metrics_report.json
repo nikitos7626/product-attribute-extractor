@@ -1,0 +1,173 @@
+{
+  "timestamp": "2026-10-18 11:25:50",
+  "total_cards": 12,
+  "category_accuracy": 1.0,
+  "overall_coverage": 1.0,
+  "avg_latency_ms": 553.63,
+  "macro_f1": 0.9513,
+  "micro_f1": 0.9503,
+  "per_attribute_metrics": {
+    "battery": {
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1_score": 1.0,
+      "tp": 6,
+      "fp": 0,
+      "fn": 0,
+      "support": 6
+    },
+    "brand": {
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1_score": 1.0,
+      "tp": 12,
+      "fp": 0,
+      "fn": 0,
+      "support": 12
+    },
+    "cleaning_type": {
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1_score": 1.0,
+      "tp": 1,
+      "fp": 0,
+      "fn": 0,
+      "support": 1
+    },
+    "color": {
+      "precision": 0.9167,
+      "recall": 0.9167,
+      "f1_score": 0.9167,
+      "tp": 11,
+      "fp": 1,
+      "fn": 1,
+      "support": 12
+    },
+    "cpu": {
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1_score": 1.0,
+      "tp": 5,
+      "fp": 0,
+      "fn": 0,
+      "support": 5
+    },
+    "defrost_system": {
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1_score": 1.0,
+      "tp": 1,
+      "fp": 0,
+      "fn": 0,
+      "support": 1
+    },
+    "memory_ram": {
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1_score": 1.0,
+      "tp": 5,
+      "fp": 0,
+      "fn": 0,
+      "support": 5
+    },
+    "memory_rom": {
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1_score": 1.0,
+      "tp": 6,
+      "fp": 0,
+      "fn": 0,
+      "support": 6
+    },
+    "model": {
+      "precision": 0.9167,
+      "recall": 1.0,
+      "f1_score": 0.9565,
+      "tp": 11,
+      "fp": 1,
+      "fn": 0,
+      "support": 11
+    },
+    "os": {
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1_score": 1.0,
+      "tp": 3,
+      "fp": 0,
+      "fn": 0,
+      "support": 3
+    },
+    "power": {
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1_score": 1.0,
+      "tp": 4,
+      "fp": 0,
+      "fn": 0,
+      "support": 4
+    },
+    "refresh_rate": {
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1_score": 1.0,
+      "tp": 2,
+      "fp": 0,
+      "fn": 0,
+      "support": 2
+    },
+    "resolution": {
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1_score": 1.0,
+      "tp": 2,
+      "fp": 0,
+      "fn": 0,
+      "support": 2
+    },
+    "screen_diagonal": {
+      "precision": 0.75,
+      "recall": 0.75,
+      "f1_score": 0.75,
+      "tp": 6,
+      "fp": 2,
+      "fn": 2,
+      "support": 8
+    },
+    "volume": {
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1_score": 1.0,
+      "tp": 2,
+      "fp": 0,
+      "fn": 0,
+      "support": 2
+    },
+    "warranty": {
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1_score": 1.0,
+      "tp": 1,
+      "fp": 0,
+      "fn": 0,
+      "support": 1
+    },
+    "weight": {
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1_score": 1.0,
+      "tp": 7,
+      "fp": 0,
+      "fn": 0,
+      "support": 7
+    },
+    "working_time": {
+      "precision": 0.5,
+      "recall": 0.5,
+      "f1_score": 0.5,
+      "tp": 1,
+      "fp": 1,
+      "fn": 1,
+      "support": 2
+    }
+  }
+}

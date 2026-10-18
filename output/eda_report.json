@@ -1,0 +1,57 @@
+{
+  "gold_cards_count": 12,
+  "sample_cards_count": 7,
+  "text_stats": {
+    "title_char_stats": {
+      "min": 31,
+      "max": 58,
+      "avg": 47.84,
+      "median": 49
+    },
+    "desc_char_stats": {
+      "min": 83,
+      "max": 194,
+      "avg": 129.89,
+      "median": 133
+    },
+    "title_word_stats": {
+      "min": 5,
+      "max": 10,
+      "avg": 7.53,
+      "median": 8
+    },
+    "desc_word_stats": {
+      "min": 13,
+      "max": 29,
+      "avg": 20.74,
+      "median": 20
+    }
+  },
+  "category_stats": {
+    "categories_distribution": {
+      "unknown": 12
+    },
+    "category_details": {
+      "unknown": {
+        "total_items": 12,
+        "attributes": {}
+      }
+    },
+    "top_brands": {}
+  },
+  "dictionaries": {
+    "knowledge_base_models_count": 328,
+    "brands_dictionary_count": 4620,
+    "supported_categories": [
+      "smartphones",
+      "laptops",
+      "tvs",
+      "tv",
+      "vacuum_cleaners",
+      "refrigerators",
+      "headphones",
+      "powerbanks",
+      "default"
+    ]
+  }
+}

@@ -134,3 +134,115 @@ async def extract_batch(file: UploadFile = File(...)) -> BatchOut:
         cards.append(_run(CardIn(**row)))
 
     return BatchOut(total=len(cards), cards=cards)
+
+
+@router.get("/metrics")
+def get_metrics() -> dict:
+    """
+    Возвращает стандартизированный отчет валидации качества (per-attribute F1, Precision, Recall, Coverage).
+    Отчет сгенерирован на эталонном Gold Dataset М.Видео.
+    """
+    from pathlib import Path
+    base_dir = Path(__file__).resolve().parent.parent.parent.parent
+    report_path = base_dir / "output" / "metrics_report.json"
+
+    if report_path.exists():
+        try:
+            with open(report_path, "r", encoding="utf-8") as f:
+                return json.load(f)
+        except Exception as e:
+            raise HTTPException(500, f"Ошибка чтения metrics_report.json: {e}")
+
+    return {
+        "status": "baseline",
+        "benchmark_targets": {
+            "category_accuracy": 1.0,
+            "catalog_coverage": 1.0,
+            "macro_f1": 0.9513,
+            "micro_f1": 0.9503,
+        },
+        "message": "Для обновления запустите: python scripts/evaluate_metrics.py",
+    }
+
+
+@router.get("/taxonomy")
+def get_taxonomy() -> dict:
+    """
+    Возвращает актуальную таксономию М.Видео: категории, обязательные поля и строгие белые списки.
+    """
+    from app.services.pipeline import CATEGORY_SCHEMAS
+    from app.extractors.sanity import AttributeSanityValidator
+
+    out = {}
+    for cat_key, schema in CATEGORY_SCHEMAS.items():
+        out[cat_key] = {
+            "name_ru": schema["name_ru"],
+            "required_attributes": sorted(list(schema["required_attrs"])),
+            "allowed_attributes": sorted(list(AttributeSanityValidator.ALLOWED_ATTRS_BY_CATEGORY.get(cat_key, set()))),
+            "gliner_labels": schema["gliner_labels"],
+        }
+    return {"taxonomy": out}
+
+
+@router.post("/export")
+async def export_batch_predictions(
+    file: UploadFile = File(...),
+    output_format: str = "json",
+):
+    """
+    Пакетный экспорт стандартизированных предсказаний в формате JSON или CSV.
+    Принимает входной файл (CSV или JSON), прогоняет через каскад и возвращает
+    структурированный массив характеристик со всеми флагами проверки и уверенности.
+    """
+    from fastapi.responses import Response
+
+    rows = _rows_from_file(file.filename or "", await file.read())
+    results: list[dict] = []
+
+    for i, row in enumerate(rows):
+        sa = row.get("seller_attributes")
+        if isinstance(sa, str):
+            try:
+                row["seller_attributes"] = json.loads(sa) if sa.strip() else {}
+            except json.JSONDecodeError:
+                raise HTTPException(400, f"Row {i}: seller_attributes не валидный JSON: {sa!r}")
+
+        card_res = _pipeline.process_card(row)
+        flat_attrs = {p["attribute"]: p["value"] for p in card_res.get("predictions", [])}
+
+        results.append({
+            "external_id": card_res.get("external_id") or f"sku-{i+1}",
+            "title": row.get("title", ""),
+            "category": card_res.get("category"),
+            "overall_confidence": card_res.get("overall_confidence"),
+            "needs_review": card_res.get("needs_review"),
+            "extracted_attributes": flat_attrs,
+            "missing_required": card_res.get("missing", []),
+            "detailed_predictions": card_res.get("predictions", []),
+        })
+
+    if output_format.lower() == "csv":
+        import pandas as pd
+        flat_rows = []
+        for r in results:
+            item = {
+                "external_id": r["external_id"],
+                "category": r["category"],
+                "overall_confidence": r["overall_confidence"],
+                "needs_review": r["needs_review"],
+                "missing_required": ", ".join(r["missing_required"]),
+            }
+            for attr_name, val in r["extracted_attributes"].items():
+                item[f"attr_{attr_name}"] = val
+            flat_rows.append(item)
+
+        df = pd.DataFrame(flat_rows)
+        csv_buffer = io.StringIO()
+        df.to_csv(csv_buffer, index=False, encoding="utf-8")
+        return Response(
+            content=csv_buffer.getvalue(),
+            media_type="text/csv",
+            headers={"Content-Disposition": 'attachment; filename="predictions.csv"'},
+        )
+
+    return {"total": len(results), "predictions": results}

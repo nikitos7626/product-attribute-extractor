@@ -1,0 +1,200 @@
+[
+  {
+    "id": "gold-phone-01",
+    "title": "Смартфон Samsung Galaxy S24 Ultra 12/512GB Titanium Gray",
+    "description": "Флагманский смартфон с 6.8-дюймовым Dynamic AMOLED 2X экраном 120 Гц. Процессор Snapdragon 8 Gen 3 for Galaxy. Аккумулятор 5000 мАч. Вес 232 г. Цвет: серый. Android 14.",
+    "seller_attributes": {},
+    "ground_truth": {
+      "category": "Смартфоны",
+      "brand": "Samsung",
+      "model": "Galaxy S24 Ultra",
+      "color": "серый",
+      "memory_ram": "12 ГБ",
+      "memory_rom": "512 ГБ",
+      "screen_diagonal": "6,8\"",
+      "battery": "5000 мАч",
+      "cpu": "Snapdragon 8 Gen 3",
+      "os": "Android",
+      "weight": "232 г"
+    }
+  },
+  {
+    "id": "gold-phone-02",
+    "title": "Смартфон Apple iPhone 16 Pro 128 ГБ в черном цвете",
+    "description": "Процессор Apple A18 Pro 6 ядер, память 128 ГБ. Экран 6.3 дюйма OLED 120 Гц. Корпус выполнен из титана. Аккумулятор емкостью 3582 мАч.",
+    "seller_attributes": {},
+    "ground_truth": {
+      "category": "Смартфоны",
+      "brand": "Apple",
+      "model": "iPhone 16 Pro",
+      "color": "чёрный",
+      "memory_rom": "128 ГБ",
+      "screen_diagonal": "6,3\"",
+      "cpu": "Apple A18 Pro",
+      "battery": "3582 мАч"
+    }
+  },
+  {
+    "id": "gold-phone-03",
+    "title": "Смартфон Xiaomi Redmi Note 13 Pro 8/256GB Midnight Black",
+    "description": "Яркий AMOLED экран 6.67 дюймов 120 Гц. Чипсет MediaTek Helio G99-Ultra. Батарея 5000 мАч с быстрой зарядкой 67 Вт. Цвет черный. Вес 188 г.",
+    "seller_attributes": {},
+    "ground_truth": {
+      "category": "Смартфоны",
+      "brand": "Xiaomi",
+      "model": "Redmi Note 13 Pro",
+      "color": "чёрный",
+      "memory_ram": "8 ГБ",
+      "memory_rom": "256 ГБ",
+      "screen_diagonal": "6,7\"",
+      "battery": "5000 мАч",
+      "weight": "188 г"
+    }
+  },
+  {
+    "id": "gold-phone-04",
+    "title": "Смартфон Realme GT 6T 12/256GB в золотом цвете",
+    "description": "Процессор Snapdragon 7+ Gen 3. Аккумулятор 5500 мАч. Экран 6.78 дюймов 120 Гц LTPO AMOLED. Вес 191 г.",
+    "seller_attributes": {},
+    "ground_truth": {
+      "category": "Смартфоны",
+      "brand": "Realme",
+      "model": "GT 6T",
+      "color": "золотой",
+      "memory_ram": "12 ГБ",
+      "memory_rom": "256 ГБ",
+      "screen_diagonal": "6,8\"",
+      "battery": "5500 мАч",
+      "cpu": "Snapdragon 7+ Gen 3",
+      "weight": "191 г"
+    }
+  },
+  {
+    "id": "gold-laptop-01",
+    "title": "Ноутбук Apple MacBook Air 13 2024 в темная ночь цвете",
+    "description": "Процессор Apple M3, 16 ГБ оперативной памяти и SSD объемом 512 ГБ. Экран Liquid Retina диагональю 13.6 дюйма. Операционная система macOS. Вес 1.24 кг.",
+    "seller_attributes": {},
+    "ground_truth": {
+      "category": "Ноутбуки",
+      "brand": "Apple",
+      "model": "MacBook Air",
+      "color": "черный",
+      "memory_ram": "16 ГБ",
+      "memory_rom": "512 ГБ",
+      "screen_diagonal": "13,6\"",
+      "cpu": "Apple M3",
+      "os": "macOS",
+      "weight": "1,24 кг"
+    }
+  },
+  {
+    "id": "gold-laptop-02",
+    "title": "Ноутбук Lenovo IdeaPad 3 15.6\" 8GB 512GB Серый",
+    "description": "Оснащен процессором Intel Core i3 1215U, оперативная память 8 ГБ, накопитель SSD 512 ГБ. Экран диагональю 15.6 дюйма Full HD. Операционная система Windows 11. Цвет серый. Вес 1.63 кг.",
+    "seller_attributes": {},
+    "ground_truth": {
+      "category": "Ноутбуки",
+      "brand": "Lenovo",
+      "model": "IdeaPad 3",
+      "color": "серый",
+      "memory_ram": "8 ГБ",
+      "memory_rom": "512 ГБ",
+      "screen_diagonal": "15,6\"",
+      "cpu": "Intel Core i3",
+      "os": "Windows",
+      "weight": "1,63 кг"
+    }
+  },
+  {
+    "id": "gold-tv-01",
+    "title": "Телевизор LG OLED evo OLED55C4RLA 55\"",
+    "description": "Экран диагональю 55 дюймов с разрешением 3840x2160 пикселей (4K Ultra HD). Частота обновления экрана 120 Гц. Мощность звука 40 Вт. Цвет корпуса: черный.",
+    "seller_attributes": {},
+    "ground_truth": {
+      "category": "Телевизоры",
+      "brand": "LG",
+      "model": "OLED55C4RLA",
+      "color": "чёрный",
+      "screen_diagonal": "55,0\"",
+      "resolution": "3840×2160",
+      "refresh_rate": "120 Гц",
+      "power": "40 Вт"
+    }
+  },
+  {
+    "id": "gold-tv-02",
+    "title": "Телевизор Sony KD50X85TJ 50\" 4K",
+    "description": "Диагональ экрана 50 дюймов, разрешение 3840x2160 пикселей. Частота обновления 120 Гц. Мощность фронтальных динамиков 20 Вт. Цвет: черный.",
+    "seller_attributes": {},
+    "ground_truth": {
+      "category": "Телевизоры",
+      "brand": "Sony",
+      "model": "KD50X85TJ",
+      "color": "чёрный",
+      "screen_diagonal": "50,0\"",
+      "resolution": "3840×2160",
+      "refresh_rate": "120 Гц",
+      "power": "20 Вт"
+    }
+  },
+  {
+    "id": "gold-vacuum-01",
+    "title": "Робот-пылесос Xiaomi Robot Vacuum S10 White",
+    "description": "Робот-пылесос в белом цвете для сухой и влажной уборки. Потребляемая мощность 45 Вт. Объем контейнера для пыли 300 мл. Аккумулятор емкостью 3200 мАч обеспечивает до 130 минут непрерывной работы.",
+    "seller_attributes": {},
+    "ground_truth": {
+      "category": "Пылесосы",
+      "brand": "Xiaomi",
+      "model": "Robot Vacuum S10 White",
+      "color": "белый",
+      "power": "45 Вт",
+      "volume": "300 мл",
+      "battery": "3200 мАч",
+      "cleaning_type": "сухая и влажная",
+      "working_time": "130 минут"
+    }
+  },
+  {
+    "id": "gold-headphones-01",
+    "title": "Беспроводные наушники Sony WH-1000XM5 Серебристый",
+    "description": "Полноразмерные наушники в серебристом цвете с шумоподавлением. Время автономной работы до 30 часов на одном заряде. Вес модели равен 250 г.",
+    "seller_attributes": {},
+    "ground_truth": {
+      "category": "Наушники",
+      "brand": "Sony",
+      "model": "WH-1000XM5",
+      "color": "серебристый",
+      "weight": "250 г",
+      "working_time": "30 часов"
+    }
+  },
+  {
+    "id": "gold-powerbank-01",
+    "title": "Внешний аккумулятор Xiaomi Mi Power Bank 3 20000 mAh Black",
+    "description": "Портативный аккумулятор емкостью 20000 мАч. Максимальная выходная мощность 18 Вт. Цвет: черный. Вес 430 г.",
+    "seller_attributes": {},
+    "ground_truth": {
+      "category": "Внешние аккумуляторы (Power Bank)",
+      "brand": "Xiaomi",
+      "model": "Mi Power Bank",
+      "battery": "20000 мАч",
+      "power": "18 Вт",
+      "color": "чёрный",
+      "weight": "430 г"
+    }
+  },
+  {
+    "id": "gold-fridge-01",
+    "title": "Холодильник AEG RCR736E5MB Черный металлик",
+    "description": "Двухкамерный холодильник с системой разморозки No Frost. Общий объем 360 л, цвет: черный металлик. Гарантия 12 месяцев.",
+    "seller_attributes": {},
+    "ground_truth": {
+      "category": "Холодильники",
+      "brand": "AEG",
+      "color": "черный металлик",
+      "defrost_system": "No Frost",
+      "volume": "360 л",
+      "warranty": "12 мес"
+    }
+  }
+]
