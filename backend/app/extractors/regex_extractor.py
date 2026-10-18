@@ -300,10 +300,13 @@ class RegexExtractor:
                 seen_attrs.add(pred["attribute"])
 
         # Физическая валидация здравого смысла и контекста категории
-        return [
-            p for p in out
-            if AttributeSanityValidator.is_valid(p["attribute"], p["value"], category_key)
-        ]
+        valid_out: list[Prediction] = []
+        for p in out:
+            if AttributeSanityValidator.is_valid(p["attribute"], p["value"], category_key):
+                if "grounded" not in p:
+                    p["grounded"] = True
+                valid_out.append(p)
+        return valid_out
 
     # ================== FlashText-хелперы ==================
 

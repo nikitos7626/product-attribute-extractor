@@ -1,8 +1,8 @@
 {
   "metadata": {
-    "timestamp": "2026-10-18 12:31:49",
+    "timestamp": "2026-10-18 13:00:49",
     "total_cards": 7,
-    "avg_latency_ms": 813.32,
+    "avg_latency_ms": 829.6,
     "pipeline_version": "2.2.0"
   },
   "items": [
@@ -22,56 +22,63 @@
         "cpu": "A17 Pro"
       },
       "missing_required": [],
-      "latency_ms": 4.18,
+      "latency_ms": 4.92,
       "detailed_predictions": [
         {
           "attribute": "brand",
           "value": "Apple",
           "confidence": 0.95,
           "source": "flashtext",
-          "raw": "Apple"
+          "raw": "Apple",
+          "grounded": true
         },
         {
           "attribute": "color",
           "value": "чёрный",
           "confidence": 0.96,
           "source": "flashtext",
-          "raw": "black titanium"
+          "raw": "black titanium",
+          "grounded": true
         },
         {
           "attribute": "model",
           "value": "iPhone 15 Pro Max",
           "confidence": 0.96,
           "source": "regex",
-          "raw": "iPhone 15 Pro Max"
+          "raw": "iPhone 15 Pro Max",
+          "grounded": true
         },
         {
           "attribute": "memory_rom",
           "value": "256 ГБ",
           "confidence": 0.9500000000000001,
           "source": "regex",
-          "raw": "256gb"
+          "raw": "256gb",
+          "grounded": true
         },
         {
           "attribute": "screen_diagonal",
           "value": "6,7\"",
           "confidence": 0.92,
           "source": "regex",
-          "raw": "диагональю 6.7 дюймов"
+          "raw": "диагональю 6.7 дюймов",
+          "grounded": true
         },
         {
           "attribute": "battery",
           "value": "4422 мАч",
           "confidence": 0.9,
           "source": "regex",
-          "raw": "аккумулятор 4422 мач"
+          "raw": "аккумулятор 4422 мач",
+          "grounded": true
         },
         {
           "attribute": "cpu",
           "value": "A17 Pro",
           "confidence": 0.95,
           "source": "regex",
-          "raw": "чип a17 pro"
+          "raw": "чип a17 pro",
+          "grounded": true
         }
       ]
     },
@@ -93,70 +100,79 @@
         "cpu": "Snapdragon 8 Gen 3"
       },
       "missing_required": [],
-      "latency_ms": 2.43,
+      "latency_ms": 2.39,
       "detailed_predictions": [
         {
           "attribute": "brand",
           "value": "Samsung",
           "confidence": 0.95,
           "source": "flashtext",
-          "raw": "Samsung"
+          "raw": "Samsung",
+          "grounded": true
         },
         {
           "attribute": "color",
           "value": "серый",
           "confidence": 0.96,
           "source": "flashtext",
-          "raw": "серый"
+          "raw": "серый",
+          "grounded": true
         },
         {
           "attribute": "model",
           "value": "Galaxy S24 Ultra",
           "confidence": 0.96,
           "source": "regex",
-          "raw": "Galaxy S24 Ultra"
+          "raw": "Galaxy S24 Ultra",
+          "grounded": true
         },
         {
           "attribute": "memory_ram",
           "value": "12 ГБ",
           "confidence": 0.95,
           "source": "regex",
-          "raw": "12/512gb"
+          "raw": "12/512gb",
+          "grounded": true
         },
         {
           "attribute": "memory_rom",
           "value": "512 ГБ",
           "confidence": 0.9500000000000001,
           "source": "regex",
-          "raw": "512gb"
+          "raw": "512gb",
+          "grounded": true
         },
         {
           "attribute": "screen_diagonal",
           "value": "6,8\"",
           "confidence": 0.92,
           "source": "regex",
-          "raw": "экран 6.8\""
+          "raw": "экран 6.8\"",
+          "grounded": true
         },
         {
           "attribute": "battery",
           "value": "5000 мАч",
           "confidence": 0.9,
           "source": "regex",
-          "raw": "аккумулятор 5000 мач"
+          "raw": "аккумулятор 5000 мач",
+          "grounded": true
         },
         {
           "attribute": "weight",
           "value": "232 г",
           "confidence": 0.93,
           "source": "regex",
-          "raw": "вес 232 г"
+          "raw": "вес 232 г",
+          "grounded": true
         },
         {
           "attribute": "cpu",
           "value": "Snapdragon 8 Gen 3",
           "confidence": 0.94,
           "source": "regex",
-          "raw": "snapdragon 8 gen 3"
+          "raw": "snapdragon 8 gen 3",
+          "grounded": true
         }
       ]
     },
@@ -178,70 +194,79 @@
         "model": "MacBook Air 13 M3"
       },
       "missing_required": [],
-      "latency_ms": 5153.14,
+      "latency_ms": 5244.79,
       "detailed_predictions": [
         {
           "attribute": "brand",
           "value": "Apple",
           "confidence": 0.95,
           "source": "flashtext",
-          "raw": "Apple"
+          "raw": "Apple",
+          "grounded": true
         },
         {
           "attribute": "color",
           "value": "черный",
           "confidence": 0.96,
           "source": "flashtext",
-          "raw": "темная ночь"
+          "raw": "темная ночь",
+          "grounded": true
         },
         {
           "attribute": "memory_ram",
           "value": "16 ГБ",
           "confidence": 0.93,
           "source": "regex",
-          "raw": "16 гб оперативной"
+          "raw": "16 гб оперативной",
+          "grounded": true
         },
         {
           "attribute": "screen_diagonal",
           "value": "13,6\"",
           "confidence": 0.92,
           "source": "regex",
-          "raw": "экран 13.6 дюйма"
+          "raw": "экран 13.6 дюйма",
+          "grounded": true
         },
         {
           "attribute": "weight",
           "value": "1,24 кг",
           "confidence": 0.93,
           "source": "regex",
-          "raw": "вес 1.24 кг"
+          "raw": "вес 1.24 кг",
+          "grounded": true
         },
         {
           "attribute": "cpu",
           "value": "Apple M3",
           "confidence": 0.95,
           "source": "regex",
-          "raw": "apple m3"
+          "raw": "apple m3",
+          "grounded": true
         },
         {
           "attribute": "os",
           "value": "macOS",
           "confidence": 0.92,
           "source": "regex",
-          "raw": "macos"
+          "raw": "macos",
+          "grounded": true
         },
         {
           "attribute": "memory_rom",
           "value": "512 ГБ",
           "confidence": 0.9544,
           "source": "gliner",
-          "raw": "512GB"
+          "raw": "512GB",
+          "grounded": true
         },
         {
           "attribute": "model",
           "value": "MacBook Air 13 M3",
           "confidence": 0.9453,
           "source": "gliner",
-          "raw": "MacBook Air 13 M3"
+          "raw": "MacBook Air 13 M3",
+          "grounded": true
         }
       ]
     },
@@ -261,56 +286,63 @@
         "model": "OLED55C4RLA"
       },
       "missing_required": [],
-      "latency_ms": 133.33,
+      "latency_ms": 138.88,
       "detailed_predictions": [
         {
           "attribute": "brand",
           "value": "LG",
           "confidence": 0.95,
           "source": "flashtext",
-          "raw": "LG"
+          "raw": "LG",
+          "grounded": true
         },
         {
           "attribute": "color",
           "value": "чёрный",
           "confidence": 0.96,
           "source": "flashtext",
-          "raw": "черный"
+          "raw": "черный",
+          "grounded": true
         },
         {
           "attribute": "screen_diagonal",
           "value": "55,0\"",
           "confidence": 0.9500000000000001,
           "source": "regex",
-          "raw": "55\""
+          "raw": "55\"",
+          "grounded": true
         },
         {
           "attribute": "refresh_rate",
           "value": "120 Гц",
           "confidence": 0.9,
           "source": "regex",
-          "raw": "120 гц"
+          "raw": "120 гц",
+          "grounded": true
         },
         {
           "attribute": "resolution",
           "value": "3840×2160",
           "confidence": 0.9,
           "source": "regex",
-          "raw": "3840x2160"
+          "raw": "3840x2160",
+          "grounded": true
         },
         {
           "attribute": "power",
           "value": "40 Вт",
           "confidence": 0.9,
           "source": "regex",
-          "raw": "40 вт"
+          "raw": "40 вт",
+          "grounded": true
         },
         {
           "attribute": "model",
           "value": "OLED55C4RLA",
           "confidence": 0.92,
           "source": "gliner",
-          "raw": "OLED55C4RLA"
+          "raw": "OLED55C4RLA",
+          "grounded": true
         }
       ]
     },
@@ -331,63 +363,71 @@
         "cleaning_type": "сухая и влажная"
       },
       "missing_required": [],
-      "latency_ms": 140.18,
+      "latency_ms": 149.05,
       "detailed_predictions": [
         {
           "attribute": "brand",
           "value": "Xiaomi",
           "confidence": 0.95,
           "source": "flashtext",
-          "raw": "Xiaomi"
+          "raw": "Xiaomi",
+          "grounded": true
         },
         {
           "attribute": "color",
           "value": "белый",
           "confidence": 0.96,
           "source": "flashtext",
-          "raw": "white"
+          "raw": "white",
+          "grounded": true
         },
         {
           "attribute": "battery",
           "value": "3200 мАч",
           "confidence": 0.9,
           "source": "regex",
-          "raw": "аккумулятора 3200 мач"
+          "raw": "аккумулятора 3200 мач",
+          "grounded": true
         },
         {
           "attribute": "power",
           "value": "45 Вт",
           "confidence": 0.9,
           "source": "regex",
-          "raw": "45 вт"
+          "raw": "45 вт",
+          "grounded": true
         },
         {
           "attribute": "volume",
           "value": "300 мл",
           "confidence": 0.89,
           "source": "regex",
-          "raw": "300 мл"
+          "raw": "300 мл",
+          "grounded": true
         },
         {
           "attribute": "model",
           "value": "S10",
           "confidence": 0.9307,
           "source": "gliner",
-          "raw": "S10"
+          "raw": "S10",
+          "grounded": true
         },
         {
           "attribute": "working_time",
           "value": "130 мин",
           "confidence": 0.9421,
           "source": "gliner",
-          "raw": "130 минут"
+          "raw": "130 минут",
+          "grounded": true
         },
         {
           "attribute": "cleaning_type",
           "value": "сухая и влажная",
           "confidence": 0.9279,
           "source": "gliner",
-          "raw": "Сухая и влажная уборка"
+          "raw": "Сухая и влажная уборка",
+          "grounded": true
         }
       ]
     },
@@ -405,42 +445,47 @@
         "working_time": "30 ч"
       },
       "missing_required": [],
-      "latency_ms": 129.99,
+      "latency_ms": 132.76,
       "detailed_predictions": [
         {
           "attribute": "brand",
           "value": "Sony",
           "confidence": 0.95,
           "source": "flashtext",
-          "raw": "Sony"
+          "raw": "Sony",
+          "grounded": true
         },
         {
           "attribute": "color",
           "value": "серебристый",
           "confidence": 0.96,
           "source": "flashtext",
-          "raw": "серебристый"
+          "raw": "серебристый",
+          "grounded": true
         },
         {
           "attribute": "weight",
           "value": "250 г",
           "confidence": 0.93,
           "source": "regex",
-          "raw": "вес 250 г"
+          "raw": "вес 250 г",
+          "grounded": true
         },
         {
           "attribute": "model",
           "value": "WH-1000XM5",
           "confidence": 0.9507,
           "source": "gliner",
-          "raw": "WH-1000XM5"
+          "raw": "WH-1000XM5",
+          "grounded": true
         },
         {
           "attribute": "working_time",
           "value": "30 ч",
           "confidence": 0.9383,
           "source": "gliner",
-          "raw": "30 часов"
+          "raw": "30 часов",
+          "grounded": true
         }
       ]
     },
@@ -459,49 +504,55 @@
         "model": "Mi Power Bank 3"
       },
       "missing_required": [],
-      "latency_ms": 129.98,
+      "latency_ms": 134.37,
       "detailed_predictions": [
         {
           "attribute": "brand",
           "value": "Xiaomi",
           "confidence": 0.95,
           "source": "flashtext",
-          "raw": "Xiaomi"
+          "raw": "Xiaomi",
+          "grounded": true
         },
         {
           "attribute": "color",
           "value": "чёрный",
           "confidence": 0.96,
           "source": "flashtext",
-          "raw": "черный"
+          "raw": "черный",
+          "grounded": true
         },
         {
           "attribute": "battery",
           "value": "20000 мАч",
           "confidence": 0.93,
           "source": "regex",
-          "raw": "20000 mah"
+          "raw": "20000 mah",
+          "grounded": true
         },
         {
           "attribute": "weight",
           "value": "430 г",
           "confidence": 0.93,
           "source": "regex",
-          "raw": "вес 430 г"
+          "raw": "вес 430 г",
+          "grounded": true
         },
         {
           "attribute": "power",
           "value": "18 Вт",
           "confidence": 0.9,
           "source": "regex",
-          "raw": "18 вт"
+          "raw": "18 вт",
+          "grounded": true
         },
         {
           "attribute": "model",
           "value": "Mi Power Bank 3",
           "confidence": 0.9506,
           "source": "gliner",
-          "raw": "Mi Power Bank 3"
+          "raw": "Mi Power Bank 3",
+          "grounded": true
         }
       ]
     }

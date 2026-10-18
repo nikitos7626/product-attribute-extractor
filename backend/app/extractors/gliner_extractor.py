@@ -175,6 +175,7 @@ class GlinerExtractor:
             confidence=round(conf, 4),
             source="gliner",
             raw=raw_text,
+            grounded=True,
         )
 
     def _normalize(self, attr_key: str, raw: str) -> str:

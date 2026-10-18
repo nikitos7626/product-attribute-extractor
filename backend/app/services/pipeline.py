@@ -501,6 +501,9 @@ class CascadedExtractionPipeline:
             predictions_map = {k: v for k, v in predictions_map.items() if k in allowed_attrs}
 
         all_preds = list(predictions_map.values())
+        for p in all_preds:
+            if "grounded" not in p:
+                p["grounded"] = True
         final_found = set(predictions_map.keys())
         final_missing = sorted(list(required_attrs - final_found))
 
