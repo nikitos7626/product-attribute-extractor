@@ -490,6 +490,27 @@ class RegexExtractor:
                 confidence=self._conf(0.90, m.group(0), title),
                 source="regex", raw=m.group(0).strip(),
             )
+        elif (m := re.search(r"\b(?:4k|4к|ultra\s*hd|uhd)\b", text, flags=re.IGNORECASE)):
+            yield Prediction(
+                attribute="resolution",
+                value="3840×2160",
+                confidence=self._conf(0.91, m.group(0), title),
+                source="regex", raw=m.group(0).strip(),
+            )
+        elif (m := re.search(r"\b(?:8k|8к)\b", text, flags=re.IGNORECASE)):
+            yield Prediction(
+                attribute="resolution",
+                value="7680×4320",
+                confidence=self._conf(0.91, m.group(0), title),
+                source="regex", raw=m.group(0).strip(),
+            )
+        elif (m := re.search(r"\b(?:full\s*hd|fhd)\b", text, flags=re.IGNORECASE)):
+            yield Prediction(
+                attribute="resolution",
+                value="1920×1080",
+                confidence=self._conf(0.90, m.group(0), title),
+                source="regex", raw=m.group(0).strip(),
+            )
 
         # --- Вес ---
         if (m := self._WEIGHT_CTX_RE.search(text)):

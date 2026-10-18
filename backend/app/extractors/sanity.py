@@ -317,4 +317,13 @@ class AttributeSanityValidator:
             has_time_unit = bool(re.search(r"(?:ч|час\w*|мин\w*|h|hr|m|sec|сек)\b", val_lower))
             return has_digits and has_time_unit and len(val_lower.split()) <= 4
 
+        # 16. Разрешение экрана (Resolution)
+        if attr_name == "resolution":
+            # Разрешение не может быть дюймами, батареей, частотой или памятью
+            if any(u in val_lower for u in ['"', "дюйм", "inch", "мач", "mah", "гц", "hz", "гб", "gb", "ватт"]):
+                return False
+            has_dims = bool(re.search(r"\b\d{3,4}\s*[x×*]\s*\d{3,4}\b", val_lower))
+            has_named = any(k in val_lower for k in ["4k", "8k", "ultra hd", "full hd", "uhd", "fhd", "qhd", "wqhd", "hd"])
+            return has_dims or has_named
+
         return True
