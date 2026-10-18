@@ -353,9 +353,10 @@ class AttributeSanityValidator:
             bad_brand_words = {
                 "смартфон", "телефон", "ноутбук", "планшет", "телевизор", "наушники",
                 "пылесос", "холодильник", "экран", "дисплей", "память", "батарея",
-                "аккумулятор", "чехол", "стекло", "зарядка", "оригинал", "новый", "гб", "gb", "мач", "mah"
+                "аккумулятор", "чехол", "стекло", "зарядка", "оригинал", "новый", "гб", "gb", "мач", "mah",
+                "tws", "anc", "bluetooth", "блютуз", "wireless", "беспроводной"
             }
-            if category_key in ("smartphones", "laptops", "tablets", "tvs", "vacuum_cleaners", "refrigerators", "headphones"):
+            if category_key in ("smartphones", "laptops", "tablets", "tvs", "vacuum_cleaners", "refrigerators", "headphones", "desktops"):
                 bad_brand_words.update({
                     "mediatek", "qualcomm", "snapdragon", "dimensity", "intel", "amd", "nvidia", "rtx", "gtx", "adreno", "mali"
                 })
