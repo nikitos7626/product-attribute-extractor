@@ -39,7 +39,11 @@ class RegexExtractor:
 
     # ---------- Guard-паттерны (контекстные фильтры отрицаний, сравнений и лимитов) ----------
     _NEGATION_PREFIX_RE = re.compile(
-        r"\b(?:не|нет|вместо|нежели|чем|кроме|не\s+путать\s+с|забудьте\s+про|без|в\s+отличие\s+от|отличие\s+от|отличн\w*\s+от|компактнее\w*|меньше\w*)\s+[^.,!;()]{0,35}$",
+        r"\b(?:не|нет|вместо|нежели|чем|кроме|не\s+путать\s+с|забудьте\s+про|без|в\s+отличие\s+от|отличие\s+от|отличн\w*\s+от|компактнее\w*|меньше\w*|не\s+прид[её]тся)\s+[^.,!;()]{0,45}$",
+        re.IGNORECASE,
+    )
+    _NEGATION_SUFFIX_RE = re.compile(
+        r"^\s*(?:не\s+поддержива\w*|не\s+установлен\w*|не\s+входит\s+в|отсутству\w*|нет\b)",
         re.IGNORECASE,
     )
     _UPGRADE_LIMIT_RE = re.compile(
@@ -51,7 +55,7 @@ class RegexExtractor:
         re.IGNORECASE,
     )
     _ACCESSORY_PREFIX_RE = re.compile(
-        r"\b(?:чех(?:ол|ла|ле|лом)|стекл(?:о|а|ом|е)|пл[её]нк\w*|ремеш(?:ок|ка|ком)|футляр\w*|насадк\w*|кабел\w*|адаптер\w*|в\s+подарок|подарочн\w*)\s+[^.,!;()]{0,35}$",
+        r"\b(?:чех(?:ол|ла|ле|лом)|стекл(?:о|а|ом|е)|пл[её]нк\w*|ремеш(?:ок|ка|ком)|футляр\w*|насадк\w*|кабел\w*|адаптер\w*|в\s+подарок|подарочн\w*|пауэрбанк\w*|павербанк\w*|повербанк\w*|power\s*bank\w*|внешн\w*\s+аккумулятор\w*)\s+(?:на\s+)?[^.,!;()]{0,35}$",
         re.IGNORECASE,
     )
     _RECOMMENDATION_PREFIX_RE = re.compile(
@@ -344,15 +348,23 @@ class RegexExtractor:
         self,
         text: str,
         start_pos: int,
+        end_pos: int | None = None,
         check_upgrade: bool = False,
         check_accessory: bool = False,
         check_recommendation: bool = False,
     ) -> bool:
         """
-        Проверяет контекст перед вхождением на наличие отрицаний, сравнений с конкурентами,
+        Проверяет контекст перед вхождением и после него на наличие отрицаний, сравнений с конкурентами,
         лимитов апгрейда (до N ГБ), аксессуаров и рекомендаций ОС.
+
+        Правило изоляции: контекстное окно не пересекает границы скобок '(', ')', '[', ']',
+        а также знаков препинания (., !, ?, ;, :) справа и слева от найденного значения,
+        чтобы комментарии в скобках или соседние предложения не отменяли валидные характеристики.
         """
-        prefix = text[max(0, start_pos - 55):start_pos].lower()
+        raw_prefix = text[max(0, start_pos - 60):start_pos].lower()
+        prefix_parts = re.split(r"[()[\]{}.,!;?]", raw_prefix)
+        prefix = prefix_parts[-1] if prefix_parts else raw_prefix
+
         if self._NEGATION_PREFIX_RE.search(prefix):
             return True
         if self._COMPETITOR_PREFIX_RE.search(prefix):
@@ -363,6 +375,14 @@ class RegexExtractor:
             return True
         if check_recommendation and self._RECOMMENDATION_PREFIX_RE.search(prefix):
             return True
+
+        if end_pos is not None:
+            raw_suffix = text[end_pos:min(len(text), end_pos + 45)].lower()
+            suffix_parts = re.split(r"[()[\]{}.,!;?]", raw_suffix)
+            suffix = suffix_parts[0].strip() if suffix_parts else ""
+            if suffix and self._NEGATION_SUFFIX_RE.search(suffix):
+                return True
+
         return False
 
     def extract(self, card: dict, category_key: str = "default") -> list[Prediction]:
@@ -690,8 +710,9 @@ class RegexExtractor:
 
         # --- Батарея ---
         found_battery = False
+        check_battery_acc = (category_key != "powerbanks")
         for m in self._BATTERY_RE.finditer(text):
-            if not self._is_negated_or_filtered(text, m.start()):
+            if not self._is_negated_or_filtered(text, m.start(), end_pos=m.end(), check_accessory=check_battery_acc):
                 yield Prediction(
                     attribute="battery", value=_u.battery(m.group(1)),
                     confidence=self._conf(0.90, m.group(0), title),
@@ -702,7 +723,7 @@ class RegexExtractor:
 
         if not found_battery:
             for m in self._BATTERY_CTX_RE.finditer(text):
-                if not self._is_negated_or_filtered(text, m.start()):
+                if not self._is_negated_or_filtered(text, m.start(), end_pos=m.end(), check_accessory=check_battery_acc):
                     mah = float(m.group(1).replace(",", "."))
                     if 400 <= mah <= 35000:
                         yield Prediction(

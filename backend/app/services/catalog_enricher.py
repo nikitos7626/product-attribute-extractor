@@ -157,7 +157,7 @@ class CatalogEnricher:
                 "value": val,
                 "confidence": 0.90,
                 "source": "catalog_kb",
-                "raw_text": val,
+                "raw": val,
                 "grounded": True,
             })
 

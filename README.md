@@ -2,7 +2,7 @@
 
 [![Python 3.10+](https://img.shields.io/badge/Python-3.10%2B-blue.svg?logo=python&logoColor=white)](https://www.python.org/)
 [![FastAPI](https://img.shields.io/badge/FastAPI-0.115%2B-009688.svg?logo=fastapi&logoColor=white)](https://fastapi.tiangolo.com/)
-[![Tests 127 PASS](https://img.shields.io/badge/Tests-127%20PASS%20(100%25)-brightgreen.svg)](backend/tests/)
+[![Tests 128 PASS](https://img.shields.io/badge/Tests-128%20PASS%20(100%25)-brightgreen.svg)](backend/tests/)
 [![Throughput](https://img.shields.io/badge/Throughput->550%20cards%2Fs-blue.svg)](#-производительность)
 [![Macro-F1 0.99](https://img.shields.io/badge/Macro--F1-0.99-success.svg)](output/metrics_report.md)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
@@ -106,7 +106,7 @@ python scripts/export_predictions.py --input data/sample_cards.json --format bot
 
 ## 🧪 Тестирование
  
-Запуск полного набора unit- и интеграционных тестов (127 тестов, 100% green):
+Запуск полного набора unit- и интеграционных тестов (128 тестов, 100% green):
 ```bash
 pytest backend/tests
 
