@@ -1,7 +1,9 @@
 from __future__ import annotations
 
+import json
 import logging
 import re
+from pathlib import Path
 from typing import Any
 
 from app.config import settings
@@ -14,6 +16,23 @@ from app.services.brand_registry import BrandRegistry
 from app.services.catalog_enricher import CatalogEnricher
 
 logger = logging.getLogger(__name__)
+
+# --------------------------------------------------------------------------
+# ПОЛНАЯ ТАКСОНОМИЯ КАТАЛОГА М.ВИДЕО (6 570+ КАТЕГОРИЙ ИЗ skus.pkl)
+# --------------------------------------------------------------------------
+MVIDEO_TAXONOMY_ID_TO_NAME: dict[str, str] = {}
+MVIDEO_TAXONOMY_NORMALIZED: dict[str, str] = {}
+try:
+    _dict_dir = Path(__file__).resolve().parent.parent.parent / "data" / "dictionaries"
+    _tax_path = _dict_dir / "mvideo_categories.json"
+    if _tax_path.is_file():
+        with open(_tax_path, "r", encoding="utf-8") as _f:
+            _tax_data = json.load(_f)
+            MVIDEO_TAXONOMY_ID_TO_NAME = _tax_data.get("id_to_name", {})
+            for _name in _tax_data.get("all_names", []):
+                MVIDEO_TAXONOMY_NORMALIZED[_name.strip().lower()] = _name.strip()
+except Exception as _e:
+    logger.warning("Could not load mvideo_categories.json: %s", _e)
 
 
 # --------------------------------------------------------------------------
@@ -79,6 +98,42 @@ CATEGORY_SCHEMAS: dict[str, dict[str, Any]] = {
     "microwaves": {
         "name_ru": "Микроволновые печи",
         "keywords": ["микроволнов", "свч", "микроволновка"],
+        "required_attrs": {"brand", "model", "volume", "power", "color"},
+        "gliner_labels": ["бренд", "модель", "объем", "мощность", "цвет"],
+    },
+    "tablets": {
+        "name_ru": "Планшеты",
+        "keywords": ["планшет", "ipad", "айпад", "таблет", "matepad", "galaxy tab", "xiaomi pad", "redmi pad"],
+        "required_attrs": {"brand", "model", "screen_diagonal", "memory_rom", "battery", "color"},
+        "gliner_labels": ["бренд", "модель", "объём памяти", "оперативная память", "диагональ экрана", "цвет", "процессор", "ёмкость аккумулятора"],
+    },
+    "desktops": {
+        "name_ru": "Системные блоки и компьютеры",
+        "keywords": ["системный блок", "компьютер", "пк", "моноблок", "неттоп", "desktop", "mac mini", "imac", "mac studio", "mac pro"],
+        "required_attrs": {"brand", "model", "cpu", "memory_ram", "memory_rom"},
+        "gliner_labels": ["бренд", "модель", "процессор", "оперативная память", "объём памяти", "видеокарта", "цвет"],
+    },
+    "monitors": {
+        "name_ru": "Мониторы",
+        "keywords": ["монитор", "игровой монитор"],
+        "required_attrs": {"brand", "model", "screen_diagonal", "resolution"},
+        "gliner_labels": ["бренд", "модель", "диагональ экрана", "разрешение экрана", "частота обновления экрана", "технология экрана"],
+    },
+    "washing_machines": {
+        "name_ru": "Стиральные машины",
+        "keywords": ["стиральная машина", "стиралка", "стирально-сушильная"],
+        "required_attrs": {"brand", "model", "load_capacity", "color"},
+        "gliner_labels": ["бренд", "модель", "загрузка", "скорость отжима", "цвет"],
+    },
+    "smart_watches": {
+        "name_ru": "Смарт-часы",
+        "keywords": ["смарт-часы", "умные часы", "apple watch", "galaxy watch", "смарт часы"],
+        "required_attrs": {"brand", "model", "color"},
+        "gliner_labels": ["бренд", "модель", "цвет", "диагональ экрана", "время работы"],
+    },
+    "kettles": {
+        "name_ru": "Электрические чайники",
+        "keywords": ["электрочайник", "чайник электрический", "чайник"],
         "required_attrs": {"brand", "model", "volume", "power", "color"},
         "gliner_labels": ["бренд", "модель", "объем", "мощность", "цвет"],
     },
@@ -198,7 +253,29 @@ class CascadedExtractionPipeline:
 
         is_accessory_or_sanitary = is_accessory_raw_cat or is_accessory_title or has_sanitary_markers
 
-        blocked_categories = {"smartphones", "tvs", "headphones", "laptops", "vacuum_cleaners"} if is_accessory_or_sanitary else set()
+        blocked_categories = {"smartphones", "tablets", "tvs", "monitors", "headphones", "laptops", "vacuum_cleaners"} if is_accessory_or_sanitary else set()
+
+        ordered_tech_keys = [
+            "tablets",
+            "smart_watches",
+            "vacuum_cleaners",
+            "washing_machines",
+            "refrigerators",
+            "microwaves",
+            "kettles",
+            "monitors",
+            "desktops",
+            "laptops",
+            "tvs",
+            "smartphones",
+            "headphones",
+            "powerbanks",
+        ]
+
+        # 0. Извлечение raw_cat из category_id, если передан id из каталога
+        cat_id = str(card.get("category_id") or card.get("categoryId") or (card.get("categories", {}) if isinstance(card.get("categories"), dict) else {}).get("categoryId") or "").strip()
+        if cat_id and cat_id in MVIDEO_TAXONOMY_ID_TO_NAME:
+            raw_cat = MVIDEO_TAXONOMY_ID_TO_NAME[cat_id].lower()
 
         # ------------------------------------------------------------------
         # 1. Эксплицитная категория из метаданных (raw_cat)
@@ -207,8 +284,11 @@ class CascadedExtractionPipeline:
             if "внешние аккумуляторы" in raw_cat or "портативные аккумуляторы" in raw_cat:
                 return "powerbanks", CATEGORY_SCHEMAS["powerbanks"]["name_ru"]
 
-            for cat_key, schema in CATEGORY_SCHEMAS.items():
-                if cat_key == "default" or cat_key in blocked_categories:
+            for cat_key in ordered_tech_keys:
+                if cat_key in blocked_categories:
+                    continue
+                schema = CATEGORY_SCHEMAS.get(cat_key)
+                if not schema:
                     continue
                 name_ru_clean = schema["name_ru"].lower().split("(")[0].strip()
                 if (
@@ -218,21 +298,6 @@ class CascadedExtractionPipeline:
                     or cat_key in raw_cat
                 ):
                     return cat_key, schema["name_ru"]
-            for cat_key in [
-                "vacuum_cleaners",
-                "refrigerators",
-                "microwaves",
-                "tvs",
-                "laptops",
-                "smartphones",
-                "headphones",
-                "powerbanks",
-            ]:
-                if cat_key in blocked_categories:
-                    continue
-                schema = CATEGORY_SCHEMAS.get(cat_key)
-                if not schema:
-                    continue
                 schema_keywords = schema["keywords"]
                 if cat_key == "headphones" and has_sanitary_markers:
                     schema_keywords = [kw for kw in schema_keywords if not kw.startswith("гарнитур")]
@@ -240,21 +305,16 @@ class CascadedExtractionPipeline:
                     if re.search(rf"\b{re.escape(kw)}", raw_cat):
                         return cat_key, schema["name_ru"]
 
+            # Если категория есть в полном каталоге М.Видео (напр. «Матрасы», «Смесители», «Шины»):
+            if raw_cat in MVIDEO_TAXONOMY_NORMALIZED:
+                return "default", MVIDEO_TAXONOMY_NORMALIZED[raw_cat]
+
         # ------------------------------------------------------------------
         # 2. Детекция по названию товара (Title) — принцип Head Noun
         # ------------------------------------------------------------------
         if clean_title:
             earliest_matches: list[tuple[int, str, str]] = []
-            for cat_key in [
-                "vacuum_cleaners",
-                "refrigerators",
-                "microwaves",
-                "tvs",
-                "laptops",
-                "smartphones",
-                "headphones",
-                "powerbanks",
-            ]:
+            for cat_key in ordered_tech_keys:
                 if cat_key in blocked_categories:
                     continue
                 schema = CATEGORY_SCHEMAS.get(cat_key)
@@ -364,6 +424,10 @@ class CascadedExtractionPipeline:
             has_tv_feature = bool(re.search(r"\b(?:smart\s*tv|смарт\s*тв|dvb-[tcs]|тв-тюнер)\b", full_text))
             if has_tv_screen and has_tv_feature:
                 return "tvs", CATEGORY_SCHEMAS["tvs"]["name_ru"]
+
+        # 5. Проверка по полной таксономии каталога М.Видео (если не попало в специализированные тех-категории):
+        if raw_cat and raw_cat in MVIDEO_TAXONOMY_NORMALIZED:
+            return "default", MVIDEO_TAXONOMY_NORMALIZED[raw_cat]
 
         return "default", CATEGORY_SCHEMAS["default"]["name_ru"]
 

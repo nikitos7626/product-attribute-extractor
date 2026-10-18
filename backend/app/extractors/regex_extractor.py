@@ -55,6 +55,14 @@ class RegexExtractor:
         r"(?<![a-zA-Zа-яА-ЯёЁ0-9])(\d{1,4})\s*(?:гб|gb)?\s*/\s*(\d{1,4})\s*(?:гб|gb)?\b",
         re.IGNORECASE,
     )
+    _LOAD_CAPACITY_RE = re.compile(
+        r"(?:загрузк\w*|максимальн\w*\s+загрузк\w*|вместимост\w*)\s*[:=]?\s*(\d+(?:[.,]\d+)?)\s*(?:кг|kg)\b",
+        re.IGNORECASE,
+    )
+    _SPIN_SPEED_RE = re.compile(
+        r"(?:скорост\w*\s+отжим\w*|отжим\w*)\s*[:=]?\s*(\d{3,4})\s*(?:об/?мин|rpm)\b",
+        re.IGNORECASE,
+    )
 
     # Контекстные маркеры цвета и материала (full_text уже в lower)
     _COLOR_PREFIX_RE = re.compile(
@@ -578,6 +586,24 @@ class RegexExtractor:
             yield Prediction(
                 attribute="os", value=canon,
                 confidence=0.92, source="regex", raw=raw_text,
+            )
+
+        # --- Загрузка стиральной машины ---
+        if (m := self._LOAD_CAPACITY_RE.search(text)):
+            yield Prediction(
+                attribute="load_capacity",
+                value=f"{float(m.group(1).replace(',', '.')):.1f} кг".replace(".0", ""),
+                confidence=self._conf(0.92, m.group(0), title),
+                source="regex", raw=m.group(0).strip(),
+            )
+
+        # --- Скорость отжима ---
+        if (m := self._SPIN_SPEED_RE.search(text)):
+            yield Prediction(
+                attribute="spin_speed",
+                value=f"{m.group(1)} об/мин",
+                confidence=self._conf(0.92, m.group(0), title),
+                source="regex", raw=m.group(0).strip(),
             )
 
     # ================== CPU / OS ==================

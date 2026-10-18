@@ -83,6 +83,32 @@ class AttributeSanityValidator:
             "screen_diagonal", "refresh_rate", "resolution", "cpu", "os",
             "cleaning_type", "battery", "defrost_system",
         },
+        "tablets": {
+            "power", "warranty", "cleaning_type", "defrost_system",
+            "working_time", "bagless", "load_capacity", "spin_speed",
+        },
+        "desktops": {
+            "cleaning_type", "defrost_system", "power", "working_time", "volume",
+            "warranty", "bagless", "battery", "load_capacity", "spin_speed",
+        },
+        "monitors": {
+            "cleaning_type", "defrost_system", "battery", "memory_ram",
+            "working_time", "cpu", "os", "memory_rom", "volume", "warranty",
+            "load_capacity", "spin_speed",
+        },
+        "washing_machines": {
+            "screen_diagonal", "refresh_rate", "resolution", "cpu", "os",
+            "memory_rom", "memory_ram", "battery", "defrost_system", "cleaning_type",
+        },
+        "smart_watches": {
+            "cleaning_type", "defrost_system", "power", "volume", "warranty",
+            "load_capacity", "spin_speed", "gpu",
+        },
+        "kettles": {
+            "screen_diagonal", "refresh_rate", "resolution", "cpu", "os",
+            "memory_rom", "memory_ram", "battery", "cleaning_type", "defrost_system",
+            "load_capacity", "spin_speed", "gpu",
+        },
     }
 
     # Белый список допустимых атрибутов по категориям из датасета
@@ -96,6 +122,13 @@ class AttributeSanityValidator:
         "headphones": {"brand", "model", "color", "weight", "working_time"},
         "powerbanks": {"brand", "model", "battery", "color", "power", "weight"},
         "microwaves": {"brand", "model", "volume", "power", "color", "weight"},
+        "tablets": {"brand", "model", "memory_rom", "memory_ram", "screen_diagonal", "battery", "color", "cpu", "os", "weight", "resolution", "refresh_rate"},
+        "desktops": {"brand", "model", "cpu", "memory_ram", "memory_rom", "color", "os", "weight", "gpu"},
+        "monitors": {"brand", "model", "screen_diagonal", "resolution", "refresh_rate", "color", "power", "display_tech"},
+        "washing_machines": {"brand", "model", "load_capacity", "spin_speed", "color", "weight", "power"},
+        "smart_watches": {"brand", "model", "screen_diagonal", "battery", "color", "working_time", "weight", "os"},
+        "kettles": {"brand", "model", "volume", "power", "color", "weight"},
+        "default": {"brand", "model", "color", "weight", "power", "volume"},
     }
 
     # Корни реальных цветов
@@ -153,6 +186,10 @@ class AttributeSanityValidator:
             if category_key == "smartphones":
                 # Смартфон не может иметь батарею 144 мАч или 50 000 мАч
                 return 800 <= val_mah <= 12000
+            elif category_key == "tablets":
+                return 1000 <= val_mah <= 20000
+            elif category_key == "smart_watches":
+                return 100 <= val_mah <= 1200
             elif category_key == "headphones":
                 return 25 <= val_mah <= 1500
             elif category_key == "vacuum_cleaners":
@@ -174,16 +211,22 @@ class AttributeSanityValidator:
 
             # Физические диапазоны по категориям
             if category_key == "smartphones":
-                # Смартфон: от 3.5" (iPhone 4) до 7.6" (Fold в раскрытом виде)
+                # Смартфон: от 3.5" (iPhone 4) до 7.8" (Fold в раскрытом виде)
                 return 3.5 <= diag <= 7.8
+            elif category_key == "tablets":
+                return 6.8 <= diag <= 16.0
             elif category_key == "laptops":
                 # Ноутбук: от 11.0" до 19.0"
                 return 11.0 <= diag <= 19.0
+            elif category_key == "monitors":
+                return 15.0 <= diag <= 65.0
+            elif category_key == "smart_watches":
+                return 0.9 <= diag <= 2.5
             elif category_key == "tvs":
                 # Телевизор: от 20" до 120"
                 return 20.0 <= diag <= 120.0
             else:
-                return 3.0 <= diag <= 120.0
+                return 0.9 <= diag <= 120.0
 
         # 4. Память ROM (Накопитель)
         if attr_name == "memory_rom":
@@ -196,13 +239,14 @@ class AttributeSanityValidator:
             unit = (m.group(2) or "гб").lower()
             val_gb = num * 1024 if "т" in unit else num
 
-            if category_key == "smartphones":
-                # Смартфон: от 16 ГБ до 2048 ГБ (2 ТБ)
+            if category_key == "smartphones" or category_key == "tablets":
                 return 16 <= val_gb <= 2048
             elif category_key == "laptops":
                 return 32 <= val_gb <= 8192
+            elif category_key == "desktops":
+                return 32 <= val_gb <= 32768
             else:
-                return 8 <= val_gb <= 16384
+                return 8 <= val_gb <= 32768
 
         # 5. Память RAM (ОЗУ)
         if attr_name == "memory_ram":
@@ -213,13 +257,14 @@ class AttributeSanityValidator:
                 return False
             val_ram = float(m.group(1).replace(",", "."))
 
-            if category_key == "smartphones":
-                # Смартфон: RAM от 1 ГБ до 32 ГБ
+            if category_key == "smartphones" or category_key == "tablets":
                 return 1 <= val_ram <= 32
             elif category_key == "laptops":
                 return 2 <= val_ram <= 128
+            elif category_key == "desktops":
+                return 2 <= val_ram <= 512
             else:
-                return 1 <= val_ram <= 128
+                return 1 <= val_ram <= 512
 
         # 6. Частота обновления (Refresh Rate)
         if attr_name == "refresh_rate":
@@ -341,5 +386,21 @@ class AttributeSanityValidator:
                 "встроенн", "интегрированн", "дискретн", "graphics", "графика"
             }
             return any(g in val_lower for g in known_gpus)
+
+        # 18. Загрузка стиральной машины (Load Capacity)
+        if attr_name == "load_capacity":
+            m = re.search(r"(\d+(?:[.,]\d+)?)", val_lower)
+            if not m:
+                return False
+            kg = float(m.group(1).replace(",", "."))
+            return 2.0 <= kg <= 25.0
+
+        # 19. Скорость отжима (Spin Speed)
+        if attr_name == "spin_speed":
+            m = re.search(r"(\d{3,4})", val_lower)
+            if not m:
+                return False
+            rpm = int(m.group(1))
+            return 400 <= rpm <= 2000
 
         return True
