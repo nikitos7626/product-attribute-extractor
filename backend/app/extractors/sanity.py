@@ -305,6 +305,10 @@ class AttributeSanityValidator:
                 "пылесос", "холодильник", "экран", "дисплей", "память", "батарея",
                 "аккумулятор", "чехол", "стекло", "зарядка", "оригинал", "новый", "гб", "gb", "мач", "mah"
             }
+            if category_key in ("smartphones", "laptops", "tablets", "tvs", "vacuum_cleaners", "refrigerators", "headphones"):
+                bad_brand_words.update({
+                    "mediatek", "qualcomm", "snapdragon", "dimensity", "intel", "amd", "nvidia", "rtx", "gtx", "adreno", "mali"
+                })
             return len(val_lower) >= 2 and val_lower not in bad_brand_words
 
         # 15. Время работы (Working Time)
