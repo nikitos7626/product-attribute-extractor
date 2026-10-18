@@ -114,9 +114,9 @@ def test_warranty(ext, text, expected):
 
 @pytest.mark.parametrize("text,expected", [
     ("Смартфон Snapdragon 8 Gen 3", "Snapdragon 8 Gen 3"),
-    ("Ноутбук Intel Core i7-12700H", "Intel Core i7-12700h"),
+    ("Ноутбук Intel Core i7-12700H", "Intel Core i7-12700H"),
     ("Ноутбук Apple M3 Pro", "Apple M3 Pro"),
-    ("Ноутбук Ryzen 7 5800H", "Ryzen 7 5800h"),
+    ("Ноутбук Ryzen 7 5800H", "Ryzen 7 5800H"),
     ("MediaTek Dimensity 9200", "MediaTek Dimensity 9200"),
     ("Exynos 2200", "Exynos 2200"),
 ])

@@ -213,9 +213,9 @@ class CascadedExtractionPipeline:
             if lines:
                 title = lines[0].lower()
 
-        # Подавляем секцию комплектации в названии (если сплошной текст подан в title)
+        # Подавляем секцию комплектации и подарков в названии (если сплошной текст подан в title)
         clean_title = re.sub(
-            r"(?:в\s+комплекте|комплектаци\w*|комплект\s+поставки|поставляется\s+с|идут\s+в\s+комплекте)[^.!\n;]+",
+            r"(?:в\s+подарок|подарок|в\s+комплекте|комплектаци\w*|комплект\s+поставки|поставляется\s+с|идут\s+в\s+комплекте)[^.!\n;]+",
             " ",
             title,
             flags=re.IGNORECASE,
@@ -518,18 +518,19 @@ class CascadedExtractionPipeline:
             card["description"] = raw_text
             if not raw_title:
                 lines = [line.strip() for line in raw_text.split("\n") if line.strip()]
-                if lines:
+                if lines and len(lines) > 1:
                     card["title"] = lines[0]
                 else:
-                    parts = re.split(r"(?<=[.!?])\s+", raw_text, maxsplit=1)
+                    parts = re.split(r"(?<!\d)(?<=[.!?])(?:\)|\"|')?\s+(?=[А-ЯA-Z])", raw_text, maxsplit=1)
                     card["title"] = parts[0] if parts else raw_text
         elif raw_title and not raw_desc:
             card["description"] = raw_title
             lines = [line.strip() for line in raw_title.split("\n") if line.strip()]
-            if lines:
+            if lines and len(lines) > 1:
                 card["title"] = lines[0]
             else:
-                card["title"] = raw_title
+                parts = re.split(r"(?<!\d)(?<=[.!?])(?:\)|\"|')?\s+(?=[А-ЯA-Z])", raw_title, maxsplit=1)
+                card["title"] = parts[0] if parts else raw_title
 
         # ------------------------------------------------------------------
         # ЭТАП 1: Определение категории товара
@@ -679,6 +680,14 @@ class CascadedExtractionPipeline:
                 if clean_m and len(clean_m) >= 2 and clean_m.lower() != b_val.lower():
                     predictions_map["model"]["value"] = clean_m
 
+        # Проверка согласованности бренда и модели (защита от конфликта брендов-конкурентов)
+        if "brand" in predictions_map and "model" in predictions_map:
+            b_val = predictions_map["brand"]["value"]
+            m_val = predictions_map["model"]["value"]
+            if not AttributeSanityValidator.is_brand_model_compatible(b_val, m_val):
+                logger.warning("Incompatible brand '%s' and model '%s'; discarding model.", b_val, m_val)
+                del predictions_map["model"]
+
         # Защита от перепутывания сущностей: процессор не может дублировать бренд или модель устройства
         if "cpu" in predictions_map:
             cpu_val = predictions_map["cpu"]["value"].lower().strip()
@@ -757,6 +766,7 @@ class CascadedExtractionPipeline:
         for p in all_preds:
             if "grounded" not in p:
                 p["grounded"] = True
+            p["confidence"] = round(float(p["confidence"]), 4)
         final_found = set(predictions_map.keys())
         final_missing = sorted(list(required_attrs - final_found))
 

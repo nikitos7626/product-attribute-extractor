@@ -2,7 +2,7 @@
 
 [![Python 3.10+](https://img.shields.io/badge/Python-3.10%2B-blue.svg?logo=python&logoColor=white)](https://www.python.org/)
 [![FastAPI](https://img.shields.io/badge/FastAPI-0.115%2B-009688.svg?logo=fastapi&logoColor=white)](https://fastapi.tiangolo.com/)
-[![Tests 123 PASS](https://img.shields.io/badge/Tests-123%20PASS%20(100%25)-brightgreen.svg)](backend/tests/)
+[![Tests 127 PASS](https://img.shields.io/badge/Tests-127%20PASS%20(100%25)-brightgreen.svg)](backend/tests/)
 [![Throughput](https://img.shields.io/badge/Throughput->550%20cards%2Fs-blue.svg)](#-производительность)
 [![Macro-F1 0.99](https://img.shields.io/badge/Macro--F1-0.99-success.svg)](output/metrics_report.md)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
@@ -44,7 +44,13 @@
 4. **Контроль качества (Human-in-the-Loop):**
    - Расчет уверенности (`confidence`) для каждого атрибута.
    - Карточки с нехваткой ключевых данных или спорными значениями автоматически маркируются `needs_review: true` и отправляются контент-модераторам.
-5. **Пакетная обработка и экспорт:**
+5. **Контекстные фильтры и защита от шума (Context Guardrails):**
+   - **Title Authority:** приоритетное извлечение спецификаций из названия товара для защиты от маркетингового шума в описании.
+   - **Анти-апгрейд фильтр:** отсечение пределов расширения (`до 32 ГБ`, `до 2 ТБ`, `флешки до 1024 ГБ`).
+   - **Защита от отрицаний и сравнений:** игнорирование упоминаний конкурентов (`не уступает iPhone 15 Pro Max`, `рвет Snapdragon 7s Gen 2`).
+   - **Межбрендовый инвариант:** проверка `AttributeSanityValidator.is_brand_model_compatible` (блокировка чужих моделей).
+   - **Защита от рекомендаций:** распознавание фактического `Без ОС` вместо рекомендованной Windows 11.
+6. **Пакетная обработка и экспорт:**
    - Поддержка форматов JSON и CSV через веб-интерфейс, REST API и командную строку (CLI).
 
 ---
@@ -100,9 +106,12 @@ python scripts/export_predictions.py --input data/sample_cards.json --format bot
 
 ## 🧪 Тестирование
  
-Запуск полного набора unit- и интеграционных тестов (123 теста, 100% green):
+Запуск полного набора unit- и интеграционных тестов (127 тестов, 100% green):
 ```bash
 pytest backend/tests
+
+# Демонстрация устойчивости к сложным кейсам селлеров (анти-апгрейд, защита от сравнений):
+python scripts/reproduce_cases.py
 ```
 
 ---

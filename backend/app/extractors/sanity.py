@@ -405,3 +405,63 @@ class AttributeSanityValidator:
             return 400 <= rpm <= 2000
 
         return True
+
+    @classmethod
+    def is_brand_model_compatible(cls, brand: str | None, model: str | None) -> bool:
+        """
+        Проверяет инвариант согласованности бренда и модели (защита от сквозного конфликта).
+        Например, модель 'iPhone 15 Pro Max' недопустима для бренда 'Xiaomi' или 'Samsung'.
+        """
+        if not brand or not model:
+            return True
+
+        b_low = str(brand).strip().lower()
+        m_low = str(model).strip().lower()
+
+        # Asus эксклюзивные линейки
+        if any(w in m_low for w in ["tuf gaming", "tuf", "rog", "zenbook", "vivobook"]):
+            return b_low in {"asus", "асус"}
+
+        # Apple эксклюзивные линейки
+        if any(w in m_low for w in ["iphone", "ipad", "macbook", "airpods", "imac", "apple watch"]):
+            return b_low in {"apple", "эппл", "эйпл"}
+
+        # Samsung эксклюзивные линейки
+        if (
+            "galaxy" in m_low
+            or "гэлакси" in m_low
+            or bool(re.search(r"\b(?:galaxy|гэлакси|samsung|самсунг)\s+[szanmfe]\d{1,2}\b", m_low))
+            or bool(re.search(r"\b[sz]\d{1,2}(?:\s*(?:ultra|plus|fe))\b", m_low))
+        ):
+            return b_low in {"samsung", "самсунг"}
+
+        # Xiaomi / Poco / Redmi
+        if any(w in m_low for w in ["poco", "redmi", "поко", "редми", "xiaomi", "сяоми", "redmibook"]):
+            return b_low in {"xiaomi", "сяоми", "poco", "redmi", "поко", "редми"}
+
+        # Google
+        if "pixel" in m_low or "пиксель" in m_low:
+            return b_low in {"google", "гугл"}
+
+        # Honor
+        if "honor" in m_low or "хонор" in m_low:
+            return b_low in {"honor", "хонор", "huawei", "хуавей"}
+
+        # Huawei
+        if any(w in m_low for w in ["pura", "matepad", "matebook"]):
+            return b_low in {"huawei", "хуавей"}
+
+        # Lenovo
+        if any(w in m_low for w in ["thinkpad", "ideapad", "legion"]):
+            return b_low in {"lenovo", "леново"}
+
+        # Acer
+        if any(w in m_low for w in ["predator", "nitro", "aspire"]):
+            return b_low in {"acer", "эйсер", "асер"}
+
+        # Sony
+        if any(w in m_low for w in ["xperia", "playstation", "bravia"]):
+            return b_low in {"sony", "сони"}
+
+        return True
+
