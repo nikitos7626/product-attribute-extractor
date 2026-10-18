@@ -52,7 +52,7 @@ class RegexExtractor:
         r"(\d+(?:[.,]\d+)?)\s*(гб|gb)\s*(?:ram|озу|оператив\w*)\b"
     )
     _SLASH_MEM_RE = re.compile(
-        r"(?<!\d)(\d{1,4})\s*(?:гб|gb)?\s*/\s*(\d{1,4})\s*(?:гб|gb)?\b",
+        r"(?<![a-zA-Zа-яА-ЯёЁ0-9])(\d{1,4})\s*(?:гб|gb)?\s*/\s*(\d{1,4})\s*(?:гб|gb)?\b",
         re.IGNORECASE,
     )
 

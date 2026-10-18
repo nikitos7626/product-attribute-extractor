@@ -50,7 +50,7 @@ class AttributeSanityValidator:
     FORBIDDEN_ATTRS_BY_CATEGORY: dict[str, set[str]] = {
         "smartphones": {
             "power", "volume", "warranty", "cleaning_type", "defrost_system",
-            "working_time", "bagless", "resolution", "refresh_rate",
+            "working_time", "bagless",
         },
         "laptops": {
             "cleaning_type", "defrost_system", "power", "working_time", "volume",
@@ -79,18 +79,23 @@ class AttributeSanityValidator:
             "resolution", "cpu", "os", "cleaning_type", "defrost_system",
             "working_time", "volume",
         },
+        "microwaves": {
+            "screen_diagonal", "refresh_rate", "resolution", "cpu", "os",
+            "cleaning_type", "battery", "defrost_system",
+        },
     }
 
     # Белый список допустимых атрибутов по категориям из датасета
     ALLOWED_ATTRS_BY_CATEGORY: dict[str, set[str]] = {
-        "smartphones": {"brand", "model", "memory_rom", "memory_ram", "screen_diagonal", "battery", "color", "cpu", "os", "weight"},
-        "laptops": {"brand", "model", "cpu", "memory_ram", "memory_rom", "screen_diagonal", "color", "os", "battery", "weight"},
-        "tvs": {"brand", "model", "screen_diagonal", "resolution", "refresh_rate", "color", "power"},
-        "tv": {"brand", "model", "screen_diagonal", "resolution", "refresh_rate", "color", "power"},
+        "smartphones": {"brand", "model", "memory_rom", "memory_ram", "screen_diagonal", "battery", "color", "cpu", "os", "weight", "resolution", "refresh_rate"},
+        "laptops": {"brand", "model", "cpu", "memory_ram", "memory_rom", "screen_diagonal", "color", "os", "battery", "weight", "gpu"},
+        "tvs": {"brand", "model", "screen_diagonal", "resolution", "refresh_rate", "color", "power", "display_tech"},
+        "tv": {"brand", "model", "screen_diagonal", "resolution", "refresh_rate", "color", "power", "display_tech"},
         "vacuum_cleaners": {"brand", "model", "power", "cleaning_type", "battery", "weight", "color", "working_time", "volume"},
         "refrigerators": {"brand", "model", "defrost_system", "color", "volume", "warranty"},
         "headphones": {"brand", "model", "color", "weight", "working_time"},
         "powerbanks": {"brand", "model", "battery", "color", "power", "weight"},
+        "microwaves": {"brand", "model", "volume", "power", "color", "weight"},
     }
 
     # Корни реальных цветов
@@ -325,5 +330,16 @@ class AttributeSanityValidator:
             has_dims = bool(re.search(r"\b\d{3,4}\s*[x×*]\s*\d{3,4}\b", val_lower))
             has_named = any(k in val_lower for k in ["4k", "8k", "ultra hd", "full hd", "uhd", "fhd", "qhd", "wqhd", "hd"])
             return has_dims or has_named
+
+        # 17. Видеокарта (GPU)
+        if attr_name == "gpu":
+            if any(u in val_lower for u in ["экран", "дисплей", "retina", "дюйм", '"', "мач", "mah", "гц", "hz", "гб", "gb", "тб", "no frost"]):
+                return False
+            known_gpus = {
+                "rtx", "gtx", "geforce", "nvidia", "radeon", "amd", "intel iris", "iris xe",
+                "intel uhd", "intel arc", "arc", "adreno", "mali", "apple", "m1", "m2", "m3", "m4",
+                "встроенн", "интегрированн", "дискретн", "graphics", "графика"
+            }
+            return any(g in val_lower for g in known_gpus)
 
         return True

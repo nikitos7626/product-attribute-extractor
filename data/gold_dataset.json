@@ -15,7 +15,8 @@
       "battery": "5000 мАч",
       "cpu": "Snapdragon 8 Gen 3",
       "os": "Android",
-      "weight": "232 г"
+      "weight": "232 г",
+      "refresh_rate": "120 Гц"
     }
   },
   {
@@ -31,7 +32,8 @@
       "memory_rom": "128 ГБ",
       "screen_diagonal": "6,3\"",
       "cpu": "Apple A18 Pro",
-      "battery": "3582 мАч"
+      "battery": "3582 мАч",
+      "refresh_rate": "120 Гц"
     }
   },
   {
@@ -48,7 +50,8 @@
       "memory_rom": "256 ГБ",
       "screen_diagonal": "6,7\"",
       "battery": "5000 мАч",
-      "weight": "188 г"
+      "weight": "188 г",
+      "refresh_rate": "120 Гц"
     }
   },
   {
@@ -66,7 +69,8 @@
       "screen_diagonal": "6,8\"",
       "battery": "5500 мАч",
       "cpu": "Snapdragon 7+ Gen 3",
-      "weight": "191 г"
+      "weight": "191 г",
+      "refresh_rate": "120 Гц"
     }
   },
   {
@@ -196,6 +200,20 @@
       "defrost_system": "No Frost",
       "volume": "360 л",
       "warranty": "12 мес"
+    }
+  },
+  {
+    "id": "gold-microwave-01",
+    "title": "Микроволновая печь Gorenje MO20E1W 20 л 800 Вт белый",
+    "description": "Микроволновая печь соло объемом 20 л и мощностью 800 Вт. Цвет: белый. Механическое управление, эмалированное покрытие камеры.",
+    "seller_attributes": {},
+    "ground_truth": {
+      "category": "Микроволновые печи",
+      "brand": "Gorenje",
+      "model": "MO20E1W",
+      "volume": "20 л",
+      "power": "800 Вт",
+      "color": "белый"
     }
   }
 ]

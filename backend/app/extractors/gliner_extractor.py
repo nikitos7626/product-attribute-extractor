@@ -55,6 +55,11 @@ class GlinerExtractor:
         "система разморозки": "defrost_system",
         "технология экрана": "display_tech",
         "объем": "volume",
+        "объём": "volume",
+        "видеокарта": "gpu",
+        "объем пылесборника": "volume",
+        "объём пылесборника": "volume",
+        "мощность": "power",
     }
 
     _NUM_UNIT_RE = re.compile(r"(\d+(?:[.,]\d+)?)\s*([a-zA-Zа-яА-ЯёЁ\"']*)")
@@ -272,6 +277,26 @@ class GlinerExtractor:
             for k, canon in AttributeSanityValidator.ALLOWED_DISPLAY_TECHS.items():
                 if k in low:
                     return canon
+            return raw_clean
+
+        if attr_key == "power":
+            m = re.search(r"(\d+(?:[.,]\d+)?)\s*(квт|kw|вт|w|ватт\w*)?\b", low)
+            if m:
+                val, unit = m.group(1), m.group(2) or "Вт"
+                try:
+                    return self._units.power(val, unit)
+                except Exception:
+                    pass
+            return raw_clean
+
+        if attr_key == "volume":
+            m = re.search(r"(\d+(?:[.,]\d+)?)\s*(л|l|мл|ml|литр\w*)?\b", low)
+            if m:
+                val, unit = m.group(1), m.group(2) or "л"
+                try:
+                    return self._units.volume(val, unit)
+                except Exception:
+                    pass
             return raw_clean
 
         return raw_clean

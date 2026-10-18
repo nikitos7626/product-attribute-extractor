@@ -68,11 +68,19 @@ CATEGORY_SCHEMAS: dict[str, dict[str, Any]] = {
     "powerbanks": {
         "name_ru": "Внешние аккумуляторы (Power Bank)",
         "keywords": [
-            "повербанк", "пауэрбанк", "power bank", "powerbank", "внешний аккумулятор",
-            "портативный аккумулятор", "портативное зарядное", "аккумулятор портативный", "аккумулятор внешний"
+            "внешние аккумуляторы", "аккумуляторы", "портативные аккумуляторы",
+            "power bank", "powerbank", "портативное зарядное",
+            "повербанк", "пауэрбанк", "внешний аккумулятор",
+            "портативный аккумулятор", "аккумулятор портативный", "аккумулятор внешний",
         ],
         "required_attrs": {"brand", "model", "battery", "color"},
         "gliner_labels": ["бренд", "модель", "ёмкость аккумулятора", "мощность", "цвет"],
+    },
+    "microwaves": {
+        "name_ru": "Микроволновые печи",
+        "keywords": ["микроволнов", "свч", "микроволновка"],
+        "required_attrs": {"brand", "model", "volume", "power", "color"},
+        "gliner_labels": ["бренд", "модель", "объем", "мощность", "цвет"],
     },
     "default": {
         "name_ru": "Электроника и техника",
@@ -148,67 +156,114 @@ class CascadedExtractionPipeline:
             if lines:
                 title = lines[0].lower()
 
+        # Подавляем секцию комплектации в названии (если сплошной текст подан в title)
+        clean_title = re.sub(
+            r"(?:в\s+комплекте|комплектаци\w*|комплект\s+поставки|поставляется\s+с|идут\s+в\s+комплекте)[^.!\n;]+",
+            " ",
+            title,
+            flags=re.IGNORECASE,
+        ).strip()
+
+        # ------------------------------------------------------------------
+        # Маркеры аксессуаров и сантехники (Защита от утечек)
+        # ------------------------------------------------------------------
+        has_sanitary_markers = bool(
+            re.search(r"\b(?:душ\w*|ванн\w*|смесител\w*)", f"{raw_cat} {title}", flags=re.IGNORECASE)
+        )
+
+        ACCESSORY_PATTERN = (
+            r"\b(?:"
+            r"чех(?:ол|лы|ла|лов|лом|лах|лами|ле)|чехол\w*|"
+            r"стекл(?:о|а|ом|е|ах|ами)|стекол|"
+            r"пл[её]нк(?:а|и|у|ой|е|ах|ами)|"
+            r"кронштейн\w*|"
+            r"фильтр\w*|"
+            r"насадк\w*|"
+            r"кабел\w*|"
+            r"адаптер\w*|"
+            r"ремеш(?:ок|ка|ки|ком|ках|ками|ке)|ремешок\w*|"
+            r"душ\w*|"
+            r"сантехник\w*|"
+            r"смесител\w*"
+            r")\b"
+        )
+
+        is_accessory_raw_cat = bool(
+            re.search(rf"(?:{ACCESSORY_PATTERN}|\bаксессуар\w*)\b", raw_cat, flags=re.IGNORECASE)
+        )
+
+        is_accessory_title = bool(
+            re.search(ACCESSORY_PATTERN, clean_title, flags=re.IGNORECASE)
+        )
+
+        is_accessory_or_sanitary = is_accessory_raw_cat or is_accessory_title or has_sanitary_markers
+
+        blocked_categories = {"smartphones", "tvs", "headphones", "laptops", "vacuum_cleaners"} if is_accessory_or_sanitary else set()
+
         # ------------------------------------------------------------------
         # 1. Эксплицитная категория из метаданных (raw_cat)
         # ------------------------------------------------------------------
         if raw_cat:
+            if "внешние аккумуляторы" in raw_cat or "портативные аккумуляторы" in raw_cat:
+                return "powerbanks", CATEGORY_SCHEMAS["powerbanks"]["name_ru"]
+
             for cat_key, schema in CATEGORY_SCHEMAS.items():
-                if cat_key == "default":
+                if cat_key == "default" or cat_key in blocked_categories:
                     continue
-                if schema["name_ru"].lower() in raw_cat or cat_key in raw_cat:
+                name_ru_clean = schema["name_ru"].lower().split("(")[0].strip()
+                if (
+                    schema["name_ru"].lower() in raw_cat
+                    or name_ru_clean in raw_cat
+                    or raw_cat in schema["name_ru"].lower()
+                    or cat_key in raw_cat
+                ):
                     return cat_key, schema["name_ru"]
             for cat_key in [
                 "vacuum_cleaners",
                 "refrigerators",
+                "microwaves",
                 "tvs",
                 "laptops",
                 "smartphones",
                 "headphones",
                 "powerbanks",
             ]:
+                if cat_key in blocked_categories:
+                    continue
                 schema = CATEGORY_SCHEMAS.get(cat_key)
                 if not schema:
                     continue
-                for kw in schema["keywords"]:
+                schema_keywords = schema["keywords"]
+                if cat_key == "headphones" and has_sanitary_markers:
+                    schema_keywords = [kw for kw in schema_keywords if not kw.startswith("гарнитур")]
+                for kw in schema_keywords:
                     if re.search(rf"\b{re.escape(kw)}", raw_cat):
                         return cat_key, schema["name_ru"]
 
         # ------------------------------------------------------------------
         # 2. Детекция по названию товара (Title) — принцип Head Noun
-        #    Название — авторитетный источник типа товара.
-        #    Определяющее существительное категории идет в начале названия,
-        #    а предложные конструкции совместимости ('для смартфона', 'к наушникам')
-        #    и комплектные аксессуары пенализируются.
         # ------------------------------------------------------------------
-        if title:
-            # Подавляем секцию комплектации в названии (если сплошной текст подан в title)
-            clean_title = re.sub(
-                r"(?:в\s+комплекте|комплектаци\w*|комплект\s+поставки|поставляется\s+с|идут\s+в\s+комплекте)[^.!\n;]+",
-                " ",
-                title,
-                flags=re.IGNORECASE,
-            )
-            clean_title = re.sub(
-                r"\b(?:чехол|стекло|пленка|плёнка|ремешок|кабель|адаптер|держатель)\s+(?:для\s+)?",
-                " ",
-                clean_title,
-                flags=re.IGNORECASE,
-            )
-
+        if clean_title:
             earliest_matches: list[tuple[int, str, str]] = []
             for cat_key in [
                 "vacuum_cleaners",
                 "refrigerators",
+                "microwaves",
                 "tvs",
                 "laptops",
                 "smartphones",
                 "headphones",
                 "powerbanks",
             ]:
+                if cat_key in blocked_categories:
+                    continue
                 schema = CATEGORY_SCHEMAS.get(cat_key)
                 if not schema:
                     continue
-                for kw in schema["keywords"]:
+                schema_keywords = schema["keywords"]
+                if cat_key == "headphones" and has_sanitary_markers:
+                    schema_keywords = [kw for kw in schema_keywords if not kw.startswith("гарнитур")]
+                for kw in schema_keywords:
                     for m in re.finditer(rf"\b{re.escape(kw)}", clean_title, flags=re.IGNORECASE):
                         prefix = clean_title[max(0, m.start() - 15):m.start()].lower()
                         is_compat = bool(re.search(r"\b(?:для|к|под|со)\s*$", prefix))
@@ -259,49 +314,56 @@ class CascadedExtractionPipeline:
         for cat_key in [
             "vacuum_cleaners",
             "refrigerators",
+            "microwaves",
             "tvs",
             "laptops",
             "smartphones",
             "headphones",
             "powerbanks",
         ]:
+            if cat_key in blocked_categories:
+                continue
             schema = CATEGORY_SCHEMAS.get(cat_key)
             if not schema:
                 continue
-            for kw in schema["keywords"]:
+            schema_keywords = schema["keywords"]
+            if cat_key == "headphones" and has_sanitary_markers:
+                schema_keywords = [kw for kw in schema_keywords if not kw.startswith("гарнитур")]
+            for kw in schema_keywords:
                 if re.search(rf"\b{re.escape(kw)}", clean_corpus):
                     return cat_key, schema["name_ru"]
 
         # ------------------------------------------------------------------
         # 4. Аппаратные эвристики и физические маркеры (Hardware Fingerprints)
         # ------------------------------------------------------------------
-        full_text = f"{title} {desc} {raw_text}".lower()
+        if not is_accessory_or_sanitary:
+            full_text = f"{title} {desc} {raw_text}".lower()
 
-        # Эвристика смартфона:
-        # Экран 5.0-7.2" + аккумулятор mAh / камера МП / мобильные сети / ОС
-        has_mobile_screen = bool(re.search(r"\b(?:[56]\.\d{1,2}|7\.[012])\s*(?:\"|дюйм)", full_text))
-        has_battery = bool(re.search(r"(?:\d{3,5}\s*(?:мА[·⋅•*.\-\s]?ч|mah|мач|аккум)|(?:мач|mah|аккум)\s*\d{3,5})", full_text, flags=re.IGNORECASE))
-        has_mobile_os_net = bool(re.search(r"\b(?:ios|android|hyperos|miui|one\s*ui|5g|4g\s+lte|lte|sim|esim|сим-карт)\b", full_text, flags=re.IGNORECASE))
-        has_slash_mem = bool(re.search(r"\b\d{1,2}/\d{2,4}\s*(?:гб|gb)?\b", full_text))
-        has_phone_cam = bool(re.search(r"\b(?:камер\w*.*?\d{1,3}\s*мп|\d{1,3}\s*мп)\b", full_text))
+            # Эвристика смартфона:
+            # Экран 5.0-7.2" + аккумулятор mAh / камера МП / мобильные сети / ОС
+            has_mobile_screen = bool(re.search(r"\b(?:[56]\.\d{1,2}|7\.[012])\s*(?:\"|дюйм)", full_text))
+            has_battery = bool(re.search(r"(?:\d{3,5}\s*(?:мА[·⋅•*.\-\s]?ч|mah|мач|аккум)|(?:мач|mah|аккум)\s*\d{3,5})", full_text, flags=re.IGNORECASE))
+            has_mobile_os_net = bool(re.search(r"\b(?:ios|android|hyperos|miui|one\s*ui|5g|4g\s+lte|lte|sim|esim|сим-карт)\b", full_text, flags=re.IGNORECASE))
+            has_slash_mem = bool(re.search(r"\b\d{1,2}/\d{2,4}\s*(?:гб|gb)?\b", full_text))
+            has_phone_cam = bool(re.search(r"\b(?:камер\w*.*?\d{1,3}\s*мп|\d{1,3}\s*мп)\b", full_text))
 
-        if has_mobile_screen and (has_battery or has_mobile_os_net or has_phone_cam):
-            return "smartphones", CATEGORY_SCHEMAS["smartphones"]["name_ru"]
+            if has_mobile_screen and (has_battery or has_mobile_os_net or has_phone_cam):
+                return "smartphones", CATEGORY_SCHEMAS["smartphones"]["name_ru"]
 
-        if has_slash_mem and has_battery:
-            return "smartphones", CATEGORY_SCHEMAS["smartphones"]["name_ru"]
+            if has_slash_mem and has_battery:
+                return "smartphones", CATEGORY_SCHEMAS["smartphones"]["name_ru"]
 
-        # Эвристика ноутбука: экран 13-17" + CPU/RAM
-        has_laptop_screen = bool(re.search(r"\b(?:1[3-7]\.\d|1[3-7])\s*(?:\"|дюйм)", full_text))
-        has_pc_cpu = bool(re.search(r"\b(?:intel|ryzen|core\s*i[3579]|apple\s*m[1234])\b", full_text))
-        if has_laptop_screen and has_pc_cpu:
-            return "laptops", CATEGORY_SCHEMAS["laptops"]["name_ru"]
+            # Эвристика ноутбука: экран 13-17" + CPU/RAM
+            has_laptop_screen = bool(re.search(r"\b(?:1[3-7]\.\d|1[3-7])\s*(?:\"|дюйм)", full_text))
+            has_pc_cpu = bool(re.search(r"\b(?:intel|ryzen|core\s*i[3579]|apple\s*m[1234])\b", full_text))
+            if has_laptop_screen and has_pc_cpu:
+                return "laptops", CATEGORY_SCHEMAS["laptops"]["name_ru"]
 
-        # Эвристика ТВ: экран >= 24" + Smart TV / 4K / тюнер
-        has_tv_screen = bool(re.search(r"\b(?:[2-9]\d|1[0-1]\d)\s*(?:\"|дюйм)", full_text))
-        has_tv_feature = bool(re.search(r"\b(?:smart\s*tv|смарт\s*тв|dvb-[tcs]|тв-тюнер)\b", full_text))
-        if has_tv_screen and has_tv_feature:
-            return "tvs", CATEGORY_SCHEMAS["tvs"]["name_ru"]
+            # Эвристика ТВ: экран >= 24" + Smart TV / 4K / тюнер
+            has_tv_screen = bool(re.search(r"\b(?:[2-9]\d|1[0-1]\d)\s*(?:\"|дюйм)", full_text))
+            has_tv_feature = bool(re.search(r"\b(?:smart\s*tv|смарт\s*тв|dvb-[tcs]|тв-тюнер)\b", full_text))
+            if has_tv_screen and has_tv_feature:
+                return "tvs", CATEGORY_SCHEMAS["tvs"]["name_ru"]
 
         return "default", CATEGORY_SCHEMAS["default"]["name_ru"]
 
