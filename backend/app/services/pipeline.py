@@ -14,6 +14,7 @@ from app.extractors.regex_extractor import RegexExtractor
 from app.extractors.sanity import AttributeSanityValidator
 from app.services.brand_registry import BrandRegistry
 from app.services.catalog_enricher import CatalogEnricher
+from app.services.confidence_calibrator import ConfidenceCalibrator
 
 logger = logging.getLogger(__name__)
 
@@ -187,6 +188,7 @@ class CascadedExtractionPipeline:
             else None
         )
         self.brand_registry = BrandRegistry.get_instance()
+        self.calibrator = ConfidenceCalibrator.get_instance()
 
     def detect_category(self, card: dict[str, Any]) -> tuple[str, str]:
         """
@@ -633,18 +635,13 @@ class CascadedExtractionPipeline:
         final_found = set(predictions_map.keys())
         final_missing = sorted(list(required_attrs - final_found))
 
-        # Расчет покрытия обязательных характеристик категории (Coverage)
-        total_required = len(required_attrs) if required_attrs else 1
-        found_required_count = len(required_attrs & final_found)
-        coverage_ratio = found_required_count / total_required
-
-        if all_preds:
-            avg_preds_conf = sum(p["confidence"] for p in all_preds) / len(all_preds)
-            # Итоговая уверенность карточки = средняя уверенность найденных полей * полнота заполнения обязательных полей
-            overall_conf = avg_preds_conf * coverage_ratio
-        else:
-            avg_preds_conf = 0.0
-            overall_conf = 0.0
+        # Научно обоснованный расчёт совместной вероятности корректности карточки
+        # (Platt Scaling, Geometric Mean по обязательным атрибутам и Power-law Coverage Penalty)
+        overall_conf, final_missing = self.calibrator.calculate_card_confidence(
+            predictions=all_preds,
+            required_attrs=required_attrs,
+            category_key=cat_key,
+        )
 
         # Карточка требует проверки человеком (Human-in-the-Loop), если:
         # 1. Итоговая уверенность ниже порога (0.87)
