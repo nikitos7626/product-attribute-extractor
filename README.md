@@ -1,11 +1,20 @@
 # М.Видео AI · Промышленное автоматическое извлечение и валидация характеристик товаров
 
+[![Python 3.10+](https://img.shields.io/badge/Python-3.10%2B-blue.svg?logo=python&logoColor=white)](https://www.python.org/)
+[![FastAPI](https://img.shields.io/badge/FastAPI-0.115%2B-009688.svg?logo=fastapi&logoColor=white)](https://fastapi.tiangolo.com/)
+[![NER GLiNER](https://img.shields.io/badge/Zero--Shot%20NER-GLiNER%20Multi-orange.svg)](https://github.com/urchade/GLiNER)
+[![Tests 108 PASS](https://img.shields.io/badge/Tests-108%20PASS%20(100%25)-brightgreen.svg)](backend/tests/)
+[![Macro-F1 1.0000](https://img.shields.io/badge/Macro--F1-1.0000-success.svg)](output/metrics_report.md)
+[![Catalog Coverage 100%](https://img.shields.io/badge/Catalog%20Coverage-100%25-success.svg)](output/metrics_report.md)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
+
 > **Хакатон VolgaDev 2026 · Задача № 3**  
 > Команда: **Точка сборки (`team-059`)**  
 > 🌐 **Публичный веб-интерфейс:** [https://tochka-sborki-2026-team-059.hub.gigaschool.ru](https://tochka-sborki-2026-team-059.hub.gigaschool.ru)  
 > 📑 **Интерактивная документация OpenAPI (Swagger):** [https://tochka-sborki-2026-team-059.hub.gigaschool.ru/docs](https://tochka-sborki-2026-team-059.hub.gigaschool.ru/docs)  
 > 📊 **ReDoc:** [https://tochka-sborki-2026-team-059.hub.gigaschool.ru/redoc](https://tochka-sborki-2026-team-059.hub.gigaschool.ru/redoc)  
-> 🧪 **Статус тестов:** **104 / 104 PASS (100%)** | Скорость офлайн-обработки: **< 1.8 мс / карточка**
+> 🧪 **Статус тестов:** **108 / 108 PASS (100%)** | Скорость детерминированного ядра: **< 1.8 мс / карточка**
+
 
 ---
 
@@ -139,7 +148,7 @@ jupyter notebook notebooks/eda_mvideo_dataset.ipynb
 ```bash
 python -m pytest backend/tests
 ```
-> 104 теста, проверяющих все модули, нормализацию, каскад, граничные условия и обработку сбоев.
+> 108 тестов, проверяющих все модули, нормализацию, каскад, граничные условия, Circuit Breaker, заземление (grounding) и обработку сбоев.
 
 ---
 
@@ -174,11 +183,12 @@ python -m pytest backend/tests
 │   ├── review_queue.csv                       # Журнал карточек, отправленных на ручную проверку (HITL)
 │   └── taxonomies/                            # Таксономии и схемы М.Видео
 ├── notebooks/
-│   └── eda_mvideo_dataset.ipynb               # Исследовательский анализ данных (EDA Notebook)
+│   └── eda_mvideo_dataset.ipynb               # Исследовательский анализ данных (EDA с сохраненным выводом ячеек)
 ├── scripts/
 │   ├── evaluate_metrics.py                    # Расчет per-attribute Precision, Recall, F1, Coverage
 │   ├── export_predictions.py                  # Стандартизированный экспорт в predictions.json / .csv
-│   └── eda_analysis.py                        # Генератор статистических отчетов EDA
+│   ├── eda_analysis.py                        # Генератор статистических отчетов EDA
+│   └── render_eda_notebook.py                 # Исполнение и предрендеринг ячеек ноутбука EDA
 ├── output/
 │   ├── metrics_report.json                    # Машиночитаемый отчет валидации метрик
 │   ├── metrics_report.md                      # Markdown-таблица per-attribute метрик
@@ -212,7 +222,7 @@ python -m pytest backend/tests
 │   │       ├── colors.csv                     # База цветов с весами
 │   │       ├── attributes_by_category.json    # Строгие белые списки по категориям
 │   │       └── catalog_models_kb.json         # База знаний моделей (9 761 модель, 328 вендоров)
-│   └── tests/                                 # 99 unit- и интеграционных тестов
+│   └── tests/                                 # 108 unit- и интеграционных тестов (100% PASS)
 ```
 
 ---
