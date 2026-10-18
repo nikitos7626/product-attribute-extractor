@@ -24,6 +24,8 @@ class Settings(BaseSettings):
     llm_api_base: str = "https://hub.gigaschool.ru/api/v1/llm/v1"
     llm_api_key: str = "hub-FozIDkycOQoaEHbYj7Qvq0Xl9PsZDJs-0_V_LmSVg1c"
     llm_model: str = "Qwen/Qwen3-Coder-Next"
+    enforce_llm_grounding: bool = False
+
 
 
     @property

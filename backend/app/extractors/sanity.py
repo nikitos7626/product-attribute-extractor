@@ -307,4 +307,10 @@ class AttributeSanityValidator:
             }
             return len(val_lower) >= 2 and val_lower not in bad_brand_words
 
+        # 15. Время работы (Working Time)
+        if attr_name == "working_time":
+            has_digits = bool(re.search(r"\d+", val_lower))
+            has_time_unit = bool(re.search(r"(?:ч|час\w*|мин\w*|h|hr|m|sec|сек)\b", val_lower))
+            return has_digits and has_time_unit and len(val_lower.split()) <= 4
+
         return True

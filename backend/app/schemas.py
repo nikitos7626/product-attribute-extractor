@@ -18,6 +18,7 @@ class PredictionOut(BaseModel):
     confidence: float
     source: str
     raw: str | None = None
+    grounded: bool | None = None
 
 
 class CardOut(BaseModel):

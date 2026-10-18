@@ -25,8 +25,11 @@ RUN pip install --no-cache-dir --upgrade pip && \
 # Впекаем веса модели GLiNER в образ на этапе сборки (чтобы контейнер работал автономно без интернета)
 RUN python -c "from gliner import GLiNER; GLiNER.from_pretrained('urchade/gliner_multi-v2.1')"
 
-# Копируем исходный код бэкенда
+# Копируем исходный код бэкенда и артефакты
 COPY backend /app
+COPY output /output
+COPY output /app/output
+COPY extract.py /app/extract.py
 
 EXPOSE 8000
 

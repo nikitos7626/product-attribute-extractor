@@ -191,7 +191,8 @@
     "ground_truth": {
       "category": "Холодильники",
       "brand": "AEG",
-      "color": "черный металлик",
+      "model": "RCR736E5MB",
+      "color": "чёрный",
       "defrost_system": "No Frost",
       "volume": "360 л",
       "warranty": "12 мес"

@@ -1,8 +1,8 @@
 {
   "metadata": {
-    "timestamp": "2026-10-18 11:26:32",
+    "timestamp": "2026-10-18 12:31:49",
     "total_cards": 7,
-    "avg_latency_ms": 787.0,
+    "avg_latency_ms": 813.32,
     "pipeline_version": "2.2.0"
   },
   "items": [
@@ -22,7 +22,7 @@
         "cpu": "A17 Pro"
       },
       "missing_required": [],
-      "latency_ms": 4.16,
+      "latency_ms": 4.18,
       "detailed_predictions": [
         {
           "attribute": "brand",
@@ -93,7 +93,7 @@
         "cpu": "Snapdragon 8 Gen 3"
       },
       "missing_required": [],
-      "latency_ms": 2.48,
+      "latency_ms": 2.43,
       "detailed_predictions": [
         {
           "attribute": "brand",
@@ -178,7 +178,7 @@
         "model": "MacBook Air 13 M3"
       },
       "missing_required": [],
-      "latency_ms": 4964.66,
+      "latency_ms": 5153.14,
       "detailed_predictions": [
         {
           "attribute": "brand",
@@ -261,7 +261,7 @@
         "model": "OLED55C4RLA"
       },
       "missing_required": [],
-      "latency_ms": 129.34,
+      "latency_ms": 133.33,
       "detailed_predictions": [
         {
           "attribute": "brand",
@@ -327,11 +327,11 @@
         "power": "45 Вт",
         "volume": "300 мл",
         "model": "S10",
-        "working_time": "130 минут",
+        "working_time": "130 мин",
         "cleaning_type": "сухая и влажная"
       },
       "missing_required": [],
-      "latency_ms": 136.56,
+      "latency_ms": 140.18,
       "detailed_predictions": [
         {
           "attribute": "brand",
@@ -377,7 +377,7 @@
         },
         {
           "attribute": "working_time",
-          "value": "130 минут",
+          "value": "130 мин",
           "confidence": 0.9421,
           "source": "gliner",
           "raw": "130 минут"
@@ -402,10 +402,10 @@
         "color": "серебристый",
         "weight": "250 г",
         "model": "WH-1000XM5",
-        "working_time": "30 часов"
+        "working_time": "30 ч"
       },
       "missing_required": [],
-      "latency_ms": 150.16,
+      "latency_ms": 129.99,
       "detailed_predictions": [
         {
           "attribute": "brand",
@@ -437,7 +437,7 @@
         },
         {
           "attribute": "working_time",
-          "value": "30 часов",
+          "value": "30 ч",
           "confidence": 0.9383,
           "source": "gliner",
           "raw": "30 часов"
@@ -459,7 +459,7 @@
         "model": "Mi Power Bank 3"
       },
       "missing_required": [],
-      "latency_ms": 121.57,
+      "latency_ms": 129.98,
       "detailed_predictions": [
         {
           "attribute": "brand",

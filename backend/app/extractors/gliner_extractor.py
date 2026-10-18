@@ -257,6 +257,16 @@ class GlinerExtractor:
                 return "No Frost"
             return raw_clean
 
+        if attr_key == "working_time":
+            m = re.search(r"(\d+(?:[.,]\d+)?)\s*(ч|час\w*|мин\w*|h|hr|m|sec|сек)?\b", low)
+            if m and not any(bad in low for bad in ["заряд", "charge"]):
+                num = m.group(1).replace(",", ".")
+                unit = m.group(2) or "ч"
+                if "мин" in unit or unit == "m":
+                    return f"{num} мин"
+                return f"{num} ч"
+            return ""
+
         if attr_key == "display_tech":
             for k, canon in AttributeSanityValidator.ALLOWED_DISPLAY_TECHS.items():
                 if k in low:

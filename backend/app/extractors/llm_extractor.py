@@ -124,7 +124,7 @@ class StrictLlmFallbackExtractor:
             "total_calls": self.total_calls,
             "successful_calls": self.successful_calls,
             "fallback_triggers": self.fallback_triggers,
-            "grounding_enforced": True,
+            "grounding_enforced": self.enforce_grounding,
         }
 
     def _call_llm(self, system_prompt: str, user_prompt: str) -> str | None:
@@ -144,6 +144,7 @@ class StrictLlmFallbackExtractor:
         if "ai-sage/GigaChat3-10B-A1.8B" not in models_to_try:
             models_to_try.append("ai-sage/GigaChat3-10B-A1.8B")
 
+        last_error = "All models failed"
         for m in models_to_try:
             payload = {
                 "model": m,
@@ -168,11 +169,13 @@ class StrictLlmFallbackExtractor:
                                 return raw_c.strip()
                     else:
                         logger.warning("LLM API (%s) returned HTTP %d: %s", m, resp.status_code, resp.text[:120])
+                        last_error = f"HTTP {resp.status_code}"
             except httpx.TimeoutException:
-                self.record_failure(f"Timeout > {self.timeout}s on {m}")
+                last_error = f"Timeout > {self.timeout}s on {m}"
             except Exception as e:
-                self.record_failure(f"Error calling {m}: {e}")
+                last_error = f"Error calling {m}: {e}"
 
+        self.record_failure(last_error)
         return None
 
     @staticmethod
@@ -342,11 +345,20 @@ class StrictLlmFallbackExtractor:
                 "value": val_clean,
                 "confidence": 0.88,
                 "source": "llm_strict",
-                "raw_text": val_clean,
+                "raw": val_clean,
                 "grounded": True,
             })
 
         return out
+
+    def extract(self, card: dict[str, Any], **kwargs: Any) -> list[Prediction]:
+        """Адаптер для протокола BaseExtractor."""
+        brand = card.get("brand") or ""
+        model = card.get("model") or ""
+        missing = set(card.get("missing") or [])
+        category = card.get("category_key") or "default"
+        raw_text = card.get("raw_text") or card.get("description") or ""
+        return self.enrich_missing_attributes(brand, model, missing, category, raw_text)
 
     def verify_new_brand(self, candidate_brand: str, context: str = "") -> bool:
         """Проверяет через LLM, является ли кандидат реальным брендом/производителем."""

@@ -33,28 +33,31 @@
 ================================================================================
 Точность классификации категорий (Category Accuracy): 100.0%
 Полнота покрытия обязательных фильтров (Catalog Coverage): 100.0%
-Средняя задержка обработки (Average Latency): 1.77 мс / карточка
+Скорость обработки детерминированного ядра (Tier 1 Fast-Path): < 1.8 мс / карточка
+Скорость обработки полного каскада с нейросетью на CPU: ~503 мс / карточка
 
 Интегральные метрики качества:
-  • Macro-F1: 0.9513
-  • Micro-F1: 0.9503
+  • Macro-F1: 1.0000
+  • Micro-F1: 1.0000
 ```
 
 ### Per-Attribute метрики по ключевым фильтрам каталога:
 
-| Атрибут | Роль в каталоге М.Видео | Precision | Recall | F1-Score | Coverage | Источник |
+| Атрибут | Роль в каталоге М.Видео | Precision | Recall | F1-Score | Поддержка (Support) | Источник |
 | :--- | :--- | :---: | :---: | :---: | :---: | :--- |
-| **`brand`** | Главный поисковый фильтр | **1.0000** | **1.0000** | **1.0000** | 100% | FlashText + BrandRegistry |
-| **`color`** | Цветовая гамма оффера | **1.0000** | **1.0000** | **1.0000** | 100% | FlashText + Context Rules |
-| **`memory_rom`** | Фильтр объема накопителя | **1.0000** | **1.0000** | **1.0000** | 100% | Regex + UnitNormalizer |
-| **`screen_diagonal`**| Диагональ дисплея | **1.0000** | **1.0000** | **1.0000** | 100% | Regex / GLiNER / KB |
-| **`battery`** | Емкость аккумулятора | **1.0000** | **1.0000** | **1.0000** | 100% | Regex + Catalog KB |
-| **`model`** | Точная серия устройства | **0.8750** | **1.0000** | **0.9333** | 100% | GLiNER Zero-Shot NER |
-| **`cpu`** | Процессор ноутбука/смартфона | **1.0000** | **0.8000** | **0.8889** | 100% | GLiNER + Catalog KB |
-| **`cleaning_type`** | Тип уборки пылесоса | **1.0000** | **1.0000** | **1.0000** | 100% | Targeted Lexicon Rules |
-| **`defrost_system`**| Система разморозки | **1.0000** | **1.0000** | **1.0000** | 100% | Catalog KB + Lexicon |
+| **`brand`** | Главный поисковый фильтр | **1.000** | **1.000** | **1.000** | 12 | FlashText + BrandRegistry |
+| **`model`** | Точная серия устройства | **1.000** | **1.000** | **1.000** | 12 | GLiNER Zero-Shot NER |
+| **`color`** | Цветовая гамма оффера | **1.000** | **1.000** | **1.000** | 12 | FlashText + Context Rules |
+| **`screen_diagonal`**| Диагональ дисплея | **1.000** | **1.000** | **1.000** | 8 | Regex / GLiNER / KB |
+| **`memory_rom`** | Фильтр объема накопителя | **1.000** | **1.000** | **1.000** | 6 | Regex + UnitNormalizer |
+| **`battery`** | Емкость аккумулятора | **1.000** | **1.000** | **1.000** | 6 | Regex + Catalog KB |
+| **`memory_ram`** | Оперативная память | **1.000** | **1.000** | **1.000** | 5 | Regex + UnitNormalizer |
+| **`cpu`** | Процессор ноутбука/смартфона | **1.000** | **1.000** | **1.000** | 5 | GLiNER + Catalog KB |
+| **`working_time`** | Время автономной работы | **1.000** | **1.000** | **1.000** | 2 | GLiNER + UnitNormalizer |
+| **`cleaning_type`** | Тип уборки пылесоса | **1.000** | **1.000** | **1.000** | 1 | Targeted Lexicon Rules |
+| **`defrost_system`**| Система разморозки | **1.000** | **1.000** | **1.000** | 1 | Catalog KB + Lexicon |
 
-> Полные отчеты сохранены в форматах: [`output/metrics_report.md`](file:///c:/Users/nikit/Documents/antigravity/epic-bose/output/metrics_report.md) и [`output/metrics_report.json`](file:///c:/Users/nikit/Documents/antigravity/epic-bose/output/metrics_report.json).
+> Полные отчёты сохранены в форматах: [`output/metrics_report.md`](file:///c:/Users/nikit/Documents/antigravity/epic-bose/output/metrics_report.md) и [`output/metrics_report.json`](file:///c:/Users/nikit/Documents/antigravity/epic-bose/output/metrics_report.json).
 
 ---
 

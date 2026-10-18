@@ -81,13 +81,14 @@ def analyze_categories_and_attributes(gold_cards: list[dict]) -> dict:
     brands_counter: Counter[str] = Counter()
 
     for item in gold_cards:
-        cat = item.get("category", "unknown")
+        gt = item.get("ground_truth") or {}
+        cat = gt.get("category") or item.get("category", "unknown")
         cat_counts[cat] += 1
 
         if cat not in attr_counts_by_cat:
             attr_counts_by_cat[cat] = Counter()
 
-        expected = item.get("expected_attributes", {})
+        expected = {k: v for k, v in gt.items() if k != "category"} if gt else item.get("expected_attributes", {})
         for attr, val in expected.items():
             attr_counts_by_cat[cat][attr] += 1
             if attr == "brand":
@@ -126,7 +127,7 @@ def analyze_dictionaries() -> dict:
     if kb_path.exists():
         with open(kb_path, "r", encoding="utf-8") as f:
             kb_data = json.load(f)
-            kb_count = len(kb_data)
+            kb_count = sum(len(models) for models in kb_data.values()) if isinstance(kb_data, dict) else len(kb_data)
 
     brands_count = 0
     if brands_path.exists():

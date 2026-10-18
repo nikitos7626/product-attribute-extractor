@@ -29,18 +29,319 @@
   },
   "category_stats": {
     "categories_distribution": {
-      "unknown": 12
+      "Смартфоны": 4,
+      "Ноутбуки": 2,
+      "Телевизоры": 2,
+      "Пылесосы": 1,
+      "Наушники": 1,
+      "Внешние аккумуляторы (Power Bank)": 1,
+      "Холодильники": 1
     },
     "category_details": {
-      "unknown": {
-        "total_items": 12,
-        "attributes": {}
+      "Смартфоны": {
+        "total_items": 4,
+        "attributes": {
+          "brand": {
+            "count": 4,
+            "fill_rate": 1.0,
+            "sparsity": 0.0
+          },
+          "model": {
+            "count": 4,
+            "fill_rate": 1.0,
+            "sparsity": 0.0
+          },
+          "color": {
+            "count": 4,
+            "fill_rate": 1.0,
+            "sparsity": 0.0
+          },
+          "memory_ram": {
+            "count": 3,
+            "fill_rate": 0.75,
+            "sparsity": 0.25
+          },
+          "memory_rom": {
+            "count": 4,
+            "fill_rate": 1.0,
+            "sparsity": 0.0
+          },
+          "screen_diagonal": {
+            "count": 4,
+            "fill_rate": 1.0,
+            "sparsity": 0.0
+          },
+          "battery": {
+            "count": 4,
+            "fill_rate": 1.0,
+            "sparsity": 0.0
+          },
+          "cpu": {
+            "count": 3,
+            "fill_rate": 0.75,
+            "sparsity": 0.25
+          },
+          "os": {
+            "count": 1,
+            "fill_rate": 0.25,
+            "sparsity": 0.75
+          },
+          "weight": {
+            "count": 3,
+            "fill_rate": 0.75,
+            "sparsity": 0.25
+          }
+        }
+      },
+      "Ноутбуки": {
+        "total_items": 2,
+        "attributes": {
+          "brand": {
+            "count": 2,
+            "fill_rate": 1.0,
+            "sparsity": 0.0
+          },
+          "model": {
+            "count": 2,
+            "fill_rate": 1.0,
+            "sparsity": 0.0
+          },
+          "color": {
+            "count": 2,
+            "fill_rate": 1.0,
+            "sparsity": 0.0
+          },
+          "memory_ram": {
+            "count": 2,
+            "fill_rate": 1.0,
+            "sparsity": 0.0
+          },
+          "memory_rom": {
+            "count": 2,
+            "fill_rate": 1.0,
+            "sparsity": 0.0
+          },
+          "screen_diagonal": {
+            "count": 2,
+            "fill_rate": 1.0,
+            "sparsity": 0.0
+          },
+          "cpu": {
+            "count": 2,
+            "fill_rate": 1.0,
+            "sparsity": 0.0
+          },
+          "os": {
+            "count": 2,
+            "fill_rate": 1.0,
+            "sparsity": 0.0
+          },
+          "weight": {
+            "count": 2,
+            "fill_rate": 1.0,
+            "sparsity": 0.0
+          }
+        }
+      },
+      "Телевизоры": {
+        "total_items": 2,
+        "attributes": {
+          "brand": {
+            "count": 2,
+            "fill_rate": 1.0,
+            "sparsity": 0.0
+          },
+          "model": {
+            "count": 2,
+            "fill_rate": 1.0,
+            "sparsity": 0.0
+          },
+          "color": {
+            "count": 2,
+            "fill_rate": 1.0,
+            "sparsity": 0.0
+          },
+          "screen_diagonal": {
+            "count": 2,
+            "fill_rate": 1.0,
+            "sparsity": 0.0
+          },
+          "resolution": {
+            "count": 2,
+            "fill_rate": 1.0,
+            "sparsity": 0.0
+          },
+          "refresh_rate": {
+            "count": 2,
+            "fill_rate": 1.0,
+            "sparsity": 0.0
+          },
+          "power": {
+            "count": 2,
+            "fill_rate": 1.0,
+            "sparsity": 0.0
+          }
+        }
+      },
+      "Пылесосы": {
+        "total_items": 1,
+        "attributes": {
+          "brand": {
+            "count": 1,
+            "fill_rate": 1.0,
+            "sparsity": 0.0
+          },
+          "model": {
+            "count": 1,
+            "fill_rate": 1.0,
+            "sparsity": 0.0
+          },
+          "color": {
+            "count": 1,
+            "fill_rate": 1.0,
+            "sparsity": 0.0
+          },
+          "power": {
+            "count": 1,
+            "fill_rate": 1.0,
+            "sparsity": 0.0
+          },
+          "volume": {
+            "count": 1,
+            "fill_rate": 1.0,
+            "sparsity": 0.0
+          },
+          "battery": {
+            "count": 1,
+            "fill_rate": 1.0,
+            "sparsity": 0.0
+          },
+          "cleaning_type": {
+            "count": 1,
+            "fill_rate": 1.0,
+            "sparsity": 0.0
+          },
+          "working_time": {
+            "count": 1,
+            "fill_rate": 1.0,
+            "sparsity": 0.0
+          }
+        }
+      },
+      "Наушники": {
+        "total_items": 1,
+        "attributes": {
+          "brand": {
+            "count": 1,
+            "fill_rate": 1.0,
+            "sparsity": 0.0
+          },
+          "model": {
+            "count": 1,
+            "fill_rate": 1.0,
+            "sparsity": 0.0
+          },
+          "color": {
+            "count": 1,
+            "fill_rate": 1.0,
+            "sparsity": 0.0
+          },
+          "weight": {
+            "count": 1,
+            "fill_rate": 1.0,
+            "sparsity": 0.0
+          },
+          "working_time": {
+            "count": 1,
+            "fill_rate": 1.0,
+            "sparsity": 0.0
+          }
+        }
+      },
+      "Внешние аккумуляторы (Power Bank)": {
+        "total_items": 1,
+        "attributes": {
+          "brand": {
+            "count": 1,
+            "fill_rate": 1.0,
+            "sparsity": 0.0
+          },
+          "model": {
+            "count": 1,
+            "fill_rate": 1.0,
+            "sparsity": 0.0
+          },
+          "battery": {
+            "count": 1,
+            "fill_rate": 1.0,
+            "sparsity": 0.0
+          },
+          "power": {
+            "count": 1,
+            "fill_rate": 1.0,
+            "sparsity": 0.0
+          },
+          "color": {
+            "count": 1,
+            "fill_rate": 1.0,
+            "sparsity": 0.0
+          },
+          "weight": {
+            "count": 1,
+            "fill_rate": 1.0,
+            "sparsity": 0.0
+          }
+        }
+      },
+      "Холодильники": {
+        "total_items": 1,
+        "attributes": {
+          "brand": {
+            "count": 1,
+            "fill_rate": 1.0,
+            "sparsity": 0.0
+          },
+          "model": {
+            "count": 1,
+            "fill_rate": 1.0,
+            "sparsity": 0.0
+          },
+          "color": {
+            "count": 1,
+            "fill_rate": 1.0,
+            "sparsity": 0.0
+          },
+          "defrost_system": {
+            "count": 1,
+            "fill_rate": 1.0,
+            "sparsity": 0.0
+          },
+          "volume": {
+            "count": 1,
+            "fill_rate": 1.0,
+            "sparsity": 0.0
+          },
+          "warranty": {
+            "count": 1,
+            "fill_rate": 1.0,
+            "sparsity": 0.0
+          }
+        }
       }
     },
-    "top_brands": {}
+    "top_brands": {
+      "Xiaomi": 3,
+      "Apple": 2,
+      "Sony": 2,
+      "Samsung": 1,
+      "Realme": 1,
+      "Lenovo": 1,
+      "LG": 1,
+      "AEG": 1
+    }
   },
   "dictionaries": {
-    "knowledge_base_models_count": 328,
+    "knowledge_base_models_count": 9761,
     "brands_dictionary_count": 4620,
     "supported_categories": [
       "smartphones",

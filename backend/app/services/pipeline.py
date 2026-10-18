@@ -4,6 +4,7 @@ import logging
 import re
 from typing import Any
 
+from app.config import settings
 from app.extractors.base import Prediction
 from app.extractors.gliner_extractor import GlinerExtractor
 from app.extractors.llm_extractor import StrictLlmFallbackExtractor
@@ -117,7 +118,11 @@ class CascadedExtractionPipeline:
         self.regex_extractor = RegexExtractor()
         self.gliner_extractor = GlinerExtractor(threshold=gliner_threshold) if use_gliner else None
         self.catalog_enricher = CatalogEnricher() if use_catalog_enricher else None
-        self.llm_extractor = StrictLlmFallbackExtractor() if use_llm else None
+        self.llm_extractor = (
+            StrictLlmFallbackExtractor(enforce_grounding=getattr(settings, "enforce_llm_grounding", False))
+            if use_llm
+            else None
+        )
         self.brand_registry = BrandRegistry.get_instance()
 
     def detect_category(self, card: dict[str, Any]) -> tuple[str, str]:

@@ -30,13 +30,15 @@ if sys.stdout.encoding.lower() != "utf-8":
 
 def export_predictions(
     input_path: str,
-    output_json_path: str = "output/predictions.json",
-    output_csv_path: str = "output/predictions.csv",
+    output_json_path: str | None = "output/predictions.json",
+    output_csv_path: str | None = "output/predictions.csv",
 ) -> list[dict[str, Any]]:
     from app.services.pipeline import CascadedExtractionPipeline
 
-    os.makedirs(os.path.dirname(os.path.abspath(output_json_path)), exist_ok=True)
-    os.makedirs(os.path.dirname(os.path.abspath(output_csv_path)), exist_ok=True)
+    if output_json_path:
+        os.makedirs(os.path.dirname(os.path.abspath(output_json_path)), exist_ok=True)
+    if output_csv_path:
+        os.makedirs(os.path.dirname(os.path.abspath(output_csv_path)), exist_ok=True)
 
     # 1. Чтение входных данных
     if not os.path.exists(input_path):
@@ -99,46 +101,48 @@ def export_predictions(
     avg_latency = total_time_ms / len(cards_in) if cards_in else 0.0
 
     # 2. Экспорт в JSON
-    with open(output_json_path, "w", encoding="utf-8") as f:
-        json.dump(
-            {
-                "metadata": {
-                    "timestamp": time.strftime("%Y-%m-%d %H:%M:%S"),
-                    "total_cards": len(results),
-                    "avg_latency_ms": round(avg_latency, 2),
-                    "pipeline_version": "2.2.0",
+    if output_json_path:
+        with open(output_json_path, "w", encoding="utf-8") as f:
+            json.dump(
+                {
+                    "metadata": {
+                        "timestamp": time.strftime("%Y-%m-%d %H:%M:%S"),
+                        "total_cards": len(results),
+                        "avg_latency_ms": round(avg_latency, 2),
+                        "pipeline_version": "2.2.0",
+                    },
+                    "items": results,
                 },
-                "items": results,
-            },
-            f,
-            ensure_ascii=False,
-            indent=2,
-        )
+                f,
+                ensure_ascii=False,
+                indent=2,
+            )
 
     # 3. Экспорт в плоский CSV (удобный для контент-менеджеров и жюри)
-    # Собираем все уникальные атрибуты
-    all_attr_names = set()
-    for r in results:
-        all_attr_names.update(r["extracted_attributes"].keys())
-    sorted_attrs = sorted(list(all_attr_names))
-
-    csv_columns = ["external_id", "title", "category", "overall_confidence", "needs_review", "missing_required"] + sorted_attrs
-
-    with open(output_csv_path, "w", encoding="utf-8-sig", newline="") as f:
-        writer = csv.writer(f)
-        writer.writerow(csv_columns)
+    if output_csv_path:
+        # Собираем все уникальные атрибуты
+        all_attr_names = set()
         for r in results:
-            row = [
-                r["external_id"],
-                r["title"],
-                r["category"],
-                r["overall_confidence"],
-                "YES" if r["needs_review"] else "NO",
-                ";".join(r["missing_required"]),
-            ]
-            for attr in sorted_attrs:
-                row.append(r["extracted_attributes"].get(attr, ""))
-            writer.writerow(row)
+            all_attr_names.update(r["extracted_attributes"].keys())
+        sorted_attrs = sorted(list(all_attr_names))
+
+        csv_columns = ["external_id", "title", "category", "overall_confidence", "needs_review", "missing_required"] + sorted_attrs
+
+        with open(output_csv_path, "w", encoding="utf-8-sig", newline="") as f:
+            writer = csv.writer(f)
+            writer.writerow(csv_columns)
+            for r in results:
+                row = [
+                    r["external_id"],
+                    r["title"],
+                    r["category"],
+                    r["overall_confidence"],
+                    "YES" if r["needs_review"] else "NO",
+                    ";".join(r["missing_required"]),
+                ]
+                for attr in sorted_attrs:
+                    row.append(r["extracted_attributes"].get(attr, ""))
+                writer.writerow(row)
 
     print("=" * 70)
     print("✅ ЭКСПОРТ ПРЕДСКАЗАНИЙ УСПЕШНО ЗАВЕРШЁН")
@@ -159,10 +163,11 @@ if __name__ == "__main__":
     parser.add_argument("--input", default=os.path.join(BASE_DIR, "data", "sample_cards.json"), help="Путь к входному JSON или CSV файлу")
     parser.add_argument("--output-json", default=os.path.join(BASE_DIR, "output", "predictions.json"), help="Путь к результирующему JSON")
     parser.add_argument("--output-csv", default=os.path.join(BASE_DIR, "output", "predictions.csv"), help="Путь к результирующему CSV")
+    parser.add_argument("--format", choices=["json", "csv", "both"], default="both", help="Формат экспорта (json, csv, both)")
     args = parser.parse_args()
 
     export_predictions(
         input_path=args.input,
-        output_json_path=args.output_json,
-        output_csv_path=args.output_csv,
+        output_json_path=args.output_json if args.format in ("json", "both") else None,
+        output_csv_path=args.output_csv if args.format in ("csv", "both") else None,
     )
