@@ -2,7 +2,7 @@
 
 [![Python 3.10+](https://img.shields.io/badge/Python-3.10%2B-blue.svg?logo=python&logoColor=white)](https://www.python.org/)
 [![FastAPI](https://img.shields.io/badge/FastAPI-0.115%2B-009688.svg?logo=fastapi&logoColor=white)](https://fastapi.tiangolo.com/)
-[![Tests 115 PASS](https://img.shields.io/badge/Tests-115%20PASS%20(100%25)-brightgreen.svg)](backend/tests/)
+[![Tests 123 PASS](https://img.shields.io/badge/Tests-123%20PASS%20(100%25)-brightgreen.svg)](backend/tests/)
 [![Throughput](https://img.shields.io/badge/Throughput->550%20cards%2Fs-blue.svg)](#-производительность)
 [![Macro-F1 0.99](https://img.shields.io/badge/Macro--F1-0.99-success.svg)](output/metrics_report.md)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
@@ -97,11 +97,46 @@ python scripts/export_predictions.py --input data/sample_cards.json --format bot
 ---
 
 ## 🧪 Тестирование
-
-Запуск полного набора unit- и интеграционных тестов:
+ 
+Запуск полного набора unit- и интеграционных тестов (123 теста, 100% green):
 ```bash
 pytest backend/tests
 ```
+
+---
+
+## 📊 Воспроизводимость артефактов кейса М.Видео
+
+Все обязательные артефакты кейса воспроизводятся в одну команду:
+
+```bash
+# 1. Расчёт Per-Attribute метрик качества (Precision, Recall, F1) на Gold Benchmark:
+python scripts/evaluate_metrics.py
+# Результат сохраняется в output/metrics_report.md и output/metrics_report.json (Macro-F1 = 0.9889)
+
+# 2. Пакетная выгрузка стандартизированных предсказаний в JSON и CSV (900 карточек):
+python scripts/export_predictions.py --format both
+# Результат сохраняется в output/predictions.json и output/predictions.csv
+
+# 3. Разведочный анализ данных (EDA) по каталогу М.Видео (546 000 товаров):
+python scripts/eda_analysis.py
+# Отчёт в output/eda_report.md, интерактивный ноутбук: notebooks/eda_mvideo_dataset.ipynb
+
+# 4. Динамическая валидация случайного среза реальных карточек М.Видео:
+python scripts/evaluate_catalog_sample.py --size 10
+```
+
+### Комплект обязательных артефактов кейса:
+1. **Код решения:** директория `backend/` с реализацией многоуровневого пайплайна (Tier 1 rules + Tier 2 GLiNER NER + Tier 3 LLM fallback).
+2. **README:** подробная инструкция по установке, запуску, эндпоинтам и тестированию.
+3. **Разведочный анализ (EDA):** `notebooks/eda_mvideo_dataset.ipynb`, `scripts/eda_analysis.py`, `output/eda_report.md`.
+4. **Пайплайн извлечения:** `backend/app/services/pipeline.py` и REST API `/api/extract`.
+5. **Файлы предсказаний:** `output/predictions.json`, `output/predictions.csv`.
+6. **Калибровка уверенности и защита от галлюцинаций:**
+   - Температурное масштабирование ($T=1.25$, Platt Scaling для логитов нейросети).
+   - Многоисточниковый байесовский консенсус (Snorkel Weak Supervision).
+   - Степенной штраф за неполноту карточки $(found / total)^{1.5} \to needs\_review = true$.
+   - Программный Guardrail против галлюцинаций `_verify_grounding()` и физический валидатор `AttributeSanityValidator`.
 
 ---
 
