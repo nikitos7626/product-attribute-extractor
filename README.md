@@ -4,8 +4,9 @@
 [![FastAPI](https://img.shields.io/badge/FastAPI-0.115%2B-009688.svg?logo=fastapi&logoColor=white)](https://fastapi.tiangolo.com/)
 [![NER GLiNER](https://img.shields.io/badge/Zero--Shot%20NER-GLiNER%20Multi-orange.svg)](https://github.com/urchade/GLiNER)
 [![Tests 108 PASS](https://img.shields.io/badge/Tests-108%20PASS%20(100%25)-brightgreen.svg)](backend/tests/)
-[![Macro-F1 1.0000](https://img.shields.io/badge/Macro--F1-1.0000-success.svg)](output/metrics_report.md)
-[![Catalog Coverage 100%](https://img.shields.io/badge/Catalog%20Coverage-100%25-success.svg)](output/metrics_report.md)
+[![Macro-F1 1.0000](https://img.shields.io/badge/Macro--F1-1.0000%20(Gold%20Set)-success.svg)](output/metrics_report.md)
+[![Gold Coverage 100%](https://img.shields.io/badge/Coverage-100%25%20(Gold%20Set)-success.svg)](output/metrics_report.md)
+[![Throughput](https://img.shields.io/badge/Throughput->550%20cards%2Fs-blue.svg)](README.md)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
 
 > **Хакатон VolgaDev 2026 · Задача № 3**  
@@ -13,7 +14,8 @@
 > 🌐 **Публичный веб-интерфейс:** [https://tochka-sborki-2026-team-059.hub.gigaschool.ru](https://tochka-sborki-2026-team-059.hub.gigaschool.ru)  
 > 📑 **Интерактивная документация OpenAPI (Swagger):** [https://tochka-sborki-2026-team-059.hub.gigaschool.ru/docs](https://tochka-sborki-2026-team-059.hub.gigaschool.ru/docs)  
 > 📊 **ReDoc:** [https://tochka-sborki-2026-team-059.hub.gigaschool.ru/redoc](https://tochka-sborki-2026-team-059.hub.gigaschool.ru/redoc)  
-> 🧪 **Статус тестов:** **108 / 108 PASS (100%)** | Скорость детерминированного ядра: **< 1.8 мс / карточка**
+> 🧪 **Статус тестов:** **108 / 108 PASS (100%)** | Скорость ядра Tier 1: **< 1.8 мс / карточка (> 550 SKU/сек)**
+
 
 
 ---
@@ -33,6 +35,14 @@
 ---
 
 ## 📊 Результаты валидации качества (Benchmark & Evaluation)
+
+> [!NOTE]
+> **Методология оценки: Gold Benchmark vs Полный каталог (546 тыс. SKU)**
+> 
+> * **Качественная валидация (Gold Set, `data/gold_dataset.json`):** Метрики точности (Precision, Recall, F1) рассчитаны на **эталонном сбалансированном срезе из 12 карточек с независимой 100% ручной верификацией эталонных значений (Ground Truth)** по всем 8 целевым категориям каталога (смартфоны, ноутбуки, ТВ, холодильники, роботы-пылесосы, наушники, powerbank, СВЧ) и 18 атрибутам (суммарно 84 контрольные точки). В сыром каталоге М.Видео сквозной эталонной разметки нет (данные продавцов содержат шум и пропуски), поэтому экспертный Gold Set необходим для объективного расчёта истинных Precision, Recall и F1.
+> * **Масштабируемость на полном каталоге (546 000 SKU):** Сырой датасет каталога использован для:
+>   1. Сборки нормализованной базы моделей **Tier 3.5 Catalog Models KB** (`catalog_models_kb.json`, **9 761 модель**, 328 вендоров).
+>   2. Проверки производительности: детерминированное ядро **Tier 1 (FastRules)** обрабатывает карточку за **< 1.8 мс** (**> 550 карточек/сек** на ядро CPU). Это обеспечивает пакетную обработку **всех 546 000 офферов менее чем за 16 минут** на стандартном сервере без GPU.
 
 Метрики рассчитаны скриптом `scripts/evaluate_metrics.py` на эталонном размеченном наборе `data/gold_dataset.json`:
 
