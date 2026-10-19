@@ -5,8 +5,29 @@ from pathlib import Path
 
 sys.stdout.reconfigure(encoding='utf-8')
 
-print("Extracting full M.Video category tree from skus.pkl...")
-with open(r'c:\Users\nikit\Downloads\cu_ws\skus.pkl', 'rb') as f:
+import argparse
+import os
+
+REPO_ROOT = Path(__file__).resolve().parent.parent
+
+parser = argparse.ArgumentParser(description="Экспорт категорий М.Видео из skus.pkl")
+parser.add_argument("--skus-path", type=str, default=None, help="Путь к файлу skus.pkl")
+args = parser.parse_args()
+
+skus_candidates = [
+    Path(args.skus_path) if args.skus_path else None,
+    Path(os.environ["SKUS_PATH"]) if "SKUS_PATH" in os.environ else None,
+    REPO_ROOT / "data" / "skus.pkl",
+    Path("skus.pkl"),
+]
+skus_file = next((p for p in skus_candidates if p and p.is_file()), None)
+
+if not skus_file:
+    print("ℹ️ Файл skus.pkl не обнаружен. Категории уже экспортированы в backend/data/dictionaries/mvideo_categories.json.")
+    sys.exit(0)
+
+print(f"Extracting full M.Video category tree from {skus_file}...")
+with open(skus_file, 'rb') as f:
     data = pickle.load(f)
 
 categories = data['yml_catalog']['shop']['categories']['category']
@@ -30,7 +51,7 @@ for c in categories:
         if pid:
             id_to_parent[cid] = pid
 
-out_path = Path(r'c:\Users\nikit\Documents\antigravity\epic-bose\backend\data\dictionaries\mvideo_categories.json')
+out_path = REPO_ROOT / 'backend' / 'data' / 'dictionaries' / 'mvideo_categories.json'
 out_path.parent.mkdir(parents=True, exist_ok=True)
 
 with open(out_path, 'w', encoding='utf-8') as f:

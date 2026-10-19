@@ -33,3 +33,16 @@ class CardOut(BaseModel):
 class BatchOut(BaseModel):
     total: int
     cards: list[CardOut]
+
+
+class ReviewOverrideIn(BaseModel):
+    external_id: str
+    attribute: str
+    override_value: str
+    action: str = "override"  # override | approve | reject
+    reviewed_by: str = "operator"
+
+
+class ReviewQueueResponse(BaseModel):
+    total_in_queue: int
+    items: list[dict]

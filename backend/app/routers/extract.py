@@ -4,7 +4,7 @@ import io
 import json
 
 from fastapi import APIRouter, File, HTTPException, UploadFile
-from app.schemas import BatchOut, CardIn, CardOut, PredictionOut
+from app.schemas import BatchOut, CardIn, CardOut, PredictionOut, ReviewOverrideIn, ReviewQueueResponse
 from app.services.pipeline import CascadedExtractionPipeline
 
 
@@ -245,4 +245,80 @@ async def export_batch_predictions(
             headers={"Content-Disposition": 'attachment; filename="predictions.csv"'},
         )
 
-    return {"total": len(results), "predictions": results}
+    return {"total": len(results), "predictions": results}
+
+
+@router.get("/review-queue", response_model=ReviewQueueResponse)
+def get_review_queue(limit: int = 50) -> ReviewQueueResponse:
+    """
+    Возвращает список карточек из очереди ручной модерации (Human-in-the-Loop),
+    помеченных флагом needs_review=True или имеющих пропущенные обязательные атрибуты.
+    """
+    from pathlib import Path
+    base_dir = Path(__file__).resolve().parent.parent.parent.parent
+    preds_path = base_dir / "output" / "predictions.json"
+
+    if not preds_path.exists():
+        return ReviewQueueResponse(total_in_queue=0, items=[])
+
+    try:
+        with open(preds_path, "r", encoding="utf-8") as f:
+            data = json.load(f)
+        items = data.get("items", []) if isinstance(data, dict) else data
+    except Exception as e:
+        raise HTTPException(500, f"Ошибка чтения очереди модерации: {e}")
+
+    flagged = [it for it in items if it.get("needs_review") is True]
+    return ReviewQueueResponse(
+        total_in_queue=len(flagged),
+        items=flagged[:limit],
+    )
+
+
+@router.post("/review-override")
+def submit_review_override(body: ReviewOverrideIn) -> dict:
+    """
+    Применяет ручное решение модератора (Human-in-the-Loop):
+    утверждает карточку, переопределяет ошибочный атрибут или отклоняет сомнительное значение.
+    Результат записывается в output/reviewed_predictions.json.
+    """
+    from datetime import datetime
+    from pathlib import Path
+
+    base_dir = Path(__file__).resolve().parent.parent.parent.parent
+    reviewed_path = base_dir / "output" / "reviewed_predictions.json"
+
+    reviewed_store: dict = {"metadata": {"last_updated": datetime.now().isoformat()}, "overrides": {}}
+    if reviewed_path.exists():
+        try:
+            with open(reviewed_path, "r", encoding="utf-8") as f:
+                reviewed_store = json.load(f)
+        except Exception:
+            pass
+
+    if "overrides" not in reviewed_store:
+        reviewed_store["overrides"] = {}
+
+    entry = {
+        "external_id": body.external_id,
+        "attribute": body.attribute,
+        "override_value": body.override_value,
+        "action": body.action,
+        "reviewed_by": body.reviewed_by,
+        "timestamp": datetime.now().isoformat(),
+    }
+    key = f"{body.external_id}:{body.attribute}"
+    reviewed_store["overrides"][key] = entry
+    reviewed_store["metadata"]["last_updated"] = datetime.now().isoformat()
+    reviewed_store["metadata"]["total_overrides"] = len(reviewed_store["overrides"])
+
+    reviewed_path.parent.mkdir(parents=True, exist_ok=True)
+    with open(reviewed_path, "w", encoding="utf-8") as f:
+        json.dump(reviewed_store, f, ensure_ascii=False, indent=2)
+
+    return {
+        "status": "success",
+        "action_recorded": entry,
+        "total_overrides": len(reviewed_store["overrides"]),
+    }
+

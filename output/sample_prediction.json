@@ -1,0 +1,111 @@
+{
+  "metadata": {
+    "description": "Компактный образец стандартизированного вывода предсказаний М.Видео AI (3 карточки)",
+    "schema_version": "2.2.0",
+    "total_samples": 3
+  },
+  "samples": [
+    {
+      "external_id": "mvideo-20077299",
+      "title": "Холодильник HAIER CEF535ASG",
+      "category": "Холодильники",
+      "overall_confidence": 0.3368,
+      "needs_review": true,
+      "extracted_attributes": {
+        "brand": "Haier",
+        "model": "CEF535ASG"
+      },
+      "missing_required": [
+        "color",
+        "defrost_system"
+      ],
+      "latency_ms": 5463.19,
+      "detailed_predictions": [
+        {
+          "attribute": "brand",
+          "value": "Haier",
+          "confidence": 0.95,
+          "source": "flashtext",
+          "raw": "Haier",
+          "grounded": true
+        },
+        {
+          "attribute": "model",
+          "value": "CEF535ASG",
+          "confidence": 0.9552,
+          "source": "gliner",
+          "raw": "CEF535ASG",
+          "grounded": true
+        }
+      ]
+    },
+    {
+      "external_id": "mvideo-20077298",
+      "title": "Холодильник HAIER CEF535AWG",
+      "category": "Холодильники",
+      "overall_confidence": 0.336,
+      "needs_review": true,
+      "extracted_attributes": {
+        "brand": "Haier",
+        "model": "CEF535AWG"
+      },
+      "missing_required": [
+        "color",
+        "defrost_system"
+      ],
+      "latency_ms": 124.43,
+      "detailed_predictions": [
+        {
+          "attribute": "brand",
+          "value": "Haier",
+          "confidence": 0.95,
+          "source": "flashtext",
+          "raw": "Haier",
+          "grounded": true
+        },
+        {
+          "attribute": "model",
+          "value": "CEF535AWG",
+          "confidence": 0.9508,
+          "source": "gliner",
+          "raw": "CEF535AWG",
+          "grounded": true
+        }
+      ]
+    },
+    {
+      "external_id": "mvideo-20078182",
+      "title": "Холодильник Gorenje NRK620EABXL4",
+      "category": "Холодильники",
+      "overall_confidence": 0.3364,
+      "needs_review": true,
+      "extracted_attributes": {
+        "brand": "Gorenje",
+        "model": "NRK620EABXL4"
+      },
+      "missing_required": [
+        "color",
+        "defrost_system"
+      ],
+      "latency_ms": 121.68,
+      "detailed_predictions": [
+        {
+          "attribute": "brand",
+          "value": "Gorenje",
+          "confidence": 0.95,
+          "source": "flashtext",
+          "raw": "Gorenje",
+          "grounded": true
+        },
+        {
+          "attribute": "model",
+          "value": "NRK620EABXL4",
+          "confidence": 0.9531,
+          "source": "gliner",
+          "raw": "NRK620EABXL4",
+          "grounded": true
+        }
+      ]
+    }
+  ]
+}

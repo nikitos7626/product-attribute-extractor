@@ -1,0 +1,16 @@
+{
+  "metadata": {
+    "last_updated": "2026-10-19T10:56:20.741656",
+    "total_overrides": 1
+  },
+  "overrides": {
+    "test-override-sku:color": {
+      "external_id": "test-override-sku",
+      "attribute": "color",
+      "override_value": "титановый серый",
+      "action": "override",
+      "reviewed_by": "qa_operator",
+      "timestamp": "2026-10-19T10:56:20.741652"
+    }
+  }
+}

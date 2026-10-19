@@ -25,6 +25,35 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
+
+@app.middleware("http")
+async def api_key_auth_middleware(request: Request, call_next):
+    """
+    Промышленная защита API: если settings.api_key задан в окружении,
+    все защищенные эндпоинты требуют заголовок X-API-Key или Bearer-токен.
+    Если api_key не задан — работает режим открытого доступа для локальных тестов.
+    """
+    if not settings.api_key:
+        return await call_next(request)
+
+    public_paths = {"/", "/health", "/docs", "/redoc", "/openapi.json", "/api", "/api/info", "/api/extract/health"}
+    if request.url.path in public_paths or request.method == "OPTIONS":
+        return await call_next(request)
+
+    provided_key = request.headers.get("X-API-Key")
+    auth_header = request.headers.get("Authorization", "")
+    if not provided_key and auth_header.startswith("Bearer "):
+        provided_key = auth_header[7:].strip()
+
+    if not provided_key or provided_key != settings.api_key:
+        return JSONResponse(
+            status_code=401,
+            content={"detail": "Unauthorized: Invalid or missing API key. Provide X-API-Key header or Bearer token."},
+        )
+
+    return await call_next(request)
+
+
 app.include_router(extract.router)
 
 
@@ -56,6 +85,8 @@ def root_ui(request: Request):
                 "extract_alias": "POST /extract",
                 "batch": "POST /api/extract/batch",
                 "export": "POST /api/extract/export",
+                "review_queue": "GET /api/extract/review-queue",
+                "review_override": "POST /api/extract/review-override",
                 "metrics": "GET /api/extract/metrics",
                 "taxonomy": "GET /api/extract/taxonomy",
                 "brand_register": "POST /api/extract/brands/register",
@@ -90,6 +121,8 @@ def api_info() -> dict:
             "extract_api": "POST /api/extract",
             "extract_batch": "POST /api/extract/batch",
             "export_predictions": "POST /api/extract/export",
+            "review_queue": "GET /api/extract/review-queue",
+            "review_override": "POST /api/extract/review-override",
             "metrics": "GET /api/extract/metrics",
             "taxonomy": "GET /api/extract/taxonomy",
             "brand_register": "POST /api/extract/brands/register",

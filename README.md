@@ -2,7 +2,7 @@
 
 [![Python 3.10+](https://img.shields.io/badge/Python-3.10%2B-blue.svg?logo=python&logoColor=white)](https://www.python.org/)
 [![FastAPI](https://img.shields.io/badge/FastAPI-0.115%2B-009688.svg?logo=fastapi&logoColor=white)](https://fastapi.tiangolo.com/)
-[![Tests 128 PASS](https://img.shields.io/badge/Tests-128%20PASS%20(100%25)-brightgreen.svg)](backend/tests/)
+[![Tests 130 PASS](https://img.shields.io/badge/Tests-130%20PASS%20(100%25)-brightgreen.svg)](backend/tests/)
 [![Throughput](https://img.shields.io/badge/Throughput->550%20cards%2Fs-blue.svg)](#-производительность)
 [![Macro-F1 0.99](https://img.shields.io/badge/Macro--F1-0.99-success.svg)](output/metrics_report.md)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
@@ -98,15 +98,74 @@ python scripts/export_predictions.py --input data/sample_cards.json --format bot
 | `POST` | `/api/extract/batch` | Пакетная обработка списка карточек товаров |
 | `POST` | `/api/extract/export` | Пакетный экспорт в стандартизированные файлы `predictions.json` / `predictions.csv` |
 | `GET` | `/api/extract/taxonomy`| Схемы категорий, обязательные атрибуты и белые списки |
+| `GET` | `/api/extract/review-queue` | Очередь карточек для ручной проверки Human-in-the-Loop (`needs_review: true`) |
+| `POST` | `/api/extract/review-override` | Сохранение решения модератора по переопределению/утверждению атрибута |
+| `GET` | `/api/extract/metrics` | Стандартизированный JSON-отчет валидации качества (Per-Attribute F1/P/R) |
 | `POST` | `/api/extract/brands/register` | Динамическое добавление нового бренда в словарь без перезапуска |
 | `GET` | `/api/info` | Служебная информация о сервисе и активных компонентах |
+| `GET` | `/health` | Легковесный health check сервиса |
 | `GET` | `/docs` | Интерактивная документация Swagger UI |
+
+---
+
+## 🗺️ Связка скриптов, входных данных и выходных артефактов
+
+Вся цепочка воспроизводимости от сырых данных до отчётов полностью прозрачна и документирована:
+
+| Скрипт / Ноутбук | Входные данные | Выходной артефакт / Отчёт | Назначение |
+| :--- | :--- | :--- | :--- |
+| [`scripts/evaluate_metrics.py`](scripts/evaluate_metrics.py) | `data/gold_dataset.json` | [`output/metrics_report.md`](output/metrics_report.md), [`output/metrics_report.json`](output/metrics_report.json) | Расчёт строгих per-attribute метрик (Precision, Recall, F1, Coverage) на Gold-бенчмарке М.Видео |
+| [`scripts/export_predictions.py`](scripts/export_predictions.py) | `data/sample_cards.json` | [`output/predictions.json`](output/predictions.json), [`output/predictions.csv`](output/predictions.csv), [`output/sample_prediction.json`](output/sample_prediction.json) | Пакетная выгрузка 900 карточек во всех продукционных форматах со всеми флагами калибровки |
+| [`scripts/review_queue.py`](scripts/review_queue.py) | `output/predictions.json` | [`output/reviewed_predictions.json`](output/reviewed_predictions.json) | Интерактивное рабочее место контент-модератора (HITL) для проверки и редактирования сомнительных карточек |
+| [`scripts/eda_analysis.py`](scripts/eda_analysis.py) | `data/sample_cards.json` / `skus.pkl` | [`output/eda_report.md`](output/eda_report.md), [`output/eda_report.json`](output/eda_report.json) | Разведочный анализ распределения категорий, брендов и полноты атрибутов каталога М.Видео |
+| [`notebooks/eda_mvideo_dataset.ipynb`](notebooks/eda_mvideo_dataset.ipynb) | Каталог М.Видео | Пре-рендеренные визуализации и графики | Интерактивный Jupyter-ноутбук с распределениями и выводами |
+| [`scripts/reproduce_cases.py`](scripts/reproduce_cases.py) | Сложные кейсы селлеров | Вывод в консоль | Верификация устойчивости к состязательному шуму (Title Authority, лимиты апгрейда, инверсия ОС) |
+| [`scripts/verify_dataset_taxonomy.py`](scripts/verify_dataset_taxonomy.py) | `skus.pkl` (опционально) | Консольный аудит | Полная верификация покрытия таксономии и белых списков атрибутов каталога |
+
+> 💡 **Быстрый просмотр предсказаний:** файл [`output/sample_prediction.json`](output/sample_prediction.json) содержит компактный образец (3 карточки: Смартфон, Ноутбук, Холодильник, < 3 КБ) для моментальной инспекции структуры предсказаний в веб-интерфейсе Git без загрузки полного файла (1.2 МБ).
+
+---
+
+## 👥 Интерактивная ручная модерация (Human-in-the-Loop Review Queue)
+
+Для обработки карточек, помеченных флагом `needs_review: true` (низкая уверенность, отсутствие критичных атрибутов или сомнительные значения), в проекте реализовано полноценное рабочее место контент-модератора:
+
+### 1. Консольный инструмент модератора (`scripts/review_queue.py`):
+```bash
+# Вывести аналитическую сводку по очереди модерации:
+python scripts/review_queue.py --summary
+
+# Запустить интерактивную сессию ручной проверки (Approve / Edit / Skip / Quit):
+python scripts/review_queue.py --input output/predictions.json --output output/reviewed_predictions.json
+
+# Выгрузить только требующие модерации карточки:
+python scripts/review_queue.py --flagged-only output/flagged_cards.json
+
+# Пакетное авто-подтверждение карточек с высокой уверенностью:
+python scripts/review_queue.py --auto-approve-conf 0.90
+```
+
+### 2. REST API эндпоинты модерации:
+- `GET /api/extract/review-queue?limit=50`: возвращает список ожидающих проверки карточек.
+- `POST /api/extract/review-override`: сохраняет ручное решение модератора по переопределению атрибута или утверждению карточки в `output/reviewed_predictions.json`.
+
+---
+
+## 🔒 Безопасность и управление секретами
+
+В проекте строго соблюдаются лучшие практики безопасности:
+1. **Отсутствие зашитых секретов:** в репозитории, истории коммитов и файлах конфигурации нет реальных API-ключей. Файлы `.env.example` содержат только нейтральные шаблонные переменные (`LLM_API_KEY=your_api_key_here`).
+2. **Опциональная защита API-ключом (Bearer / X-API-Key):**
+   - Для включения авторизации в проде достаточно задать `API_KEY=your_secret_token` в файле `.env` или переменных окружения.
+   - Все защищенные эндпоинты (`/extract`, `/api/extract`, `/batch`, `/export`, `/review-override`) начинают требовать заголовок `X-API-Key` или `Authorization: Bearer <token>`, возвращая `401 Unauthorized` при отсутствии ключа.
+   - Публичные эндпоинты документации (`/health`, `/api/info`, `/docs`, `/openapi.json`) остаются доступными для мониторинга.
+   - По умолчанию (`API_KEY=""`) действует режим открытого доступа для бесшовного автономного запуска тестов жюри.
 
 ---
 
 ## 🧪 Тестирование
  
-Запуск полного набора unit- и интеграционных тестов (128 тестов, 100% green):
+Запуск полного набора unit- и интеграционных тестов (130 тестов, 100% green):
 ```bash
 pytest backend/tests
 
@@ -127,23 +186,24 @@ python scripts/evaluate_metrics.py
 
 # 2. Пакетная выгрузка стандартизированных предсказаний в JSON и CSV (900 карточек):
 python scripts/export_predictions.py --format both
-# Результат сохраняется в output/predictions.json и output/predictions.csv
+# Результат сохраняется в output/predictions.json, output/predictions.csv и output/sample_prediction.json
 
-# 3. Разведочный анализ данных (EDA) по каталогу М.Видео (546 000 товаров):
+# 3. Разведочный анализ данных (EDA) по каталогу М.Видео:
 python scripts/eda_analysis.py
 # Отчёт в output/eda_report.md, интерактивный ноутбук: notebooks/eda_mvideo_dataset.ipynb
 
-# 4. Динамическая валидация случайного среза реальных карточек М.Видео:
-python scripts/evaluate_catalog_sample.py --size 10
+# 4. Аналитическая сводка очереди ручной модерации:
+python scripts/review_queue.py --summary
 ```
 
 ### Комплект обязательных артефактов кейса:
 1. **Код решения:** директория `backend/` с реализацией многоуровневого пайплайна (Tier 1 rules + Tier 2 GLiNER NER + Tier 3 LLM fallback).
-2. **README:** подробная инструкция по установке, запуску, эндпоинтам и тестированию.
+2. **README:** подробная инструкция по установке, запуску, эндпоинтам, безопасности и тестированию.
 3. **Разведочный анализ (EDA):** `notebooks/eda_mvideo_dataset.ipynb`, `scripts/eda_analysis.py`, `output/eda_report.md`.
 4. **Пайплайн извлечения:** `backend/app/services/pipeline.py` и REST API `/api/extract`.
-5. **Файлы предсказаний:** `output/predictions.json`, `output/predictions.csv`.
-6. **Калибровка уверенности и защита от галлюцинаций:**
+5. **Файлы предсказаний:** `output/predictions.json`, `output/predictions.csv`, `output/sample_prediction.json`.
+6. **Инструменты модерации (HITL):** `scripts/review_queue.py`, эндпоинты `/api/extract/review-queue`, `/api/extract/review-override`.
+7. **Калибровка уверенности и защита от галлюцинаций:**
    - Температурное масштабирование ($T=1.25$, Platt Scaling для логитов нейросети).
    - Многоисточниковый байесовский консенсус (Snorkel Weak Supervision).
    - Степенной штраф за неполноту карточки $(found / total)^{1.5} \to needs\_review = true$.
@@ -155,16 +215,17 @@ python scripts/evaluate_catalog_sample.py --size 10
 
 | № | Критерий кейса | Реализация в репозитории | Артефакт / Код |
 | :-: | :--- | :--- | :--- |
-| **1** | **Покрытие обязательных сценариев** | Полный комплект артефактов: EDA по 546k товаров каталога М.Видео, Per-Attribute метрики (Macro-F1 0.9889), экспорт 900 офферов. | [`notebooks/eda_mvideo_dataset.ipynb`](notebooks/eda_mvideo_dataset.ipynb), [`output/metrics_report.md`](output/metrics_report.md), [`output/predictions.csv`](output/predictions.csv) |
-| **2** | **Соблюдение ограничений и защита от галлюцинаций** | Программная проверка наличия значений в тексте (`_verify_grounding`), физический валидатор (`AttributeSanityValidator`), контекстная защита от состязательного шума селлеров (Context Guardrails: Title Authority, анти-апгрейд, анти-отрицание, межбрендовый инвариант `is_brand_model_compatible`), документирование KB (`v1.4.0`) и моделей (`urchade/gliner_medium-v2.1`). | [`backend/app/extractors/llm_extractor.py`](backend/app/extractors/llm_extractor.py), [`backend/app/extractors/sanity.py`](backend/app/extractors/sanity.py), [`scripts/reproduce_cases.py`](scripts/reproduce_cases.py) |
-| **3** | **Сквозной сценарий без заглушек** | Промышленный экспорт предсказаний, детерминированные пути исполнения (Tier 1 $\to$ Tier 2 $\to$ Tier 3), консольный CLI. | `POST /api/extract/export`, [`backend/run_cli.py`](backend/run_cli.py), [`scripts/export_predictions.py`](scripts/export_predictions.py) |
-| **4** | **Воспроизводимость и автономность** | Воспроизводимость в 1 команду, автономная сборка в Docker с оффлайн-кэшированием весов моделей без обращения к сети в рантайме. | [`Dockerfile`](Dockerfile), [`scripts/evaluate_metrics.py`](scripts/evaluate_metrics.py), [`docker-compose.yml`](docker-compose.yml) |
+| **1** | **Покрытие обязательных сценариев** | Полный комплект артефактов: EDA по каталогу М.Видео, Per-Attribute метрики (Macro-F1 0.9889), экспорт 900 офферов, полная цепочка «произвольная карточка $\to$ предсказания» без локальных зависимостей. | [`notebooks/eda_mvideo_dataset.ipynb`](notebooks/eda_mvideo_dataset.ipynb), [`output/metrics_report.md`](output/metrics_report.md), [`output/predictions.csv`](output/predictions.csv) |
+| **2** | **Соблюдение ограничений и защита от галлюцинаций** | Программная проверка наличия значений в тексте (`_verify_grounding`), физический валидатор (`AttributeSanityValidator`), безопасное управление секретами (нулевые зашитые ключи, опциональная `API_KEY` авторизация), документирование KB (`v1.4.0`) и моделей (`urchade/gliner_medium-v2.1`). | [`backend/app/extractors/llm_extractor.py`](backend/app/extractors/llm_extractor.py), [`backend/app/extractors/sanity.py`](backend/app/extractors/sanity.py), [`backend/app/main.py`](backend/app/main.py) |
+| **3** | **Сквозной сценарий без заглушек** | Промышленный экспорт предсказаний, детерминированные пути исполнения (Tier 1 $\to$ Tier 2 $\to$ Tier 3), консольный CLI, корректный graceful-fallback при отсутствии внешней KB. | `POST /api/extract/export`, [`backend/run_cli.py`](backend/run_cli.py), [`scripts/export_predictions.py`](scripts/export_predictions.py) |
+| **4** | **Воспроизводимость и переносимость** | Полная переносимость (0 жестко зашитых локальных путей во всех скриптах), запуск в 1 команду, автономная сборка в Docker с оффлайн-кэшированием весов моделей. | [`Dockerfile`](Dockerfile), [`scripts/evaluate_metrics.py`](scripts/evaluate_metrics.py), [`docker-compose.yml`](docker-compose.yml) |
 | **5** | **Архитектура и расширяемость** | Типизированные интерфейсы `@runtime_checkable Protocol` (`BaseExtractor`, `KnowledgeBaseInterface`), версионирование KB (`v1.4.0`), таксономия на 6570 категорий, поддержка думающих моделей (Reasoning). | [`backend/app/extractors/base.py`](backend/app/extractors/base.py), [`backend/app/services/catalog_enricher.py`](backend/app/services/catalog_enricher.py) |
-| **6** | **Обработка ошибок и таймауты** | Предохранитель `Circuit Breaker` (3 сбоя $\to$ cooldown 60с), жесткий таймаут HTTP (3.5–8.0с), изолированные Error Boundaries с graceful degradation. | [`backend/app/extractors/llm_extractor.py`](backend/app/extractors/llm_extractor.py), [`backend/app/extractors/gliner_extractor.py`](backend/app/extractors/gliner_extractor.py) |
-| **7** | **Пользовательский сценарий** | Эндпоинт `POST /extract` полностью открыт в Swagger OpenAPI (`include_in_schema=True`), сервисный маршрут `GET /api/info`, разделение UI и API без сниффинга заголовков. | [`backend/app/routers/extract.py`](backend/app/routers/extract.py), `/docs`, `/api/info` |
-| **8** | **Подача результата и калибровка** | Научный калибратор уверенности (Platt scaling, Snorkel consensus, штраф за неполноту, ECE), стандартизированные файлы выгрузки. | [`backend/app/services/confidence_calibrator.py`](backend/app/services/confidence_calibrator.py), [`output/predictions.json`](output/predictions.json), [`output/predictions.csv`](output/predictions.csv) |
+| **6** | **Обработка ошибок и таймауты** | Предохранитель `Circuit Breaker` (3 сбоя $\to$ cooldown 60с), жесткий таймаут HTTP (3.5–8.0с), изолированные Error Boundaries с типизированным логированием и graceful degradation. | [`backend/app/extractors/llm_extractor.py`](backend/app/extractors/llm_extractor.py), [`backend/app/extractors/gliner_extractor.py`](backend/app/extractors/gliner_extractor.py) |
+| **7** | **Пользовательский сценарий и HITL** | Эндпоинт `POST /extract` полностью открыт в Swagger OpenAPI (`include_in_schema=True`), сервисный маршрут `GET /api/info`, интерактивная очередь ручной проверки сомнительных карточек (`scripts/review_queue.py`, `/api/extract/review-queue`). | [`scripts/review_queue.py`](scripts/review_queue.py), [`backend/app/routers/extract.py`](backend/app/routers/extract.py), `/docs` |
+| **8** | **Подача результата и калибровка** | Научный калибратор уверенности, стандартизированные файлы выгрузки (`predictions.json`, `predictions.csv`), компактный образец предсказаний (`sample_prediction.json`), таблица связки скриптов и отчётов. | [`output/sample_prediction.json`](output/sample_prediction.json), [`output/predictions.json`](output/predictions.json), [`output/metrics_report.md`](output/metrics_report.md) |
 
 ---
 
 ## 👥 Команда
 **Точка сборки (`team-059`)** · М.Видео · VolgaDev 2026
+

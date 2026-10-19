@@ -9,8 +9,29 @@ sys.stdout.reconfigure(encoding='utf-8')
 
 from app.services.pipeline import CascadedExtractionPipeline
 
-print("Загрузка skus.pkl (546 тыс. товаров)...")
-with open(r'c:\Users\nikit\Downloads\cu_ws\skus.pkl', 'rb') as f:
+import argparse
+import os
+
+REPO_ROOT = Path(__file__).resolve().parent.parent
+
+parser = argparse.ArgumentParser(description="Инспекция случайных товаров из skus.pkl")
+parser.add_argument("--skus-path", type=str, default=None, help="Путь к файлу skus.pkl")
+args = parser.parse_args()
+
+skus_candidates = [
+    Path(args.skus_path) if args.skus_path else None,
+    Path(os.environ["SKUS_PATH"]) if "SKUS_PATH" in os.environ else None,
+    REPO_ROOT / "data" / "skus.pkl",
+    Path("skus.pkl"),
+]
+skus_file = next((p for p in skus_candidates if p and p.is_file()), None)
+
+if not skus_file:
+    print("ℹ️ Файл skus.pkl не обнаружен. Для инспекции случайных карточек используйте: python scripts/evaluate_catalog_sample.py")
+    sys.exit(0)
+
+print(f"Загрузка {skus_file} (546 тыс. товаров)...")
+with open(skus_file, 'rb') as f:
     data = pickle.load(f)
 
 categories = data['yml_catalog']['shop']['categories']['category']

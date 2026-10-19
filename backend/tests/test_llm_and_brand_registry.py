@@ -113,6 +113,7 @@ def test_pipeline_with_mocked_llm_enrichment():
     """
     pipeline = CascadedExtractionPipeline(use_gliner=False, use_catalog_enricher=False, use_llm=True)
     pipeline.llm_extractor.is_enabled = True
+    pipeline.llm_extractor.enforce_grounding = False
 
     mock_resp = '{"battery": "4800 мАч", "screen_diagonal": "6.5\\""}'
     with patch.object(pipeline.llm_extractor, "_call_llm", return_value=mock_resp):

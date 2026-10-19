@@ -19,7 +19,7 @@ if hasattr(sys.stdout, "reconfigure"):
 
 REPO_ROOT = Path(__file__).resolve().parent.parent
 PKL_CANDIDATES = [
-    Path(r"c:\Users\nikit\Downloads\cu_ws\skus.pkl"),
+    Path(os.environ["SKUS_PATH"]) if "SKUS_PATH" in os.environ else None,
     REPO_ROOT / "data" / "skus.pkl",
     Path("skus.pkl"),
 ]

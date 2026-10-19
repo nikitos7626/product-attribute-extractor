@@ -121,6 +121,24 @@ def export_predictions(
                 indent=2,
             )
 
+        # Сохраняем компактный образец предсказаний для быстрого просмотра в веб-интерфейсе репозитория (< 10 КБ)
+        sample_path = os.path.join(os.path.dirname(output_json_path), "sample_prediction.json")
+        sample_items = results[:3]
+        with open(sample_path, "w", encoding="utf-8") as f:
+            json.dump(
+                {
+                    "metadata": {
+                        "description": "Компактный образец стандартизированного вывода предсказаний М.Видео AI (3 карточки)",
+                        "schema_version": "2.2.0",
+                        "total_samples": len(sample_items),
+                    },
+                    "samples": sample_items,
+                },
+                f,
+                ensure_ascii=False,
+                indent=2,
+            )
+
     # 3. Экспорт в плоский CSV (удобный для контент-менеджеров и жюри)
     if output_csv_path:
         # Собираем все уникальные атрибуты
