@@ -22,6 +22,12 @@ class Settings(BaseSettings):
     use_catalog_enricher: bool = True
     use_llm: bool = True
 
+    # Гиперпараметры калибровки уверенности (Platt scaling & Snorkel consensus)
+    gliner_temperature: float = 1.25
+    catalog_kb_version: str = "1.4.0"
+    catalog_kb_path: str = "data/dictionaries/catalog_models_kb.json"
+    brands_csv_path: str = "data/dictionaries/brands.csv"
+
     # CORS (разрешенные источники веб-интерфейса)
     cors_origins: str = "http://localhost:5173,http://localhost:3000,http://127.0.0.1:8000"
 

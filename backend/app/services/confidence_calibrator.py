@@ -14,6 +14,7 @@ from __future__ import annotations
 import math
 import re
 from typing import Any, Iterable
+from app.config import settings
 
 
 class ConfidenceCalibrator:
@@ -38,7 +39,7 @@ class ConfidenceCalibrator:
     }
 
     # Температура калибровки нейросетевых логитов (Temperature Scaling T > 1 сглаживает overconfidence)
-    GLINER_TEMPERATURE: float = 1.25
+    GLINER_TEMPERATURE: float = getattr(settings, "gliner_temperature", 1.25)
 
     def __init__(self) -> None:
         pass

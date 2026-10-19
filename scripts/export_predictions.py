@@ -96,6 +96,8 @@ def export_predictions(
             "extracted_attributes": flat_preds,
             "missing_required": res.get("missing", []),
             "latency_ms": round(card_latency, 2),
+            "warnings": res.get("warnings", []),
+            "degraded_tiers": res.get("degraded_tiers", []),
             "detailed_predictions": res.get("predictions", []),
         }
         results.append(item_out)

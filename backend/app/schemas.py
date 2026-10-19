@@ -28,6 +28,8 @@ class CardOut(BaseModel):
     missing: list[str]
     overall_confidence: float = 0.0
     needs_review: bool = False
+    warnings: list[str] = Field(default_factory=list)
+    degraded_tiers: list[str] = Field(default_factory=list)
 
 
 class BatchOut(BaseModel):

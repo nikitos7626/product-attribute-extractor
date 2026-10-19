@@ -93,6 +93,7 @@ def main():
     parser.add_argument("--description", "-d", default="", help="Product description")
     parser.add_argument("--category", "-c", default=None, help="Explicit category if known")
     parser.add_argument("--compact", action="store_true", help="Output compact single-line JSON")
+    parser.add_argument("--interactive-review", action="store_true", help="Включить интерактивный режим модерации (Human-in-the-Loop) при флаге needs_review")
 
     args = parser.parse_args()
 
@@ -111,10 +112,51 @@ def main():
         category=args.category,
     )
 
+    if args.interactive_review and result.get("needs_review"):
+        print("\n" + "=" * 60)
+        print("⚠️ КАРТОЧКА ПОМЕЧЕНА ДЛЯ ПРОВЕРКИ (needs_review=True)")
+        print(f"Категория: {result.get('category')}, Уверенность: {result.get('overall_confidence')}")
+        if result.get("missing"):
+            print(f"Недостающие обязательные поля: {', '.join(result['missing'])}")
+        print("=" * 60)
+        try:
+            choice = input("Действие [A]pprove / [E]dit / [S]kip: ").strip().lower()
+            if choice in ("a", ""):
+                result["needs_review"] = False
+                result["reviewed"] = True
+                result["review_status"] = "manually_approved"
+                print("✓ Карточка утверждена оператором.")
+            elif choice == "e":
+                attr = input("Введите название атрибута для изменения: ").strip()
+                val = input(f"Введите новое значение для '{attr}': ").strip()
+                if attr and val:
+                    found = False
+                    for p in result.get("predictions", []):
+                        if p.get("attribute") == attr:
+                            p["value"] = val
+                            p["confidence"] = 1.0
+                            found = True
+                            break
+                    if not found:
+                        result["predictions"].append({
+                            "attribute": attr,
+                            "value": val,
+                            "confidence": 1.0,
+                            "source": "manual_review",
+                            "grounded": True,
+                        })
+                    result["needs_review"] = False
+                    result["reviewed"] = True
+                    result["review_status"] = "edited_and_approved"
+                    print(f"✓ Атрибут '{attr}' обновлен. Карточка утверждена.")
+        except (EOFError, KeyboardInterrupt):
+            pass
+
     if args.compact:
         print(json.dumps(result, ensure_ascii=False))
     else:
         print(json.dumps(result, ensure_ascii=False, indent=2))
+
 
 
 if __name__ == "__main__":

@@ -442,7 +442,11 @@ class StrictLlmFallbackExtractor:
                 data = json.loads(json_match.group(0))
             else:
                 data = json.loads(content_clean)
-        except Exception:
+        except (json.JSONDecodeError, ValueError) as e:
+            logger.warning("Failed to parse JSON from LLM: %s; content: %r", e, content_clean)
+            return None, None
+        except Exception as e:
+            logger.error("Unexpected error in LLM extraction parser: %s", e, exc_info=True)
             return None, None
 
         if not isinstance(data, dict):

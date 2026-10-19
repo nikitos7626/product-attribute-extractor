@@ -34,7 +34,10 @@ def _run(card: CardIn) -> CardOut:
         missing=res["missing"],
         overall_confidence=res["overall_confidence"],
         needs_review=res["needs_review"],
+        warnings=res.get("warnings", []),
+        degraded_tiers=res.get("degraded_tiers", []),
     )
+
 
 
 def _rows_from_file(filename: str, raw: bytes) -> list[dict]:
@@ -293,8 +296,8 @@ def submit_review_override(body: ReviewOverrideIn) -> dict:
         try:
             with open(reviewed_path, "r", encoding="utf-8") as f:
                 reviewed_store = json.load(f)
-        except Exception:
-            pass
+        except Exception as e:
+            logger.warning("Failed to load existing reviewed predictions from %s: %s", reviewed_path, e)
 
     if "overrides" not in reviewed_store:
         reviewed_store["overrides"] = {}
@@ -312,6 +315,20 @@ def submit_review_override(body: ReviewOverrideIn) -> dict:
     reviewed_store["metadata"]["last_updated"] = datetime.now().isoformat()
     reviewed_store["metadata"]["total_overrides"] = len(reviewed_store["overrides"])
 
+    # Активный контур обратной связи (Feedback Loop):
+    # При подтверждении или исправлении бренда модератором, бренд моментально регистрируется в BrandRegistry
+    if body.attribute == "brand" and body.action in ("approve", "override") and body.override_value:
+        try:
+            from app.services.brand_registry import BrandRegistry
+            BrandRegistry.get_instance().register_brand(
+                alias=body.override_value.strip().lower(),
+                canonical=body.override_value.strip(),
+                persist=True,
+            )
+            logger.info("Feedback loop: registered verified brand '%s' from human review", body.override_value)
+        except Exception as e:
+            logger.warning("Feedback loop brand registration error: %s", e)
+
     reviewed_path.parent.mkdir(parents=True, exist_ok=True)
     with open(reviewed_path, "w", encoding="utf-8") as f:
         json.dump(reviewed_store, f, ensure_ascii=False, indent=2)
@@ -319,6 +336,8 @@ def submit_review_override(body: ReviewOverrideIn) -> dict:
     return {
         "status": "success",
         "action_recorded": entry,
+        "feedback_applied": body.attribute == "brand",
         "total_overrides": len(reviewed_store["overrides"]),
     }
+
 

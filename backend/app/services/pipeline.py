@@ -509,6 +509,21 @@ class CascadedExtractionPipeline:
         """
         # Интеллектуальное авто-разделение сплошного текста (когда карточка введена единым куском)
         card = dict(card)
+        warnings_list: list[str] = []
+        degraded_tiers: list[str] = []
+
+        if self.use_gliner and (not self.gliner_extractor or not self.gliner_extractor.health()):
+            degraded_tiers.append("tier2_gliner")
+            warnings_list.append("GLiNER extractor is offline; falling back to Tier 1.")
+
+        if self.use_catalog_enricher and (not self.catalog_enricher or self.catalog_enricher.size() == 0):
+            degraded_tiers.append("tier3_catalog_kb")
+            warnings_list.append("Catalog KB is empty or missing; catalog enrichment skipped.")
+
+        if self.use_llm and self.llm_extractor and self.llm_extractor.is_circuit_open():
+            degraded_tiers.append("tier3_llm")
+            warnings_list.append("LLM Circuit Breaker is active; LLM enrichment skipped.")
+
         raw_text = (card.get("raw_text") or "").strip()
         raw_title = (card.get("title") or "").strip()
         raw_desc = (card.get("description") or "").strip()
@@ -803,4 +818,7 @@ class CascadedExtractionPipeline:
             "missing": final_missing,
             "overall_confidence": round(overall_conf, 4),
             "needs_review": needs_review,
+            "warnings": warnings_list,
+            "degraded_tiers": degraded_tiers,
         }
+

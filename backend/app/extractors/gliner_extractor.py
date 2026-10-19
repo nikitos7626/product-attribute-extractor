@@ -209,8 +209,8 @@ class GlinerExtractor:
                 val, unit = m.group(1), m.group(2) or "ГБ"
                 try:
                     return self._units.memory(val, unit)
-                except Exception:
-                    pass
+                except (ValueError, TypeError, ArithmeticError) as e:
+                    logger.debug("Memory normalization failed for %r: %s", raw_clean, e)
             return raw_clean
 
         if attr_key == "screen_diagonal":
@@ -218,8 +218,8 @@ class GlinerExtractor:
             if m:
                 try:
                     return self._units.screen_diagonal(m.group(1))
-                except Exception:
-                    pass
+                except (ValueError, TypeError, ArithmeticError) as e:
+                    logger.debug("Diagonal normalization failed for %r: %s", raw_clean, e)
             return raw_clean
 
         if attr_key == "battery":
@@ -227,8 +227,8 @@ class GlinerExtractor:
             if m:
                 try:
                     return self._units.battery(m.group(1))
-                except Exception:
-                    pass
+                except (ValueError, TypeError, ArithmeticError) as e:
+                    logger.debug("Battery normalization failed for %r: %s", raw_clean, e)
             return raw_clean
 
         if attr_key == "refresh_rate":
@@ -236,8 +236,8 @@ class GlinerExtractor:
             if m:
                 try:
                     return self._units.refresh_rate(m.group(1))
-                except Exception:
-                    pass
+                except (ValueError, TypeError, ArithmeticError) as e:
+                    logger.debug("Refresh rate normalization failed for %r: %s", raw_clean, e)
             return raw_clean
 
         if attr_key == "resolution":
@@ -245,8 +245,8 @@ class GlinerExtractor:
             if m:
                 try:
                     return self._units.resolution(m.group(1), m.group(2))
-                except Exception:
-                    pass
+                except (ValueError, TypeError, ArithmeticError) as e:
+                    logger.debug("Resolution normalization failed for %r: %s", raw_clean, e)
             return raw_clean
 
         if attr_key == "cleaning_type":
@@ -285,8 +285,8 @@ class GlinerExtractor:
                 val, unit = m.group(1), m.group(2) or "Вт"
                 try:
                     return self._units.power(val, unit)
-                except Exception:
-                    pass
+                except (ValueError, TypeError, ArithmeticError) as e:
+                    logger.debug("Power normalization failed for %r: %s", raw_clean, e)
             return raw_clean
 
         if attr_key == "volume":
@@ -295,8 +295,9 @@ class GlinerExtractor:
                 val, unit = m.group(1), m.group(2) or "л"
                 try:
                     return self._units.volume(val, unit)
-                except Exception:
-                    pass
+                except (ValueError, TypeError, ArithmeticError) as e:
+                    logger.debug("Volume normalization failed for %r: %s", raw_clean, e)
             return raw_clean
 
         return raw_clean
+

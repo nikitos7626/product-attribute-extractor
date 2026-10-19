@@ -18,14 +18,15 @@ import os
 import re
 from typing import Callable
 
+from app.config import settings
+
 logger = logging.getLogger(__name__)
 
 DEFAULT_BRANDS_CSV = os.path.join(
     os.path.dirname(os.path.dirname(os.path.dirname(__file__))),
-    "data",
-    "dictionaries",
-    "brands.csv",
+    getattr(settings, "brands_csv_path", "data/dictionaries/brands.csv"),
 )
+
 
 # Топ-35 ключевых брендов каталога М.Видео с известными транслитерациями и синонимами
 POPULAR_BRANDS: dict[str, list[str]] = {

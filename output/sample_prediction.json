@@ -19,7 +19,7 @@
         "color",
         "defrost_system"
       ],
-      "latency_ms": 5463.19,
+      "latency_ms": 6388.65,
       "detailed_predictions": [
         {
           "attribute": "brand",
@@ -37,7 +37,9 @@
           "raw": "CEF535ASG",
           "grounded": true
         }
-      ]
+      ],
+      "warnings": [],
+      "degraded_tiers": []
     },
     {
       "external_id": "mvideo-20077298",
@@ -53,7 +55,7 @@
         "color",
         "defrost_system"
       ],
-      "latency_ms": 124.43,
+      "latency_ms": 232.63,
       "detailed_predictions": [
         {
           "attribute": "brand",
@@ -71,7 +73,9 @@
           "raw": "CEF535AWG",
           "grounded": true
         }
-      ]
+      ],
+      "warnings": [],
+      "degraded_tiers": []
     },
     {
       "external_id": "mvideo-20078182",
@@ -87,7 +91,7 @@
         "color",
         "defrost_system"
       ],
-      "latency_ms": 121.68,
+      "latency_ms": 219.87,
       "detailed_predictions": [
         {
           "attribute": "brand",
@@ -105,7 +109,9 @@
           "raw": "NRK620EABXL4",
           "grounded": true
         }
-      ]
+      ],
+      "warnings": [],
+      "degraded_tiers": []
     }
   ]
 }

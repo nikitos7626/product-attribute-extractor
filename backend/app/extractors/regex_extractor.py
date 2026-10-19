@@ -295,7 +295,8 @@ class RegexExtractor:
         try:
             from app.services.brand_registry import BrandRegistry
             registry_brands = BrandRegistry.get_instance().brands
-        except Exception:
+        except Exception as e:
+            logger.debug("BrandRegistry not available during RegexExtractor init: %s", e)
             registry_brands = None
 
         self._brands: dict[str, str] = brands or registry_brands or BRANDS
@@ -322,8 +323,9 @@ class RegexExtractor:
         try:
             from app.services.brand_registry import BrandRegistry
             BrandRegistry.get_instance().subscribe(self._on_new_brand)
-        except Exception:
-            pass
+        except Exception as e:
+            logger.debug("Could not subscribe to BrandRegistry: %s", e)
+
 
     def _on_new_brand(self, alias: str, canon: str) -> None:
         """Слушатель: мгновенно обогащает FlashText при регистрации нового бренда."""
@@ -582,8 +584,8 @@ class RegexExtractor:
                         source="regex",
                         raw=slash_match.group(0).strip(),
                     )
-            except Exception:
-                pass
+            except (ValueError, TypeError, IndexError) as e:
+                logger.debug("Slash memory parsing error: %s", e)
 
         # --- RAM (перед ROM, чтобы «8 гб озу», «16гб ddr5» или «12 гигабайт оперативки» не ушли в rom) ---
         ram_pred = None

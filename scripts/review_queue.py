@@ -151,6 +151,13 @@ def run_interactive_queue(
                         card["extracted_attributes"][attr_to_edit] = new_val
                         if attr_to_edit in card.get("missing_required", []):
                             card["missing_required"].remove(attr_to_edit)
+                        if attr_to_edit.lower() == "brand":
+                            try:
+                                from backend.app.services.brand_registry import BrandRegistry
+                                BrandRegistry.get_instance().register_brand(new_val, persist=True)
+                                print(f"  ⚡ Бренд '{new_val}' автоматически добавлен в BrandRegistry (Feedback Loop)!")
+                            except Exception:
+                                pass
                         card["needs_review"] = False
                         card["reviewed"] = True
                         card["review_timestamp"] = datetime.datetime.now().isoformat()
@@ -206,6 +213,7 @@ def main() -> None:
     parser = argparse.ArgumentParser(description="Интерактивная очередь ручной проверки характеристик (HITL Review Queue)")
     parser.add_argument("--input", default=os.path.join(BASE_DIR, "output", "predictions.json"), help="Путь к файлу предсказаний")
     parser.add_argument("--output", default=os.path.join(BASE_DIR, "output", "reviewed_predictions.json"), help="Путь для сохранения проверенных данных")
+    parser.add_argument("--interactive-review", action="store_true", help="Запустить интерактивную сессию ручной модерации")
     parser.add_argument("--summary", action="store_true", help="Вывести только аналитическую сводку по очереди")
     parser.add_argument("--flagged-only", help="Экспортировать только требующие проверки карточки в отдельный файл")
     parser.add_argument("--auto-approve-conf", type=float, help="Порог уверенности для пакетного авто-подтверждения (например 0.90)")

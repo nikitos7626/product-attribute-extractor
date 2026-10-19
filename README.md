@@ -80,8 +80,14 @@ docker compose up -d
 
 ### 4. Консольная утилита (CLI)
 ```bash
-# Извлечение из одной строки:
+# Извлечение из одной строки через корневой скрипт:
 python extract.py "Смартфон Xiaomi Redmi Note 13 8/256GB Black 5000mAh AMOLED 120Hz"
+
+# Запуск через модуль backend (полный эквивалент):
+python backend/run_cli.py "Смартфон Xiaomi Redmi Note 13 8/256GB Black 5000mAh AMOLED 120Hz"
+
+# Интерактивная ручная проверка с флагом --interactive-review:
+python extract.py "Смартфон Xiaomi Redmi Note 13 8/256GB" --interactive-review
 
 # Пакетная обработка файла с экспортом в JSON и CSV:
 python scripts/export_predictions.py --input data/sample_cards.json --format both
@@ -106,6 +112,119 @@ python scripts/export_predictions.py --input data/sample_cards.json --format bot
 | `GET` | `/health` | Легковесный health check сервиса |
 | `GET` | `/docs` | Интерактивная документация Swagger UI |
 
+### 📋 Примеры `curl`-запросов и JSON-ответов
+
+#### 1. Извлечение характеристик карточки (`POST /extract` или `POST /api/extract`):
+```bash
+curl -X POST "http://localhost:8000/api/extract" \
+     -H "Content-Type: application/json" \
+     -d '{"title": "Смартфон Xiaomi Redmi Note 13 8/256GB Black 5000 мАч AMOLED 120Hz"}'
+```
+**Пример ответа (JSON):**
+```json
+{
+  "category": "smartphones",
+  "attributes": {
+    "brand": {"value": "Xiaomi", "raw": "Xiaomi", "confidence": 0.99, "source": "flash_text"},
+    "model": {"value": "Redmi Note 13", "raw": "Redmi Note 13", "confidence": 0.98, "source": "regex"},
+    "memory_ram": {"value": "8 ГБ", "raw": "8", "confidence": 0.98, "source": "regex"},
+    "memory_rom": {"value": "256 ГБ", "raw": "256", "confidence": 0.98, "source": "regex"},
+    "color": {"value": "черный", "raw": "Black", "confidence": 0.95, "source": "regex"},
+    "battery": {"value": "5000 мАч", "raw": "5000 мАч", "confidence": 0.98, "source": "regex"},
+    "refresh_rate": {"value": "120 Гц", "raw": "120Hz", "confidence": 0.98, "source": "regex"}
+  },
+  "overall_confidence": 0.975,
+  "missing_required": [],
+  "needs_review": false,
+  "warnings": [],
+  "degraded_tiers": []
+}
+```
+
+#### 2. Пакетная обработка (`POST /api/extract/batch`):
+```bash
+curl -X POST "http://localhost:8000/api/extract/batch" \
+     -H "Content-Type: application/json" \
+     -d '{
+       "items": [
+         {"title": "Смартфон Samsung Galaxy S24 8/256GB", "external_id": "s24-1"},
+         {"title": "Ноутбук ASUS Vivobook 15 16/512GB i5", "external_id": "nb-2"}
+       ]
+     }'
+```
+
+#### 3. Пакетный экспорт в файлы (`POST /api/extract/export`):
+```bash
+curl -X POST "http://localhost:8000/api/extract/export?output_format=both" \
+     -H "Content-Type: application/json" \
+     -d '{
+       "items": [
+         {"title": "Смартфон POCO X6 Pro 12/512GB 5000 мАч"}
+       ]
+     }'
+```
+**Пример ответа (JSON):**
+```json
+{
+  "status": "success",
+  "total_items": 1,
+  "exported_files": {
+    "json": "output/predictions.json",
+    "csv": "output/predictions.csv"
+  }
+}
+```
+
+#### 4. Очередь ручной модерации (`GET /api/extract/review-queue`):
+```bash
+curl -X GET "http://localhost:8000/api/extract/review-queue?limit=10"
+```
+
+#### 5. Переопределение атрибута модератором (`POST /api/extract/review-override`):
+```bash
+curl -X POST "http://localhost:8000/api/extract/review-override" \
+     -H "Content-Type: application/json" \
+     -d '{
+       "external_id": "item-123",
+       "attribute": "brand",
+       "override_value": "Nothing",
+       "moderator_id": "mod-1",
+       "comment": "Подтвержден новый бренд Nothing Phone"
+     }'
+```
+*Примечание: переопределенный бренд автоматически обучается в `BrandRegistry` без перезапуска сервиса (Active Learning Feedback Loop).*
+
+#### 6. Динамическая регистрация нового бренда (`POST /api/extract/brands/register`):
+```bash
+curl -X POST "http://localhost:8000/api/extract/brands/register" \
+     -H "Content-Type: application/json" \
+     -d '{"brand": "KuKirin", "persist": true}'
+```
+
+#### 7. Системная информация и статус компонентов (`GET /api/info`):
+```bash
+curl -X GET "http://localhost:8000/api/info"
+```
+**Пример ответа (JSON):**
+```json
+{
+  "service": "Product Attribute Extractor",
+  "version": "1.0.0",
+  "catalog_kb_version": "1.4.0",
+  "components": {
+    "flashtext_tier": true,
+    "regex_tier": true,
+    "gliner_tier": true,
+    "catalog_kb_tier": true,
+    "llm_tier": false
+  },
+  "circuit_breaker": {
+    "active": false,
+    "consecutive_failures": 0
+  }
+}
+```
+
 ---
 
 ## 🗺️ Связка скриптов, входных данных и выходных артефактов
@@ -116,6 +235,7 @@ python scripts/export_predictions.py --input data/sample_cards.json --format bot
 | :--- | :--- | :--- | :--- |
 | [`scripts/evaluate_metrics.py`](scripts/evaluate_metrics.py) | `data/gold_dataset.json` | [`output/metrics_report.md`](output/metrics_report.md), [`output/metrics_report.json`](output/metrics_report.json) | Расчёт строгих per-attribute метрик (Precision, Recall, F1, Coverage) на Gold-бенчмарке М.Видео |
 | [`scripts/export_predictions.py`](scripts/export_predictions.py) | `data/sample_cards.json` | [`output/predictions.json`](output/predictions.json), [`output/predictions.csv`](output/predictions.csv), [`output/sample_prediction.json`](output/sample_prediction.json) | Пакетная выгрузка 900 карточек во всех продукционных форматах со всеми флагами калибровки |
+| [`scripts/evaluate_catalog_sample.py`](scripts/evaluate_catalog_sample.py) | `data/catalog_eval_pool.json` | Консольный срез точности и полноты | Динамическая оценка точности и полноты на случайной выборке реального каталога М.Видео |
 | [`scripts/review_queue.py`](scripts/review_queue.py) | `output/predictions.json` | [`output/reviewed_predictions.json`](output/reviewed_predictions.json) | Интерактивное рабочее место контент-модератора (HITL) для проверки и редактирования сомнительных карточек |
 | [`scripts/eda_analysis.py`](scripts/eda_analysis.py) | `data/sample_cards.json` / `skus.pkl` | [`output/eda_report.md`](output/eda_report.md), [`output/eda_report.json`](output/eda_report.json) | Разведочный анализ распределения категорий, брендов и полноты атрибутов каталога М.Видео |
 | [`notebooks/eda_mvideo_dataset.ipynb`](notebooks/eda_mvideo_dataset.ipynb) | Каталог М.Видео | Пре-рендеренные визуализации и графики | Интерактивный Jupyter-ноутбук с распределениями и выводами |
