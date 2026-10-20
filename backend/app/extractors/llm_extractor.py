@@ -38,9 +38,9 @@ class StrictLlmFallbackExtractor:
         api_key: str | None = None,
         api_base: str | None = None,
         model: str | None = None,
-        timeout: float = 3.5,
-        max_consecutive_failures: int = 3,
-        circuit_cooldown_seconds: float = 60.0,
+        timeout: float | None = None,
+        max_consecutive_failures: int | None = None,
+        circuit_cooldown_seconds: float | None = None,
         enforce_grounding: bool = False,
         max_retries: int | None = None,
         backoff_factor: float | None = None,
@@ -56,15 +56,15 @@ class StrictLlmFallbackExtractor:
             or getattr(settings, "llm_api_base", "https://hub.gigaschool.ru/api/v1/llm/v1")
         ).rstrip("/")
         self.model = model or os.environ.get("LLM_MODEL") or getattr(settings, "llm_model", "GigaChat/GigaChat-3-Pro")
-        self.timeout = timeout
+        self.timeout = timeout if timeout is not None else getattr(settings, "llm_timeout_seconds", 3.5)
         self.enforce_grounding = enforce_grounding
         self.max_retries = max_retries if max_retries is not None else getattr(settings, "llm_max_retries", 2)
         self.backoff_factor = backoff_factor if backoff_factor is not None else getattr(settings, "llm_retry_backoff_factor", 0.2)
         self.is_enabled = bool(self.api_key and self.api_key.strip())
 
         # Состояние Circuit Breaker (Автоматический предохранитель)
-        self.max_failures = max_consecutive_failures
-        self.cooldown_seconds = circuit_cooldown_seconds
+        self.max_failures = max_consecutive_failures if max_consecutive_failures is not None else getattr(settings, "circuit_breaker_max_failures", 3)
+        self.cooldown_seconds = circuit_cooldown_seconds if circuit_cooldown_seconds is not None else getattr(settings, "circuit_breaker_cooldown_seconds", 60.0)
         self.consecutive_failures = 0
         self.circuit_open_until = 0.0
         self.total_calls = 0

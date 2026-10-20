@@ -63,7 +63,7 @@ def process_file_lock(filepath: str, timeout: float = 10.0):
 
             if time.time() - start_time >= timeout:
                 logger.error("Timed out waiting for file lock on %s after %.1fs", filepath, timeout)
-                break
+                raise TimeoutError(f"Timed out waiting for file lock on {filepath} after {timeout:.1f}s")
             time.sleep(0.02)
 
     try:

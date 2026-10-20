@@ -1,15 +1,34 @@
 from __future__ import annotations
 
-from pydantic import BaseModel, Field
+from typing import Any
+from pydantic import BaseModel, ConfigDict, Field, field_validator
 
 
 class CardIn(BaseModel):
+    model_config = ConfigDict(coerce_numbers_to_str=True, extra="ignore")
+
     external_id: str | None = None
     category: str | None = None
     title: str = ""
     description: str = ""
     raw_text: str | None = None
     seller_attributes: dict = Field(default_factory=dict)
+
+    @field_validator("title", "description", mode="before")
+    @classmethod
+    def default_string(cls, v: Any) -> str:
+        if v is None:
+            return ""
+        return str(v)
+
+    @field_validator("seller_attributes", mode="before")
+    @classmethod
+    def default_seller_attributes(cls, v: Any) -> dict:
+        if v is None:
+            return {}
+        if isinstance(v, dict):
+            return v
+        return {}
 
 
 class PredictionOut(BaseModel):

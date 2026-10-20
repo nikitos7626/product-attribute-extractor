@@ -1,35 +1,18 @@
 import logging
 import os
+from contextlib import asynccontextmanager
 from pathlib import Path
-from fastapi import FastAPI, Request
+from fastapi import FastAPI, File, Request, UploadFile
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import FileResponse, JSONResponse
 
 from app.config import settings
 from app.routers import extract
-from app.schemas import CardIn, CardOut
+from app.schemas import BatchOut, CardIn, CardOut
 
 logger = logging.getLogger(__name__)
 
 
-app = FastAPI(
-    title="M.Video Product Attribute Extraction API",
-    description="Промышленный сервис извлечения, валидации и нормализации характеристик товаров М.Видео с многоуровневым каскадом (FastRules -> GLiNER Zero-Shot -> Catalog KB -> Strict LLM Guardrail).",
-    version="0.2.1",
-    docs_url="/docs",
-    redoc_url="/redoc",
-)
-
-app.add_middleware(
-    CORSMiddleware,
-    allow_origins=settings.cors_origins_list,
-    allow_credentials=True,
-    allow_methods=["*"],
-    allow_headers=["*"],
-)
-
-
-@app.on_event("startup")
 def startup_configuration_checks() -> None:
     """
     Проверка конфигурации безопасности и целостности компонентов при старте сервиса.
@@ -56,6 +39,30 @@ def startup_configuration_checks() -> None:
             extract._pipeline.taxonomy_manager.status,
             extract._pipeline.taxonomy_manager.error_message,
         )
+
+
+@asynccontextmanager
+async def lifespan(app: FastAPI):
+    startup_configuration_checks()
+    yield
+
+
+app = FastAPI(
+    title="M.Video Product Attribute Extraction API",
+    description="Промышленный сервис извлечения, валидации и нормализации характеристик товаров М.Видео с многоуровневым каскадом (FastRules -> GLiNER Zero-Shot -> Catalog KB -> Strict LLM Guardrail).",
+    version="0.2.1",
+    docs_url="/docs",
+    redoc_url="/redoc",
+    lifespan=lifespan,
+)
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=settings.cors_origins_list,
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 
 
 @app.middleware("http")
@@ -96,6 +103,16 @@ def extract_alias(card: CardIn) -> CardOut:
     Дублирует /api/extract для максимальной совместимости со спецификацией М.Видео.
     """
     return extract._run(card)
+
+
+@app.post("/extract/batch", response_model=BatchOut, tags=["extract"], summary="Пакетное извлечение характеристик (Root Alias)")
+@app.post("/batch", response_model=BatchOut, tags=["extract"], summary="Пакетное извлечение характеристик (Root Alias)")
+async def extract_batch_alias(file: UploadFile = File(...)) -> BatchOut:
+    """
+    Пакетная обработка карточек товаров: POST /extract/batch или POST /batch -> BatchOut.
+    Дублирует /api/extract/batch для максимальной совместимости со спецификацией М.Видео.
+    """
+    return await extract.extract_batch(file)
 
 
 @app.get("/", summary="Интерактивный веб-интерфейс М.Видео AI")

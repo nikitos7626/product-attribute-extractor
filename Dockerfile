@@ -36,6 +36,9 @@ RUN if [ "$PRELOAD_WEIGHTS" = "true" ] && [ "$OFFLINE_BUILD" != "true" ]; then \
 
 # Копируем исходный код бэкенда и артефакты
 COPY backend /app
+COPY data /data
+COPY data /app/data
+COPY scripts /app/scripts
 COPY output /output
 COPY output /app/output
 COPY extract.py /app/extract.py

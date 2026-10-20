@@ -411,3 +411,98 @@ def test_health_endpoint_reports_taxonomy_and_security():
     data_ext = resp_extract_health.json()
     assert "taxonomy" in data_ext
     assert "status" in data_ext["taxonomy"]
+
+
+# =========================================================================
+# 8. Skeptical Audit & Edge Cases: Lock Timeout, Coercion, BOM & Aliases
+# =========================================================================
+
+def test_process_file_lock_timeout_raises_timeout_error():
+    """Проверяет, что при невозможности захвата блокировки вызывается TimeoutError, а не silent yield."""
+    with tempfile.NamedTemporaryFile("w+", delete=False) as tmp:
+        filepath = tmp.name
+
+    try:
+        # Захватываем блокировку первым процессом/потоком
+        with process_file_lock(filepath, timeout=1.0):
+            # Вторая попытка должна выбросить TimeoutError
+            with pytest.raises(TimeoutError) as exc_info:
+                with process_file_lock(filepath, timeout=0.1):
+                    pass
+            assert "Timed out waiting for file lock" in str(exc_info.value)
+    finally:
+        try:
+            Path(filepath).unlink(missing_ok=True)
+            Path(filepath + ".lock").unlink(missing_ok=True)
+        except OSError:
+            pass
+
+
+def test_card_in_robust_nulls_and_int_coercion():
+    """Проверяет корректность CardIn при integer id, null title/desc/seller_attributes и extra полях."""
+    from app.schemas import CardIn
+    card = CardIn(
+        external_id=12345,
+        title=None,
+        description=None,
+        seller_attributes=None,
+        extra_arbitrary_key="some_value",
+    )
+    assert card.external_id == "12345"
+    assert card.title == ""
+    assert card.description == ""
+    assert card.seller_attributes == {}
+
+
+def test_batch_endpoint_accepts_bom_and_null_fields():
+    """Проверяет разбор JSON с UTF-8 BOM и null атрибутами без падений."""
+    bom_payload = bytes([0xEF, 0xBB, 0xBF]) + json.dumps([
+        {
+            "external_id": 999,
+            "title": "Смартфон Apple iPhone 15 128GB",
+            "description": None,
+            "seller_attributes": None,
+        }
+    ]).encode("utf-8")
+
+    files = {"file": ("products.json", io.BytesIO(bom_payload), "application/json")}
+    resp = client.post("/api/extract/batch", files=files)
+    assert resp.status_code == 200
+    data = resp.json()
+    assert data["total"] == 1
+    assert data["cards"][0]["external_id"] == "999"
+    assert data["cards"][0]["category"] == "Смартфоны"
+
+
+def test_root_batch_aliases():
+    """Проверяет доступность корневых эндпоинтов /extract/batch и /batch."""
+    cards_payload = json.dumps([
+        {"title": "Наушники Apple AirPods Pro 2", "description": "Беспроводные"}
+    ]).encode("utf-8")
+
+    for path in ("/extract/batch", "/batch"):
+        files = {"file": ("batch.json", io.BytesIO(cards_payload), "application/json")}
+        resp = client.post(path, files=files)
+        assert resp.status_code == 200
+        assert resp.json()["total"] == 1
+
+
+def test_gliner_and_llm_respect_settings():
+    """Проверяет передачу гиперпараметров из Settings в экстракторы без хардкода."""
+    from app.extractors.gliner_extractor import GlinerExtractor
+
+    orig_thresh = settings.gliner_threshold
+    orig_timeout = settings.llm_timeout_seconds
+    try:
+        settings.gliner_threshold = 0.42
+        settings.llm_timeout_seconds = 7.5
+
+        gliner = GlinerExtractor()
+        assert gliner.threshold == 0.42
+
+        llm = StrictLlmFallbackExtractor(api_key="test-key")
+        assert llm.timeout == 7.5
+    finally:
+        settings.gliner_threshold = orig_thresh
+        settings.llm_timeout_seconds = orig_timeout
+

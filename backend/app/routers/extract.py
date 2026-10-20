@@ -65,7 +65,7 @@ def _rows_from_file(filename: str, raw: bytes) -> list[dict]:
 
     if name.endswith(".json"):
         try:
-            data = json.loads(raw.decode("utf-8", errors="replace"))
+            data = json.loads(raw.decode("utf-8-sig", errors="replace"))
         except json.JSONDecodeError as e:
             raise HTTPException(400, f"Невалидный синтаксис JSON: {e}") from e
 
@@ -183,9 +183,18 @@ async def extract_batch(file: UploadFile = File(...)) -> BatchOut:
             except json.JSONDecodeError:
                 raise HTTPException(
                     400,
-                    f"Row {i}: seller_attributes не валидный JSON: {sa!r}",
+                    f"Row {i + 1}: seller_attributes не валидный JSON: {sa!r}",
                 )
-        cards.append(_run(CardIn(**row)))
+        elif sa is None:
+            row["seller_attributes"] = {}
+
+        try:
+            cards.append(_run(CardIn(**row)))
+        except Exception as e:
+            raise HTTPException(
+                400,
+                f"Row {i + 1}: невалидные данные карточки: {e}",
+            ) from e
 
     return BatchOut(total=len(cards), cards=cards)
 
@@ -263,9 +272,23 @@ async def export_batch_predictions(
             try:
                 row["seller_attributes"] = json.loads(sa) if sa.strip() else {}
             except json.JSONDecodeError:
-                raise HTTPException(400, f"Row {i}: seller_attributes не валидный JSON: {sa!r}")
+                raise HTTPException(400, f"Row {i + 1}: seller_attributes не валидный JSON: {sa!r}")
+        elif sa is None:
+            row["seller_attributes"] = {}
 
-        card_res = _pipeline.process_card(row)
+        try:
+            card_in = CardIn(**row)
+        except Exception as e:
+            raise HTTPException(400, f"Row {i + 1}: невалидные данные карточки: {e}") from e
+
+        card_res = _pipeline.process_card({
+            "external_id": card_in.external_id,
+            "category": card_in.category,
+            "title": card_in.title,
+            "description": card_in.description,
+            "raw_text": card_in.raw_text,
+            "seller_attributes": card_in.seller_attributes,
+        })
         flat_attrs = {p["attribute"]: p["value"] for p in card_res.get("predictions", [])}
 
         results.append({

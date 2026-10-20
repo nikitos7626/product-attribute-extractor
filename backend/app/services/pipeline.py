@@ -30,9 +30,24 @@ class TaxonomyManager:
     _instance: TaxonomyManager | None = None
 
     def __init__(self, file_path: Path | None = None) -> None:
-        dict_dir = Path(__file__).resolve().parent.parent.parent / "data" / "dictionaries"
-        default_file = Path(getattr(settings, "taxonomy_path", "data/dictionaries/mvideo_categories.json"))
-        self.path = file_path or (default_file if default_file.is_absolute() else dict_dir / default_file.name)
+        if file_path is not None:
+            self.path = Path(file_path)
+        else:
+            default_file = Path(getattr(settings, "taxonomy_path", "data/dictionaries/mvideo_categories.json"))
+            if default_file.is_absolute():
+                self.path = default_file
+            else:
+                backend_dir = Path(__file__).resolve().parent.parent.parent
+                repo_root = backend_dir.parent
+                dict_dir = backend_dir / "data" / "dictionaries"
+                if (backend_dir / default_file).is_file():
+                    self.path = backend_dir / default_file
+                elif (repo_root / default_file).is_file():
+                    self.path = repo_root / default_file
+                elif (dict_dir / default_file.name).is_file():
+                    self.path = dict_dir / default_file.name
+                else:
+                    self.path = backend_dir / default_file
         self.id_to_name: dict[str, str] = {}
         self.normalized_names: dict[str, str] = {}
         self.status: str = "healthy"  # healthy | degraded | failed
@@ -333,8 +348,8 @@ class CascadedExtractionPipeline:
 
         # 0. Извлечение raw_cat из category_id, если передан id из каталога
         cat_id = str(card.get("category_id") or card.get("categoryId") or (card.get("categories", {}) if isinstance(card.get("categories"), dict) else {}).get("categoryId") or "").strip()
-        if cat_id and cat_id in MVIDEO_TAXONOMY_ID_TO_NAME:
-            raw_cat = MVIDEO_TAXONOMY_ID_TO_NAME[cat_id].lower()
+        if cat_id and cat_id in self.taxonomy_manager.id_to_name:
+            raw_cat = self.taxonomy_manager.id_to_name[cat_id].lower()
 
         # ------------------------------------------------------------------
         # 1. Эксплицитная категория из метаданных (raw_cat)
@@ -365,8 +380,8 @@ class CascadedExtractionPipeline:
                         return cat_key, schema["name_ru"]
 
             # Если категория есть в полном каталоге М.Видео (напр. «Матрасы», «Смесители», «Шины»):
-            if raw_cat in MVIDEO_TAXONOMY_NORMALIZED:
-                return "default", MVIDEO_TAXONOMY_NORMALIZED[raw_cat]
+            if raw_cat in self.taxonomy_manager.normalized_names:
+                return "default", self.taxonomy_manager.normalized_names[raw_cat]
 
         # ------------------------------------------------------------------
         # 2. Детекция по названию товара (Title) — принцип Head Noun

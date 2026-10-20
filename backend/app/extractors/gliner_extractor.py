@@ -7,6 +7,7 @@ from typing import Any
 import torch
 from gliner import GLiNER
 
+from app.config import settings
 from app.extractors.base import Prediction
 from app.extractors.normalization.dictionaries import BRANDS, COLORS
 from app.extractors.normalization.units import UnitNormalizer
@@ -71,11 +72,11 @@ class GlinerExtractor:
     def __init__(
         self,
         model_name: str = "urchade/gliner_multi-v2.1",
-        threshold: float = 0.30,
+        threshold: float | None = None,
         device: str | None = None,
     ) -> None:
         self.model_name = model_name
-        self.threshold = threshold
+        self.threshold = threshold if threshold is not None else getattr(settings, "gliner_threshold", 0.30)
         self.device = device or ("cuda" if torch.cuda.is_available() else "cpu")
         self._model: GLiNER | None = None
         self._units = UnitNormalizer()
