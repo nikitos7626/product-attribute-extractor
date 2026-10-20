@@ -105,19 +105,42 @@ class ConfidenceCalibrator:
         s2 = re.sub(r"\s+", " ", str(val2)).strip().lower().replace(",", ".")
         if s1 == s2:
             return True
-        # Омоглифы (латиница <-> кириллица для моделей и брендов)
-        homoglyphs = str.maketrans("асеорхувкмит", "aceopxybkmit")
-        t1 = s1.translate(homoglyphs)
-        t2 = s2.translate(homoglyphs)
-        if t1 == t2 or (t1 in t2) or (t2 in t1):
-            return True
-        # Числовые характеристики
-        if attr in ("battery", "screen_diagonal", "memory_rom", "memory_ram", "load_capacity", "spin_speed", "weight"):
+
+        # 1. Числовые характеристики (сравнение по числовому значению и единицам)
+        if attr in (
+            "battery", "screen_diagonal", "memory_rom", "memory_ram",
+            "load_capacity", "spin_speed", "weight", "power", "volume", "refresh_rate",
+        ):
             n1 = re.findall(r"\d+(?:\.\d+)?", s1)
             n2 = re.findall(r"\d+(?:\.\d+)?", s2)
-            if n1 and n2 and n1[0] == n2[0]:
-                return True
-        # Разрешение экрана (4K / UHD эквивалентны 3840x2160)
+            if not n1 or not n2:
+                return False
+            f1, f2 = float(n1[0]), float(n2[0])
+
+            # Нормализация единиц памяти (ТБ <-> ГБ)
+            if attr in ("memory_rom", "memory_ram"):
+                if ("тб" in s1 or "tb" in s1) and ("гб" in s2 or "gb" in s2):
+                    f1 *= 1024
+                elif ("тб" in s2 or "tb" in s2) and ("гб" in s1 or "gb" in s1):
+                    f2 *= 1024
+            # Нормализация массы (кг <-> г)
+            elif attr == "weight":
+                if ("кг" in s1 or "kg" in s1) and ("г" in s2 or "g" in s2) and "кг" not in s2 and "kg" not in s2:
+                    f1 *= 1000
+                elif ("кг" in s2 or "kg" in s2) and ("г" in s1 or "g" in s1) and "кг" not in s1 and "kg" not in s1:
+                    f2 *= 1000
+            # Нормализация мощности (кВт <-> Вт)
+            elif attr == "power":
+                if ("квт" in s1 or "kw" in s1) and ("вт" in s2 or "w" in s2) and "квт" not in s2 and "kw" not in s2:
+                    f1 *= 1000
+                elif ("квт" in s2 or "kw" in s2) and ("вт" in s1 or "w" in s1) and "квт" not in s1 and "kw" not in s1:
+                    f2 *= 1000
+
+            if attr == "screen_diagonal":
+                return abs(f1 - f2) <= 0.1
+            return abs(f1 - f2) < 0.01
+
+        # 2. Разрешение экрана (4K / UHD эквивалентны 3840x2160)
         if attr == "resolution":
             if ("4k" in s1 or "uhd" in s1) and ("3840" in s2 or "2160" in s2):
                 return True
@@ -127,6 +150,36 @@ class ConfidenceCalibrator:
                 return True
             if ("fhd" in s2 or "full hd" in s2) and ("1920" in s1 or "1080" in s1):
                 return True
+
+        # 3. Цвета: нормализация через палитру
+        if attr == "color":
+            try:
+                from app.extractors.sanity import AttributeSanityValidator
+                c1 = AttributeSanityValidator.normalize_color(s1)
+                c2 = AttributeSanityValidator.normalize_color(s2)
+                if c1 and c2 and c1 == c2:
+                    return True
+            except Exception:
+                pass
+
+        # 4. Текстовые поля (бренды, модели): омоглифы и границы слов
+        homoglyphs = str.maketrans("асеорхувкмит", "aceopxybkmit")
+        t1 = s1.translate(homoglyphs)
+        t2 = s2.translate(homoglyphs)
+        if t1 == t2:
+            return True
+
+        if attr in ("model", "brand"):
+            clean1 = re.sub(r"\b[345]g\b", "", t1).strip()
+            clean2 = re.sub(r"\b[345]g\b", "", t2).strip()
+            d1 = re.findall(r"\d+", clean1)
+            d2 = re.findall(r"\d+", clean2)
+            if d1 and d2 and set(d1) != set(d2):
+                return False
+            if min(len(t1), len(t2)) >= 3:
+                if re.search(rf"\b{re.escape(t1)}\b", t2) or re.search(rf"\b{re.escape(t2)}\b", t1) or (t1 in t2) or (t2 in t1):
+                    return True
+
         return False
 
     def apply_multi_source_consensus(
@@ -170,12 +223,12 @@ class ConfidenceCalibrator:
             # Байесовское усиление при консенсусе
             if matching_sources:
                 p_current = pred["confidence"]
-                p_alt = matching_sources[0][1]
-                # Формула объединения независимых свидетельств
-                p_boosted = 1.0 - (1.0 - p_current) * (1.0 - p_alt)
+                p_boosted = p_current
+                for _, s_conf in matching_sources:
+                    p_boosted = 1.0 - (1.0 - p_boosted) * (1.0 - s_conf)
                 pred["confidence"] = round(min(0.99, max(p_current, p_boosted)), 4)
                 pred["consensus"] = True
-                pred["consensus_sources"] = [pred.get("source")] + [s[0] for s in matching_sources]
+                pred["consensus_sources"] = list(dict.fromkeys([pred.get("source")] + [s[0] for s in matching_sources]))
 
             # Штраф при неразрешимом конфликте источников
             elif conflicting_sources:

@@ -19,9 +19,12 @@ class CardIn(BaseModel):
     def normalize_input_aliases(cls, data: Any) -> Any:
         if isinstance(data, dict):
             # 1. Алиасы external_id
-            if not data.get("external_id"):
+            ext_id = data.get("external_id")
+            if ext_id is not None and str(ext_id).strip() != "":
+                data["external_id"] = str(ext_id)
+            else:
                 for alt_key in ("id", "sku_id", "sku", "item_id", "product_id"):
-                    if alt_key in data and data[alt_key] is not None:
+                    if alt_key in data and data[alt_key] is not None and str(data[alt_key]).strip() != "":
                         data["external_id"] = str(data[alt_key])
                         break
             # 2. Алиасы seller_attributes

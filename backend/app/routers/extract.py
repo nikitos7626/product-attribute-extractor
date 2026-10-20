@@ -42,8 +42,11 @@ def get_pipeline(request: Request = None) -> CascadedExtractionPipeline:
     return _lazy_pipeline
 
 
-# Обратная совместимость для прямого импорта
-_pipeline = get_pipeline()
+# Ленивый доступ для обратной совместимости прямого импорта extract._pipeline
+def __getattr__(name: str) -> Any:
+    if name == "_pipeline":
+        return get_pipeline()
+    raise AttributeError(f"module '{__name__}' has no attribute '{name}'")
 
 
 # --------------------------- хелперы ---------------------------

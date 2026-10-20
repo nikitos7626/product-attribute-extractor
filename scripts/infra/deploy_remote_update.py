@@ -2,8 +2,10 @@ import asyncio
 import sys
 import os
 
-sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
-from scripts.vm_exec import exec_remote
+try:
+    from .vm_exec import exec_remote
+except (ImportError, ValueError):
+    from scripts.infra.vm_exec import exec_remote
 
 code = """
 import urllib.request, json

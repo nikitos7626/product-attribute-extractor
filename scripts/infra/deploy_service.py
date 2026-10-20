@@ -1,5 +1,7 @@
-import asyncio
-from backend.scripts.vm_exec import exec_remote
+try:
+    from .vm_exec import exec_remote
+except (ImportError, ValueError):
+    from scripts.infra.vm_exec import exec_remote
 
 code = """
 import subprocess

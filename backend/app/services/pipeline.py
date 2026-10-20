@@ -554,8 +554,15 @@ class CascadedExtractionPipeline:
 
         # Токены после бренда до первого атрибута (память, ватты, цвет, дюймы, запятая)
         model_tokens = []
-        for tok in tokens[1:]:
+        rem_tokens = tokens[1:]
+        for i, tok in enumerate(rem_tokens):
             tok_low = tok.lower().strip(" ,.-()")
+            next_tok_low = rem_tokens[i + 1].lower().strip(" ,.-()") if i + 1 < len(rem_tokens) else ""
+            if re.match(r"^\d+(?:[.,]\d+)?$", tok_low) and (
+                next_tok_low in ("кг", "kg", "об/мин", "об/м", "обмин", "rpm", "гб", "gb", "тб", "tb", "мач", "mah", "вт", "w", "л", "l", "гц", "hz", "см", "cm", "мм", "mm", "v", "в", "дюйм", "дюймов", "\"")
+                or next_tok_low.startswith("об/")
+            ):
+                break
             # Стоп-токены: начало спецификаций, цвета или описательных свойств
             if (
                 re.search(r"^\d+(?:[.,]\d+)?\s*(?:гб|gb|тб|tb|м[аa]ч|mah|вт|w|л|l|кг|kg|гц|hz|\"|дюйм)", tok_low)
@@ -733,26 +740,28 @@ class CascadedExtractionPipeline:
             title_str = card.get("title") or ""
             heur_brand, heur_model = self._parse_title_structure(title_str, cat_name)
             if heur_brand and "brand" not in predictions_map:
-                canon_b, conf, _ = self.brand_registry.match_or_fuzzy_brand(heur_brand)
-                p_brand = Prediction(
-                    attribute="brand",
-                    value=canon_b or heur_brand,
-                    confidence=0.88,
-                    source="syntax_heuristic",
-                    raw=heur_brand,
-                )
-                predictions_map["brand"] = p_brand
-                extracted_alternatives["brand"].append(dict(p_brand))
+                if AttributeSanityValidator.is_valid("brand", heur_brand, cat_key):
+                    canon_b, conf, _ = self.brand_registry.match_or_fuzzy_brand(heur_brand)
+                    p_brand = Prediction(
+                        attribute="brand",
+                        value=canon_b or heur_brand,
+                        confidence=0.88,
+                        source="syntax_heuristic",
+                        raw=heur_brand,
+                    )
+                    predictions_map["brand"] = p_brand
+                    extracted_alternatives["brand"].append(dict(p_brand))
             if heur_model and "model" not in predictions_map:
-                p_model = Prediction(
-                    attribute="model",
-                    value=heur_model,
-                    confidence=0.85,
-                    source="syntax_heuristic",
-                    raw=heur_model,
-                )
-                predictions_map["model"] = p_model
-                extracted_alternatives["model"].append(dict(p_model))
+                if AttributeSanityValidator.is_valid("model", heur_model, cat_key):
+                    p_model = Prediction(
+                        attribute="model",
+                        value=heur_model,
+                        confidence=0.85,
+                        source="syntax_heuristic",
+                        raw=heur_model,
+                    )
+                    predictions_map["model"] = p_model
+                    extracted_alternatives["model"].append(dict(p_model))
 
             # Если всё ещё нет бренда или модели — вызываем LLM/Reasoning экстрактор нового товара
             if (
@@ -767,26 +776,28 @@ class CascadedExtractionPipeline:
                     raw_text=raw_text or card.get("description", ""),
                 )
                 if llm_b and "brand" not in predictions_map:
-                    canon_b, conf, _ = self.brand_registry.match_or_fuzzy_brand(llm_b)
-                    p_llm_b = Prediction(
-                        attribute="brand",
-                        value=canon_b or llm_b,
-                        confidence=0.92,
-                        source="llm_new_product",
-                        raw=llm_b,
-                    )
-                    predictions_map["brand"] = p_llm_b
-                    extracted_alternatives["brand"].append(dict(p_llm_b))
+                    if AttributeSanityValidator.is_valid("brand", llm_b, cat_key):
+                        canon_b, conf, _ = self.brand_registry.match_or_fuzzy_brand(llm_b)
+                        p_llm_b = Prediction(
+                            attribute="brand",
+                            value=canon_b or llm_b,
+                            confidence=0.92,
+                            source="llm_new_product",
+                            raw=llm_b,
+                        )
+                        predictions_map["brand"] = p_llm_b
+                        extracted_alternatives["brand"].append(dict(p_llm_b))
                 if llm_m and "model" not in predictions_map:
-                    p_llm_m = Prediction(
-                        attribute="model",
-                        value=llm_m,
-                        confidence=0.90,
-                        source="llm_new_product",
-                        raw=llm_m,
-                    )
-                    predictions_map["model"] = p_llm_m
-                    extracted_alternatives["model"].append(dict(p_llm_m))
+                    if AttributeSanityValidator.is_valid("model", llm_m, cat_key):
+                        p_llm_m = Prediction(
+                            attribute="model",
+                            value=llm_m,
+                            confidence=0.90,
+                            source="llm_new_product",
+                            raw=llm_m,
+                        )
+                        predictions_map["model"] = p_llm_m
+                        extracted_alternatives["model"].append(dict(p_llm_m))
 
         # Очистка названия бренда из начала названия модели ("Sony KD50X85TJ" -> "KD50X85TJ")
         if "brand" in predictions_map and "model" in predictions_map:
