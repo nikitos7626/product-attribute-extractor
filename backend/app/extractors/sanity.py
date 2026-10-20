@@ -118,7 +118,7 @@ class AttributeSanityValidator:
         "tvs": {"brand", "model", "screen_diagonal", "resolution", "refresh_rate", "color", "power", "display_tech"},
         "tv": {"brand", "model", "screen_diagonal", "resolution", "refresh_rate", "color", "power", "display_tech"},
         "vacuum_cleaners": {"brand", "model", "power", "cleaning_type", "battery", "weight", "color", "working_time", "volume"},
-        "refrigerators": {"brand", "model", "defrost_system", "color", "volume", "warranty", "dimensions"},
+        "refrigerators": {"brand", "model", "defrost_system", "color", "volume", "warranty", "dimensions", "weight"},
         "headphones": {"brand", "model", "color", "weight", "working_time"},
         "powerbanks": {"brand", "model", "battery", "color", "power", "weight"},
         "microwaves": {"brand", "model", "volume", "power", "color", "weight"},
@@ -138,7 +138,8 @@ class AttributeSanityValidator:
         "голуб", "бежев", "борд", "бронз", "перламутр", "мятн", "лавандов", "изумруд",
         "графит", "black", "white", "blue", "red", "grey", "gray", "gold", "green",
         "purple", "yellow", "orange", "pink", "silver", "brown", "cyan", "titanium",
-        "midnight", "starlight", "violet", "emerald", "mint", "dark", "light"
+        "midnight", "starlight", "violet", "emerald", "mint", "dark", "light",
+        "антрацит", "бирюз", "оливк", "коралл", "шампань", "хаки", "сиренев", "малинов", "сапфир", "песочн", "рубин",
     }
 
     # Мусорные слова для моделей
@@ -149,7 +150,9 @@ class AttributeSanityValidator:
         "пикселей", "разрешение", "память", "оперативной",
         "экран", "дисплей", "камера", "дизайн", "динамик",
         "корпус", "стекло", "зарядка", "быстрая зарядка",
-        "чехол", "пленка", "плёнка", "блок питания", "оригинал", "новые", "новый"
+        "чехол", "пленка", "плёнка", "блок питания", "оригинал", "новые", "новый",
+        "стиральная машина", "стиральная", "машина", "микроволновая печь", "микроволновка",
+        "электрический чайник", "чайник", "пауэрбанк",
     }
 
     @classmethod
@@ -334,7 +337,13 @@ class AttributeSanityValidator:
                 return 700 <= val_g <= 6000
             elif category_key == "headphones":
                 return 20 <= val_g <= 600
-            return 20 <= val_g <= 100000
+            elif category_key == "washing_machines":
+                # Стиральная машина: не менее 40 кг
+                return 40000 <= val_g <= 150000
+            elif category_key == "refrigerators":
+                # Холодильник: не менее 30 кг
+                return 30000 <= val_g <= 250000
+            return 20 <= val_g <= 250000
 
         # 11. Тип уборки
         if attr_name == "cleaning_type":
@@ -408,6 +417,26 @@ class AttributeSanityValidator:
         # 20. Габариты (Dimensions)
         if attr_name == "dimensions":
             return bool(re.search(r"\d+(?:[.,]\d+)?\s*[xх×*]\s*\d+(?:[.,]\d+)?\s*[xх×*]\s*\d+(?:[.,]\d+)?", val_lower))
+
+        # 21. Мощность (Power)
+        if attr_name == "power":
+            m = re.search(r"(\d+(?:[.,]\d+)?)", val_lower)
+            if not m:
+                return False
+            p_val = float(m.group(1).replace(",", "."))
+            if category_key == "microwaves":
+                return 400 <= p_val <= 3000
+            elif category_key == "kettles":
+                return 400 <= p_val <= 3500
+            elif category_key == "washing_machines":
+                return 500 <= p_val <= 3500
+            elif category_key == "tvs":
+                return 10 <= p_val <= 1000
+            elif category_key == "powerbanks":
+                return 5 <= p_val <= 200
+            elif category_key == "vacuum_cleaners":
+                return 15 <= p_val <= 3500
+            return 5 <= p_val <= 5000
 
         return True
 

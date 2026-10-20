@@ -97,6 +97,38 @@ class ConfidenceCalibrator:
 
         return round(score, 4)
 
+    @staticmethod
+    def _are_values_equivalent(val1: Any, val2: Any, attr: str = "") -> bool:
+        if val1 is None or val2 is None:
+            return False
+        s1 = re.sub(r"\s+", " ", str(val1)).strip().lower().replace(",", ".")
+        s2 = re.sub(r"\s+", " ", str(val2)).strip().lower().replace(",", ".")
+        if s1 == s2:
+            return True
+        # Омоглифы (латиница <-> кириллица для моделей и брендов)
+        homoglyphs = str.maketrans("асеорхувкмит", "aceopxybkmit")
+        t1 = s1.translate(homoglyphs)
+        t2 = s2.translate(homoglyphs)
+        if t1 == t2 or (t1 in t2) or (t2 in t1):
+            return True
+        # Числовые характеристики
+        if attr in ("battery", "screen_diagonal", "memory_rom", "memory_ram", "load_capacity", "spin_speed", "weight"):
+            n1 = re.findall(r"\d+(?:\.\d+)?", s1)
+            n2 = re.findall(r"\d+(?:\.\d+)?", s2)
+            if n1 and n2 and n1[0] == n2[0]:
+                return True
+        # Разрешение экрана (4K / UHD эквивалентны 3840x2160)
+        if attr == "resolution":
+            if ("4k" in s1 or "uhd" in s1) and ("3840" in s2 or "2160" in s2):
+                return True
+            if ("4k" in s2 or "uhd" in s2) and ("3840" in s1 or "2160" in s1):
+                return True
+            if ("fhd" in s1 or "full hd" in s1) and ("1920" in s2 or "1080" in s2):
+                return True
+            if ("fhd" in s2 or "full hd" in s2) and ("1920" in s1 or "1080" in s1):
+                return True
+        return False
+
     def apply_multi_source_consensus(
         self,
         predictions_map: dict[str, Any],
@@ -117,20 +149,20 @@ class ConfidenceCalibrator:
             if not alts:
                 continue
 
-            current_val = str(pred.get("value", "")).strip().lower()
+            current_val = pred.get("value", "")
             matching_sources = []
             conflicting_sources = []
 
             for alt in alts:
                 alt_source = alt.get("source")
-                alt_val = str(alt.get("value", "")).strip().lower()
+                alt_val = alt.get("value", "")
                 alt_conf = alt.get("confidence", 0.8)
 
                 if alt_source == pred.get("source"):
                     continue
 
-                # Проверяем эквивалентность значений (с нормализацией единиц)
-                if current_val == alt_val or (current_val in alt_val) or (alt_val in current_val):
+                # Проверяем эквивалентность значений (с нормализацией пробелов, омоглифов и единиц)
+                if self._are_values_equivalent(current_val, alt_val, attr):
                     matching_sources.append((alt_source, alt_conf))
                 else:
                     conflicting_sources.append((alt_source, alt_conf))

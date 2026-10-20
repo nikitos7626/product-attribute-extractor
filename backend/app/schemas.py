@@ -1,7 +1,7 @@
 from __future__ import annotations
 
 from typing import Any
-from pydantic import BaseModel, ConfigDict, Field, field_validator
+from pydantic import BaseModel, ConfigDict, Field, field_validator, model_validator
 
 
 class CardIn(BaseModel):
@@ -13,6 +13,28 @@ class CardIn(BaseModel):
     description: str = ""
     raw_text: str | None = None
     seller_attributes: dict = Field(default_factory=dict)
+
+    @model_validator(mode="before")
+    @classmethod
+    def normalize_input_aliases(cls, data: Any) -> Any:
+        if isinstance(data, dict):
+            # 1. Алиасы external_id
+            if not data.get("external_id"):
+                for alt_key in ("id", "sku_id", "sku", "item_id", "product_id"):
+                    if alt_key in data and data[alt_key] is not None:
+                        data["external_id"] = str(data[alt_key])
+                        break
+            # 2. Алиасы seller_attributes
+            seller_attrs = data.get("seller_attributes")
+            if not isinstance(seller_attrs, dict):
+                seller_attrs = {}
+            else:
+                seller_attrs = dict(seller_attrs)
+            for vendor_key in ("vendor", "brand", "seller", "manufacturer"):
+                if vendor_key in data and data[vendor_key] and vendor_key not in seller_attrs:
+                    seller_attrs[vendor_key] = str(data[vendor_key])
+            data["seller_attributes"] = seller_attrs
+        return data
 
     @field_validator("title", "description", mode="before")
     @classmethod

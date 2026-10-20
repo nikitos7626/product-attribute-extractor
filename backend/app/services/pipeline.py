@@ -3,6 +3,7 @@ from __future__ import annotations
 import json
 import logging
 import re
+from collections import defaultdict
 from pathlib import Path
 from typing import Any
 
@@ -635,6 +636,7 @@ class CascadedExtractionPipeline:
         required_attrs: set[str] = schema["required_attrs"]
 
         predictions_map: dict[str, Prediction] = {}
+        extracted_alternatives: dict[str, list[dict[str, Any]]] = defaultdict(list)
 
         # ------------------------------------------------------------------
         # ЭТАП 2: Tier 1 (Regex + FlashText)
@@ -645,6 +647,7 @@ class CascadedExtractionPipeline:
             if not AttributeSanityValidator.is_valid(p["attribute"], p["value"], cat_key):
                 continue
             predictions_map[p["attribute"]] = p
+            extracted_alternatives[p["attribute"]].append(dict(p))
 
         found_attrs = set(predictions_map.keys())
         missing_attrs = required_attrs - found_attrs
@@ -652,16 +655,11 @@ class CascadedExtractionPipeline:
         # ------------------------------------------------------------------
         # ЭТАП 3: Tier 2 (GLiNER Zero-Shot NER) — таргетированно под категорию
         # ------------------------------------------------------------------
-        if self.use_gliner and self.gliner_extractor and missing_attrs:
-            # Запрашиваем у GLiNER только те сущности, которых нет в Tier 1:
-            # Если атрибут не обязателен для категории (например процессор у смартфона),
-            # запрашиваем его у GLiNER только при наличии ключевых маркеров в тексте
+        if self.use_gliner and self.gliner_extractor:
             raw_text_lower = f"{card.get('title', '')} {card.get('description', '')} {card.get('raw_text', '')}".lower()
             needed_labels = []
             for lbl in gliner_labels:
                 attr = self.gliner_extractor.LABEL_TO_ATTR.get(lbl)
-                if attr in predictions_map and predictions_map[attr]["confidence"] >= 0.88:
-                    continue
                 if attr not in required_attrs:
                     if attr == "cpu" and not re.search(r"\b(чип|chip|cpu|процессор|ядер\w*|ghz|ггц|snapdragon|exynos|dimensity|bionic|tensor|kirin|core|ryzen)\b", raw_text_lower):
                         continue
@@ -674,11 +672,15 @@ class CascadedExtractionPipeline:
                     # Строгая валидация физического здравого смысла (отсечение перепутанных Гц в батарее и т.д.)
                     if not AttributeSanityValidator.is_valid(attr, p["value"], cat_key):
                         continue
+                    extracted_alternatives[attr].append(dict(p))
                     existing = predictions_map.get(attr)
                     if existing is None:
                         predictions_map[attr] = p
                     elif existing.get("source") == "flashtext" and existing.get("confidence", 0) >= 0.80:
                         # Словарный бренд/цвет из FlashText — эталонный детерминированный источник
+                        continue
+                    elif attr == "resolution" and any(c in str(existing.get("value", "")) for c in ("×", "x", "*")):
+                        # Точное пиксельное разрешение (3840×2160) не должно затираться абстрактным 4K / UHD
                         continue
                     elif existing.get("confidence", 0) < p["confidence"]:
                         predictions_map[attr] = p
@@ -708,6 +710,21 @@ class CascadedExtractionPipeline:
             elif "redmi" in m_low or "poco" in m_low:
                 predictions_map["brand"] = Prediction(attribute="brand", value="Xiaomi", confidence=0.95, source="rule_subbrand", raw=m_low)
 
+        # Коррекция цвета из материала корпуса для смартфонов и смарт-часов (титановый корпус -> титановый цвет)
+        if "color" not in predictions_map and cat_key in ("smartphones", "smart_watches"):
+            if "из титана" in raw_text_lower or "титанов" in raw_text_lower:
+                if not re.search(r"\b(?:черн\w*|чёрн\w*|бел\w*|син\w*|сер\w*|золот\w*|зелен\w*|розов\w*)\b", raw_text_lower):
+                    p_col = Prediction(
+                        attribute="color",
+                        value="титановый",
+                        confidence=0.92,
+                        source="material_chassis_fallback",
+                        raw="титана",
+                        grounded=True,
+                    )
+                    predictions_map["color"] = p_col
+                    extracted_alternatives["color"].append(dict(p_col))
+
         # ------------------------------------------------------------------
         # ЭТАП 2.9: Извлечение бренда и модели для новых/незнакомых товаров
         # (Heuristic Structural Title Parser + LLM New Product Extractor)
@@ -717,21 +734,25 @@ class CascadedExtractionPipeline:
             heur_brand, heur_model = self._parse_title_structure(title_str, cat_name)
             if heur_brand and "brand" not in predictions_map:
                 canon_b, conf, _ = self.brand_registry.match_or_fuzzy_brand(heur_brand)
-                predictions_map["brand"] = Prediction(
+                p_brand = Prediction(
                     attribute="brand",
                     value=canon_b or heur_brand,
                     confidence=0.88,
                     source="syntax_heuristic",
                     raw=heur_brand,
                 )
+                predictions_map["brand"] = p_brand
+                extracted_alternatives["brand"].append(dict(p_brand))
             if heur_model and "model" not in predictions_map:
-                predictions_map["model"] = Prediction(
+                p_model = Prediction(
                     attribute="model",
                     value=heur_model,
                     confidence=0.85,
                     source="syntax_heuristic",
                     raw=heur_model,
                 )
+                predictions_map["model"] = p_model
+                extracted_alternatives["model"].append(dict(p_model))
 
             # Если всё ещё нет бренда или модели — вызываем LLM/Reasoning экстрактор нового товара
             if (
@@ -747,21 +768,25 @@ class CascadedExtractionPipeline:
                 )
                 if llm_b and "brand" not in predictions_map:
                     canon_b, conf, _ = self.brand_registry.match_or_fuzzy_brand(llm_b)
-                    predictions_map["brand"] = Prediction(
+                    p_llm_b = Prediction(
                         attribute="brand",
                         value=canon_b or llm_b,
                         confidence=0.92,
                         source="llm_new_product",
                         raw=llm_b,
                     )
+                    predictions_map["brand"] = p_llm_b
+                    extracted_alternatives["brand"].append(dict(p_llm_b))
                 if llm_m and "model" not in predictions_map:
-                    predictions_map["model"] = Prediction(
+                    p_llm_m = Prediction(
                         attribute="model",
                         value=llm_m,
                         confidence=0.90,
                         source="llm_new_product",
                         raw=llm_m,
                     )
+                    predictions_map["model"] = p_llm_m
+                    extracted_alternatives["model"].append(dict(p_llm_m))
 
         # Очистка названия бренда из начала названия модели ("Sony KD50X85TJ" -> "KD50X85TJ")
         if "brand" in predictions_map and "model" in predictions_map:
@@ -808,6 +833,7 @@ class CascadedExtractionPipeline:
             )
             for p in enriched_preds:
                 attr = p["attribute"]
+                extracted_alternatives[attr].append(dict(p))
                 if attr not in predictions_map:
                     predictions_map[attr] = p
 
@@ -838,6 +864,7 @@ class CascadedExtractionPipeline:
             )
             for p in llm_preds:
                 attr = p["attribute"]
+                extracted_alternatives[attr].append(dict(p))
                 if attr not in predictions_map:
                     predictions_map[attr] = p
 
@@ -847,6 +874,11 @@ class CascadedExtractionPipeline:
             if not self.brand_registry.has_brand(b_val):
                 if predictions_map["brand"].get("confidence", 0) >= 0.88:
                     self.brand_registry.register_brand(b_val)
+
+        # ------------------------------------------------------------------
+        # ЭТАП 3.9: Слабый консенсус источников (Snorkel Multi-Source Consensus)
+        # ------------------------------------------------------------------
+        self.calibrator.apply_multi_source_consensus(predictions_map, extracted_alternatives)
 
         # ------------------------------------------------------------------
         # ЭТАП 4: Валидация полноты и расчет взвешенной уверенности

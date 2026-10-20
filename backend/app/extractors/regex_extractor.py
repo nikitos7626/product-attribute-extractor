@@ -200,7 +200,8 @@ class RegexExtractor:
 
     # Мощность: 1500 Вт, 1.5 кВт, 500w
     _POWER_RE = re.compile(
-        r"(?<!\d)(\d+(?:[.,]\d+)?)\s*(квт|kw|вт|w|ватт\w*)\b"
+        r"(?<!\w)(\d+(?:[.,]\d+)?)\s*(квт|kw|вт|w|ватт\w*)\b",
+        re.IGNORECASE,
     )
 
     # Объём: 1.7 л, 500 мл, 2l
@@ -832,43 +833,96 @@ class RegexExtractor:
                 continue
             break
 
-        # --- Вес ---
+        # --- Вес и загрузка стиральной машины ---
         found_weight = False
-        for m in self._WEIGHT_CTX_RE.finditer(text):
-            if not self._is_negated_or_filtered(text, m.start()):
-                yield Prediction(
-                    attribute="weight",
-                    value=_u.weight(m.group(1), m.group(2)),
-                    confidence=self._conf(0.93, m.group(0), title),
-                    source="regex", raw=m.group(0).strip(),
-                )
-                found_weight = True
-                break
+        found_load_capacity = False
 
-        if not found_weight:
+        if category_key == "washing_machines":
+            # Для стиральных машин: N кг без явного маркера массы машины трактуется как load_capacity (загрузка белья)
+            for m in self._WEIGHT_CTX_RE.finditer(text):
+                if not self._is_negated_or_filtered(text, m.start()):
+                    prefix = text[max(0, m.start() - 25):m.start()].lower()
+                    if "загруз" in prefix or "вместим" in prefix:
+                        kg_val = float(m.group(1).replace(",", "."))
+                        if 1.0 <= kg_val <= 25.0:
+                            yield Prediction(
+                                attribute="load_capacity",
+                                value=f"{kg_val:.1f} кг".replace(".0", ""),
+                                confidence=self._conf(0.94, m.group(0), title),
+                                source="regex", raw=m.group(0).strip(),
+                            )
+                            found_load_capacity = True
+                    else:
+                        kg_val = float(m.group(1).replace(",", "."))
+                        # Вес стиральной машины должен быть правдоподобным (>= 40 кг)
+                        if "к" in m.group(2).lower() and kg_val >= 40:
+                            yield Prediction(
+                                attribute="weight",
+                                value=_u.weight(m.group(1), m.group(2)),
+                                confidence=self._conf(0.93, m.group(0), title),
+                                source="regex", raw=m.group(0).strip(),
+                            )
+                            found_weight = True
+                            break
+
+            # Если явного веса прибора нет, N кг в тексте стиральной машины — это load_capacity!
             for m in self._WEIGHT_KG_RE.finditer(text):
+                if not self._is_negated_or_filtered(text, m.start()):
+                    kg_val = float(m.group(1).replace(",", "."))
+                    if 1.0 <= kg_val <= 25.0 and not found_load_capacity:
+                        yield Prediction(
+                            attribute="load_capacity",
+                            value=f"{kg_val:.1f} кг".replace(".0", ""),
+                            confidence=self._conf(0.92, m.group(0), title),
+                            source="regex", raw=m.group(0).strip(),
+                        )
+                        found_load_capacity = True
+                        break
+                    elif kg_val >= 40.0 and not found_weight:
+                        yield Prediction(
+                            attribute="weight",
+                            value=_u.weight(m.group(1), "кг"),
+                            confidence=self._conf(0.89, m.group(0), title),
+                            source="regex", raw=m.group(0).strip(),
+                        )
+                        found_weight = True
+                        break
+        else:
+            for m in self._WEIGHT_CTX_RE.finditer(text):
                 if not self._is_negated_or_filtered(text, m.start()):
                     yield Prediction(
                         attribute="weight",
-                        value=_u.weight(m.group(1), "кг"),
-                        confidence=self._conf(0.89, m.group(0), title),
+                        value=_u.weight(m.group(1), m.group(2)),
+                        confidence=self._conf(0.93, m.group(0), title),
                         source="regex", raw=m.group(0).strip(),
                     )
                     found_weight = True
                     break
 
-        if not found_weight:
-            for m in self._WEIGHT_G_RE.finditer(text):
-                if not self._is_negated_or_filtered(text, m.start()):
-                    grams = float(m.group(1).replace(",", "."))
-                    if grams <= 2000:
+            if not found_weight:
+                for m in self._WEIGHT_KG_RE.finditer(text):
+                    if not self._is_negated_or_filtered(text, m.start()):
                         yield Prediction(
                             attribute="weight",
-                            value=_u.weight(m.group(1), "г"),
-                            confidence=self._conf(0.88, m.group(0), title),
+                            value=_u.weight(m.group(1), "кг"),
+                            confidence=self._conf(0.89, m.group(0), title),
                             source="regex", raw=m.group(0).strip(),
                         )
+                        found_weight = True
                         break
+
+            if not found_weight:
+                for m in self._WEIGHT_G_RE.finditer(text):
+                    if not self._is_negated_or_filtered(text, m.start()):
+                        grams = float(m.group(1).replace(",", "."))
+                        if grams <= 2000:
+                            yield Prediction(
+                                attribute="weight",
+                                value=_u.weight(m.group(1), "г"),
+                                confidence=self._conf(0.88, m.group(0), title),
+                                source="regex", raw=m.group(0).strip(),
+                            )
+                            break
 
         # --- Мощность ---
         for m in self._POWER_RE.finditer(text):
@@ -922,15 +976,16 @@ class RegexExtractor:
             )
 
         # --- Загрузка стиральной машины ---
-        for m in self._LOAD_CAPACITY_RE.finditer(text):
-            if not self._is_negated_or_filtered(text, m.start()):
-                yield Prediction(
-                    attribute="load_capacity",
-                    value=f"{float(m.group(1).replace(',', '.')):.1f} кг".replace(".0", ""),
-                    confidence=self._conf(0.92, m.group(0), title),
-                    source="regex", raw=m.group(0).strip(),
-                )
-                break
+        if not found_load_capacity:
+            for m in self._LOAD_CAPACITY_RE.finditer(text):
+                if not self._is_negated_or_filtered(text, m.start()):
+                    yield Prediction(
+                        attribute="load_capacity",
+                        value=f"{float(m.group(1).replace(',', '.')):.1f} кг".replace(".0", ""),
+                        confidence=self._conf(0.92, m.group(0), title),
+                        source="regex", raw=m.group(0).strip(),
+                    )
+                    break
 
         # --- Скорость отжима ---
         for m in self._SPIN_SPEED_RE.finditer(text):

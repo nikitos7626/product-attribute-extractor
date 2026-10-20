@@ -154,7 +154,7 @@ class CatalogEnricher:
             enriched.append({
                 "attribute": attr,
                 "value": val,
-                "confidence": 0.90,
+                "confidence": float(getattr(settings, "prior_catalog_kb", 0.94)),
                 "source": "catalog_kb",
                 "raw": val,
                 "grounded": True,

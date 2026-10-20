@@ -53,172 +53,278 @@
   <main class="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-8">
     
     <!-- Заголовок страницы -->
-    <div class="mb-8">
-      <h1 class="text-3xl font-extrabold text-gray-900 sm:text-4xl tracking-tight">
-        Автоматическое заполнение характеристик
-      </h1>
-      <p class="mt-2 text-base text-gray-600">
-        Каскадный пайплайн: <span class="font-semibold text-gray-800">Tier 1 (Regex & FlashText)</span> + <span class="font-semibold text-gray-800">Tier 2 (Zero-Shot GLiNER)</span> с калибровкой уверенности и защитой от галлюцинаций.
-      </p>
+    <div class="mb-6 flex flex-col md:flex-row md:items-center justify-between gap-4">
+      <div>
+        <h1 class="text-3xl font-extrabold text-gray-900 sm:text-4xl tracking-tight">
+          Автоматическое заполнение характеристик
+        </h1>
+        <p class="mt-2 text-base text-gray-600">
+          Каскадный пайплайн: <span class="font-semibold text-gray-800">Tier 1 (Regex & FlashText)</span> + <span class="font-semibold text-gray-800">Tier 2 (GLiNER NER)</span> + <span class="font-semibold text-gray-800">Snorkel Consensus</span> с калибровкой уверенности (порог: 87%).
+        </p>
+      </div>
+
+      <!-- Переключатель вкладок -->
+      <div class="flex p-1 bg-gray-200 rounded-xl space-x-1 self-start md:self-auto text-sm font-semibold">
+        <button id="tab-btn-single" onclick="switchTab('single')" class="px-4 py-2 rounded-lg bg-white shadow-sm text-gray-900 transition flex items-center space-x-2">
+          <i class="fa-solid fa-file-lines text-mvideo-red"></i>
+          <span>Одиночная карточка</span>
+        </button>
+        <button id="tab-btn-batch" onclick="switchTab('batch')" class="px-4 py-2 rounded-lg text-gray-600 hover:text-gray-900 transition flex items-center space-x-2">
+          <i class="fa-solid fa-boxes-stacked"></i>
+          <span>Пакетная обработка</span>
+        </button>
+        <button id="tab-btn-review" onclick="switchTab('review')" class="px-4 py-2 rounded-lg text-gray-600 hover:text-gray-900 transition flex items-center space-x-2">
+          <i class="fa-solid fa-user-check"></i>
+          <span>Очередь модерации</span>
+        </button>
+      </div>
     </div>
 
-    <div class="grid grid-cols-1 lg:grid-cols-12 gap-8">
-      
-      <!-- ЛЕВАЯ КОЛОНКА: Ввод данных карточки -->
-      <div class="lg:col-span-5 space-y-6">
-        <div class="bg-white rounded-2xl shadow-sm border border-gray-200 p-6">
-          
-          <div class="flex items-center justify-between mb-4">
-            <h2 class="text-lg font-bold text-gray-900 flex items-center">
-              <i class="fa-solid fa-file-pen text-mvideo-red mr-2"></i> Входная карточка
-            </h2>
-            <span class="text-xs text-gray-500">Только текст</span>
-          </div>
-
-          <!-- Быстрые пресеты из реального датасета М.Видео -->
-          <div class="mb-5">
-            <div class="flex items-center justify-between mb-2">
-              <label class="block text-xs font-semibold uppercase tracking-wider text-gray-500">Примеры товаров:</label>
-            </div>
-            <div class="flex flex-wrap gap-2">
-              <button type="button" onclick="setPreset('samsung')" class="px-2.5 py-1.5 text-xs font-semibold bg-gray-100 hover:bg-red-50 hover:text-mvideo-red rounded-lg text-gray-700 border border-gray-200 transition">
-                📱 Samsung A32
-              </button>
-              <button type="button" onclick="setPreset('lenovo')" class="px-2.5 py-1.5 text-xs font-semibold bg-gray-100 hover:bg-red-50 hover:text-mvideo-red rounded-lg text-gray-700 border border-gray-200 transition">
-                💻 Lenovo IdeaPad
-              </button>
-              <button type="button" onclick="setPreset('sony_tv')" class="px-2.5 py-1.5 text-xs font-semibold bg-gray-100 hover:bg-red-50 hover:text-mvideo-red rounded-lg text-gray-700 border border-gray-200 transition">
-                📺 Sony 50" 4K
-              </button>
-              <button type="button" onclick="setPreset('vacuum')" class="px-2.5 py-1.5 text-xs font-semibold bg-gray-100 hover:bg-red-50 hover:text-mvideo-red rounded-lg text-gray-700 border border-gray-200 transition">
-                🤖 Пылесос Mi
-              </button>
-              <button type="button" onclick="setPreset('fridge')" class="px-2.5 py-1.5 text-xs font-semibold bg-gray-100 hover:bg-red-50 hover:text-mvideo-red rounded-lg text-gray-700 border border-gray-200 transition">
-                ❄️ Холодильник AEG
-              </button>
-              <button type="button" onclick="setPreset('iphone16')" class="px-2.5 py-1.5 text-xs font-semibold bg-gray-100 hover:bg-red-50 hover:text-mvideo-red rounded-lg text-gray-700 border border-gray-200 transition">
-                🍏 iPhone 16 Plus
-              </button>
-            </div>
-          </div>
-
-          <form id="extract-form" onsubmit="handleExtract(event)" class="space-y-4">
-            <div>
-              <textarea id="raw_text" rows="12" required
-                class="w-full min-h-[300px] px-4 py-3 rounded-xl border border-gray-300 focus:ring-2 focus:ring-mvideo-red focus:border-mvideo-red transition text-sm leading-relaxed bg-white"></textarea>
-            </div>
-
-
-            <button type="submit" id="submit-btn"
-              class="w-full py-3.5 px-4 bg-mvideo-red hover:bg-mvideo-darkred text-white font-bold rounded-xl shadow-md hover:shadow-lg transition flex items-center justify-center space-x-2">
-              <i class="fa-solid fa-wand-magic-sparkles"></i>
-              <span>Извлечь характеристики</span>
-            </button>
-          </form>
-
-        </div>
-      </div>
-
-      <!-- ПРАВАЯ КОЛОНКА: Результаты работы ИИ -->
-      <div class="lg:col-span-7 space-y-6">
+    <!-- ==================== ВКЛАДКА 1: ОДИНОЧНАЯ КАРТОЧКА ==================== -->
+    <div id="tab-single" class="tab-content">
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-8">
         
-        <!-- Заглушка до первого запроса -->
-        <div id="empty-state" class="bg-white rounded-2xl border-2 border-dashed border-gray-200 p-12 text-center h-full flex flex-col items-center justify-center min-h-[420px]">
-          <div class="w-16 h-16 rounded-full bg-red-50 text-mvideo-red flex items-center justify-center text-2xl mb-4">
-            <i class="fa-solid fa-list-check"></i>
+        <!-- ЛЕВАЯ КОЛОНКА: Ввод данных карточки -->
+        <div class="lg:col-span-5 space-y-6">
+          <div class="bg-white rounded-2xl shadow-sm border border-gray-200 p-6">
+            
+            <div class="flex items-center justify-between mb-4">
+              <h2 class="text-lg font-bold text-gray-900 flex items-center">
+                <i class="fa-solid fa-file-pen text-mvideo-red mr-2"></i> Входная карточка
+              </h2>
+              <span class="text-xs text-gray-500">Только текст</span>
+            </div>
+
+            <!-- Быстрые пресеты из реального датасета М.Видео -->
+            <div class="mb-5">
+              <div class="flex items-center justify-between mb-2">
+                <label class="block text-xs font-semibold uppercase tracking-wider text-gray-500">Примеры товаров:</label>
+              </div>
+              <div class="flex flex-wrap gap-2">
+                <button type="button" onclick="setPreset('samsung')" class="px-2.5 py-1.5 text-xs font-semibold bg-gray-100 hover:bg-red-50 hover:text-mvideo-red rounded-lg text-gray-700 border border-gray-200 transition">
+                  📱 Samsung A32
+                </button>
+                <button type="button" onclick="setPreset('lenovo')" class="px-2.5 py-1.5 text-xs font-semibold bg-gray-100 hover:bg-red-50 hover:text-mvideo-red rounded-lg text-gray-700 border border-gray-200 transition">
+                  💻 Lenovo IdeaPad
+                </button>
+                <button type="button" onclick="setPreset('washing')" class="px-2.5 py-1.5 text-xs font-semibold bg-gray-100 hover:bg-red-50 hover:text-mvideo-red rounded-lg text-gray-700 border border-gray-200 transition">
+                  🧺 Стиральная машина Haier 6 кг
+                </button>
+                <button type="button" onclick="setPreset('sony_tv')" class="px-2.5 py-1.5 text-xs font-semibold bg-gray-100 hover:bg-red-50 hover:text-mvideo-red rounded-lg text-gray-700 border border-gray-200 transition">
+                  📺 Sony 50" 4K
+                </button>
+                <button type="button" onclick="setPreset('vacuum')" class="px-2.5 py-1.5 text-xs font-semibold bg-gray-100 hover:bg-red-50 hover:text-mvideo-red rounded-lg text-gray-700 border border-gray-200 transition">
+                  🤖 Пылесос Mi
+                </button>
+                <button type="button" onclick="setPreset('fridge')" class="px-2.5 py-1.5 text-xs font-semibold bg-gray-100 hover:bg-red-50 hover:text-mvideo-red rounded-lg text-gray-700 border border-gray-200 transition">
+                  ❄️ Холодильник AEG
+                </button>
+                <button type="button" onclick="setPreset('iphone16')" class="px-2.5 py-1.5 text-xs font-semibold bg-gray-100 hover:bg-red-50 hover:text-mvideo-red rounded-lg text-gray-700 border border-gray-200 transition">
+                  🍏 iPhone 16 Plus
+                </button>
+              </div>
+            </div>
+
+            <form id="extract-form" onsubmit="handleExtract(event)" class="space-y-4">
+              <div>
+                <textarea id="raw_text" rows="12" required
+                  class="w-full min-h-[300px] px-4 py-3 rounded-xl border border-gray-300 focus:ring-2 focus:ring-mvideo-red focus:border-mvideo-red transition text-sm leading-relaxed bg-white"></textarea>
+              </div>
+
+              <button type="submit" id="submit-btn"
+                class="w-full py-3.5 px-4 bg-mvideo-red hover:bg-mvideo-darkred text-white font-bold rounded-xl shadow-md hover:shadow-lg transition flex items-center justify-center space-x-2">
+                <i class="fa-solid fa-wand-magic-sparkles"></i>
+                <span>Извлечь характеристики</span>
+              </button>
+            </form>
+
           </div>
-          <h3 class="text-lg font-bold text-gray-800">Здесь появятся результаты</h3>
-          <p class="text-sm text-gray-500 max-w-sm mt-1">
-            Выберите пример слева или вставьте текст реального товара и нажмите «Извлечь характеристики».
-          </p>
         </div>
 
-        <!-- Результат -->
-        <div id="results-card" class="hidden space-y-6">
+        <!-- ПРАВАЯ КОЛОНКА: Результаты работы ИИ -->
+        <div class="lg:col-span-7 space-y-6">
           
-          <!-- Сводка и статус карточки -->
-          <div class="bg-white rounded-2xl shadow-sm border border-gray-200 p-6">
-            <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-4 border-b border-gray-100">
-              <div class="flex flex-wrap items-center gap-3">
-                <div>
-                  <span class="text-xs font-bold uppercase tracking-wider text-gray-500 block mb-1">Статус публикации</span>
-                  <div id="status-badge" class="inline-flex items-center px-3 py-1 rounded-full text-xs font-bold"></div>
-                </div>
-                <div class="pl-3 sm:border-l border-gray-200">
-                  <span class="text-xs font-bold uppercase tracking-wider text-gray-500 block mb-1">Категория</span>
-                  <div id="category-badge" class="inline-flex items-center px-3 py-1 rounded-full text-xs font-bold bg-indigo-50 text-indigo-700 border border-indigo-200">
-                    <i class="fa-solid fa-tag mr-1.5"></i>
-                    <span id="category-name">Категория</span>
+          <!-- Заглушка до первого запроса -->
+          <div id="empty-state" class="bg-white rounded-2xl border-2 border-dashed border-gray-200 p-12 text-center h-full flex flex-col items-center justify-center min-h-[420px]">
+            <div class="w-16 h-16 rounded-full bg-red-50 text-mvideo-red flex items-center justify-center text-2xl mb-4">
+              <i class="fa-solid fa-list-check"></i>
+            </div>
+            <h3 class="text-lg font-bold text-gray-800">Здесь появятся результаты</h3>
+            <p class="text-sm text-gray-500 max-w-sm mt-1">
+              Выберите пример слева или вставьте текст реального товара и нажмите «Извлечь характеристики».
+            </p>
+          </div>
+
+          <!-- Результат -->
+          <div id="results-card" class="hidden space-y-6">
+            
+            <!-- Сводка и статус карточки -->
+            <div class="bg-white rounded-2xl shadow-sm border border-gray-200 p-6">
+              <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-4 border-b border-gray-100">
+                <div class="flex flex-wrap items-center gap-3">
+                  <div>
+                    <span class="text-xs font-bold uppercase tracking-wider text-gray-500 block mb-1">Статус публикации</span>
+                    <div id="status-badge" class="inline-flex items-center px-3 py-1 rounded-full text-xs font-bold"></div>
+                  </div>
+                  <div class="pl-3 sm:border-l border-gray-200">
+                    <span class="text-xs font-bold uppercase tracking-wider text-gray-500 block mb-1">Категория</span>
+                    <div id="category-badge" class="inline-flex items-center px-3 py-1 rounded-full text-xs font-bold bg-indigo-50 text-indigo-700 border border-indigo-200">
+                      <i class="fa-solid fa-tag mr-1.5"></i>
+                      <span id="category-name">Категория</span>
+                    </div>
                   </div>
                 </div>
+                <div class="text-right">
+                  <span class="text-xs font-bold uppercase tracking-wider text-gray-500 block mb-1">Общая уверенность</span>
+                  <span id="confidence-value" class="text-2xl font-extrabold text-gray-900">0%</span>
+                </div>
               </div>
-              <div class="text-right">
-                <span class="text-xs font-bold uppercase tracking-wider text-gray-500 block mb-1">Общая уверенность</span>
-                <span id="confidence-value" class="text-2xl font-extrabold text-gray-900">0%</span>
+
+              <!-- Прогресс-бар уверенности -->
+              <div class="mt-4">
+                <div class="w-full bg-gray-100 rounded-full h-2.5 overflow-hidden">
+                  <div id="confidence-bar" class="h-2.5 rounded-full transition-all duration-500" style="width: 0%"></div>
+                </div>
+                <div class="flex justify-between text-xs text-gray-400 mt-1">
+                  <span>0%</span>
+                  <span class="text-gray-600 font-semibold">Порог публикации: 87%</span>
+                  <span>100%</span>
+                </div>
+              </div>
+
+              <!-- Незаполненные поля -->
+              <div id="missing-box" class="mt-4 pt-3 border-t border-gray-100 text-xs text-gray-600 flex items-center justify-between">
+                <span>Незаполненные поля:</span>
+                <span id="missing-tags" class="font-semibold text-gray-800"></span>
               </div>
             </div>
 
-            <!-- Прогресс-бар уверенности -->
-            <div class="mt-4">
-              <div class="w-full bg-gray-100 rounded-full h-2.5 overflow-hidden">
-                <div id="confidence-bar" class="h-2.5 rounded-full transition-all duration-500" style="width: 0%"></div>
+            <!-- Таблица характеристик -->
+            <div class="bg-white rounded-2xl shadow-sm border border-gray-200 overflow-hidden">
+              <div class="px-6 py-4 border-b border-gray-100 flex items-center justify-between">
+                <h3 class="text-base font-bold text-gray-900 flex items-center">
+                  <i class="fa-solid fa-table-list text-mvideo-red mr-2"></i> Извлеченные характеристики
+                </h3>
+                <span id="attr-count" class="text-xs bg-gray-100 text-gray-700 px-2.5 py-0.5 rounded-full font-bold">0</span>
               </div>
-              <div class="flex justify-between text-xs text-gray-400 mt-1">
-                <span>0%</span>
-                <span class="text-gray-600 font-semibold">Порог публикации: 75%</span>
-                <span>100%</span>
+
+              <div class="overflow-x-auto">
+                <table class="min-w-full divide-y divide-gray-200 text-sm">
+                  <thead class="bg-gray-50 text-gray-600 text-xs uppercase font-bold tracking-wider">
+                    <tr>
+                      <th scope="col" class="px-6 py-3 text-left">Атрибут</th>
+                      <th scope="col" class="px-6 py-3 text-left">Каноническое значение</th>
+                      <th scope="col" class="px-6 py-3 text-center">Уверенность</th>
+                      <th scope="col" class="px-6 py-3 text-left">Уровень (Tier) / Источник</th>
+                      <th scope="col" class="px-6 py-3 text-left">Статус и консенсус</th>
+                    </tr>
+                  </thead>
+                  <tbody id="attributes-table" class="bg-white divide-y divide-gray-100">
+                    <!-- Динамические строки -->
+                  </tbody>
+                </table>
               </div>
             </div>
 
-            <!-- Незаполненные поля -->
-            <div id="missing-box" class="mt-4 pt-3 border-t border-gray-100 text-xs text-gray-600 flex items-center justify-between">
-              <span>Незаполненные поля:</span>
-              <span id="missing-tags" class="font-semibold text-gray-800"></span>
-            </div>
-          </div>
-
-          <!-- Таблица характеристик -->
-          <div class="bg-white rounded-2xl shadow-sm border border-gray-200 overflow-hidden">
-            <div class="px-6 py-4 border-b border-gray-100 flex items-center justify-between">
-              <h3 class="text-base font-bold text-gray-900 flex items-center">
-                <i class="fa-solid fa-table-list text-mvideo-red mr-2"></i> Извлеченные характеристики
-              </h3>
-              <span id="attr-count" class="text-xs bg-gray-100 text-gray-700 px-2.5 py-0.5 rounded-full font-bold">0</span>
+            <!-- JSON вкладка -->
+            <div class="bg-white rounded-2xl shadow-sm border border-gray-200 p-6">
+              <div class="flex items-center justify-between mb-3">
+                <span class="text-sm font-bold text-gray-800">Финальный JSON ответа</span>
+                <button onclick="copyJson()" class="text-xs font-semibold text-mvideo-red hover:text-mvideo-darkred transition flex items-center">
+                  <i class="fa-regular fa-copy mr-1"></i> Скопировать
+                </button>
+              </div>
+              <pre id="json-viewer" class="bg-gray-900 text-gray-100 p-4 rounded-xl text-xs overflow-x-auto font-mono max-h-60"></pre>
             </div>
 
-            <div class="overflow-x-auto">
-              <table class="min-w-full divide-y divide-gray-200 text-sm">
-                <thead class="bg-gray-50 text-gray-600 text-xs uppercase font-bold tracking-wider">
-                  <tr>
-                    <th scope="col" class="px-6 py-3 text-left">Атрибут</th>
-                    <th scope="col" class="px-6 py-3 text-left">Каноническое значение</th>
-                    <th scope="col" class="px-6 py-3 text-center">Уверенность</th>
-                    <th scope="col" class="px-6 py-3 text-left">Уровень (Tier)</th>
-                    <th scope="col" class="px-6 py-3 text-left">Исходный спан</th>
-                  </tr>
-                </thead>
-                <tbody id="attributes-table" class="bg-white divide-y divide-gray-100">
-                  <!-- Динамические строки -->
-                </tbody>
-              </table>
-            </div>
-          </div>
-
-          <!-- JSON вкладка -->
-          <div class="bg-white rounded-2xl shadow-sm border border-gray-200 p-6">
-            <div class="flex items-center justify-between mb-3">
-              <span class="text-sm font-bold text-gray-800">Финальный JSON ответа</span>
-              <button onclick="copyJson()" class="text-xs font-semibold text-mvideo-red hover:text-mvideo-darkred transition flex items-center">
-                <i class="fa-regular fa-copy mr-1"></i> Скопировать
-              </button>
-            </div>
-            <pre id="json-viewer" class="bg-gray-900 text-gray-100 p-4 rounded-xl text-xs overflow-x-auto font-mono max-h-60"></pre>
           </div>
 
         </div>
 
       </div>
+    </div>
 
+    <!-- ==================== ВКЛАДКА 2: ПАКЕТНАЯ ОБРАБОТКА ==================== -->
+    <div id="tab-batch" class="tab-content hidden space-y-6">
+      <div class="bg-white rounded-2xl shadow-sm border border-gray-200 p-6">
+        <h2 class="text-lg font-bold text-gray-900 mb-2 flex items-center">
+          <i class="fa-solid fa-boxes-stacked text-mvideo-red mr-2"></i> Пакетная обработка каталога (Batch / Export)
+        </h2>
+        <p class="text-sm text-gray-600 mb-6">
+          Загрузите файл <code>.json</code> или <code>.csv</code> со списком товаров. Сервер выполнит асинхронный инференс в фоновом тредпуле без блокировки Event Loop.
+        </p>
+
+        <!-- Dropzone -->
+        <div class="border-2 border-dashed border-gray-300 hover:border-mvideo-red rounded-2xl p-8 text-center transition cursor-pointer" onclick="document.getElementById('batch-file-input').click()">
+          <input type="file" id="batch-file-input" accept=".json,.csv" class="hidden" onchange="handleFileSelect(event)">
+          <div class="w-16 h-16 rounded-full bg-red-50 text-mvideo-red flex items-center justify-center text-2xl mx-auto mb-3">
+            <i class="fa-solid fa-cloud-arrow-up"></i>
+          </div>
+          <p id="file-name-label" class="text-sm font-bold text-gray-800">Перетащите сюда файл .csv или .json или нажмите для выбора</p>
+          <p class="text-xs text-gray-400 mt-1">Поддерживаются UTF-8, CP1251, BOM, до 50 МБ и до 10 000 строк</p>
+        </div>
+
+        <div class="mt-6 flex flex-wrap items-center gap-4">
+          <button id="batch-process-btn" onclick="runBatchProcess()" disabled class="py-3 px-6 bg-mvideo-red hover:bg-mvideo-darkred disabled:bg-gray-300 disabled:cursor-not-allowed text-white font-bold rounded-xl shadow-md transition flex items-center space-x-2">
+            <i class="fa-solid fa-play"></i>
+            <span>Запустить обработку</span>
+          </button>
+          <button id="batch-export-json-btn" onclick="exportBatch('json')" disabled class="py-3 px-5 bg-gray-100 hover:bg-gray-200 disabled:bg-gray-100 disabled:text-gray-400 text-gray-800 font-bold rounded-xl border border-gray-200 transition flex items-center space-x-2">
+            <i class="fa-solid fa-file-code"></i>
+            <span>Экспорт JSON</span>
+          </button>
+          <button id="batch-export-csv-btn" onclick="exportBatch('csv')" disabled class="py-3 px-5 bg-gray-100 hover:bg-gray-200 disabled:bg-gray-100 disabled:text-gray-400 text-gray-800 font-bold rounded-xl border border-gray-200 transition flex items-center space-x-2">
+            <i class="fa-solid fa-file-csv"></i>
+            <span>Экспорт CSV</span>
+          </button>
+        </div>
+
+        <!-- Результаты батча -->
+        <div id="batch-results-container" class="mt-8 hidden space-y-4">
+          <div class="flex items-center justify-between pb-3 border-b border-gray-200">
+            <span class="text-sm font-bold text-gray-900">Предпросмотр результатов батча: <span id="batch-total-count" class="text-mvideo-red font-extrabold">0</span> карточек</span>
+            <span id="batch-status-summary" class="text-xs font-semibold px-2.5 py-1 rounded-full bg-green-100 text-green-800">100% Успешно</span>
+          </div>
+
+          <div class="overflow-x-auto max-h-[500px]">
+            <table class="min-w-full divide-y divide-gray-200 text-sm">
+              <thead class="bg-gray-50 text-gray-600 text-xs uppercase font-bold sticky top-0">
+                <tr>
+                  <th class="px-4 py-2 text-left">ID</th>
+                  <th class="px-4 py-2 text-left">Категория</th>
+                  <th class="px-4 py-2 text-center">Уверенность</th>
+                  <th class="px-4 py-2 text-center">Статус</th>
+                  <th class="px-4 py-2 text-left">Извлечено полей</th>
+                  <th class="px-4 py-2 text-left">Пропущено</th>
+                </tr>
+              </thead>
+              <tbody id="batch-table-body" class="divide-y divide-gray-100"></tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ==================== ВКЛАДКА 3: ОЧЕРЕДЬ МОДЕРАЦИИ ==================== -->
+    <div id="tab-review" class="tab-content hidden space-y-6">
+      <div class="bg-white rounded-2xl shadow-sm border border-gray-200 p-6">
+        <div class="flex items-center justify-between mb-4">
+          <div>
+            <h2 class="text-lg font-bold text-gray-900 flex items-center">
+              <i class="fa-solid fa-user-check text-mvideo-red mr-2"></i> Очередь ручной модерации (Human-in-the-Loop)
+            </h2>
+            <p class="text-sm text-gray-500">Карточки с уверенностью ниже 87% или пропущенными обязательными полями категории.</p>
+          </div>
+          <button onclick="loadReviewQueue()" class="px-4 py-2 bg-gray-100 hover:bg-gray-200 text-gray-700 font-bold rounded-xl text-xs flex items-center space-x-1.5 transition">
+            <i class="fa-solid fa-rotate"></i>
+            <span>Обновить очередь</span>
+          </button>
+        </div>
+
+        <div id="review-queue-content" class="space-y-4">
+          <p class="text-sm text-gray-400 text-center py-8">Загрузка очереди модерации...</p>
+        </div>
+      </div>
     </div>
 
   </main>
@@ -233,11 +339,33 @@
     const PRESETS = {
       samsung: "Смартфон Samsung Galaxy A32 White обладает безрамочным 6,4-дюймовым дисплеем разрешением 1080х2400 пикселей, который создан по технологии SuperAMOLED. В основе девайса лежит восьмиядерный процессор MediaTek, который работает при поддержке оперативной памяти объемом 6 Гб. Объем встроенной памяти равен 128 Гб. Корпус выполнен из пластика. Аккумулятор емкостью 5000 мА*ч поддерживает быструю зарядку. Вес модели равен 184 г.",
       lenovo: "Ноутбук Lenovo IdeaPad 3 Gen7 82RK003TRU оборудован шестиядерным процессором Intel Core i3 1215U 1.2 ГГц. Конфигурацией устройства предусмотрено наличие экрана разрешением 1920х1080 пикселей и диагональю 15,6\". Частота обновления экрана составляет 60 Гц. Оперативный модуль для хранения данных обладает объемом 8 ГБ, объем жесткого диска — 512 ГБ.",
+      washing: "Стиральная машина Haier HW60-1010FD 6 кг 1000 об/мин белый цвет. Вместительный барабан на 6 кг белья, высокая скорость отжима 1000 об/мин, класс энергопотребления А.",
       sony_tv: "Телевизор Sony KD50X85TJ с экраном, созданным на основе матрицы Triluminos Pro. Его диагональ — 50 дюймов, разрешение — 3840 х 2160 пикселей. Фирменный процессор X1 обеспечивает масштабирование изображения до 4K Ultra HD. В модели реализованы технологии HDR10, HLG и X-Reality Pro 1000. Мощность фронтальных динамиков — 20 Вт.",
       vacuum: "Робот-пылесос Mi Robot Vacuum-Mop P White (SKV4110GL) справится с сухой и влажной уборкой совершенно без вашего участия. Цвет корпуса: белый. Модель оснащена 11 датчиками определения препятствий. Емкий аккумулятор обеспечивает до 1 часа 50 минут непрерывной работы.",
       fridge: "Холодильник AEG RCR736E5MB оснащен зоной свежести объемом 22 л. Морозильная камера с тремя ящиками не требует разморозки (No Frost). Сенсорный дисплей отображает режим работы и температуру. Мощность замораживания составляет 8 кг в сутки. Цвет: черный металлик.",
       iphone16: "Смартфон Apple iPhone 16 Plus 128GB Pink с диагональю 6.7 дюймов OLED Super Retina XDR 60 Гц, чип Apple A18. Емкость аккумулятора 4674 мАч. Цвет: розовый."
     };
+
+    let selectedBatchFile = null;
+    let lastSingleResponse = null;
+
+    function switchTab(tabId) {
+      document.querySelectorAll('.tab-content').forEach(el => el.classList.add('hidden'));
+      document.getElementById('tab-' + tabId).classList.remove('hidden');
+
+      ['single', 'batch', 'review'].forEach(t => {
+        const btn = document.getElementById('tab-btn-' + t);
+        if (t === tabId) {
+          btn.className = 'px-4 py-2 rounded-lg bg-white shadow-sm text-gray-900 transition flex items-center space-x-2';
+        } else {
+          btn.className = 'px-4 py-2 rounded-lg text-gray-600 hover:text-gray-900 transition flex items-center space-x-2';
+        }
+      });
+
+      if (tabId === 'review') {
+        loadReviewQueue();
+      }
+    }
 
     function setPreset(key) {
       const p = PRESETS[key];
@@ -269,6 +397,7 @@
         }
 
         const data = await response.json();
+        lastSingleResponse = data;
         renderResults(data);
       } catch (err) {
         alert('Ошибка при обработке: ' + err.message);
@@ -294,7 +423,7 @@
       const bar = document.getElementById('confidence-bar');
       bar.style.width = conf + '%';
       bar.className = 'h-2.5 rounded-full transition-all duration-500 ' + 
-        (conf >= 75 ? 'bg-green-500' : (conf >= 50 ? 'bg-yellow-500' : 'bg-red-500'));
+        (conf >= 87 ? 'bg-green-500' : (conf >= 60 ? 'bg-yellow-500' : 'bg-red-500'));
 
       const statusBadge = document.getElementById('status-badge');
       if (data.needs_review) {
@@ -320,49 +449,215 @@
       document.getElementById('attr-count').innerText = preds.length;
 
       preds.forEach(p => {
-        const confScore = Math.round(p.confidence * 100);
-        let confColor = 'bg-green-100 text-green-800';
-        if (confScore < 70) confColor = 'bg-red-100 text-red-800';
-        else if (confScore < 85) confColor = 'bg-yellow-100 text-yellow-800';
-
-        let sourceLabel = p.source;
-        let sourceClass = 'bg-gray-100 text-gray-700';
-        if (p.source === 'regex' || p.source === 'flashtext') {
-          sourceLabel = 'Tier 1: Правила';
-          sourceClass = 'bg-blue-50 text-blue-700 border border-blue-200';
-        } else if (p.source === 'gliner') {
-          sourceLabel = 'Tier 2: GLiNER';
-          sourceClass = 'bg-purple-50 text-purple-700 border border-purple-200';
-        }
-
         const tr = document.createElement('tr');
         tr.className = 'hover:bg-gray-50 transition';
+
+        const pConf = Math.round((p.confidence || 0) * 100);
+        const pBadgeColor = pConf >= 87 ? 'bg-green-100 text-green-800' : (pConf >= 60 ? 'bg-yellow-100 text-yellow-800' : 'bg-red-100 text-red-800');
+
+        let consensusTag = '';
+        if (p.consensus) {
+          consensusTag = `<span class="inline-flex items-center text-xs font-bold text-indigo-700 bg-indigo-50 px-2 py-0.5 rounded-full border border-indigo-200"><i class="fa-solid fa-handshake mr-1"></i> Консенсус</span>`;
+        } else if (p.status === 'valid' || p.status === 'high_confidence') {
+          consensusTag = `<span class="text-xs text-green-600 font-medium"><i class="fa-solid fa-check mr-1"></i> Верифицировано</span>`;
+        } else {
+          consensusTag = `<span class="text-xs text-amber-600 font-medium"><i class="fa-solid fa-triangle-exclamation mr-1"></i> Требует внимания</span>`;
+        }
+
         tr.innerHTML = `
-          <td class="px-6 py-3.5 font-bold text-gray-900">${p.attribute}</td>
-          <td class="px-6 py-3.5 font-semibold text-gray-800">${p.value}</td>
-          <td class="px-6 py-3.5 text-center">
-            <span class="inline-block px-2.5 py-0.5 rounded-full text-xs font-extrabold ${confColor}">
-              ${confScore}%
-            </span>
+          <td class="px-6 py-4 font-bold text-gray-900">${p.attribute}</td>
+          <td class="px-6 py-4 text-gray-800 font-medium">${p.value}</td>
+          <td class="px-6 py-4 text-center">
+            <span class="inline-block px-2.5 py-0.5 rounded-full text-xs font-bold ${pBadgeColor}">${pConf}%</span>
           </td>
-          <td class="px-6 py-3.5">
-            <span class="inline-block px-2 py-0.5 rounded text-xs font-semibold ${sourceClass}">
-              ${sourceLabel}
-            </span>
+          <td class="px-6 py-4 text-gray-500 font-mono text-xs">
+            <span class="bg-gray-100 px-2 py-0.5 rounded font-bold">${p.source}</span>
           </td>
-          <td class="px-6 py-3.5 text-gray-500 italic text-xs font-mono">${p.raw || '—'}</td>
+          <td class="px-6 py-4">${consensusTag}</td>
         `;
         table.appendChild(tr);
       });
 
-      // JSON
+      // JSON viewer
       document.getElementById('json-viewer').innerText = JSON.stringify(data, null, 2);
     }
 
     function copyJson() {
-      const text = document.getElementById('json-viewer').innerText;
-      navigator.clipboard.writeText(text);
+      if (!lastSingleResponse) return;
+      navigator.clipboard.writeText(JSON.stringify(lastSingleResponse, null, 2));
       alert('JSON скопирован в буфер обмена!');
+    }
+
+    // ----------------- Batch Обработка -----------------
+
+    function handleFileSelect(e) {
+      const file = e.target.files[0];
+      if (!file) return;
+      selectedBatchFile = file;
+      document.getElementById('file-name-label').innerText = `Выбран файл: ${file.name} (${Math.round(file.size / 1024)} КБ)`;
+      document.getElementById('batch-process-btn').disabled = false;
+      document.getElementById('batch-export-json-btn').disabled = false;
+      document.getElementById('batch-export-csv-btn').disabled = false;
+    }
+
+    async function runBatchProcess() {
+      if (!selectedBatchFile) return;
+      const btn = document.getElementById('batch-process-btn');
+      btn.disabled = true;
+      btn.innerHTML = `<i class="fa-solid fa-circle-notch fa-spin"></i><span>Обработка батча...</span>`;
+
+      const formData = new FormData();
+      formData.append('file', selectedBatchFile);
+
+      try {
+        const resp = await fetch('/api/extract/batch', {
+          method: 'POST',
+          body: formData
+        });
+
+        if (!resp.ok) {
+          throw new Error('Ошибка сервера: ' + resp.statusText);
+        }
+
+        const data = await resp.json();
+        renderBatchResults(data);
+      } catch (err) {
+        alert('Ошибка при пакетной обработке: ' + err.message);
+      } finally {
+        btn.disabled = false;
+        btn.innerHTML = `<i class="fa-solid fa-play"></i><span>Запустить обработку</span>`;
+      }
+    }
+
+    function renderBatchResults(data) {
+      const container = document.getElementById('batch-results-container');
+      container.classList.remove('hidden');
+      document.getElementById('batch-total-count').innerText = data.total || 0;
+
+      const tbody = document.getElementById('batch-table-body');
+      tbody.innerHTML = '';
+
+      (data.cards || []).forEach(c => {
+        const tr = document.createElement('tr');
+        tr.className = 'hover:bg-gray-50';
+        const conf = Math.round((c.overall_confidence || 0) * 100);
+        const statusClass = c.status === 'approved' ? 'bg-green-100 text-green-800' : (c.status === 'failed' ? 'bg-red-100 text-red-800' : 'bg-yellow-100 text-yellow-800');
+        
+        tr.innerHTML = `
+          <td class="px-4 py-2 font-mono text-xs font-bold">${c.external_id || '-'}</td>
+          <td class="px-4 py-2 font-medium">${c.category || '-'}</td>
+          <td class="px-4 py-2 text-center font-bold">${conf}%</td>
+          <td class="px-4 py-2 text-center"><span class="px-2 py-0.5 rounded text-xs font-bold ${statusClass}">${c.status}</span></td>
+          <td class="px-4 py-2 font-mono text-xs">${(c.predictions || []).length} полей</td>
+          <td class="px-4 py-2 text-xs text-gray-500">${(c.missing || []).join(', ') || '—'}</td>
+        `;
+        tbody.appendChild(tr);
+      });
+    }
+
+    async function exportBatch(fmt) {
+      if (!selectedBatchFile) return;
+      const formData = new FormData();
+      formData.append('file', selectedBatchFile);
+
+      const resp = await fetch(`/api/extract/export?output_format=${fmt}`, {
+        method: 'POST',
+        body: formData
+      });
+
+      if (!resp.ok) {
+        alert('Ошибка при экспорте файла');
+        return;
+      }
+
+      const blob = await resp.blob();
+      const url = window.URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = `predictions.${fmt}`;
+      document.body.appendChild(a);
+      a.click();
+      a.remove();
+    }
+
+    // ----------------- Очередь модерации (HITL) -----------------
+
+    async function loadReviewQueue() {
+      const cont = document.getElementById('review-queue-content');
+      cont.innerHTML = `<p class="text-sm text-gray-400 text-center py-8"><i class="fa-solid fa-spinner fa-spin mr-2"></i> Загрузка...</p>`;
+
+      try {
+        const resp = await fetch('/api/extract/review-queue?limit=25');
+        if (!resp.ok) throw new Error('Не удалось загрузить очередь');
+        const data = await resp.json();
+
+        if (!data.items || data.items.length === 0) {
+          cont.innerHTML = `
+            <div class="text-center py-12 text-gray-500">
+              <i class="fa-solid fa-circle-check text-green-500 text-4xl mb-3"></i>
+              <p class="font-bold text-gray-800">Очередь модерации пуста!</p>
+              <p class="text-xs text-gray-400 mt-1">Все карточки успешно валидированы автоматическим каскадом.</p>
+            </div>
+          `;
+          return;
+        }
+
+        cont.innerHTML = '';
+        data.items.forEach(item => {
+          const cardEl = document.createElement('div');
+          cardEl.className = 'border border-gray-200 rounded-xl p-4 hover:border-gray-300 transition space-y-3';
+          
+          const conf = Math.round((item.overall_confidence || 0) * 100);
+          const reasons = (item.review_reasons || []).join('; ') || 'Требуется подтверждение';
+
+          cardEl.innerHTML = `
+            <div class="flex items-center justify-between">
+              <div>
+                <span class="font-bold text-gray-900">${item.title || item.external_id || 'Товар'}</span>
+                <span class="ml-2 text-xs bg-gray-100 text-gray-700 px-2 py-0.5 rounded font-mono">${item.category || ''}</span>
+              </div>
+              <span class="text-xs font-bold px-2 py-0.5 rounded-full bg-yellow-100 text-yellow-800">${conf}%</span>
+            </div>
+            <p class="text-xs text-red-600 font-medium"><i class="fa-solid fa-circle-exclamation mr-1"></i> Причина: ${reasons}</p>
+            <div class="flex items-center justify-end space-x-2 pt-2 border-t border-gray-100">
+              <button onclick="overrideAction('${item.external_id}', 'brand', 'approve')" class="px-3 py-1 bg-green-50 text-green-700 hover:bg-green-100 rounded-lg text-xs font-bold transition">
+                <i class="fa-solid fa-check mr-1"></i> Одобрить
+              </button>
+              <button onclick="overrideAction('${item.external_id}', 'brand', 'reject')" class="px-3 py-1 bg-red-50 text-red-700 hover:bg-red-100 rounded-lg text-xs font-bold transition">
+                <i class="fa-solid fa-xmark mr-1"></i> Отклонить
+              </button>
+            </div>
+          `;
+          cont.appendChild(cardEl);
+        });
+
+      } catch (err) {
+        cont.innerHTML = `<p class="text-sm text-red-500 text-center py-8">Ошибка: ${err.message}</p>`;
+      }
+    }
+
+    async function overrideAction(extId, attr, action) {
+      try {
+        const resp = await fetch('/api/extract/review-override', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            external_id: extId,
+            attribute: attr,
+            override_value: 'Approved by operator',
+            action: action,
+            reviewed_by: 'web-moderator'
+          })
+        });
+        if (resp.ok) {
+          alert(`Решение (${action}) успешно сохранено!`);
+          loadReviewQueue();
+        } else {
+          alert('Ошибка при сохранении решения');
+        }
+      } catch (e) {
+        alert('Ошибка сети: ' + e.message);
+      }
     }
   </script>
 </body>

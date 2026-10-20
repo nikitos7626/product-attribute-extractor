@@ -22,11 +22,23 @@ RUN pip install --no-cache-dir --upgrade pip && \
     pip install --no-cache-dir torch --index-url https://download.pytorch.org/whl/cpu && \
     pip install --no-cache-dir -r requirements.txt
 
-# Впекаем веса модели GLiNER в образ на этапе сборки (чтобы контейнер работал автономно без интернета)
-RUN python -c "from gliner import GLiNER; GLiNER.from_pretrained('urchade/gliner_multi-v2.1')"
+# Аргументы управления сборкой (поддержка offline-сборки и изолированных сред без доступа в интернет)
+ARG PRELOAD_WEIGHTS=true
+ARG OFFLINE_BUILD=false
+
+# Предварительная загрузка весов модели GLiNER с защитой от сбоев сети и поддержкой offline-сборки
+RUN if [ "$PRELOAD_WEIGHTS" = "true" ] && [ "$OFFLINE_BUILD" != "true" ]; then \
+        python -c "from gliner import GLiNER; GLiNER.from_pretrained('urchade/gliner_multi-v2.1')" || \
+        echo "WARNING: Pre-download of GLiNER weights failed or network is isolated. Pipeline will use runtime download or fast Tier 1 fallback."; \
+    else \
+        echo "INFO: Skipping GLiNER weight preload (OFFLINE_BUILD=$OFFLINE_BUILD, PRELOAD_WEIGHTS=$PRELOAD_WEIGHTS)."; \
+    fi
 
 # Копируем исходный код бэкенда и артефакты
 COPY backend /app
+COPY data /data
+COPY data /app/data
+COPY scripts /app/scripts
 COPY output /output
 COPY output /app/output
 COPY extract.py /app/extract.py
