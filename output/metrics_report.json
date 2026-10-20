@@ -1,9 +1,9 @@
 {
-  "timestamp": "2026-10-20 16:17:06",
+  "timestamp": "2026-10-20 16:41:20",
   "total_cards": 13,
   "category_accuracy": 1.0,
   "overall_coverage": 0.6923,
-  "avg_latency_ms": 541.76,
+  "avg_latency_ms": 514.86,
   "macro_f1": 1.0,
   "micro_f1": 0.995,
   "per_attribute_metrics": {

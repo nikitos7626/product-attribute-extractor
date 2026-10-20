@@ -1,7 +1,19 @@
+import asyncio
+import os
+import sys
+from pathlib import Path
+
+# Ensure repo root and infra directory are in sys.path
+SCRIPT_DIR = Path(__file__).resolve().parent
+REPO_ROOT = SCRIPT_DIR.parent.parent
+for p in (str(REPO_ROOT), str(SCRIPT_DIR)):
+    if p not in sys.path:
+        sys.path.insert(0, p)
+
 try:
-    from .vm_exec import exec_remote
-except (ImportError, ValueError):
     from scripts.infra.vm_exec import exec_remote
+except (ImportError, ValueError):
+    from vm_exec import exec_remote
 
 code = """
 import subprocess

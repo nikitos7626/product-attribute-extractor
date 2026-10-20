@@ -187,7 +187,8 @@ class RegexExtractor:
     _WEIGHT_CTX_RE = re.compile(
         r"(?:вес\w*|масс\w*|weight)\s*[:=]?\s*"
         r"(\d+(?:[.,]\d+)?)\s*"
-        r"(кг|kg|килограмм\w*|гр|грамм\w*|gr|г|g)\b"
+        r"(кг|kg|килограмм\w*|гр|грамм\w*|gr|г|g)\b",
+        re.IGNORECASE,
     )
     # Вес без контекста — только килограммы (явный маркер массы)
     _WEIGHT_KG_RE = re.compile(
@@ -841,10 +842,17 @@ class RegexExtractor:
             # Для стиральных машин: N кг без явного маркера массы машины трактуется как load_capacity (загрузка белья)
             for m in self._WEIGHT_CTX_RE.finditer(text):
                 if not self._is_negated_or_filtered(text, m.start()):
-                    prefix = text[max(0, m.start() - 25):m.start()].lower()
+                    last_sep = max(
+                        text.rfind("\n", 0, m.start()),
+                        text.rfind(".", 0, m.start()),
+                        text.rfind(";", 0, m.start()),
+                        text.rfind(",", 0, m.start()),
+                    )
+                    prefix_start = max(0, last_sep + 1, m.start() - 25)
+                    prefix = text[prefix_start:m.start()].lower()
                     if "загруз" in prefix or "вместим" in prefix:
                         kg_val = float(m.group(1).replace(",", "."))
-                        if 1.0 <= kg_val <= 25.0:
+                        if 1.0 <= kg_val <= 25.0 and not found_load_capacity:
                             yield Prediction(
                                 attribute="load_capacity",
                                 value=f"{kg_val:.1f} кг".replace(".0", ""),
@@ -855,7 +863,7 @@ class RegexExtractor:
                     else:
                         kg_val = float(m.group(1).replace(",", "."))
                         # Вес стиральной машины должен быть правдоподобным (>= 40 кг)
-                        if "к" in m.group(2).lower() and kg_val >= 40:
+                        if "к" in m.group(2).lower() and kg_val >= 40 and not found_weight:
                             yield Prediction(
                                 attribute="weight",
                                 value=_u.weight(m.group(1), m.group(2)),
@@ -863,7 +871,8 @@ class RegexExtractor:
                                 source="regex", raw=m.group(0).strip(),
                             )
                             found_weight = True
-                            break
+                    if found_load_capacity and found_weight:
+                        break
 
             # Если явного веса прибора нет, N кг в тексте стиральной машины — это load_capacity!
             for m in self._WEIGHT_KG_RE.finditer(text):
@@ -877,15 +886,14 @@ class RegexExtractor:
                             source="regex", raw=m.group(0).strip(),
                         )
                         found_load_capacity = True
-                        break
                     elif kg_val >= 40.0 and not found_weight:
                         yield Prediction(
                             attribute="weight",
                             value=_u.weight(m.group(1), "кг"),
                             confidence=self._conf(0.89, m.group(0), title),
-                            source="regex", raw=m.group(0).strip(),
                         )
                         found_weight = True
+                    if found_load_capacity and found_weight:
                         break
         else:
             for m in self._WEIGHT_CTX_RE.finditer(text):
@@ -1209,4 +1217,4 @@ class RegexExtractor:
     @staticmethod
     def _conf(base: float, raw: str, title: str) -> float:
         bonus = getattr(settings, "regex_title_bonus", 0.03)
-        return round(min(0.99, base + (bonus if raw and raw in title else 0.0)), 4)
+        return round(min(0.99, base + (bonus if raw and raw in title else 0.0)), 4)

@@ -169,3 +169,30 @@ def test_multi_source_consensus_active_in_pipeline():
         assert "flashtext" in preds["brand"]["consensus_sources"]
         assert "gliner" in preds["brand"]["consensus_sources"]
         assert preds["brand"]["status"] == "confirmed_by_consensus"
+
+
+def test_washing_machine_both_load_capacity_and_weight():
+    """Проверяет корректное совместное извлечение загрузки и веса стиральной машины."""
+    regex = RegexExtractor()
+    preds = list(regex.extract({
+        "title": "Стиральная машина Haier 6 кг",
+        "description": "Загрузка: 6 кг. Вес: 62 кг."
+    }, category_key="washing_machines"))
+    
+    attr_map = {p["attribute"]: p["value"] for p in preds}
+    assert attr_map.get("load_capacity") == "6 кг"
+    assert attr_map.get("weight") == "62 кг"
+
+
+def test_infra_scripts_importable():
+    """Проверяет, что инфраструктурные скрипты в scripts/infra импортируются без ошибок."""
+    import importlib
+    for mod_name in (
+        "scripts.infra.vm_exec",
+        "scripts.infra.deploy_service",
+        "scripts.infra.deploy_step",
+        "scripts.infra.deploy_remote_update",
+        "scripts.infra.test_llm_remote",
+    ):
+        mod = importlib.import_module(mod_name)
+        assert hasattr(mod, "exec_remote")
