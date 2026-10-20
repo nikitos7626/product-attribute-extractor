@@ -4,6 +4,7 @@ import io
 import json
 
 from fastapi import APIRouter, File, HTTPException, UploadFile
+from app.config import settings
 from app.schemas import BatchOut, CardIn, CardOut, PredictionOut, ReviewOverrideIn, ReviewQueueResponse
 from app.services.pipeline import CascadedExtractionPipeline
 
@@ -34,39 +35,84 @@ def _run(card: CardIn) -> CardOut:
         missing=res["missing"],
         overall_confidence=res["overall_confidence"],
         needs_review=res["needs_review"],
+        status=res.get("status", "approved"),
+        status_description=res.get("status_description", ""),
+        review_reasons=res.get("review_reasons", []),
         warnings=res.get("warnings", []),
         degraded_tiers=res.get("degraded_tiers", []),
+        taxonomy_status=res.get("taxonomy_status"),
     )
 
 
 
 def _rows_from_file(filename: str, raw: bytes) -> list[dict]:
-    """CSV или JSON → список dict'ов. Пустой файл → 400, а не 500."""
+    """
+    Строгая валидация и парсинг входных файлов пакетной обработки (CSV или JSON).
+    Проверяет размер файла, формат, структуру объектов и лимиты элементов.
+    """
     if not raw or not raw.strip():
-        raise HTTPException(400, "Файл пустой")
+        raise HTTPException(400, "Файл пустой или не содержит данных")
 
-    name = (filename or "").lower()
+    max_bytes = getattr(settings, "max_batch_file_size_bytes", 50 * 1024 * 1024)
+    if len(raw) > max_bytes:
+        raise HTTPException(413, f"Размер файла ({len(raw) / (1024 * 1024):.1f} МБ) превышает лимит ({max_bytes // (1024 * 1024)} МБ)")
+
+    name = (filename or "").lower().strip()
+    if not (name.endswith(".json") or name.endswith(".csv")):
+        raise HTTPException(400, "Неподдерживаемый формат файла. Допустимы только .json и .csv файлы")
+
+    rows: list[dict] = []
+
     if name.endswith(".json"):
         try:
-            data = json.loads(raw)
+            data = json.loads(raw.decode("utf-8", errors="replace"))
         except json.JSONDecodeError as e:
-            raise HTTPException(400, f"Невалидный JSON: {e}") from e
-        rows = data if isinstance(data, list) else [data]
-        if not rows:
-            raise HTTPException(400, "В JSON нет карточек")
-        return rows
+            raise HTTPException(400, f"Невалидный синтаксис JSON: {e}") from e
 
-    if name.endswith(".csv"):
+        if isinstance(data, list):
+            rows = data
+        elif isinstance(data, dict):
+            rows = [data]
+        else:
+            raise HTTPException(400, f"Невалидная структура JSON: ожидается массив объектов или один объект (получен {type(data).__name__})")
+
+        if not rows:
+            raise HTTPException(400, "Файл JSON не содержит карточек (передан пустой массив)")
+
+        for idx, item in enumerate(rows):
+            if not isinstance(item, dict):
+                raise HTTPException(400, f"Запись #{idx + 1} в JSON не является объектом (словарем)")
+
+    elif name.endswith(".csv"):
         import pandas as pd
         try:
-            df = pd.read_csv(io.BytesIO(raw))
+            df = pd.read_csv(io.BytesIO(raw), encoding="utf-8")
+        except UnicodeDecodeError:
+            try:
+                df = pd.read_csv(io.BytesIO(raw), encoding="cp1251")
+            except Exception as e:
+                raise HTTPException(400, f"Ошибка кодировки CSV файла: {e}") from e
         except pd.errors.EmptyDataError as e:
-            raise HTTPException(400, "CSV не содержит колонок/строк") from e
-        if df.empty:
-            raise HTTPException(400, "CSV пустой")
-        return df.to_dict(orient="records")
+            raise HTTPException(400, "CSV файл пустой или не содержит данных") from e
+        except Exception as e:
+            raise HTTPException(400, f"Ошибка разбора CSV: {e}") from e
 
-    raise HTTPException(400, "Только CSV или JSON")
+        if df.empty:
+            raise HTTPException(400, "CSV файл не содержит строк данных")
+
+        col_names = [str(c).lower().strip() for c in df.columns]
+        expected_signals = {"title", "description", "raw_text", "category", "external_id", "id", "name"}
+        if not any(c in expected_signals for c in col_names):
+            raise HTTPException(400, f"В CSV файле не найдены обязательные колонки товара ({expected_signals}). Найдены: {list(df.columns)}")
+
+        df = df.where(pd.notnull(df), None)
+        rows = df.to_dict(orient="records")
+
+    max_items = getattr(settings, "max_batch_items", 10000)
+    if len(rows) > max_items:
+        raise HTTPException(400, f"Количество карточек ({len(rows)}) превышает установленный лимит пакета ({max_items})")
+
+    return rows
 
 
 # --------------------------- эндпоинты ---------------------------
@@ -86,12 +132,17 @@ def register_brand(alias: str, canonical: str | None = None) -> dict:
 
 @router.get("/health")
 def health() -> dict:
-    """Быстрая проверка состояния экстракторов и пайплайна."""
+    """Быстрая проверка состояния экстракторов, таксономии и пайплайна."""
     return {
         "ok": True,
         "pipeline": "CascadedExtractionPipeline",
         "tier1_regex": _pipeline.regex_extractor.health(),
         "tier2_gliner": _pipeline.gliner_extractor.health() if _pipeline.gliner_extractor else False,
+        "taxonomy": {
+            "status": _pipeline.taxonomy_manager.status,
+            "categories_count": _pipeline.taxonomy_manager.categories_count,
+            "error": _pipeline.taxonomy_manager.error_message,
+        },
     }
 
 
@@ -184,7 +235,11 @@ def get_taxonomy() -> dict:
             "allowed_attributes": sorted(list(AttributeSanityValidator.ALLOWED_ATTRS_BY_CATEGORY.get(cat_key, set()))),
             "gliner_labels": schema["gliner_labels"],
         }
-    return {"taxonomy": out}
+    return {
+        "status": _pipeline.taxonomy_manager.status,
+        "total_catalog_categories": _pipeline.taxonomy_manager.categories_count,
+        "taxonomy": out,
+    }
 
 
 @router.post("/export")
@@ -217,6 +272,9 @@ async def export_batch_predictions(
             "external_id": card_res.get("external_id") or f"sku-{i+1}",
             "title": row.get("title", ""),
             "category": card_res.get("category"),
+            "status": card_res.get("status", "approved"),
+            "status_description": card_res.get("status_description", ""),
+            "review_reasons": card_res.get("review_reasons", []),
             "overall_confidence": card_res.get("overall_confidence"),
             "needs_review": card_res.get("needs_review"),
             "extracted_attributes": flat_attrs,
@@ -231,8 +289,11 @@ async def export_batch_predictions(
             item = {
                 "external_id": r["external_id"],
                 "category": r["category"],
+                "status": r.get("status", "approved"),
+                "status_description": r.get("status_description", ""),
                 "overall_confidence": r["overall_confidence"],
                 "needs_review": r["needs_review"],
+                "review_reasons": "; ".join(r.get("review_reasons", [])),
                 "missing_required": ", ".join(r["missing_required"]),
             }
             for attr_name, val in r["extracted_attributes"].items():

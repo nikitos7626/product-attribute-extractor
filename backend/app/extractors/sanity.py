@@ -118,7 +118,7 @@ class AttributeSanityValidator:
         "tvs": {"brand", "model", "screen_diagonal", "resolution", "refresh_rate", "color", "power", "display_tech"},
         "tv": {"brand", "model", "screen_diagonal", "resolution", "refresh_rate", "color", "power", "display_tech"},
         "vacuum_cleaners": {"brand", "model", "power", "cleaning_type", "battery", "weight", "color", "working_time", "volume"},
-        "refrigerators": {"brand", "model", "defrost_system", "color", "volume", "warranty"},
+        "refrigerators": {"brand", "model", "defrost_system", "color", "volume", "warranty", "dimensions"},
         "headphones": {"brand", "model", "color", "weight", "working_time"},
         "powerbanks": {"brand", "model", "battery", "color", "power", "weight"},
         "microwaves": {"brand", "model", "volume", "power", "color", "weight"},
@@ -404,7 +404,14 @@ class AttributeSanityValidator:
             rpm = int(m.group(1))
             return 400 <= rpm <= 2000
 
+
+        # 20. Габариты (Dimensions)
+        if attr_name == "dimensions":
+            return bool(re.search(r"\d+(?:[.,]\d+)?\s*[xх×*]\s*\d+(?:[.,]\d+)?\s*[xх×*]\s*\d+(?:[.,]\d+)?", val_lower))
+
         return True
+
+
 
     @classmethod
     def is_brand_model_compatible(cls, brand: str | None, model: str | None) -> bool:

@@ -96,3 +96,12 @@ class UnitNormalizer:
         else:
             months = num
         return f"{months} мес"
+
+    @staticmethod
+    def dimensions(w: str, h: str, d: str, unit: str = "см") -> str:
+        """Нормализация габаритов: 59.5x199.8x67.2 см."""
+        w_c = w.replace(",", ".").strip()
+        h_c = h.replace(",", ".").strip()
+        d_c = d.replace(",", ".").strip()
+        u = unit.strip().lower() or "см"
+        return f"{w_c}x{h_c}x{d_c} {u}"

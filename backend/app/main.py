@@ -1,3 +1,4 @@
+import logging
 import os
 from pathlib import Path
 from fastapi import FastAPI, Request
@@ -7,6 +8,8 @@ from fastapi.responses import FileResponse, JSONResponse
 from app.config import settings
 from app.routers import extract
 from app.schemas import CardIn, CardOut
+
+logger = logging.getLogger(__name__)
 
 
 app = FastAPI(
@@ -24,6 +27,35 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
+
+
+@app.on_event("startup")
+def startup_configuration_checks() -> None:
+    """
+    Проверка конфигурации безопасности и целостности компонентов при старте сервиса.
+    Предупреждает о незащищенном production-режиме и статусе таксономии.
+    """
+    env = getattr(settings, "environment", "development").lower()
+    if not settings.api_key:
+        if env in ("prod", "production"):
+            logger.critical(
+                "CRITICAL SECURITY CONFIGURATION ERROR: Service is running in PRODUCTION mode without API_KEY configured! "
+                "All protected endpoints are vulnerable to unauthorized access. Configure API_KEY in production."
+            )
+        else:
+            logger.warning(
+                "SECURITY NOTICE: API_KEY is empty. Service running in open development/testing mode (env=%s).",
+                env,
+            )
+    else:
+        logger.info("Security active: API_KEY authorization enabled for protected endpoints (env=%s).", env)
+
+    if extract._pipeline.taxonomy_manager.status != "healthy":
+        logger.warning(
+            "TAXONOMY ALERT: Taxonomy status is '%s' (%s). Safe schema fallback is active.",
+            extract._pipeline.taxonomy_manager.status,
+            extract._pipeline.taxonomy_manager.error_message,
+        )
 
 
 @app.middleware("http")
@@ -131,9 +163,26 @@ def api_info() -> dict:
             "swagger_docs": "/docs",
             "openapi_schema": "/openapi.json",
         },
+        "security": {
+            "api_key_required": bool(settings.api_key),
+            "environment": getattr(settings, "environment", "development"),
+        },
+        "taxonomy": {
+            "status": extract._pipeline.taxonomy_manager.status,
+            "categories_count": extract._pipeline.taxonomy_manager.categories_count,
+        },
     }
 
 
 @app.get("/health", summary="Health Check")
 def root_health() -> dict:
-    return {"ok": True, "status": "online", "version": "0.2.1"}
+    return {
+        "ok": True,
+        "status": "online",
+        "version": "0.2.1",
+        "security": {
+            "api_key_required": bool(settings.api_key),
+            "environment": getattr(settings, "environment", "development"),
+        },
+        "taxonomy_status": extract._pipeline.taxonomy_manager.status,
+    }

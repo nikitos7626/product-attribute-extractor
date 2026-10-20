@@ -26,20 +26,28 @@ class ConfidenceCalibrator:
 
     _instance: ConfidenceCalibrator | None = None
 
-    # Априорная базовая надежность источников (Prior Reliability P(source is correct))
-    SOURCE_PRIORS: dict[str, float] = {
-        "catalog_kb": 0.94,       # Заводская верифицированная база моделей М.Видео
-        "flashtext": 0.95,        # Точное словарное совпадение в BrandRegistry (4 600 брендов)
-        "rule_subbrand": 0.96,    # Детерминированное правило суббренда (iPhone -> Apple)
-        "regex_bounded": 0.93,    # Регулярка с единицей измерения в допустимом Sanity-диапазоне
-        "regex": 0.90,            # Базовое регулярное выражение
-        "gliner": 0.88,           # Нейросетевой трансформерный скор (требует Temperature Scaling)
-        "llm_grounded": 0.86,     # Заземленный LLM-фоллбэк
-        "default": 0.75,
-    }
+    @classmethod
+    def get_source_priors(cls) -> dict[str, float]:
+        """Динамический словарь априорных весов надежности источников из конфигурации."""
+        return {
+            "catalog_kb": getattr(settings, "prior_catalog_kb", 0.94),
+            "flashtext": getattr(settings, "prior_flashtext", 0.95),
+            "rule_subbrand": getattr(settings, "prior_rule_subbrand", 0.96),
+            "regex_bounded": getattr(settings, "prior_regex_bounded", 0.93),
+            "regex": getattr(settings, "prior_regex", 0.90),
+            "gliner": getattr(settings, "prior_gliner", 0.88),
+            "llm_grounded": getattr(settings, "prior_llm_grounded", 0.86),
+            "default": getattr(settings, "prior_default", 0.75),
+        }
 
-    # Температура калибровки нейросетевых логитов (Temperature Scaling T > 1 сглаживает overconfidence)
-    GLINER_TEMPERATURE: float = getattr(settings, "gliner_temperature", 1.25)
+    @property
+    def SOURCE_PRIORS(self) -> dict[str, float]:
+        """Обратная совместимость для прямого обращения к словарю SOURCE_PRIORS."""
+        return self.get_source_priors()
+
+    @property
+    def GLINER_TEMPERATURE(self) -> float:
+        return getattr(settings, "gliner_temperature", 1.25)
 
     def __init__(self) -> None:
         pass
@@ -66,8 +74,8 @@ class ConfidenceCalibrator:
         if not sanity_passed or value is None:
             return 0.0
 
-        # 1. Априорный вес источника
-        prior = self.SOURCE_PRIORS.get(source, self.SOURCE_PRIORS["default"])
+        priors = self.get_source_priors()
+        prior = priors.get(source, priors["default"])
 
         # 2. Если скор пришел от нейросети (GLiNER), применяем Temperature Scaling
         if source == "gliner":
@@ -76,13 +84,16 @@ class ConfidenceCalibrator:
             logit = math.log(clamped_prob / (1.0 - clamped_prob))
             scaled_logit = logit / self.GLINER_TEMPERATURE
             calibrated_prob = 1.0 / (1.0 + math.exp(-scaled_logit))
-            score = 0.4 * prior + 0.6 * calibrated_prob
+            w_prior = getattr(settings, "gliner_weight_prior", 0.40)
+            w_prob = getattr(settings, "gliner_weight_prob", 0.60)
+            score = w_prior * prior + w_prob * calibrated_prob
         else:
             score = 0.5 * prior + 0.5 * raw_confidence
 
         # 3. Бонус за присутствие в Title (Head Noun приоритет)
         if in_title:
-            score = min(0.99, score + 0.03)
+            title_bonus = getattr(settings, "calibrator_title_bonus", 0.03)
+            score = min(0.99, score + title_bonus)
 
         return round(score, 4)
 
@@ -98,6 +109,9 @@ class ConfidenceCalibrator:
             P(consensus) = 1 - (1 - P1) * (1 - P2)
         Если источники противоречат друг другу — накладывается штраф за разногласие.
         """
+        conflict_penalty = getattr(settings, "consensus_conflict_penalty", 0.12)
+        min_conf = getattr(settings, "consensus_min_confidence", 0.40)
+
         for attr, pred in predictions_map.items():
             alts = extracted_alternatives.get(attr, [])
             if not alts:
@@ -133,7 +147,7 @@ class ConfidenceCalibrator:
 
             # Штраф при неразрешимом конфликте источников
             elif conflicting_sources:
-                pred["confidence"] = round(max(0.40, pred["confidence"] - 0.12), 4)
+                pred["confidence"] = round(max(min_conf, pred["confidence"] - conflict_penalty), 4)
                 pred["conflict"] = True
 
     def calculate_card_confidence(
@@ -171,11 +185,14 @@ class ConfidenceCalibrator:
         opt_confs = [p["confidence"] for p in predictions if p["attribute"] not in required_attrs]
         avg_opt = (sum(opt_confs) / len(opt_confs)) if opt_confs else geom_mean_req
 
-        # Базовый композитный скор карточки (80% вес обязательных полей, 20% опциональных)
-        base_quality = 0.80 * geom_mean_req + 0.20 * avg_opt
+        # Базовый композитный скор карточки (вес обязательных и опциональных полей из конфигурации)
+        req_weight = getattr(settings, "card_required_attrs_weight", 0.80)
+        opt_weight = getattr(settings, "card_optional_attrs_weight", 0.20)
+        base_quality = req_weight * geom_mean_req + opt_weight * avg_opt
 
         # 2. Нелинейный штраф за неполноту каталожной спецификации (Power-law penalty)
-        completeness_factor = math.pow(coverage_ratio, 1.5)
+        penalty_power = getattr(settings, "completeness_penalty_power", 1.5)
+        completeness_factor = math.pow(coverage_ratio, penalty_power)
 
         overall_calibrated_conf = base_quality * completeness_factor
         return round(overall_calibrated_conf, 4), missing_required

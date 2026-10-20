@@ -60,7 +60,11 @@ class GlinerExtractor:
         "объем пылесборника": "volume",
         "объём пылесборника": "volume",
         "мощность": "power",
+        "габариты": "dimensions",
+        "размеры": "dimensions",
     }
+
+
 
     _NUM_UNIT_RE = re.compile(r"(\d+(?:[.,]\d+)?)\s*([a-zA-Zа-яА-ЯёЁ\"']*)")
 
@@ -261,7 +265,17 @@ class GlinerExtractor:
         if attr_key == "defrost_system":
             if "no frost" in low or "ноу фрост" in low:
                 return "No Frost"
+            if "капельн" in low:
+                return "Капельная"
             return raw_clean
+
+        if attr_key == "dimensions":
+            m = re.search(r"(\d+(?:[.,]\d+)?)\s*[xх×*]\s*(\d+(?:[.,]\d+)?)\s*[xх×*]\s*(\d+(?:[.,]\d+)?)\s*(см|cm|мм|mm|м|m)?\b", raw_clean, re.I)
+            if m:
+                u = m.group(4) or "см"
+                return self._units.dimensions(m.group(1), m.group(2), m.group(3), u)
+            return raw_clean
+
 
         if attr_key == "working_time":
             m = re.search(r"(\d+(?:[.,]\d+)?)\s*(ч|час\w*|мин\w*|h|hr|m|sec|сек)?\b", low)

@@ -21,19 +21,74 @@ logger = logging.getLogger(__name__)
 # --------------------------------------------------------------------------
 # ПОЛНАЯ ТАКСОНОМИЯ КАТАЛОГА М.ВИДЕО (6 570+ КАТЕГОРИЙ ИЗ skus.pkl)
 # --------------------------------------------------------------------------
-MVIDEO_TAXONOMY_ID_TO_NAME: dict[str, str] = {}
-MVIDEO_TAXONOMY_NORMALIZED: dict[str, str] = {}
-try:
-    _dict_dir = Path(__file__).resolve().parent.parent.parent / "data" / "dictionaries"
-    _tax_path = _dict_dir / "mvideo_categories.json"
-    if _tax_path.is_file():
-        with open(_tax_path, "r", encoding="utf-8") as _f:
-            _tax_data = json.load(_f)
-            MVIDEO_TAXONOMY_ID_TO_NAME = _tax_data.get("id_to_name", {})
-            for _name in _tax_data.get("all_names", []):
-                MVIDEO_TAXONOMY_NORMALIZED[_name.strip().lower()] = _name.strip()
-except Exception as _e:
-    logger.warning("Could not load mvideo_categories.json: %s", _e)
+class TaxonomyManager:
+    """
+    Менеджер таксономии каталога М.Видео с безопасной обработкой сбоев загрузки
+    и явным отслеживанием статуса деградации сервиса (Safe Fallback & Degradation Monitoring).
+    """
+
+    _instance: TaxonomyManager | None = None
+
+    def __init__(self, file_path: Path | None = None) -> None:
+        dict_dir = Path(__file__).resolve().parent.parent.parent / "data" / "dictionaries"
+        default_file = Path(getattr(settings, "taxonomy_path", "data/dictionaries/mvideo_categories.json"))
+        self.path = file_path or (default_file if default_file.is_absolute() else dict_dir / default_file.name)
+        self.id_to_name: dict[str, str] = {}
+        self.normalized_names: dict[str, str] = {}
+        self.status: str = "healthy"  # healthy | degraded | failed
+        self.error_message: str | None = None
+        self.categories_count: int = 0
+        self.load()
+
+    @classmethod
+    def get_instance(cls) -> TaxonomyManager:
+        if cls._instance is None:
+            cls._instance = cls()
+        return cls._instance
+
+    def load(self) -> None:
+        """Загружает внешнюю таксономию М.Видео с явным протоколированием статуса."""
+        try:
+            if not self.path.is_file():
+                self.status = "degraded"
+                self.error_message = f"Файл таксономии не найден по пути: {self.path}"
+                logger.warning("TAXONOMY ALERT: %s. Активирован безопасный резервный контур категорий.", self.error_message)
+                return
+
+            with open(self.path, "r", encoding="utf-8") as f:
+                tax_data = json.load(f)
+
+            if not isinstance(tax_data, dict):
+                self.status = "failed"
+                self.error_message = f"Некорректная структура JSON таксономии (ожидался словарь, получен {type(tax_data).__name__})"
+                logger.error("TAXONOMY ALERT: %s. Активирован безопасный резервный контур категорий.", self.error_message)
+                return
+
+            self.id_to_name = tax_data.get("id_to_name", {})
+            for name in tax_data.get("all_names", []):
+                clean_name = str(name).strip()
+                if clean_name:
+                    self.normalized_names[clean_name.lower()] = clean_name
+
+            self.categories_count = len(self.normalized_names)
+            if self.categories_count == 0:
+                self.status = "degraded"
+                self.error_message = "Файл таксономии пуст (0 категорий)"
+                logger.warning("TAXONOMY WARNING: %s", self.error_message)
+            else:
+                self.status = "healthy"
+                self.error_message = None
+                logger.info("Taxonomy loaded successfully: %d categories from %s", self.categories_count, self.path)
+
+        except Exception as e:
+            self.status = "failed"
+            self.error_message = f"Ошибка чтения таксономии: {e}"
+            logger.critical("TAXONOMY CRITICAL ERROR: %s. Активирован безопасный резервный контур категорий.", self.error_message, exc_info=True)
+
+
+taxonomy_manager = TaxonomyManager.get_instance()
+MVIDEO_TAXONOMY_ID_TO_NAME: dict[str, str] = taxonomy_manager.id_to_name
+MVIDEO_TAXONOMY_NORMALIZED: dict[str, str] = taxonomy_manager.normalized_names
 
 
 # --------------------------------------------------------------------------
@@ -73,8 +128,9 @@ CATEGORY_SCHEMAS: dict[str, dict[str, Any]] = {
         "name_ru": "Холодильники",
         "keywords": ["холодильник", "морозильник", "морозильная", "no frost"],
         "required_attrs": {"brand", "model", "defrost_system", "color"},
-        "gliner_labels": ["бренд", "модель", "система разморозки", "объем", "цвет"],
+        "gliner_labels": ["бренд", "модель", "система разморозки", "объем", "цвет", "габариты"],
     },
+
     "headphones": {
         "name_ru": "Наушники",
         "keywords": [
@@ -189,6 +245,7 @@ class CascadedExtractionPipeline:
         )
         self.brand_registry = BrandRegistry.get_instance()
         self.calibrator = ConfidenceCalibrator.get_instance()
+        self.taxonomy_manager = TaxonomyManager.get_instance()
 
     def detect_category(self, card: dict[str, Any]) -> tuple[str, str]:
         """
@@ -524,6 +581,13 @@ class CascadedExtractionPipeline:
             degraded_tiers.append("tier3_llm")
             warnings_list.append("LLM Circuit Breaker is active; LLM enrichment skipped.")
 
+        if self.taxonomy_manager.status != "healthy":
+            degraded_tiers.append("taxonomy")
+            warnings_list.append(
+                f"Внешняя таксономия работает в деградированном режиме ({self.taxonomy_manager.status}): "
+                f"{self.taxonomy_manager.error_message or 'каталог категорий недоступен'}. Активирован безопасный фоллбэк."
+            )
+
         raw_text = (card.get("raw_text") or "").strip()
         raw_title = (card.get("title") or "").strip()
         raw_desc = (card.get("description") or "").strip()
@@ -793,6 +857,29 @@ class CascadedExtractionPipeline:
             category_key=cat_key,
         )
 
+        # Формируем человеко-читаемые статусы и пояснения уверенности для каждого атрибута
+        for p in all_preds:
+            attr = p["attribute"]
+            conf = p["confidence"]
+            src = p.get("source", "")
+
+            if p.get("consensus"):
+                c_srcs = ", ".join(p.get("consensus_sources") or [src])
+                p["confidence_reason"] = f"Повышенная уверенность ({conf:.2f}): подтверждено независимым консенсусом ({c_srcs})"
+                p["status"] = "confirmed_by_consensus"
+            elif p.get("conflict"):
+                p["confidence_reason"] = f"Сниженная уверенность ({conf:.2f}): зафиксировано разногласие между экстракторами"
+                p["status"] = "conflict"
+            elif conf >= 0.95:
+                p["confidence_reason"] = f"Высокая уверенность ({conf:.2f}): прямое совпадение в каталоге / правилах ({src})"
+                p["status"] = "high_confidence"
+            elif conf >= self.confidence_threshold:
+                p["confidence_reason"] = f"Уверенное извлечение ({conf:.2f}): верифицировано компонентом {src}"
+                p["status"] = "valid"
+            else:
+                p["confidence_reason"] = f"Низкая уверенность ({conf:.2f} < {self.confidence_threshold:.2f}): рекомендуется ручная проверка атрибута '{attr}'"
+                p["status"] = "uncertain"
+
         # Карточка требует проверки человеком (Human-in-the-Loop), если:
         # 1. Итоговая уверенность ниже порога (0.87)
         # 2. Не удалось извлечь хотя бы одно обязательное поле категории (final_missing)
@@ -810,6 +897,33 @@ class CascadedExtractionPipeline:
             or (len(all_preds) == 0)
         )
 
+        # Формируем человеко-читаемый статус карточки и детализированные причины ручной проверки
+        review_reasons: list[str] = []
+        if len(all_preds) == 0:
+            review_reasons.append("Не удалось извлечь ни одного атрибута из предоставленного текста карточки")
+            card_status = "empty"
+            status_desc = "Карточка пустая: атрибуты не обнаружены в тексте."
+        else:
+            if final_missing:
+                review_reasons.append(f"Пропущены обязательные атрибуты категории '{cat_name}': {', '.join(final_missing)}")
+            if overall_conf < self.confidence_threshold:
+                review_reasons.append(f"Общая уверенность карточки ({overall_conf:.2f}) ниже допустимого порога ({self.confidence_threshold:.2f})")
+            for p in all_preds:
+                if p["confidence"] < self.confidence_threshold:
+                    review_reasons.append(f"Низкая уверенность поля '{p['attribute']}': {p['confidence']:.2f} (порог {self.confidence_threshold:.2f})")
+                if p.get("conflict"):
+                    review_reasons.append(f"Зафиксирован конфликт источников для атрибута '{p['attribute']}'")
+
+            if needs_review:
+                card_status = "needs_review"
+                status_desc = f"Требуется ручная проверка ({len(review_reasons)} замечаний): " + "; ".join(review_reasons[:2])
+            elif degraded_tiers:
+                card_status = "degraded_success"
+                status_desc = f"Атрибуты успешно извлечены, но часть компонентов работала в резервном режиме ({', '.join(degraded_tiers)})."
+            else:
+                card_status = "approved"
+                status_desc = f"Все обязательные атрибуты успешно извлечены и верифицированы (уверенность: {overall_conf:.2f}). Карточка готова к публикации."
+
         return {
             "external_id": card.get("external_id") or card.get("id"),
             "category": cat_name,
@@ -818,7 +932,11 @@ class CascadedExtractionPipeline:
             "missing": final_missing,
             "overall_confidence": round(overall_conf, 4),
             "needs_review": needs_review,
+            "status": card_status,
+            "status_description": status_desc,
+            "review_reasons": review_reasons,
             "warnings": warnings_list,
             "degraded_tiers": degraded_tiers,
+            "taxonomy_status": self.taxonomy_manager.status,
         }
 

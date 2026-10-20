@@ -42,6 +42,8 @@ class StrictLlmFallbackExtractor:
         max_consecutive_failures: int = 3,
         circuit_cooldown_seconds: float = 60.0,
         enforce_grounding: bool = False,
+        max_retries: int | None = None,
+        backoff_factor: float | None = None,
     ) -> None:
         if api_key is not None:
             self.api_key = api_key
@@ -56,6 +58,8 @@ class StrictLlmFallbackExtractor:
         self.model = model or os.environ.get("LLM_MODEL") or getattr(settings, "llm_model", "GigaChat/GigaChat-3-Pro")
         self.timeout = timeout
         self.enforce_grounding = enforce_grounding
+        self.max_retries = max_retries if max_retries is not None else getattr(settings, "llm_max_retries", 2)
+        self.backoff_factor = backoff_factor if backoff_factor is not None else getattr(settings, "llm_retry_backoff_factor", 0.2)
         self.is_enabled = bool(self.api_key and self.api_key.strip())
 
         # Состояние Circuit Breaker (Автоматический предохранитель)
@@ -128,7 +132,10 @@ class StrictLlmFallbackExtractor:
         }
 
     def _call_llm(self, system_prompt: str, user_prompt: str) -> str | None:
-        """Безопасный вызов LLM с таймаутом, защитой Circuit Breaker и резервным каскадом моделей."""
+        """
+        Безопасный вызов LLM с таймаутом, защитой Circuit Breaker,
+        повторными попытками (Exponential Backoff Retry) и резервным каскадом моделей.
+        """
         if not self.is_enabled or self.is_circuit_open():
             return None
 
@@ -144,7 +151,8 @@ class StrictLlmFallbackExtractor:
         if "ai-sage/GigaChat3-10B-A1.8B" not in models_to_try:
             models_to_try.append("ai-sage/GigaChat3-10B-A1.8B")
 
-        last_error = "All models failed"
+        last_error = "All models and retries failed"
+
         for m in models_to_try:
             # Для reasoning-моделей (DeepSeek / Reasoning) требуется больший токен-бюджет
             is_reasoning_model = any(k in m.lower() for k in ("reasoning", "deepseek", "r1"))
@@ -161,37 +169,66 @@ class StrictLlmFallbackExtractor:
                 "max_tokens": token_budget,
             }
 
-            try:
-                with httpx.Client(timeout=req_timeout) as client:
-                    resp = client.post(url, headers=headers, json=payload)
-                    if resp.status_code == 200:
-                        data = resp.json()
-                        choices = data.get("choices") or []
-                        if choices:
-                            msg = choices[0].get("message") or {}
-                            raw_c = msg.get("content")
-                            if raw_c and isinstance(raw_c, str) and raw_c.strip():
-                                self.record_success()
-                                return raw_c.strip()
+            for attempt in range(self.max_retries + 1):
+                if attempt > 0:
+                    delay = self.backoff_factor * (2 ** (attempt - 1))
+                    logger.info("Retrying LLM call to model '%s' (attempt %d/%d, backoff=%.2fs)...", m, attempt + 1, self.max_retries + 1, delay)
+                    time.sleep(delay)
 
-                            # Поддержка думающих (Reasoning) моделей:
-                            # Если content пустой, извлекаем итоговый JSON из блока reasoning
-                            raw_reasoning = msg.get("reasoning")
-                            if raw_reasoning and isinstance(raw_reasoning, str) and raw_reasoning.strip():
-                                json_m = (
-                                    re.search(r"```(?:json)?\s*(\{[\s\S]*?\})\s*```", raw_reasoning)
-                                    or re.search(r"(\{[\s\S]*?\})(?:\s*```)?\s*$", raw_reasoning.strip())
-                                )
-                                if json_m:
+                try:
+                    with httpx.Client(timeout=req_timeout) as client:
+                        resp = client.post(url, headers=headers, json=payload)
+                        if resp.status_code == 200:
+                            data = resp.json()
+                            choices = data.get("choices") or []
+                            if choices:
+                                msg = choices[0].get("message") or {}
+                                raw_c = msg.get("content")
+                                if raw_c and isinstance(raw_c, str) and raw_c.strip():
                                     self.record_success()
-                                    return json_m.group(1).strip()
-                    else:
-                        logger.warning("LLM API (%s) returned HTTP %d: %s", m, resp.status_code, resp.text[:120])
-                        last_error = f"HTTP {resp.status_code}"
-            except httpx.TimeoutException:
-                last_error = f"Timeout > {req_timeout}s on {m}"
-            except Exception as e:
-                last_error = f"Error calling {m}: {e}"
+                                    return raw_c.strip()
+
+                                # Поддержка думающих (Reasoning) моделей:
+                                raw_reasoning = msg.get("reasoning")
+                                if raw_reasoning and isinstance(raw_reasoning, str) and raw_reasoning.strip():
+                                    json_m = (
+                                        re.search(r"```(?:json)?\s*(\{[\s\S]*?\})\s*```", raw_reasoning)
+                                        or re.search(r"(\{[\s\S]*?\})(?:\s*```)?\s*$", raw_reasoning.strip())
+                                    )
+                                    if json_m:
+                                        self.record_success()
+                                        return json_m.group(1).strip()
+
+                            # Пустой ответ со статусом 200
+                            logger.warning("LLM model '%s' returned empty content on attempt %d/%d", m, attempt + 1, self.max_retries + 1)
+                            last_error = f"Empty content from {m}"
+                            continue
+
+                        # Обработка временных сбоев (429 Rate Limit, 500, 502, 503, 504)
+                        if resp.status_code in (429, 500, 502, 503, 504):
+                            logger.warning(
+                                "LLM API transient error HTTP %d on model '%s' (attempt %d/%d)",
+                                resp.status_code,
+                                m,
+                                attempt + 1,
+                                self.max_retries + 1,
+                            )
+                            last_error = f"HTTP {resp.status_code} on {m}"
+                            continue
+
+                        # Необратимые ошибки (400, 401, 403, 404)
+                        logger.error("LLM API fatal HTTP %d on model '%s': %s", resp.status_code, m, resp.text[:120])
+                        last_error = f"HTTP {resp.status_code} on {m}"
+                        break
+
+                except httpx.TimeoutException:
+                    logger.warning("LLM timeout (>%.1fs) on model '%s' (attempt %d/%d)", req_timeout, m, attempt + 1, self.max_retries + 1)
+                    last_error = f"Timeout > {req_timeout}s on {m}"
+                    continue
+                except (httpx.RequestError, Exception) as e:
+                    logger.warning("LLM connection/request error on model '%s' (attempt %d/%d): %s", m, attempt + 1, self.max_retries + 1, e)
+                    last_error = f"Error calling {m}: {e}"
+                    continue
 
         self.record_failure(last_error)
         return None
@@ -326,6 +363,12 @@ class StrictLlmFallbackExtractor:
 
         content = self._call_llm(system_prompt, user_prompt)
         if not content:
+            logger.warning(
+                "LLM fallback produced no response or empty output for model '%s %s' (missing: %s)",
+                brand,
+                model,
+                attrs_list,
+            )
             return []
 
         # Срезаем markdown code fences
@@ -333,12 +376,23 @@ class StrictLlmFallbackExtractor:
         content_clean = re.sub(r"\s*```$", "", content_clean).strip()
 
         try:
-            data = json.loads(content_clean)
-        except json.JSONDecodeError:
-            logger.warning("Failed to parse JSON from LLM: %r", content)
+            json_m = re.search(r"\{[\s\S]*\}", content_clean)
+            if json_m:
+                data = json.loads(json_m.group(0))
+            else:
+                data = json.loads(content_clean)
+        except json.JSONDecodeError as e:
+            logger.warning(
+                "Failed to parse JSON from LLM for '%s %s': %s (raw content: %r)",
+                brand,
+                model,
+                e,
+                content[:200],
+            )
             return []
 
         if not isinstance(data, dict):
+            logger.warning("LLM response is not a JSON object (got %s): %r", type(data).__name__, content[:200])
             return []
 
         out: list[Prediction] = []

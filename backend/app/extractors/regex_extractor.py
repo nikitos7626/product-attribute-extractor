@@ -5,6 +5,7 @@ from typing import Iterable
 
 from flashtext import KeywordProcessor
 
+from app.config import settings
 from app.extractors.base import Prediction
 from app.extractors.normalization.dictionaries import BRANDS, COLORS
 from app.extractors.normalization.units import UnitNormalizer
@@ -212,6 +213,23 @@ class RegexExtractor:
         r"(?:гаранти\w*|warranty)\s*[:=]?\s*"
         r"(\d+)\s*(мес\w*|month\w*|год\w*|лет|года|year\w*)"
     )
+
+    # Габариты: 59.5x199.8x67.2 см, габариты ШхВхГ: 59.5x199.8x67.2 см
+    _DIMENSIONS_RE = re.compile(
+        r"(?:габарит\w*|размер\w*)?(?:\s*\([^\)]+\))?\s*(?:[швгд]х[швгд]х[швгд])?\s*[:=—–-]?\s*"
+        r"(\d{1,4}(?:[.,]\d+)?)\s*[xх×*]\s*(\d{1,4}(?:[.,]\d+)?)\s*[xх×*]\s*(\d{1,4}(?:[.,]\d+)?)\s*(см|cm|мм|mm|м|m)\b",
+        re.IGNORECASE,
+    )
+
+    # Системы разморозки (Tier 1 fast regex)
+    _DEFROST_PATTERNS: list[tuple[re.Pattern[str], str, float]] = [
+        (re.compile(r"\b(?:total\s+no\s+frost|full\s+no\s+frost|тотал\s+ноу\s+фрост)\b", re.IGNORECASE), "No Frost", 0.98),
+        (re.compile(r"\b(?:no\s+frost|frost\s+free|ноу\s+фрост|но\s+фрост)\b", re.IGNORECASE), "No Frost", 0.96),
+        (re.compile(r"\b(?:капельн\w*(?:\s+(?:систем\w*|размораживан\w*))?)\b", re.IGNORECASE), "Капельная", 0.95),
+        (re.compile(r"\b(?:ручн\w*(?:\s+(?:систем\w*|размораживан\w*))?)\b", re.IGNORECASE), "Ручная", 0.92),
+        (re.compile(r"\b(?:автоматическ\w*(?:\s+(?:систем\w*|размораживан\w*))?)\b", re.IGNORECASE), "Автоматическая", 0.90),
+    ]
+
 
     # CPU-паттерны: (regex, base_confidence). Идём по порядку,
     # берём первое совпадение. Специфичные — выше.
@@ -863,14 +881,17 @@ class RegexExtractor:
                 break
 
         # --- Объём ---
-        for m in self._VOLUME_RE.finditer(text):
-            if not self._is_negated_or_filtered(text, m.start()):
-                yield Prediction(
-                    attribute="volume", value=_u.volume(m.group(1), m.group(2)),
-                    confidence=self._conf(0.89, m.group(0), title),
-                    source="regex", raw=m.group(0).strip(),
-                )
-                break
+        if (vol_pred := self._find_volume(text, title, category_key)):
+            yield vol_pred
+
+        # --- Система разморозки (defrost_system) ---
+        if (defrost_pred := self._find_defrost_system(text, title)):
+            yield defrost_pred
+
+        # --- Габариты (dimensions) ---
+        if (dim_pred := self._find_dimensions(text, title)):
+            yield dim_pred
+
 
         # --- Гарантия ---
         for m in self._WARRANTY_RE.finditer(text):
@@ -922,7 +943,104 @@ class RegexExtractor:
                 )
                 break
 
+    def _find_volume(self, text: str, title: str, category_key: str = "default") -> Prediction | None:
+        matches = list(self._VOLUME_RE.finditer(text))
+        if not matches:
+            return None
+
+        # Для холодильников приоритизируем полезный объем над общим и игнорируем изолированные камеры
+        if category_key == "refrigerators" or re.search(r"холодильн", title, re.IGNORECASE):
+            candidates: list[tuple[int, Any]] = []
+            for m in matches:
+                start, end = m.span()
+                if self._is_negated_or_filtered(text, start):
+                    continue
+
+                prefix = text[max(0, start - 60):start].lower()
+                suffix = text[end:min(len(text), end + 60)].lower()
+
+                # Проверяем, относится ли объем к отдельной изолированной камере (не всей модели)
+                is_sub_chamber = bool(re.search(
+                    r"(?:холодильн\w*\s+камер\w*|морозильн\w*\s+камер\w*|морозилк\w*|камер\w*\s+охлаждения|нулев\w*\s+камер\w*|зон\w*\s+свежести)",
+                    prefix
+                ))
+
+                # Проверяем якорь полезного объема ("полезный объем — 386 л", "полезная емкость 386 л")
+                useful_pref = bool(re.search(r"(?:полезн\w*\s*(?:объем\w*|емкост\w*)?|объем\w*\s*полезн\w*|net\s*volume)[^.,;!\n\d]{0,30}$", prefix))
+                useful_suff = bool(re.search(r"^\s*[:=—–-]?\s*(?:полезн\w*\s*объем\w*|полезного\s*объем\w*|полезн\w*|net\s*volume)\b", suffix))
+                has_useful_anchor = useful_pref or useful_suff
+
+                # Проверяем якорь общего объема ("общий объем модели 400 л", "общая вместимость 400 л")
+                total_pref = bool(re.search(r"(?:общ\w*\s*(?:объем\w*|емкост\w*)?|объем\w*\s*общ\w*|total\s*volume|gross\s*volume)[^.,;!\n\d]{0,30}$", prefix))
+                total_suff = bool(re.search(r"^\s*[:=—–-]?\s*(?:общ\w*\s*объем\w*|общего\s*объем\w*|общ\w*|total\s*volume)\b", suffix))
+                has_total_anchor = total_pref or total_suff
+
+
+                if has_useful_anchor and not is_sub_chamber:
+                    prio = 1000
+                elif has_total_anchor and not is_sub_chamber:
+                    prio = 500
+                elif not is_sub_chamber:
+                    prio = 100
+                else:
+                    prio = 0
+
+                if prio > 0:
+                    candidates.append((prio, m))
+
+            if candidates:
+                candidates.sort(key=lambda x: x[0], reverse=True)
+                best_prio, best_m = candidates[0]
+                conf = 0.95 if best_prio >= 1000 else (0.91 if best_prio >= 500 else 0.89)
+                return Prediction(
+                    attribute="volume",
+                    value=_u.volume(best_m.group(1), best_m.group(2)),
+                    confidence=self._conf(conf, best_m.group(0), title),
+                    source="regex",
+                    raw=best_m.group(0).strip(),
+                )
+            return None
+
+        # Стандартная обработка для остальных категорий
+        for m in matches:
+            if not self._is_negated_or_filtered(text, m.start()):
+                return Prediction(
+                    attribute="volume",
+                    value=_u.volume(m.group(1), m.group(2)),
+                    confidence=self._conf(0.89, m.group(0), title),
+                    source="regex",
+                    raw=m.group(0).strip(),
+                )
+        return None
+
+    def _find_defrost_system(self, text: str, title: str) -> Prediction | None:
+        for pat, canon, base_conf in self._DEFROST_PATTERNS:
+            m = pat.search(text)
+            if m and not self._is_negated_or_filtered(text, m.start()):
+                return Prediction(
+                    attribute="defrost_system",
+                    value=canon,
+                    confidence=self._conf(base_conf, m.group(0), title),
+                    source="regex",
+                    raw=m.group(0).strip(),
+                )
+        return None
+
+    def _find_dimensions(self, text: str, title: str) -> Prediction | None:
+        for m in self._DIMENSIONS_RE.finditer(text):
+            if not self._is_negated_or_filtered(text, m.start()):
+                val = _u.dimensions(m.group(1), m.group(2), m.group(3), m.group(4))
+                return Prediction(
+                    attribute="dimensions",
+                    value=val,
+                    confidence=self._conf(0.95, m.group(0), title),
+                    source="regex",
+                    raw=m.group(0).strip(),
+                )
+        return None
+
     # ================== CPU / OS / GPU ==================
+
 
     def _find_cpu(self, text: str):
         for pat, conf in self._CPU_PATTERNS:
@@ -1035,4 +1153,5 @@ class RegexExtractor:
 
     @staticmethod
     def _conf(base: float, raw: str, title: str) -> float:
-        return round(min(0.99, base + (0.03 if raw and raw in title else 0.0)), 4)
+        bonus = getattr(settings, "regex_title_bonus", 0.03)
+        return round(min(0.99, base + (bonus if raw and raw in title else 0.0)), 4)
