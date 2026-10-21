@@ -196,3 +196,73 @@ def test_infra_scripts_importable():
     ):
         mod = importlib.import_module(mod_name)
         assert hasattr(mod, "exec_remote")
+
+
+# -------------------------------------------------------------------------
+# Stage 5: Non-blocking Health, Fast/Offline Mode, Batch Summary Status
+# -------------------------------------------------------------------------
+
+def test_gliner_health_check_is_instantaneous_and_non_blocking():
+    """Проверяет, что health() GLiNER не загружает модель в память и отвечает мгновенно."""
+    from app.extractors.gliner_extractor import GlinerExtractor
+    extractor = GlinerExtractor()
+    assert extractor._model is None
+    assert extractor.is_loaded is False
+    assert extractor.health() is True
+    assert extractor._model is None
+
+
+def test_fast_mode_pipeline_execution():
+    """Проверяет работу пайплайна в быстром/автономном режиме без внешних нейросетей."""
+    pipe = CascadedExtractionPipeline(fast_mode=True)
+    assert pipe.fast_mode is True
+    assert pipe.use_gliner is False
+    assert pipe.use_llm is False
+
+    res = pipe.process_card({
+        "title": "Смартфон Xiaomi Redmi Note 13 8/256GB черный",
+        "description": "Батарея 5000 мАч, экран 6.67"
+    })
+    preds = {p["attribute"]: p["value"] for p in res["predictions"]}
+    assert preds.get("brand") == "Xiaomi"
+    assert preds.get("model") == "Redmi Note 13"
+    assert preds.get("memory_ram") == "8 ГБ"
+    assert preds.get("memory_rom") == "256 ГБ"
+    assert "fast_mode" in res["degraded_tiers"]
+
+
+def test_batch_endpoint_returns_explicit_summary_counts():
+    """Проверяет, что POST /api/extract/batch возвращает агрегированные статусы пакета."""
+    data = [
+        {"title": "Смартфон Samsung Galaxy S24 256GB черный", "description": "8/256 ГБ"},
+        {"title": "Холодильник LG No Frost серебристый", "description": "Высота 200 см"},
+    ]
+    file_content = json.dumps(data).encode("utf-8")
+    resp = client.post(
+        "/api/extract/batch",
+        files={"file": ("test_batch.json", file_content, "application/json")},
+    )
+    assert resp.status_code == 200
+    res_json = resp.json()
+    assert res_json["total"] == 2
+    assert res_json["processed"] == 2
+    assert "approved_count" in res_json
+    assert "needs_review_count" in res_json
+    assert "failed_count" in res_json
+    assert res_json["overall_status"] in ("approved", "needs_review", "partial_failure")
+    assert len(res_json["cards"]) == 2
+
+
+def test_gliner_offline_graceful_degradation():
+    """Проверяет корректную деградацию при сбое вызова GLiNER."""
+    from unittest.mock import MagicMock
+    pipe = CascadedExtractionPipeline(use_gliner=True)
+    if pipe.gliner_extractor:
+        pipe.gliner_extractor.extract = MagicMock(side_effect=RuntimeError("Simulated HuggingFace offline error"))
+
+    res = pipe.process_card({
+        "title": "Смартфон Xiaomi Redmi Note 13 8/256GB черный",
+        "description": "5000 мАч"
+    })
+    assert res["status"] in ("approved", "degraded_success", "needs_review")
+    assert "tier2_gliner" in res["degraded_tiers"]

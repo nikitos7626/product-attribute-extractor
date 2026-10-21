@@ -21,6 +21,7 @@ class Settings(BaseSettings):
     use_gliner: bool = True
     use_catalog_enricher: bool = True
     use_llm: bool = True
+    fast_mode: bool = False              # Быстрый/автономный режим (без тяжелых внешних нейросетей GLiNER/LLM)
 
     # Гиперпараметры калибровки уверенности (Platt scaling & Snorkel consensus)
     gliner_temperature: float = 1.25

@@ -61,10 +61,14 @@ def extract_attributes(
     seller_attributes: Optional[dict[str, Any]] = None,
     category: Optional[str] = None,
     external_id: Optional[str] = None,
+    fast_mode: bool = False,
 ) -> dict[str, Any]:
     """
     Extract attributes from text/card and return dict matching M.Video JSON schema.
     """
+    from app.services.pipeline import CascadedExtractionPipeline
+    pipe = CascadedExtractionPipeline(fast_mode=True) if fast_mode else None
+
     raw_text_val = text if text and not (title and description) else None
     final_title = title or (text if not description else "")
     card = CardIn(
@@ -75,7 +79,7 @@ def extract_attributes(
         raw_text=raw_text_val,
         seller_attributes=seller_attributes or {},
     )
-    out: CardOut = _run(card)
+    out: CardOut = _run(card, pipeline=pipe)
     return out.model_dump()
 
 
@@ -94,6 +98,7 @@ def main():
     parser.add_argument("--category", "-c", default=None, help="Explicit category if known")
     parser.add_argument("--compact", action="store_true", help="Output compact single-line JSON")
     parser.add_argument("--interactive-review", action="store_true", help="Включить интерактивный режим модерации (Human-in-the-Loop) при флаге needs_review")
+    parser.add_argument("--fast", "--offline", dest="fast_mode", action="store_true", help="Быстрый автономный режим без загрузки тяжелых ML-моделей (только детерминированные правила Tier 1 и KB)")
 
     args = parser.parse_args()
 
@@ -106,10 +111,14 @@ def main():
             parser.print_help(sys.stderr)
             sys.exit(1)
 
+    if not args.fast_mode and sys.stderr.isatty():
+        sys.stderr.write("⚙️ Запуск гибридного пайплайна (для мгновенного offline/fast режима укажите флаг --fast)...\n")
+
     result = extract_attributes(
         title=title_text,
         description=args.description,
         category=args.category,
+        fast_mode=args.fast_mode,
     )
 
     if args.interactive_review and result.get("needs_review"):

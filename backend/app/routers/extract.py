@@ -321,7 +321,29 @@ async def extract_batch(
     raw_bytes = await file.read()
     rows = _rows_from_file(file.filename or "", raw_bytes)
     cards = await run_in_threadpool(_process_batch_sync, rows, pipeline)
-    return BatchOut(total=len(cards), cards=cards)
+
+    approved = sum(1 for c in cards if c.status == "approved" and not c.needs_review)
+    needs_review = sum(1 for c in cards if c.needs_review and c.status != "failed")
+    failed = sum(1 for c in cards if c.status == "failed")
+
+    if failed == len(cards) and len(cards) > 0:
+        overall_status = "failed"
+    elif failed > 0:
+        overall_status = "partial_failure"
+    elif needs_review > 0:
+        overall_status = "needs_review"
+    else:
+        overall_status = "approved"
+
+    return BatchOut(
+        total=len(cards),
+        processed=len(cards),
+        approved_count=approved,
+        needs_review_count=needs_review,
+        failed_count=failed,
+        overall_status=overall_status,
+        cards=cards,
+    )
 
 
 @router.get("/metrics")

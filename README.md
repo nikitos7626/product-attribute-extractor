@@ -90,6 +90,9 @@ python extract.py "Смартфон Xiaomi Redmi Note 13 8/256GB Black 5000mAh A
 # Запуск через модуль backend (полный эквивалент):
 python backend/run_cli.py "Смартфон Xiaomi Redmi Note 13 8/256GB Black 5000mAh AMOLED 120Hz"
 
+# Мгновенный автономный режим (Tier 1 правила + база знаний, <5 мс, без внешних нейросетей):
+python extract.py "Смартфон Xiaomi Redmi Note 13 8/256GB" --fast
+
 # Интерактивная ручная проверка с флагом --interactive-review:
 python extract.py "Смартфон Xiaomi Redmi Note 13 8/256GB" --interactive-review
 

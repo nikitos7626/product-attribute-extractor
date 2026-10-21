@@ -246,8 +246,13 @@ class CascadedExtractionPipeline:
         use_llm: bool = True,
         confidence_threshold: float = 0.87,
         gliner_threshold: float = 0.30,
+        fast_mode: bool = False,
     ) -> None:
         self.confidence_threshold = confidence_threshold
+        self.fast_mode = fast_mode or getattr(settings, "fast_mode", False)
+        if self.fast_mode:
+            use_gliner = False
+            use_llm = False
         self.use_gliner = use_gliner
         self.use_catalog_enricher = use_catalog_enricher
         self.use_llm = use_llm
@@ -592,7 +597,10 @@ class CascadedExtractionPipeline:
         warnings_list: list[str] = []
         degraded_tiers: list[str] = []
 
-        if self.use_gliner and (not self.gliner_extractor or not self.gliner_extractor.health()):
+        if self.fast_mode:
+            degraded_tiers.append("fast_mode")
+            warnings_list.append("Fast mode active: using deterministic Tier 1 and KB extractors only.")
+        elif self.use_gliner and (not self.gliner_extractor or not self.gliner_extractor.health()):
             degraded_tiers.append("tier2_gliner")
             warnings_list.append("GLiNER extractor is offline; falling back to Tier 1.")
 
@@ -673,7 +681,14 @@ class CascadedExtractionPipeline:
                 needed_labels.append(lbl)
 
             if needed_labels:
-                t2_preds = self.gliner_extractor.extract(card, target_labels=needed_labels, category_key=cat_key)
+                try:
+                    t2_preds = self.gliner_extractor.extract(card, target_labels=needed_labels, category_key=cat_key)
+                except Exception as e:
+                    logger.warning("GLiNER extraction failed: %s; falling back to Tier 1", e)
+                    if "tier2_gliner" not in degraded_tiers:
+                        degraded_tiers.append("tier2_gliner")
+                        warnings_list.append(f"GLiNER model extraction unavailable ({e}); gracefully degraded to Tier 1 rules.")
+                    t2_preds = []
                 for p in t2_preds:
                     attr = p["attribute"]
                     # Строгая валидация физического здравого смысла (отсечение перепутанных Гц в батарее и т.д.)

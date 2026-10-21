@@ -86,6 +86,11 @@ class CardOut(BaseModel):
 
 class BatchOut(BaseModel):
     total: int
+    processed: int = 0
+    approved_count: int = 0
+    needs_review_count: int = 0
+    failed_count: int = 0
+    overall_status: str = "approved"  # approved | needs_review | partial_failure | failed
     cards: list[CardOut]
 
 

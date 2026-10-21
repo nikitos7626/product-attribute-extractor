@@ -100,12 +100,23 @@ class GlinerExtractor:
             "loaded": self._model is not None,
         }
 
+    @property
+    def is_loaded(self) -> bool:
+        """Флаг фактической загрузки весов модели в память."""
+        return self._model is not None
+
     def health(self) -> bool:
-        try:
-            self._ensure_model()
+        """
+        Легковесная неблокирующая проверка здоровья экстрактора.
+        Возвращает True, если модель загружена или среда готова к инференсу.
+        Не блокирует healthcheck тяжелой загрузкой весов с Hugging Face.
+        """
+        if self._model is not None:
             return True
+        try:
+            return torch is not None
         except Exception as e:
-            logger.error("Health check failed for GLiNER: %s", e)
+            logger.error("Health check failed for GLiNER runtime: %s", e)
             return False
 
     def extract(

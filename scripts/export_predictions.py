@@ -188,13 +188,13 @@ if __name__ == "__main__":
     parser.add_argument("--output-csv", default=os.path.join(BASE_DIR, "output", "predictions.csv"), help="Путь к результирующему CSV")
     parser.add_argument("--format", choices=["json", "csv", "both"], default="both", help="Формат экспорта (json, csv, both)")
     parser.add_argument("--use-llm", action="store_true", default=False, help="Активировать Tier 4 LLM fallback (по умолчанию выключен для безопасного офлайн-экспорта без 429)")
-    parser.add_argument("--no-gliner", action="store_true", default=False, help="Отключить Tier 2 GLiNER NER (работать только на Tier 1 + Catalog KB на максимальной скорости)")
+    parser.add_argument("--fast", "--offline", "--no-gliner", dest="fast_mode", action="store_true", default=False, help="Быстрый/автономный режим без GLiNER и внешних зависимостей (максимальная скорость)")
     args = parser.parse_args()
 
     export_predictions(
         input_path=args.input,
         output_json_path=args.output_json if args.format in ("json", "both") else None,
         output_csv_path=args.output_csv if args.format in ("csv", "both") else None,
-        use_gliner=not args.no_gliner,
+        use_gliner=not args.fast_mode,
         use_llm=args.use_llm,
     )

@@ -52,7 +52,7 @@ def _values_match(pred: str, target: str, attr: str) -> bool:
     return False
 
 
-def run_evaluation(dataset_path: str, output_dir: str = "output") -> dict[str, Any]:
+def run_evaluation(dataset_path: str, output_dir: str = "output", fast_mode: bool = False) -> dict[str, Any]:
     from app.services.pipeline import CascadedExtractionPipeline
 
     os.makedirs(output_dir, exist_ok=True)
@@ -60,7 +60,7 @@ def run_evaluation(dataset_path: str, output_dir: str = "output") -> dict[str, A
     with open(dataset_path, "r", encoding="utf-8") as f:
         gold_cards = json.load(f)
 
-    pipeline = CascadedExtractionPipeline(use_gliner=True)
+    pipeline = CascadedExtractionPipeline(fast_mode=fast_mode, use_gliner=not fast_mode)
 
     per_attr_stats = defaultdict(lambda: {"tp": 0, "fp": 0, "fn": 0, "total_target": 0, "total_pred": 0})
     category_matches = 0
@@ -211,6 +211,7 @@ if __name__ == "__main__":
     parser = argparse.ArgumentParser(description="Расчет метрик извлечения атрибутов М.Видео")
     parser.add_argument("--dataset", default=os.path.join(BASE_DIR, "data", "gold_dataset.json"), help="Путь к gold датасету")
     parser.add_argument("--output-dir", default=os.path.join(BASE_DIR, "output"), help="Каталог сохранения отчётов")
+    parser.add_argument("--fast", "--offline", dest="fast_mode", action="store_true", help="Быстрый/автономный режим оценки без загрузки тяжелых ML-моделей")
     args = parser.parse_args()
 
-    run_evaluation(dataset_path=args.dataset, output_dir=args.output_dir)
+    run_evaluation(dataset_path=args.dataset, output_dir=args.output_dir, fast_mode=args.fast_mode)
