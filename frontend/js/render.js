@@ -31,6 +31,18 @@ const RenderService = {
     }
 
     // 3. Статус валидации и публикация
+    const llmBadge = document.getElementById('llm-usage-badge');
+    const hasLlm = (data.predictions || []).some(p => p.source === 'llm_fallback' || p.source === 'llm_strict' || p.source === 'llm_new_product' || p.tier === 'Tier 3');
+    if (llmBadge) {
+      if (hasLlm) {
+        llmBadge.className = 'inline-flex items-center text-[11px] font-bold text-purple-700 bg-purple-50 px-2.5 py-1 rounded-full border border-purple-200';
+        llmBadge.innerHTML = `<i class="fa-solid fa-brain mr-1.5 text-purple-600"></i> Использован LLM Fallback (Tier 3)`;
+      } else {
+        llmBadge.className = 'inline-flex items-center text-[11px] font-bold text-emerald-700 bg-emerald-50 px-2.5 py-1 rounded-full border border-emerald-200';
+        llmBadge.innerHTML = `<i class="fa-solid fa-bolt mr-1.5 text-emerald-600"></i> LLM не вызывалась (0 токенов, 0 ₽)`;
+      }
+    }
+
     const statusBadge = document.getElementById('status-badge');
     if (statusBadge) {
       if (data.needs_review) {
@@ -86,17 +98,17 @@ const RenderService = {
 
       let consensusTag = '';
       if (p.consensus) {
-        let sourcesDesc = '2 слоя';
+        let sourcesDesc = 'Словарь + Локальный NER';
         if (p.consensus_sources && p.consensus_sources.includes('flashtext') && p.consensus_sources.includes('gliner')) {
-          sourcesDesc = 'Словарь + Нейросеть';
+          sourcesDesc = 'Словарь + Локальный NER';
         } else if (p.consensus_sources && p.consensus_sources.includes('regex') && p.consensus_sources.includes('gliner')) {
-          sourcesDesc = 'Правило + Нейросеть';
+          sourcesDesc = 'Правило + Локальный NER';
         } else if (p.consensus_sources && p.consensus_sources.length >= 2) {
-          sourcesDesc = `${p.consensus_sources.length} слоя проверки`;
+          sourcesDesc = `${p.consensus_sources.length} локальных метода`;
         }
-        consensusTag = `<span class="inline-flex items-center text-xs font-bold text-indigo-700 bg-indigo-50 px-2.5 py-0.5 rounded-full border border-indigo-200" title="${p.confidence_reason || 'Подтверждено несколькими независимыми слоями'}"><i class="fa-solid fa-circle-check mr-1 text-indigo-600"></i> Согласовано (${sourcesDesc})</span>`;
+        consensusTag = `<span class="inline-flex items-center text-xs font-bold text-indigo-700 bg-indigo-50 px-2.5 py-0.5 rounded-full border border-indigo-200" title="Локальное совпадение алгоритмов без вызова LLM (0 токенов, 0 ₽)"><i class="fa-solid fa-shield-halved mr-1 text-indigo-600"></i> Двойная проверка (${sourcesDesc})</span>`;
       } else if (p.status === 'valid' || p.status === 'high_confidence') {
-        consensusTag = `<span class="text-xs text-green-600 font-medium" title="${p.confidence_reason || ''}"><i class="fa-solid fa-check mr-1"></i> Проверено правилами</span>`;
+        consensusTag = `<span class="text-xs text-green-600 font-medium" title="${p.confidence_reason || 'Локальное извлечение без LLM (0 токенов)'}"><i class="fa-solid fa-check mr-1"></i> Проверено правилами</span>`;
       } else {
         consensusTag = `<span class="text-xs text-amber-600 font-medium" title="${p.confidence_reason || ''}"><i class="fa-solid fa-triangle-exclamation mr-1"></i> Требует проверки</span>`;
       }
