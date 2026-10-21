@@ -1152,7 +1152,7 @@ document.addEventListener('DOMContentLoaded', () => {
         payload.attribute = attr;
       }
 
-      await api.submitReviewOverride(payload);
+      const res = await api.submitReviewOverride(payload);
 
       // Анимация успешного удаления карточки из очереди
       const cardEl = document.getElementById(`queue-card-${extId}`);
@@ -1169,6 +1169,21 @@ document.addEventListener('DOMContentLoaded', () => {
         }, 350);
       } else {
         loadReviewQueue();
+      }
+
+      // Автоматическое удаление повторяющихся дубликатов из очереди
+      if (res && res.auto_resolved_duplicates && res.auto_resolved_duplicates.length > 0) {
+        res.auto_resolved_duplicates.forEach(dupId => {
+          const dupEl = document.getElementById(`queue-card-${dupId}`);
+          if (dupEl) {
+            dupEl.style.transition = 'all 0.35s ease';
+            dupEl.style.opacity = '0';
+            dupEl.style.transform = 'translateX(25px)';
+            setTimeout(() => dupEl.remove(), 350);
+          }
+        });
+        alert(`Карточка одобрена и добавлена в базу знаний (Catalog KB)!
+Автоматически закрыто повторяющихся карточек: ${res.auto_resolved_duplicates.length}`);
       }
 
       // Обновляем бейдж счетчика, если есть

@@ -33,6 +33,16 @@ class CatalogEnricher:
     """
 
     version: str = settings.catalog_kb_version
+    _instance: "CatalogEnricher | None" = None
+    _singleton_lock: threading.Lock = threading.Lock()
+
+    @classmethod
+    def get_instance(cls, kb_path: str | None = None) -> "CatalogEnricher":
+        if cls._instance is None:
+            with cls._singleton_lock:
+                if cls._instance is None:
+                    cls._instance = cls(kb_path=kb_path)
+        return cls._instance
 
     def __init__(self, kb_path: str | None = None) -> None:
         self.kb_path = kb_path or DEFAULT_KB_PATH

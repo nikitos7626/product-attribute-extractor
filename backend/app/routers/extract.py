@@ -1010,7 +1010,16 @@ def submit_review_override(body: ReviewOverrideIn) -> dict:
             json.dump(reviewed_store, f, ensure_ascii=False, indent=2)
         tmp_rev.replace(reviewed_path)
 
-        # 2. Обновление статуса карточки в output/predictions.json
+        # 2. Обновление статуса карточки в output/predictions.json и авто-дедупликация повторов
+        target_brand = ""
+        target_model = ""
+        target_title = ""
+        if body.attributes:
+            target_brand = str(body.attributes.get("brand") or "").strip()
+            target_model = str(body.attributes.get("model") or "").strip()
+
+        auto_resolved_ids = []
+
         if preds_path.exists():
             try:
                 with open(preds_path, "r", encoding="utf-8") as pf:
@@ -1018,8 +1027,15 @@ def submit_review_override(body: ReviewOverrideIn) -> dict:
                 is_dict = isinstance(preds_data, dict)
                 items_list = preds_data.get("items", []) if is_dict else preds_data
 
+                # А) Находим целевую карточку и обновляем её статус
                 for it in items_list:
                     if str(it.get("external_id")) == str(body.external_id):
+                        target_title = str(it.get("title") or "")
+                        if not target_brand:
+                            target_brand = str(it.get("extracted_attributes", {}).get("brand") or "").strip()
+                        if not target_model:
+                            target_model = str(it.get("extracted_attributes", {}).get("model") or "").strip()
+
                         it["needs_review"] = False
                         if body.action in ("approve", "override"):
                             it["status"] = "approved_by_operator"
@@ -1050,12 +1066,57 @@ def submit_review_override(body: ReviewOverrideIn) -> dict:
                             it["status"] = "rejected_by_operator"
                         break
 
+                # Б) Автоматическое разрешение повторяющихся/дублирующих карточек в очереди (Дедупликация)
+                if body.action in ("approve", "override") and (target_model or target_title):
+                    for other_it in items_list:
+                        other_id = str(other_it.get("external_id"))
+                        if other_id == str(body.external_id) or not other_it.get("needs_review"):
+                            continue
+
+                        other_attrs = other_it.get("extracted_attributes", {})
+                        other_brand = str(other_attrs.get("brand") or "").strip().lower()
+                        other_model = str(other_attrs.get("model") or "").strip().lower()
+                        other_title = str(other_it.get("title") or "").strip().lower()
+
+                        is_dup = False
+                        # Совпадение по бренду и модели
+                        if target_brand and target_model and other_brand == target_brand.lower() and other_model == target_model.lower():
+                            is_dup = True
+                        # Совпадение по точному названию товара
+                        elif target_title and other_title and other_title == target_title.lower():
+                            is_dup = True
+
+                        if is_dup:
+                            other_it["needs_review"] = False
+                            other_it["status"] = "auto_approved_by_duplicate_consensus"
+                            if body.attributes:
+                                other_it["extracted_attributes"].update(body.attributes)
+                                other_it["missing_required"] = [m for m in other_it.get("missing_required", []) if m not in body.attributes or not body.attributes[m]]
+                            auto_resolved_ids.append(other_id)
+
                 tmp_preds = preds_path.with_suffix(".tmp")
                 with open(tmp_preds, "w", encoding="utf-8") as pf:
                     json.dump(preds_data, pf, ensure_ascii=False, indent=2)
                 tmp_preds.replace(preds_path)
             except Exception as e:
                 logger.warning("Could not update predictions.json for external_id %s: %s", body.external_id, e)
+
+        # 3. Динамическое самообучение: добавление характеристик модели в Catalog KB (Pool)
+        if body.action in ("approve", "override") and target_brand and target_model:
+            try:
+                from app.services.catalog_enricher import CatalogEnricher
+                specs = body.attributes or {}
+                specs_clean = {k: str(v).strip() for k, v in specs.items() if k not in ("brand", "model") and v}
+                if specs_clean:
+                    CatalogEnricher.get_instance().register_model_specs(
+                        brand=target_brand,
+                        model=target_model,
+                        specs=specs_clean,
+                        persist=True
+                    )
+                    logger.info("Feedback loop: registered model specs into Catalog KB for %s %s (%d attrs)", target_brand, target_model, len(specs_clean))
+            except Exception as e:
+                logger.warning("Catalog KB feedback loop error: %s", e)
 
     entry = {
         "external_id": body.external_id,
@@ -1069,5 +1130,7 @@ def submit_review_override(body: ReviewOverrideIn) -> dict:
         "status": "success",
         "action_recorded": entry,
         "feedback_applied": body.attribute == "brand" or (bool(body.attributes and "brand" in body.attributes)),
+        "catalog_kb_updated": bool(target_brand and target_model),
+        "auto_resolved_duplicates": auto_resolved_ids,
         "total_overrides": len(reviewed_store["overrides"]),
     }
