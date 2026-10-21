@@ -146,10 +146,11 @@ class StrictLlmFallbackExtractor:
             "Content-Type": "application/json",
         }
 
-        # Каскад моделей: целевая модель -> быстрая резервная модель
+        # Каскад моделей: быстрая модель -> мощная Pro-модель (для сложных/нестандартных товаров)
         models_to_try = [self.model]
-        if "ai-sage/GigaChat3-10B-A1.8B" not in models_to_try:
-            models_to_try.append("ai-sage/GigaChat3-10B-A1.8B")
+        pro_model = getattr(settings, "llm_pro_model", "GigaChat/GigaChat-3-Pro")
+        if pro_model and pro_model not in models_to_try:
+            models_to_try.append(pro_model)
 
         last_error = "All models and retries failed"
 

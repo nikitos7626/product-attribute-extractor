@@ -43,6 +43,7 @@ class Settings(BaseSettings):
     llm_api_base: str = "https://hub.gigaschool.ru/api/v1/llm/v1"
     llm_api_key: str = ""
     llm_model: str = "ai-sage/GigaChat3-10B-A1.8B"
+    llm_pro_model: str = "GigaChat/GigaChat-3-Pro"
     enforce_llm_grounding: bool = True
     llm_timeout_seconds: float = 3.5
     llm_max_retries: int = 2

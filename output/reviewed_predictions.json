@@ -1,6 +1,6 @@
 {
   "metadata": {
-    "last_updated": "2026-10-21T21:48:41.584817",
+    "last_updated": "2026-10-21T21:55:25.995259",
     "total_overrides": 1
   },
   "overrides": {
@@ -10,7 +10,7 @@
       "override_value": "титановый серый",
       "action": "override",
       "reviewed_by": "qa_operator",
-      "timestamp": "2026-10-21T21:48:41.584817"
+      "timestamp": "2026-10-21T21:55:25.995259"
     }
   }
 }
