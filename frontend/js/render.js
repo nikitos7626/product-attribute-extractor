@@ -86,11 +86,19 @@ const RenderService = {
 
       let consensusTag = '';
       if (p.consensus) {
-        consensusTag = `<span class="inline-flex items-center text-xs font-bold text-indigo-700 bg-indigo-50 px-2.5 py-0.5 rounded-full border border-indigo-200" title="${p.confidence_reason || ''}"><i class="fa-solid fa-handshake mr-1"></i> Консенсус</span>`;
+        let sourcesDesc = '2 слоя';
+        if (p.consensus_sources && p.consensus_sources.includes('flashtext') && p.consensus_sources.includes('gliner')) {
+          sourcesDesc = 'Словарь + Нейросеть';
+        } else if (p.consensus_sources && p.consensus_sources.includes('regex') && p.consensus_sources.includes('gliner')) {
+          sourcesDesc = 'Правило + Нейросеть';
+        } else if (p.consensus_sources && p.consensus_sources.length >= 2) {
+          sourcesDesc = `${p.consensus_sources.length} слоя проверки`;
+        }
+        consensusTag = `<span class="inline-flex items-center text-xs font-bold text-indigo-700 bg-indigo-50 px-2.5 py-0.5 rounded-full border border-indigo-200" title="${p.confidence_reason || 'Подтверждено несколькими независимыми слоями'}"><i class="fa-solid fa-circle-check mr-1 text-indigo-600"></i> Согласовано (${sourcesDesc})</span>`;
       } else if (p.status === 'valid' || p.status === 'high_confidence') {
-        consensusTag = `<span class="text-xs text-green-600 font-medium" title="${p.confidence_reason || ''}"><i class="fa-solid fa-check mr-1"></i> Верифицировано</span>`;
+        consensusTag = `<span class="text-xs text-green-600 font-medium" title="${p.confidence_reason || ''}"><i class="fa-solid fa-check mr-1"></i> Проверено правилами</span>`;
       } else {
-        consensusTag = `<span class="text-xs text-amber-600 font-medium" title="${p.confidence_reason || ''}"><i class="fa-solid fa-triangle-exclamation mr-1"></i> Требует внимания</span>`;
+        consensusTag = `<span class="text-xs text-amber-600 font-medium" title="${p.confidence_reason || ''}"><i class="fa-solid fa-triangle-exclamation mr-1"></i> Требует проверки</span>`;
       }
 
       tr.innerHTML = `

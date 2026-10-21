@@ -130,7 +130,7 @@
           Автоматическое заполнение характеристик
         </h1>
         <p class="mt-2 text-base text-gray-600">
-          Каскадный пайплайн: <span class="font-semibold text-gray-800">Tier 1 (Regex & FlashText)</span> + <span class="font-semibold text-gray-800">Tier 2 (GLiNER NER)</span> + <span class="font-semibold text-gray-800">Snorkel Consensus</span> с калибровкой уверенности (порог: 87%).
+          Каскадный пайплайн: <span class="font-semibold text-gray-800">Tier 1 (Словарь + Правила)</span> → <span class="font-semibold text-gray-800">Tier 2 (Нейросеть GLiNER)</span> → <span class="font-semibold text-gray-800">Tier 2.5 (База знаний моделей)</span> с взаимной перепроверкой (порог автопубликации: 87%).
         </p>
       </div>
 
@@ -140,12 +140,8 @@
           <i class="fa-solid fa-file-lines text-mvideo-red"></i>
           <span>Одиночная карточка</span>
         </button>
-        <button id="tab-btn-batch" class="px-4 py-2 rounded-lg text-gray-600 hover:text-gray-900 transition flex items-center space-x-2">
-          <i class="fa-solid fa-boxes-stacked"></i>
-          <span>Пакетная обработка</span>
-        </button>
         <button id="tab-btn-review" class="px-4 py-2 rounded-lg text-gray-600 hover:text-gray-900 transition flex items-center space-x-2">
-          <i class="fa-solid fa-user-check"></i>
+          <i class="fa-solid fa-user-check text-mvideo-red"></i>
           <span>Очередь модерации</span>
         </button>
       </div>
@@ -273,80 +269,6 @@
               <pre id="json-viewer" class="bg-gray-900 text-gray-100 p-4 rounded-xl text-xs overflow-x-auto max-h-56 code-viewer"></pre>
             </div>
           </div>
-        </div>
-      </div>
-    </div>
-
-    <!-- ==================== ВКЛАДКА 2: ПАКЕТНАЯ ОБРАБОТКА ==================== -->
-    <div id="tab-batch" class="tab-content hidden space-y-6">
-      <div class="bg-white rounded-2xl shadow-sm border border-gray-200 p-6">
-        <h2 class="text-lg font-bold text-gray-900 mb-2 flex items-center">
-          <i class="fa-solid fa-boxes-stacked text-mvideo-red mr-2"></i> Пакетная выгрузка карточек (CSV / JSON)
-        </h2>
-        <p class="text-sm text-gray-500 mb-6">Загрузите файл со списком товаров для извлечения характеристик через неблокирующий пул потоков.</p>
-
-        <!-- Зона Drag & Drop -->
-        <div id="drop-zone" class="border-2 border-dashed border-gray-300 rounded-2xl p-8 text-center hover:border-mvideo-red transition cursor-pointer bg-gray-50/50">
-          <i class="fa-solid fa-cloud-arrow-up text-4xl text-gray-400 mb-3"></i>
-          <p class="text-sm font-bold text-gray-700">Перетащите CSV или JSON файл сюда или нажмите для выбора</p>
-          <p class="text-xs text-gray-400 mt-1">Поддерживаются форматы: .csv, .json (до 50 МБ)</p>
-          <input type="file" id="batch-file-input" accept=".csv,.json" class="hidden">
-          <button type="button" onclick="document.getElementById('batch-file-input').click()" class="mt-4 px-4 py-2 bg-white border border-gray-300 rounded-xl text-xs font-bold text-gray-700 hover:bg-gray-50 shadow-xs transition">
-            Выбрать файл на диске
-          </button>
-        </div>
-
-        <div class="mt-4 flex flex-wrap items-center justify-between gap-4">
-          <div id="file-name-label" class="text-xs font-semibold text-gray-600">Файл не выбран</div>
-          <div class="flex items-center space-x-2">
-            <button id="batch-process-btn" disabled class="px-5 py-2.5 bg-mvideo-red disabled:bg-gray-300 hover:bg-mvideo-darkred text-white text-xs font-bold rounded-xl shadow-xs transition flex items-center space-x-1.5">
-              <i class="fa-solid fa-play"></i>
-              <span>Запустить обработку</span>
-            </button>
-            <button id="batch-export-json-btn" disabled class="px-4 py-2.5 bg-gray-100 disabled:opacity-50 hover:bg-gray-200 text-gray-700 text-xs font-bold rounded-xl transition flex items-center space-x-1.5">
-              <i class="fa-solid fa-file-arrow-down"></i>
-              <span>JSON</span>
-            </button>
-            <button id="batch-export-csv-btn" disabled class="px-4 py-2.5 bg-gray-100 disabled:opacity-50 hover:bg-gray-200 text-gray-700 text-xs font-bold rounded-xl transition flex items-center space-x-1.5">
-              <i class="fa-solid fa-file-csv"></i>
-              <span>CSV</span>
-            </button>
-          </div>
-        </div>
-      </div>
-
-      <!-- Сводка результатов пакета -->
-      <div id="batch-results-container" class="hidden bg-white rounded-2xl shadow-sm border border-gray-200 overflow-hidden">
-        <div class="p-4 border-b border-gray-100 bg-gray-50 flex flex-wrap items-center justify-between gap-4">
-          <h3 class="font-bold text-gray-900 text-sm flex items-center">
-            <i class="fa-solid fa-list-check text-mvideo-red mr-2"></i> Результаты пакета (<span id="batch-total-count">0</span>)
-          </h3>
-          <div class="flex items-center space-x-4 text-xs font-semibold">
-            <span class="text-green-700 bg-green-50 px-2 py-0.5 rounded border border-green-200">
-              Одобрено: <b id="batch-approved-count">0</b>
-            </span>
-            <span class="text-yellow-700 bg-yellow-50 px-2 py-0.5 rounded border border-yellow-200">
-              На ревью: <b id="batch-review-count">0</b>
-            </span>
-            <span class="text-red-700 bg-red-50 px-2 py-0.5 rounded border border-red-200">
-              Сбои: <b id="batch-failed-count">0</b>
-            </span>
-          </div>
-        </div>
-        <div class="overflow-x-auto max-h-96">
-          <table class="w-full text-left text-xs text-gray-600">
-            <thead class="bg-gray-50 text-[11px] uppercase font-bold text-gray-500 sticky top-0 border-b border-gray-100">
-              <tr>
-                <th class="px-4 py-2">ID</th>
-                <th class="px-4 py-2">Категория</th>
-                <th class="px-4 py-2 text-center">Скор</th>
-                <th class="px-4 py-2 text-center">Статус</th>
-                <th class="px-4 py-2">Атрибуты</th>
-                <th class="px-4 py-2">Пропущено</th>
-              </tr>
-            </thead>
-            <tbody id="batch-table-body" class="divide-y divide-gray-100"></tbody>
-          </table>
         </div>
       </div>
     </div>
@@ -650,11 +572,19 @@ const RenderService = {
 
       let consensusTag = '';
       if (p.consensus) {
-        consensusTag = `<span class="inline-flex items-center text-xs font-bold text-indigo-700 bg-indigo-50 px-2.5 py-0.5 rounded-full border border-indigo-200" title="${p.confidence_reason || ''}"><i class="fa-solid fa-handshake mr-1"></i> Консенсус</span>`;
+        let sourcesDesc = '2 слоя';
+        if (p.consensus_sources && p.consensus_sources.includes('flashtext') && p.consensus_sources.includes('gliner')) {
+          sourcesDesc = 'Словарь + Нейросеть';
+        } else if (p.consensus_sources && p.consensus_sources.includes('regex') && p.consensus_sources.includes('gliner')) {
+          sourcesDesc = 'Правило + Нейросеть';
+        } else if (p.consensus_sources && p.consensus_sources.length >= 2) {
+          sourcesDesc = `${p.consensus_sources.length} слоя проверки`;
+        }
+        consensusTag = `<span class="inline-flex items-center text-xs font-bold text-indigo-700 bg-indigo-50 px-2.5 py-0.5 rounded-full border border-indigo-200" title="${p.confidence_reason || 'Подтверждено несколькими независимыми слоями'}"><i class="fa-solid fa-circle-check mr-1 text-indigo-600"></i> Согласовано (${sourcesDesc})</span>`;
       } else if (p.status === 'valid' || p.status === 'high_confidence') {
-        consensusTag = `<span class="text-xs text-green-600 font-medium" title="${p.confidence_reason || ''}"><i class="fa-solid fa-check mr-1"></i> Верифицировано</span>`;
+        consensusTag = `<span class="text-xs text-green-600 font-medium" title="${p.confidence_reason || ''}"><i class="fa-solid fa-check mr-1"></i> Проверено правилами</span>`;
       } else {
-        consensusTag = `<span class="text-xs text-amber-600 font-medium" title="${p.confidence_reason || ''}"><i class="fa-solid fa-triangle-exclamation mr-1"></i> Требует внимания</span>`;
+        consensusTag = `<span class="text-xs text-amber-600 font-medium" title="${p.confidence_reason || ''}"><i class="fa-solid fa-triangle-exclamation mr-1"></i> Требует проверки</span>`;
       }
 
       tr.innerHTML = `
@@ -969,7 +899,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const targetTab = document.getElementById(`tab-${tabId}`);
     if (targetTab) targetTab.classList.remove('hidden');
 
-    ['single', 'batch', 'review'].forEach(t => {
+    ['single', 'review'].forEach(t => {
       const btn = document.getElementById(`tab-btn-${t}`);
       if (!btn) return;
       if (t === tabId) {

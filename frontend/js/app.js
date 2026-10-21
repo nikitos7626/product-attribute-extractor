@@ -18,7 +18,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const targetTab = document.getElementById(`tab-${tabId}`);
     if (targetTab) targetTab.classList.remove('hidden');
 
-    ['single', 'batch', 'review'].forEach(t => {
+    ['single', 'review'].forEach(t => {
       const btn = document.getElementById(`tab-btn-${t}`);
       if (!btn) return;
       if (t === tabId) {
