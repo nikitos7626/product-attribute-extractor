@@ -41,328 +41,525 @@
     "category_details": {
       "Смартфоны": {
         "total_items": 4,
+        "shelf_ready_count": 4,
+        "shelf_readiness_rate": 1.0,
+        "required_attrs": [
+          "brand",
+          "color",
+          "model",
+          "screen_diagonal",
+          "battery",
+          "memory_rom"
+        ],
         "attributes": {
           "brand": {
             "count": 4,
             "fill_rate": 1.0,
-            "sparsity": 0.0
+            "sparsity": 0.0,
+            "is_required_for_release": true,
+            "role": "Обязательный (MVP)"
           },
           "model": {
             "count": 4,
             "fill_rate": 1.0,
-            "sparsity": 0.0
+            "sparsity": 0.0,
+            "is_required_for_release": true,
+            "role": "Обязательный (MVP)"
           },
           "color": {
             "count": 4,
             "fill_rate": 1.0,
-            "sparsity": 0.0
+            "sparsity": 0.0,
+            "is_required_for_release": true,
+            "role": "Обязательный (MVP)"
           },
           "memory_ram": {
             "count": 3,
             "fill_rate": 0.75,
-            "sparsity": 0.25
+            "sparsity": 0.25,
+            "is_required_for_release": false,
+            "role": "Опциональный (Enrichment)"
           },
           "memory_rom": {
             "count": 4,
             "fill_rate": 1.0,
-            "sparsity": 0.0
+            "sparsity": 0.0,
+            "is_required_for_release": true,
+            "role": "Обязательный (MVP)"
           },
           "screen_diagonal": {
             "count": 4,
             "fill_rate": 1.0,
-            "sparsity": 0.0
+            "sparsity": 0.0,
+            "is_required_for_release": true,
+            "role": "Обязательный (MVP)"
           },
           "battery": {
             "count": 4,
             "fill_rate": 1.0,
-            "sparsity": 0.0
+            "sparsity": 0.0,
+            "is_required_for_release": true,
+            "role": "Обязательный (MVP)"
           },
           "cpu": {
             "count": 3,
             "fill_rate": 0.75,
-            "sparsity": 0.25
+            "sparsity": 0.25,
+            "is_required_for_release": false,
+            "role": "Опциональный (Enrichment)"
           },
           "os": {
             "count": 1,
             "fill_rate": 0.25,
-            "sparsity": 0.75
+            "sparsity": 0.75,
+            "is_required_for_release": false,
+            "role": "Опциональный (Enrichment)"
           },
           "weight": {
             "count": 3,
             "fill_rate": 0.75,
-            "sparsity": 0.25
+            "sparsity": 0.25,
+            "is_required_for_release": false,
+            "role": "Опциональный (Enrichment)"
           },
           "refresh_rate": {
             "count": 4,
             "fill_rate": 1.0,
-            "sparsity": 0.0
+            "sparsity": 0.0,
+            "is_required_for_release": false,
+            "role": "Опциональный (Enrichment)"
           }
-        }
+        },
+        "business_justification": "memory_rom и color определяют торговое предложение (SKU) и цену на витрине. screen_diagonal и battery формируют основные фасетные фильтры каталога."
       },
       "Ноутбуки": {
         "total_items": 2,
+        "shelf_ready_count": 2,
+        "shelf_readiness_rate": 1.0,
+        "required_attrs": [
+          "brand",
+          "model",
+          "screen_diagonal",
+          "cpu",
+          "memory_ram",
+          "memory_rom"
+        ],
         "attributes": {
           "brand": {
             "count": 2,
             "fill_rate": 1.0,
-            "sparsity": 0.0
+            "sparsity": 0.0,
+            "is_required_for_release": true,
+            "role": "Обязательный (MVP)"
           },
           "model": {
             "count": 2,
             "fill_rate": 1.0,
-            "sparsity": 0.0
+            "sparsity": 0.0,
+            "is_required_for_release": true,
+            "role": "Обязательный (MVP)"
           },
           "color": {
             "count": 2,
             "fill_rate": 1.0,
-            "sparsity": 0.0
+            "sparsity": 0.0,
+            "is_required_for_release": false,
+            "role": "Опциональный (Enrichment)"
           },
           "memory_ram": {
             "count": 2,
             "fill_rate": 1.0,
-            "sparsity": 0.0
+            "sparsity": 0.0,
+            "is_required_for_release": true,
+            "role": "Обязательный (MVP)"
           },
           "memory_rom": {
             "count": 2,
             "fill_rate": 1.0,
-            "sparsity": 0.0
+            "sparsity": 0.0,
+            "is_required_for_release": true,
+            "role": "Обязательный (MVP)"
           },
           "screen_diagonal": {
             "count": 2,
             "fill_rate": 1.0,
-            "sparsity": 0.0
+            "sparsity": 0.0,
+            "is_required_for_release": true,
+            "role": "Обязательный (MVP)"
           },
           "cpu": {
             "count": 2,
             "fill_rate": 1.0,
-            "sparsity": 0.0
+            "sparsity": 0.0,
+            "is_required_for_release": true,
+            "role": "Обязательный (MVP)"
           },
           "os": {
             "count": 2,
             "fill_rate": 1.0,
-            "sparsity": 0.0
+            "sparsity": 0.0,
+            "is_required_for_release": false,
+            "role": "Опциональный (Enrichment)"
           },
           "weight": {
             "count": 2,
             "fill_rate": 1.0,
-            "sparsity": 0.0
+            "sparsity": 0.0,
+            "is_required_for_release": false,
+            "role": "Опциональный (Enrichment)"
           }
-        }
+        },
+        "business_justification": "cpu, memory_ram, memory_rom и screen_diagonal — критический технологический базис. Без них покупатель не может выбрать модель и сравнить производительность."
       },
       "Телевизоры": {
         "total_items": 2,
+        "shelf_ready_count": 2,
+        "shelf_readiness_rate": 1.0,
+        "required_attrs": [
+          "screen_diagonal",
+          "resolution",
+          "model",
+          "brand"
+        ],
         "attributes": {
           "brand": {
             "count": 2,
             "fill_rate": 1.0,
-            "sparsity": 0.0
+            "sparsity": 0.0,
+            "is_required_for_release": true,
+            "role": "Обязательный (MVP)"
           },
           "model": {
             "count": 2,
             "fill_rate": 1.0,
-            "sparsity": 0.0
+            "sparsity": 0.0,
+            "is_required_for_release": true,
+            "role": "Обязательный (MVP)"
           },
           "color": {
             "count": 2,
             "fill_rate": 1.0,
-            "sparsity": 0.0
+            "sparsity": 0.0,
+            "is_required_for_release": false,
+            "role": "Опциональный (Enrichment)"
           },
           "screen_diagonal": {
             "count": 2,
             "fill_rate": 1.0,
-            "sparsity": 0.0
+            "sparsity": 0.0,
+            "is_required_for_release": true,
+            "role": "Обязательный (MVP)"
           },
           "resolution": {
             "count": 2,
             "fill_rate": 1.0,
-            "sparsity": 0.0
+            "sparsity": 0.0,
+            "is_required_for_release": true,
+            "role": "Обязательный (MVP)"
           },
           "refresh_rate": {
             "count": 2,
             "fill_rate": 1.0,
-            "sparsity": 0.0
+            "sparsity": 0.0,
+            "is_required_for_release": false,
+            "role": "Опциональный (Enrichment)"
           },
           "power": {
             "count": 2,
             "fill_rate": 1.0,
-            "sparsity": 0.0
+            "sparsity": 0.0,
+            "is_required_for_release": false,
+            "role": "Опциональный (Enrichment)"
           }
-        }
+        },
+        "business_justification": "screen_diagonal (95% поисковых переходов в ТВ) и resolution (4K vs FHD) — главные факторы ценообразования и фасетной навигации в ритейле."
       },
       "Пылесосы": {
         "total_items": 1,
+        "shelf_ready_count": 1,
+        "shelf_readiness_rate": 1.0,
+        "required_attrs": [
+          "color",
+          "model",
+          "cleaning_type",
+          "brand"
+        ],
         "attributes": {
           "brand": {
             "count": 1,
             "fill_rate": 1.0,
-            "sparsity": 0.0
+            "sparsity": 0.0,
+            "is_required_for_release": true,
+            "role": "Обязательный (MVP)"
           },
           "model": {
             "count": 1,
             "fill_rate": 1.0,
-            "sparsity": 0.0
+            "sparsity": 0.0,
+            "is_required_for_release": true,
+            "role": "Обязательный (MVP)"
           },
           "color": {
             "count": 1,
             "fill_rate": 1.0,
-            "sparsity": 0.0
+            "sparsity": 0.0,
+            "is_required_for_release": true,
+            "role": "Обязательный (MVP)"
           },
           "power": {
             "count": 1,
             "fill_rate": 1.0,
-            "sparsity": 0.0
+            "sparsity": 0.0,
+            "is_required_for_release": false,
+            "role": "Опциональный (Enrichment)"
           },
           "volume": {
             "count": 1,
             "fill_rate": 1.0,
-            "sparsity": 0.0
+            "sparsity": 0.0,
+            "is_required_for_release": false,
+            "role": "Опциональный (Enrichment)"
           },
           "battery": {
             "count": 1,
             "fill_rate": 1.0,
-            "sparsity": 0.0
+            "sparsity": 0.0,
+            "is_required_for_release": false,
+            "role": "Опциональный (Enrichment)"
           },
           "cleaning_type": {
             "count": 1,
             "fill_rate": 1.0,
-            "sparsity": 0.0
+            "sparsity": 0.0,
+            "is_required_for_release": true,
+            "role": "Обязательный (MVP)"
           },
           "working_time": {
             "count": 1,
             "fill_rate": 1.0,
-            "sparsity": 0.0
+            "sparsity": 0.0,
+            "is_required_for_release": false,
+            "role": "Опциональный (Enrichment)"
           }
-        }
+        },
+        "business_justification": "cleaning_type (сухая, влажная, 2-в-1) — первичный развилочный фильтр витрины. color определяет интерьерную совместимость."
       },
       "Наушники": {
         "total_items": 1,
+        "shelf_ready_count": 1,
+        "shelf_readiness_rate": 1.0,
+        "required_attrs": [
+          "color",
+          "model",
+          "brand"
+        ],
         "attributes": {
           "brand": {
             "count": 1,
             "fill_rate": 1.0,
-            "sparsity": 0.0
+            "sparsity": 0.0,
+            "is_required_for_release": true,
+            "role": "Обязательный (MVP)"
           },
           "model": {
             "count": 1,
             "fill_rate": 1.0,
-            "sparsity": 0.0
+            "sparsity": 0.0,
+            "is_required_for_release": true,
+            "role": "Обязательный (MVP)"
           },
           "color": {
             "count": 1,
             "fill_rate": 1.0,
-            "sparsity": 0.0
+            "sparsity": 0.0,
+            "is_required_for_release": true,
+            "role": "Обязательный (MVP)"
           },
           "weight": {
             "count": 1,
             "fill_rate": 1.0,
-            "sparsity": 0.0
+            "sparsity": 0.0,
+            "is_required_for_release": false,
+            "role": "Опциональный (Enrichment)"
           },
           "working_time": {
             "count": 1,
             "fill_rate": 1.0,
-            "sparsity": 0.0
+            "sparsity": 0.0,
+            "is_required_for_release": false,
+            "role": "Опциональный (Enrichment)"
+          },
+          "connection_type": {
+            "count": 1,
+            "fill_rate": 1.0,
+            "sparsity": 0.0,
+            "is_required_for_release": false,
+            "role": "Опциональный (Enrichment)"
           }
-        }
+        },
+        "business_justification": "brand, model и color идентифицируют товарную позицию и вариант исполнения. Тип подключения (TWS vs проводные) обычно заложен в модель или категорию."
       },
       "Внешние аккумуляторы (Power Bank)": {
         "total_items": 1,
+        "shelf_ready_count": 1,
+        "shelf_readiness_rate": 1.0,
+        "required_attrs": [
+          "battery",
+          "color",
+          "model",
+          "brand"
+        ],
         "attributes": {
           "brand": {
             "count": 1,
             "fill_rate": 1.0,
-            "sparsity": 0.0
+            "sparsity": 0.0,
+            "is_required_for_release": true,
+            "role": "Обязательный (MVP)"
           },
           "model": {
             "count": 1,
             "fill_rate": 1.0,
-            "sparsity": 0.0
+            "sparsity": 0.0,
+            "is_required_for_release": true,
+            "role": "Обязательный (MVP)"
           },
           "battery": {
             "count": 1,
             "fill_rate": 1.0,
-            "sparsity": 0.0
+            "sparsity": 0.0,
+            "is_required_for_release": true,
+            "role": "Обязательный (MVP)"
           },
           "power": {
             "count": 1,
             "fill_rate": 1.0,
-            "sparsity": 0.0
+            "sparsity": 0.0,
+            "is_required_for_release": false,
+            "role": "Опциональный (Enrichment)"
           },
           "color": {
             "count": 1,
             "fill_rate": 1.0,
-            "sparsity": 0.0
+            "sparsity": 0.0,
+            "is_required_for_release": true,
+            "role": "Обязательный (MVP)"
           },
           "weight": {
             "count": 1,
             "fill_rate": 1.0,
-            "sparsity": 0.0
+            "sparsity": 0.0,
+            "is_required_for_release": false,
+            "role": "Опциональный (Enrichment)"
           }
-        }
+        },
+        "business_justification": "battery (ёмкость в мАч) — главный потребительский параметр ценности пауэрбанка. color определяет вариант SKU."
       },
       "Холодильники": {
         "total_items": 1,
+        "shelf_ready_count": 1,
+        "shelf_readiness_rate": 1.0,
+        "required_attrs": [
+          "defrost_system",
+          "model",
+          "color",
+          "brand"
+        ],
         "attributes": {
           "brand": {
             "count": 1,
             "fill_rate": 1.0,
-            "sparsity": 0.0
+            "sparsity": 0.0,
+            "is_required_for_release": true,
+            "role": "Обязательный (MVP)"
           },
           "model": {
             "count": 1,
             "fill_rate": 1.0,
-            "sparsity": 0.0
+            "sparsity": 0.0,
+            "is_required_for_release": true,
+            "role": "Обязательный (MVP)"
           },
           "color": {
             "count": 1,
             "fill_rate": 1.0,
-            "sparsity": 0.0
+            "sparsity": 0.0,
+            "is_required_for_release": true,
+            "role": "Обязательный (MVP)"
           },
           "defrost_system": {
             "count": 1,
             "fill_rate": 1.0,
-            "sparsity": 0.0
+            "sparsity": 0.0,
+            "is_required_for_release": true,
+            "role": "Обязательный (MVP)"
           },
           "volume": {
             "count": 1,
             "fill_rate": 1.0,
-            "sparsity": 0.0
+            "sparsity": 0.0,
+            "is_required_for_release": false,
+            "role": "Опциональный (Enrichment)"
           },
           "warranty": {
             "count": 1,
             "fill_rate": 1.0,
-            "sparsity": 0.0
+            "sparsity": 0.0,
+            "is_required_for_release": false,
+            "role": "Опциональный (Enrichment)"
           }
-        }
+        },
+        "business_justification": "defrost_system (No Frost vs статическая) — главный критерий потребительского выбора. color критичен для интерьера кухни."
       },
       "Микроволновые печи": {
         "total_items": 1,
+        "shelf_ready_count": 1,
+        "shelf_readiness_rate": 1.0,
+        "required_attrs": [
+          "power",
+          "brand",
+          "color",
+          "model",
+          "volume"
+        ],
         "attributes": {
           "brand": {
             "count": 1,
             "fill_rate": 1.0,
-            "sparsity": 0.0
+            "sparsity": 0.0,
+            "is_required_for_release": true,
+            "role": "Обязательный (MVP)"
           },
           "model": {
             "count": 1,
             "fill_rate": 1.0,
-            "sparsity": 0.0
+            "sparsity": 0.0,
+            "is_required_for_release": true,
+            "role": "Обязательный (MVP)"
           },
           "volume": {
             "count": 1,
             "fill_rate": 1.0,
-            "sparsity": 0.0
+            "sparsity": 0.0,
+            "is_required_for_release": true,
+            "role": "Обязательный (MVP)"
           },
           "power": {
             "count": 1,
             "fill_rate": 1.0,
-            "sparsity": 0.0
+            "sparsity": 0.0,
+            "is_required_for_release": true,
+            "role": "Обязательный (MVP)"
           },
           "color": {
             "count": 1,
             "fill_rate": 1.0,
-            "sparsity": 0.0
+            "sparsity": 0.0,
+            "is_required_for_release": true,
+            "role": "Обязательный (MVP)"
           }
-        }
+        },
+        "business_justification": "volume (объем камеры в литрах) и power (мощность Вт) — базовые технические параметры для встраивания и подбора посуды."
       }
     },
     "top_brands": {
@@ -377,6 +574,18 @@
       "Gorenje": 1
     }
   },
+  "sample_distribution": {
+    "Холодильники": 113,
+    "Смартфоны": 150,
+    "Ноутбуки": 150,
+    "Роботы-пылесосы": 50,
+    "Пылесосы вертикальные": 69,
+    "Наушники": 147,
+    "Пылесосы напольные": 31,
+    "Встраиваемые холодильники": 37,
+    "Телевизоры": 150,
+    "Наушники для компьютеров": 3
+  },
   "dictionaries": {
     "knowledge_base_models_count": 9761,
     "brands_dictionary_count": 4625,
@@ -388,9 +597,156 @@
       "vacuum_cleaners",
       "refrigerators",
       "headphones",
+      "headphones_wired",
+      "headphones_wireless",
       "powerbanks",
       "microwaves",
       "default"
     ]
+  },
+  "ecommerce_release_matrix": {
+    "Смартфоны": {
+      "slug": "smartphones",
+      "required": [
+        "brand",
+        "model",
+        "memory_rom",
+        "screen_diagonal",
+        "battery",
+        "color"
+      ],
+      "optional": [
+        "memory_ram",
+        "cpu",
+        "os",
+        "weight",
+        "resolution",
+        "refresh_rate"
+      ],
+      "business_justification": "memory_rom и color определяют торговое предложение (SKU) и цену на витрине. screen_diagonal и battery формируют основные фасетные фильтры каталога."
+    },
+    "Ноутбуки": {
+      "slug": "laptops",
+      "required": [
+        "brand",
+        "model",
+        "cpu",
+        "memory_ram",
+        "memory_rom",
+        "screen_diagonal"
+      ],
+      "optional": [
+        "gpu",
+        "color",
+        "os",
+        "battery",
+        "weight"
+      ],
+      "business_justification": "cpu, memory_ram, memory_rom и screen_diagonal — критический технологический базис. Без них покупатель не может выбрать модель и сравнить производительность."
+    },
+    "Телевизоры": {
+      "slug": "tvs",
+      "required": [
+        "brand",
+        "model",
+        "screen_diagonal",
+        "resolution"
+      ],
+      "optional": [
+        "color",
+        "refresh_rate",
+        "power",
+        "display_tech"
+      ],
+      "business_justification": "screen_diagonal (95% поисковых переходов в ТВ) и resolution (4K vs FHD) — главные факторы ценообразования и фасетной навигации в ритейле."
+    },
+    "Пылесосы": {
+      "slug": "vacuum_cleaners",
+      "required": [
+        "brand",
+        "model",
+        "cleaning_type",
+        "color"
+      ],
+      "optional": [
+        "power",
+        "volume",
+        "battery",
+        "weight",
+        "working_time"
+      ],
+      "business_justification": "cleaning_type (сухая, влажная, 2-в-1) — первичный развилочный фильтр витрины. color определяет интерьерную совместимость."
+    },
+    "Холодильники": {
+      "slug": "refrigerators",
+      "required": [
+        "brand",
+        "model",
+        "defrost_system",
+        "color"
+      ],
+      "optional": [
+        "volume",
+        "warranty"
+      ],
+      "business_justification": "defrost_system (No Frost vs статическая) — главный критерий потребительского выбора. color критичен для интерьера кухни."
+    },
+    "Наушники": {
+      "slug": "headphones",
+      "required": [
+        "brand",
+        "model",
+        "color"
+      ],
+      "optional": [
+        "weight",
+        "working_time",
+        "connection_type",
+        "battery"
+      ],
+      "business_justification": "brand, model и color идентифицируют товарную позицию и вариант исполнения. Тип подключения (TWS vs проводные) обычно заложен в модель или категорию."
+    },
+    "Внешние аккумуляторы (Power Bank)": {
+      "slug": "powerbanks",
+      "required": [
+        "brand",
+        "model",
+        "battery",
+        "color"
+      ],
+      "optional": [
+        "power",
+        "weight"
+      ],
+      "business_justification": "battery (ёмкость в мАч) — главный потребительский параметр ценности пауэрбанка. color определяет вариант SKU."
+    },
+    "Микроволновые печи": {
+      "slug": "microwaves",
+      "required": [
+        "brand",
+        "model",
+        "volume",
+        "power",
+        "color"
+      ],
+      "optional": [
+        "weight"
+      ],
+      "business_justification": "volume (объем камеры в литрах) и power (мощность Вт) — базовые технические параметры для встраивания и подбора посуды."
+    },
+    "Стиральные машины": {
+      "slug": "washing_machines",
+      "required": [
+        "brand",
+        "model",
+        "load_capacity",
+        "color"
+      ],
+      "optional": [
+        "spin_speed",
+        "dimensions"
+      ],
+      "business_justification": "load_capacity (загрузка белья в кг) — основной фасет выбора под состав семьи. color важен для интерьера ванной/кухни."
+    }
   }
 }
