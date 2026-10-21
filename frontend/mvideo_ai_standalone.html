@@ -1,0 +1,1011 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>М.Видео AI · Извлечение характеристик товаров</title>
+  
+  <!-- Внешние библиотеки стилей (Tailwind CDN, FontAwesome) -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  
+  <!-- Кастомные стили фронтенда -->
+  <style>
+/* ==========================================================================
+   М.Видео AI — Таблицы стилей интерфейса извлечения характеристик товаров
+   ========================================================================== */
+
+/* Брендовые цвета М.Видео */
+:root {
+  --mvideo-red: #e31235;
+  --mvideo-darkred: #b80c29;
+  --mvideo-dark: #1e2229;
+  --mvideo-light: #f4f5f7;
+}
+
+/* Плавные переходы элементов интерфейса */
+.transition-smooth {
+  transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Кастомный скроллбар для JSON-просмотрщика и очередей */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+::-webkit-scrollbar-track {
+  background: #f1f1f1;
+  border-radius: 4px;
+}
+::-webkit-scrollbar-thumb {
+  background: #cbd5e1;
+  border-radius: 4px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #94a3b8;
+}
+
+/* Анимация пульсации статуса сервера */
+@keyframes pulse-dot {
+  0%, 100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 0.5;
+    transform: scale(1.15);
+  }
+}
+
+.status-dot-pulse {
+  animation: pulse-dot 2s infinite ease-in-out;
+}
+
+/* Стилизация области Drag & Drop */
+.drag-over {
+  border-color: var(--mvideo-red) !important;
+  background-color: #fef2f2 !important;
+}
+
+/* Кодовый блок вывода JSON */
+.code-viewer {
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+  font-size: 0.8125rem;
+  line-height: 1.45;
+  tab-size: 2;
+}
+
+</style>
+
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            mvideo: {
+              red: '#e31235',
+              darkred: '#b80c29',
+              dark: '#1e2229',
+              light: '#f4f5f7'
+            }
+          }
+        }
+      }
+    }
+  </script>
+</head>
+<body class="bg-gray-50 text-gray-800 min-h-screen flex flex-col font-sans">
+
+  <!-- ==================== ШАПКА САЙТА (HEADER) ==================== -->
+  <header class="bg-white border-b border-gray-200 sticky top-0 z-50 shadow-sm">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
+      <div class="flex items-center space-x-3">
+        <div class="w-10 h-10 rounded-lg bg-mvideo-red flex items-center justify-center text-white font-extrabold text-xl shadow-md">
+          M
+        </div>
+        <div>
+          <span class="text-xl font-bold text-gray-900 tracking-tight">М.Видео <span class="text-mvideo-red">AI</span></span>
+          <span class="ml-2 text-xs font-semibold uppercase tracking-wider bg-red-100 text-mvideo-red px-2 py-0.5 rounded-full">VolgaDev 2026</span>
+        </div>
+      </div>
+      <div class="flex items-center space-x-4">
+        <a href="/docs" target="_blank" class="text-sm font-medium text-gray-600 hover:text-mvideo-red transition flex items-center">
+          <i class="fa-solid fa-code mr-1.5"></i> Swagger API
+        </a>
+        <div id="api-status" class="flex items-center text-xs text-green-700 bg-green-50 px-2.5 py-1 rounded-full border border-green-200">
+          <span class="w-2 h-2 rounded-full bg-green-500 mr-1.5 status-dot-pulse"></span>
+          Сервер онлайн
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- ==================== ОСНОВНОЙ КОНТЕНТ (MAIN) ==================== -->
+  <main class="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-8">
+    
+    <!-- Заголовок страницы и навигация по вкладкам -->
+    <div class="mb-6 flex flex-col md:flex-row md:items-center justify-between gap-4">
+      <div>
+        <h1 class="text-3xl font-extrabold text-gray-900 sm:text-4xl tracking-tight">
+          Автоматическое заполнение характеристик
+        </h1>
+        <p class="mt-2 text-base text-gray-600">
+          Каскадный пайплайн: <span class="font-semibold text-gray-800">Tier 1 (Regex & FlashText)</span> + <span class="font-semibold text-gray-800">Tier 2 (GLiNER NER)</span> + <span class="font-semibold text-gray-800">Snorkel Consensus</span> с калибровкой уверенности (порог: 87%).
+        </p>
+      </div>
+
+      <!-- Вкладки (Tabs) -->
+      <div class="flex p-1 bg-gray-200 rounded-xl space-x-1 self-start md:self-auto text-sm font-semibold">
+        <button id="tab-btn-single" class="px-4 py-2 rounded-lg bg-white shadow-sm text-gray-900 transition flex items-center space-x-2">
+          <i class="fa-solid fa-file-lines text-mvideo-red"></i>
+          <span>Одиночная карточка</span>
+        </button>
+        <button id="tab-btn-batch" class="px-4 py-2 rounded-lg text-gray-600 hover:text-gray-900 transition flex items-center space-x-2">
+          <i class="fa-solid fa-boxes-stacked"></i>
+          <span>Пакетная обработка</span>
+        </button>
+        <button id="tab-btn-review" class="px-4 py-2 rounded-lg text-gray-600 hover:text-gray-900 transition flex items-center space-x-2">
+          <i class="fa-solid fa-user-check"></i>
+          <span>Очередь модерации</span>
+        </button>
+      </div>
+    </div>
+
+    <!-- ==================== ВКЛАДКА 1: ОДИНОЧНАЯ КАРТОЧКА ==================== -->
+    <div id="tab-single" class="tab-content">
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-8">
+        
+        <!-- Левая колонка: Ввод карточки -->
+        <div class="lg:col-span-5 space-y-6">
+          <div class="bg-white rounded-2xl shadow-sm border border-gray-200 p-6">
+            <div class="flex items-center justify-between mb-4">
+              <h2 class="text-lg font-bold text-gray-900 flex items-center">
+                <i class="fa-solid fa-file-pen text-mvideo-red mr-2"></i> Входная карточка
+              </h2>
+              <span class="text-xs text-gray-500">Только текст</span>
+            </div>
+
+            <!-- Быстрые пресеты -->
+            <div class="mb-5">
+              <div class="flex items-center justify-between mb-2">
+                <label class="text-xs font-bold text-gray-500 uppercase tracking-wider">Примеры каталога М.Видео:</label>
+              </div>
+              <div class="flex flex-wrap gap-1.5">
+                <button type="button" data-preset="samsung" class="text-xs bg-gray-100 hover:bg-gray-200 text-gray-700 px-2.5 py-1 rounded-lg transition font-medium">Samsung A32</button>
+                <button type="button" data-preset="iphone16" class="text-xs bg-gray-100 hover:bg-gray-200 text-gray-700 px-2.5 py-1 rounded-lg transition font-medium">iPhone 16</button>
+                <button type="button" data-preset="lenovo" class="text-xs bg-gray-100 hover:bg-gray-200 text-gray-700 px-2.5 py-1 rounded-lg transition font-medium">Ноутбук Lenovo</button>
+                <button type="button" data-preset="washing" class="text-xs bg-gray-100 hover:bg-gray-200 text-gray-700 px-2.5 py-1 rounded-lg transition font-medium">Стиралка Haier</button>
+                <button type="button" data-preset="sony_tv" class="text-xs bg-gray-100 hover:bg-gray-200 text-gray-700 px-2.5 py-1 rounded-lg transition font-medium">ТВ Sony 50"</button>
+                <button type="button" data-preset="vacuum" class="text-xs bg-gray-100 hover:bg-gray-200 text-gray-700 px-2.5 py-1 rounded-lg transition font-medium">Робот-пылесос</button>
+                <button type="button" data-preset="fridge" class="text-xs bg-gray-100 hover:bg-gray-200 text-gray-700 px-2.5 py-1 rounded-lg transition font-medium">Холодильник AEG</button>
+              </div>
+            </div>
+
+            <!-- Форма отправки -->
+            <form id="single-form" class="space-y-4">
+              <div>
+                <label for="raw_text" class="block text-sm font-semibold text-gray-700 mb-1">
+                  Название и/или описание товара:
+                </label>
+                <textarea id="raw_text" rows="8" required
+                  placeholder="Вставьте заголовок или сплошное описание карточки товара из маркетплейса..."
+                  class="w-full rounded-xl border border-gray-300 p-3 text-sm focus:border-mvideo-red focus:ring-1 focus:ring-mvideo-red transition"></textarea>
+              </div>
+
+              <button type="submit" id="submit-btn"
+                class="w-full bg-mvideo-red hover:bg-mvideo-darkred text-white font-bold py-3 px-4 rounded-xl shadow-md transition flex items-center justify-center space-x-2 text-sm">
+                <i class="fa-solid fa-wand-magic-sparkles"></i>
+                <span>Извлечь характеристики</span>
+              </button>
+            </form>
+          </div>
+        </div>
+
+        <!-- Правая колонка: Результаты -->
+        <div class="lg:col-span-7 space-y-6">
+          
+          <!-- Плейсхолдер пустого состояния -->
+          <div id="empty-state" class="bg-white rounded-2xl shadow-sm border border-dashed border-gray-300 p-12 text-center text-gray-400">
+            <i class="fa-solid fa-cube text-5xl mb-4 text-gray-300"></i>
+            <h3 class="text-lg font-bold text-gray-700">Ожидание входных данных</h3>
+            <p class="text-sm mt-1 max-w-sm mx-auto">Выберите пример выше или введите текст карточки и нажмите кнопку извлечения.</p>
+          </div>
+
+          <!-- Карточка с результатами -->
+          <div id="results-card" class="hidden bg-white rounded-2xl shadow-sm border border-gray-200 overflow-hidden">
+            
+            <!-- Заголовок карточки результата -->
+            <div class="p-6 border-b border-gray-100 bg-gray-50/50 flex flex-wrap items-center justify-between gap-4">
+              <div>
+                <span class="text-xs font-bold text-gray-500 uppercase tracking-wider">Категория:</span>
+                <span id="category-name" class="ml-2 text-base font-extrabold text-gray-900 bg-white px-3 py-1 rounded-lg border border-gray-200 shadow-xs">
+                  Электроника
+                </span>
+              </div>
+              <div id="status-badge"></div>
+            </div>
+
+            <div id="status-description" class="hidden mx-6 mt-4 p-3 rounded-xl bg-amber-50 border border-amber-200 text-xs text-amber-800 font-medium"></div>
+
+            <!-- Шкала уверенности и пропущенные поля -->
+            <div class="p-6 border-b border-gray-100 grid grid-cols-1 md:grid-cols-2 gap-6">
+              <div>
+                <div class="flex items-center justify-between text-xs font-bold text-gray-600 mb-1">
+                  <span>Общая уверенность (Confidence):</span>
+                  <span id="confidence-value" class="text-sm font-extrabold text-gray-900">0%</span>
+                </div>
+                <div class="w-full bg-gray-200 rounded-full h-2.5">
+                  <div id="confidence-bar" class="h-2.5 rounded-full bg-green-500" style="width: 0%"></div>
+                </div>
+                <p class="text-[11px] text-gray-400 mt-1">Порог автоматического подтверждения: 87%</p>
+              </div>
+
+              <div>
+                <span class="text-xs font-bold text-gray-600 block mb-1">Пропущенные обязательные поля:</span>
+                <div id="missing-tags" class="flex flex-wrap gap-1"></div>
+              </div>
+            </div>
+
+            <!-- Таблица характеристик -->
+            <div class="overflow-x-auto">
+              <table class="w-full text-left text-sm text-gray-600">
+                <thead class="bg-gray-50 text-xs uppercase font-bold text-gray-500 border-b border-gray-100">
+                  <tr>
+                    <th class="px-6 py-3">Характеристика</th>
+                    <th class="px-6 py-3">Значение</th>
+                    <th class="px-6 py-3 text-center">Скор</th>
+                    <th class="px-6 py-3">Источник</th>
+                    <th class="px-6 py-3">Верификация</th>
+                  </tr>
+                </thead>
+                <tbody id="attributes-table" class="divide-y divide-gray-100"></tbody>
+              </table>
+            </div>
+
+            <!-- JSON дебаггер -->
+            <div class="p-6 bg-gray-50 border-t border-gray-100">
+              <div class="flex items-center justify-between mb-2">
+                <span class="text-xs font-bold text-gray-500 uppercase tracking-wider">Машиночитаемый JSON-ответ:</span>
+                <button type="button" id="copy-json-btn" class="text-xs text-gray-600 hover:text-mvideo-red font-medium transition flex items-center">
+                  <i class="fa-regular fa-copy mr-1"></i> Копировать JSON
+                </button>
+              </div>
+              <pre id="json-viewer" class="bg-gray-900 text-gray-100 p-4 rounded-xl text-xs overflow-x-auto max-h-56 code-viewer"></pre>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ==================== ВКЛАДКА 2: ПАКЕТНАЯ ОБРАБОТКА ==================== -->
+    <div id="tab-batch" class="tab-content hidden space-y-6">
+      <div class="bg-white rounded-2xl shadow-sm border border-gray-200 p-6">
+        <h2 class="text-lg font-bold text-gray-900 mb-2 flex items-center">
+          <i class="fa-solid fa-boxes-stacked text-mvideo-red mr-2"></i> Пакетная выгрузка карточек (CSV / JSON)
+        </h2>
+        <p class="text-sm text-gray-500 mb-6">Загрузите файл со списком товаров для извлечения характеристик через неблокирующий пул потоков.</p>
+
+        <!-- Зона Drag & Drop -->
+        <div id="drop-zone" class="border-2 border-dashed border-gray-300 rounded-2xl p-8 text-center hover:border-mvideo-red transition cursor-pointer bg-gray-50/50">
+          <i class="fa-solid fa-cloud-arrow-up text-4xl text-gray-400 mb-3"></i>
+          <p class="text-sm font-bold text-gray-700">Перетащите CSV или JSON файл сюда или нажмите для выбора</p>
+          <p class="text-xs text-gray-400 mt-1">Поддерживаются форматы: .csv, .json (до 50 МБ)</p>
+          <input type="file" id="batch-file-input" accept=".csv,.json" class="hidden">
+          <button type="button" onclick="document.getElementById('batch-file-input').click()" class="mt-4 px-4 py-2 bg-white border border-gray-300 rounded-xl text-xs font-bold text-gray-700 hover:bg-gray-50 shadow-xs transition">
+            Выбрать файл на диске
+          </button>
+        </div>
+
+        <div class="mt-4 flex flex-wrap items-center justify-between gap-4">
+          <div id="file-name-label" class="text-xs font-semibold text-gray-600">Файл не выбран</div>
+          <div class="flex items-center space-x-2">
+            <button id="batch-process-btn" disabled class="px-5 py-2.5 bg-mvideo-red disabled:bg-gray-300 hover:bg-mvideo-darkred text-white text-xs font-bold rounded-xl shadow-xs transition flex items-center space-x-1.5">
+              <i class="fa-solid fa-play"></i>
+              <span>Запустить обработку</span>
+            </button>
+            <button id="batch-export-json-btn" disabled class="px-4 py-2.5 bg-gray-100 disabled:opacity-50 hover:bg-gray-200 text-gray-700 text-xs font-bold rounded-xl transition flex items-center space-x-1.5">
+              <i class="fa-solid fa-file-arrow-down"></i>
+              <span>JSON</span>
+            </button>
+            <button id="batch-export-csv-btn" disabled class="px-4 py-2.5 bg-gray-100 disabled:opacity-50 hover:bg-gray-200 text-gray-700 text-xs font-bold rounded-xl transition flex items-center space-x-1.5">
+              <i class="fa-solid fa-file-csv"></i>
+              <span>CSV</span>
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Сводка результатов пакета -->
+      <div id="batch-results-container" class="hidden bg-white rounded-2xl shadow-sm border border-gray-200 overflow-hidden">
+        <div class="p-4 border-b border-gray-100 bg-gray-50 flex flex-wrap items-center justify-between gap-4">
+          <h3 class="font-bold text-gray-900 text-sm flex items-center">
+            <i class="fa-solid fa-list-check text-mvideo-red mr-2"></i> Результаты пакета (<span id="batch-total-count">0</span>)
+          </h3>
+          <div class="flex items-center space-x-4 text-xs font-semibold">
+            <span class="text-green-700 bg-green-50 px-2 py-0.5 rounded border border-green-200">
+              Одобрено: <b id="batch-approved-count">0</b>
+            </span>
+            <span class="text-yellow-700 bg-yellow-50 px-2 py-0.5 rounded border border-yellow-200">
+              На ревью: <b id="batch-review-count">0</b>
+            </span>
+            <span class="text-red-700 bg-red-50 px-2 py-0.5 rounded border border-red-200">
+              Сбои: <b id="batch-failed-count">0</b>
+            </span>
+          </div>
+        </div>
+        <div class="overflow-x-auto max-h-96">
+          <table class="w-full text-left text-xs text-gray-600">
+            <thead class="bg-gray-50 text-[11px] uppercase font-bold text-gray-500 sticky top-0 border-b border-gray-100">
+              <tr>
+                <th class="px-4 py-2">ID</th>
+                <th class="px-4 py-2">Категория</th>
+                <th class="px-4 py-2 text-center">Скор</th>
+                <th class="px-4 py-2 text-center">Статус</th>
+                <th class="px-4 py-2">Атрибуты</th>
+                <th class="px-4 py-2">Пропущено</th>
+              </tr>
+            </thead>
+            <tbody id="batch-table-body" class="divide-y divide-gray-100"></tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- ==================== ВКЛАДКА 3: ОЧЕРЕДЬ МОДЕРАЦИИ ==================== -->
+    <div id="tab-review" class="tab-content hidden space-y-6">
+      <div class="bg-white rounded-2xl shadow-sm border border-gray-200 p-6">
+        <div class="flex items-center justify-between mb-4">
+          <div>
+            <h2 class="text-lg font-bold text-gray-900 flex items-center">
+              <i class="fa-solid fa-user-check text-mvideo-red mr-2"></i> Очередь ручной модерации (Human-in-the-Loop)
+            </h2>
+            <p class="text-sm text-gray-500">Карточки с уверенностью ниже 87% или пропущенными обязательными полями категории.</p>
+          </div>
+          <button id="refresh-review-btn" class="px-4 py-2 bg-gray-100 hover:bg-gray-200 text-gray-700 font-bold rounded-xl text-xs flex items-center space-x-1.5 transition">
+            <i class="fa-solid fa-rotate"></i>
+            <span>Обновить очередь</span>
+          </button>
+        </div>
+
+        <div id="review-queue-content" class="space-y-4">
+          <p class="text-sm text-gray-400 text-center py-8">Загрузка очереди модерации...</p>
+        </div>
+      </div>
+    </div>
+
+  </main>
+
+  <!-- ==================== ПОДВАЛ (FOOTER) ==================== -->
+  <footer class="bg-white border-t border-gray-200 py-4 mt-auto">
+    <div class="max-w-7xl mx-auto px-4 text-center text-xs text-gray-500">
+      Хакатон VolgaDev 2026 · Кейс М.Видео: «ИИ для автоматического заполнения характеристик товаров»
+    </div>
+  </footer>
+
+  <!-- ==================== МОДУЛЬНЫЕ СКРИПТЫ ==================== -->
+  <script>
+/**
+ * М.Видео AI — Эталонные пресеты карточек товаров каталога
+ * Используются для демонстрации и мгновенного тестирования пайплайна.
+ */
+
+const PRESETS = {
+  samsung: "Смартфон Samsung Galaxy A32 White обладает безрамочным 6,4-дюймовым дисплеем разрешением 1080х2400 пикселей, который создан по технологии SuperAMOLED. В основе девайса лежит восьмиядерный процессор MediaTek, который работает при поддержке оперативной памяти объемом 6 Гб. Объем встроенной памяти равен 128 Гб. Корпус выполнен из пластика. Аккумулятор емкостью 5000 мА*ч поддерживает быструю зарядку. Вес модели равен 184 г.",
+  lenovo: "Ноутбук Lenovo IdeaPad 3 Gen7 82RK003TRU оборудован шестиядерным процессором Intel Core i3 1215U 1.2 ГГц. Конфигурацией устройства предусмотрено наличие экрана разрешением 1920х1080 пикселей и диагональю 15,6\". Частота обновления экрана составляет 60 Гц. Оперативный модуль для хранения данных обладает объемом 8 ГБ, объем жесткого диска — 512 ГБ.",
+  washing: "Стиральная машина Haier HW60-1010FD 6 кг 1000 об/мин белый цвет. Вместительный барабан на 6 кг белья, высокая скорость отжима 1000 об/мин, класс энергопотребления А. Загрузка 6 кг.",
+  sony_tv: "Телевизор Sony KD50X85TJ с экраном, созданным на основе матрицы Triluminos Pro. Его диагональ — 50 дюймов, разрешение — 3840 х 2160 пикселей. Фирменный процессор X1 обеспечивает масштабирование изображения до 4K Ultra HD. В модели реализованы технологии HDR10, HLG и X-Reality Pro 1000. Мощность фронтальных динамиков — 20 Вт.",
+  vacuum: "Робот-пылесос Mi Robot Vacuum-Mop P White (SKV4110GL) справится с сухой и влажной уборкой совершенно без вашего участия. Цвет корпуса: белый. Модель оснащена 11 датчиками определения препятствий. Емкий аккумулятор обеспечивает до 1 часа 50 минут непрерывной работы.",
+  fridge: "Холодильник AEG RCR736E5MB оснащен зоной свежести объемом 22 л. Морозильная камера с тремя ящиками не требует разморозки (No Frost). Сенсорный дисплей отображает режим работы и температуру. Мощность замораживания составляет 8 кг в сутки. Цвет: черный металлик.",
+  iphone16: "Смартфон Apple iPhone 16 Plus 128GB Pink с диагональю 6.7 дюймов OLED Super Retina XDR 60 Гц, чип Apple A18. Емкость аккумулятора 4674 мАч. Цвет: розовый."
+};
+
+window.PRESETS = PRESETS;
+
+</script>
+<script>
+/**
+ * М.Видео AI — Модуль взаимодействия с Backend API
+ * Инкапсулирует сетевые вызовы к REST-эндпоинтам сервиса.
+ */
+
+class ApiService {
+  constructor(baseUrl = '') {
+    if (!baseUrl && typeof window !== 'undefined' && window.location.protocol === 'file:') {
+      this.baseUrl = 'http://localhost:8000';
+    } else {
+      this.baseUrl = baseUrl;
+    }
+  }
+
+  /**
+   * Извлечение характеристик для одиночной карточки товара.
+   * @param {Object} cardData - { title, description, raw_text, category, seller_attributes }
+   * @returns {Promise<Object>} CardOut результат извлечения
+   */
+  async extractSingle(cardData) {
+    const response = await fetch(`${this.baseUrl}/api/extract`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Accept': 'application/json',
+      },
+      body: JSON.stringify(cardData),
+    });
+
+    if (!response.ok) {
+      const errorText = await response.text();
+      throw new Error(`Ошибка сервера (${response.status}): ${errorText}`);
+    }
+
+    return await response.json();
+  }
+
+  /**
+   * Пакетная обработка файла CSV/JSON со списком карточек.
+   * @param {File} file
+   * @returns {Promise<Object>} BatchOut
+   */
+  async extractBatch(file) {
+    const formData = new FormData();
+    formData.append('file', file);
+
+    const response = await fetch(`${this.baseUrl}/api/extract/batch`, {
+      method: 'POST',
+      body: formData,
+    });
+
+    if (!response.ok) {
+      const errorText = await response.text();
+      throw new Error(`Ошибка пакетной обработки (${response.status}): ${errorText}`);
+    }
+
+    return await response.json();
+  }
+
+  /**
+   * Экспорт стандартизированных предсказаний в CSV или JSON.
+   * @param {File} file
+   * @param {'json'|'csv'} format
+   * @returns {Promise<Blob>}
+   */
+  async exportBatch(file, format = 'json') {
+    const formData = new FormData();
+    formData.append('file', file);
+
+    const response = await fetch(`${this.baseUrl}/api/extract/export?output_format=${format}`, {
+      method: 'POST',
+      body: formData,
+    });
+
+    if (!response.ok) {
+      throw new Error(`Ошибка экспорта (${response.status}): ${response.statusText}`);
+    }
+
+    return await response.blob();
+  }
+
+  /**
+   * Загрузка очереди карточек для ручной проверки Human-in-the-Loop.
+   * @param {number} limit
+   * @returns {Promise<Object>} ReviewQueueResponse
+   */
+  async getReviewQueue(limit = 25) {
+    const response = await fetch(`${this.baseUrl}/api/extract/review-queue?limit=${limit}`);
+    if (!response.ok) {
+      throw new Error(`Не удалось загрузить очередь модерации (${response.status})`);
+    }
+    return await response.json();
+  }
+
+  /**
+   * Отправка решения оператора модерации.
+   * @param {Object} overrideData - { external_id, attribute, override_value, action, reviewed_by }
+   * @returns {Promise<Object>}
+   */
+  async submitReviewOverride(overrideData) {
+    const response = await fetch(`${this.baseUrl}/api/extract/review-override`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(overrideData),
+    });
+
+    if (!response.ok) {
+      throw new Error(`Не удалось сохранить решение (${response.status})`);
+    }
+
+    return await response.json();
+  }
+
+  /**
+   * Проверка состояния здоровья сервиса (Health Check).
+   * @returns {Promise<Object>}
+   */
+  async checkHealth() {
+    try {
+      const response = await fetch(`${this.baseUrl}/health`);
+      if (response.ok) {
+        return await response.json();
+      }
+      return { ok: false };
+    } catch {
+      return { ok: false };
+    }
+  }
+
+  /**
+   * Получение таксономии каталога и поддерживаемых категорий.
+   * @returns {Promise<Object>}
+   */
+  async getTaxonomy() {
+    const response = await fetch(`${this.baseUrl}/api/extract/taxonomy`);
+    if (!response.ok) {
+      throw new Error(`Не удалось загрузить таксономию (${response.status})`);
+    }
+    return await response.json();
+  }
+
+  /**
+   * Получение эталонного отчета качества per-attribute.
+   * @returns {Promise<Object>}
+   */
+  async getMetrics() {
+    const response = await fetch(`${this.baseUrl}/api/extract/metrics`);
+    if (!response.ok) {
+      throw new Error(`Не удалось загрузить отчет метрик (${response.status})`);
+    }
+    return await response.json();
+  }
+}
+
+window.apiService = new ApiService();
+
+</script>
+<script>
+/**
+ * М.Видео AI — Модуль рендеринга и презентации данных (Views & Components)
+ * Формирует визуальное представление результатов работы моделей и очередей.
+ */
+
+const RenderService = {
+  /**
+   * Отрисовка результатов извлечения одиночной карточки.
+   * @param {Object} data - CardOut
+   */
+  renderSingleResults(data) {
+    document.getElementById('empty-state').classList.add('hidden');
+    document.getElementById('results-card').classList.remove('hidden');
+
+    // 1. Категория товара
+    const catBadge = document.getElementById('category-name');
+    if (catBadge) {
+      catBadge.innerText = data.category || 'Электроника';
+    }
+
+    // 2. Общая уверенность карточки
+    const conf = Math.round((data.overall_confidence || 0) * 100);
+    const confValEl = document.getElementById('confidence-value');
+    if (confValEl) confValEl.innerText = `${conf}%`;
+
+    const barEl = document.getElementById('confidence-bar');
+    if (barEl) {
+      barEl.style.width = `${conf}%`;
+      barEl.className = 'h-2.5 rounded-full transition-all duration-500 ' +
+        (conf >= 87 ? 'bg-green-500' : (conf >= 60 ? 'bg-yellow-500' : 'bg-red-500'));
+    }
+
+    // 3. Статус валидации и публикация
+    const statusBadge = document.getElementById('status-badge');
+    if (statusBadge) {
+      if (data.needs_review) {
+        statusBadge.className = 'inline-flex items-center px-3 py-1 rounded-full text-xs font-bold bg-yellow-100 text-yellow-800 border border-yellow-200';
+        statusBadge.innerHTML = `<i class="fa-solid fa-triangle-exclamation mr-1.5"></i> Требует проверки (HITL)`;
+      } else if (data.status === 'degraded_success') {
+        statusBadge.className = 'inline-flex items-center px-3 py-1 rounded-full text-xs font-bold bg-blue-100 text-blue-800 border border-blue-200';
+        statusBadge.innerHTML = `<i class="fa-solid fa-bolt mr-1.5"></i> Одобрено (Fast Mode)`;
+      } else {
+        statusBadge.className = 'inline-flex items-center px-3 py-1 rounded-full text-xs font-bold bg-green-100 text-green-800 border border-green-200';
+        statusBadge.innerHTML = `<i class="fa-solid fa-circle-check mr-1.5"></i> Опубликовано в каталог`;
+      }
+    }
+
+    // 4. Пояснение причин модерации
+    const statusDescEl = document.getElementById('status-description');
+    if (statusDescEl) {
+      if (data.status_description) {
+        statusDescEl.innerText = data.status_description;
+        statusDescEl.classList.remove('hidden');
+      } else {
+        statusDescEl.classList.add('hidden');
+      }
+    }
+
+    // 5. Пропущенные обязательные атрибуты
+    const missingTags = document.getElementById('missing-tags');
+    if (missingTags) {
+      if (data.missing && data.missing.length > 0) {
+        missingTags.innerHTML = data.missing
+          .map(m => `<span class="bg-gray-100 px-2 py-0.5 rounded text-gray-700 mr-1 font-mono text-xs">${m}</span>`)
+          .join('');
+      } else {
+        missingTags.innerHTML = `<span class="text-green-600 font-bold text-xs"><i class="fa-solid fa-check mr-1"></i>Все обязательные поля закрыты (100%)</span>`;
+      }
+    }
+
+    // 6. Таблица извлеченных характеристик
+    const table = document.getElementById('attributes-table');
+    table.innerHTML = '';
+    const preds = data.predictions || [];
+    const countEl = document.getElementById('attr-count');
+    if (countEl) countEl.innerText = preds.length;
+
+    preds.forEach(p => {
+      const tr = document.createElement('tr');
+      tr.className = 'hover:bg-gray-50 transition border-b border-gray-100';
+
+      const pConf = Math.round((p.confidence || 0) * 100);
+      const pBadgeColor = pConf >= 87
+        ? 'bg-green-100 text-green-800'
+        : (pConf >= 60 ? 'bg-yellow-100 text-yellow-800' : 'bg-red-100 text-red-800');
+
+      let consensusTag = '';
+      if (p.consensus) {
+        consensusTag = `<span class="inline-flex items-center text-xs font-bold text-indigo-700 bg-indigo-50 px-2.5 py-0.5 rounded-full border border-indigo-200" title="${p.confidence_reason || ''}"><i class="fa-solid fa-handshake mr-1"></i> Консенсус</span>`;
+      } else if (p.status === 'valid' || p.status === 'high_confidence') {
+        consensusTag = `<span class="text-xs text-green-600 font-medium" title="${p.confidence_reason || ''}"><i class="fa-solid fa-check mr-1"></i> Верифицировано</span>`;
+      } else {
+        consensusTag = `<span class="text-xs text-amber-600 font-medium" title="${p.confidence_reason || ''}"><i class="fa-solid fa-triangle-exclamation mr-1"></i> Требует внимания</span>`;
+      }
+
+      tr.innerHTML = `
+        <td class="px-6 py-4 font-bold text-gray-900">${p.attribute}</td>
+        <td class="px-6 py-4 text-gray-800 font-medium">${p.value}</td>
+        <td class="px-6 py-4 text-center">
+          <span class="inline-block px-2.5 py-0.5 rounded-full text-xs font-bold ${pBadgeColor}">${pConf}%</span>
+        </td>
+        <td class="px-6 py-4 text-gray-500 font-mono text-xs">
+          <span class="bg-gray-100 px-2 py-0.5 rounded font-bold">${p.source}</span>
+        </td>
+        <td class="px-6 py-4">${consensusTag}</td>
+      `;
+      table.appendChild(tr);
+    });
+
+    // 7. JSON-представление
+    const jsonViewer = document.getElementById('json-viewer');
+    if (jsonViewer) {
+      jsonViewer.innerText = JSON.stringify(data, null, 2);
+    }
+  },
+
+  /**
+   * Отрисовка сводных и табличных результатов пакетной обработки.
+   * @param {Object} data - BatchOut
+   */
+  renderBatchResults(data) {
+    const container = document.getElementById('batch-results-container');
+    container.classList.remove('hidden');
+
+    document.getElementById('batch-total-count').innerText = data.total || 0;
+    
+    // Агрегированные метрики пакета
+    const approvedEl = document.getElementById('batch-approved-count');
+    if (approvedEl) approvedEl.innerText = data.approved_count || 0;
+
+    const reviewEl = document.getElementById('batch-review-count');
+    if (reviewEl) reviewEl.innerText = data.needs_review_count || 0;
+
+    const failedEl = document.getElementById('batch-failed-count');
+    if (failedEl) failedEl.innerText = data.failed_count || 0;
+
+    const tbody = document.getElementById('batch-table-body');
+    tbody.innerHTML = '';
+
+    (data.cards || []).forEach(c => {
+      const tr = document.createElement('tr');
+      tr.className = 'hover:bg-gray-50 transition border-b border-gray-100';
+
+      const conf = Math.round((c.overall_confidence || 0) * 100);
+      const statusClass = c.status === 'approved'
+        ? 'bg-green-100 text-green-800 border-green-200'
+        : (c.status === 'failed' ? 'bg-red-100 text-red-800 border-red-200' : 'bg-yellow-100 text-yellow-800 border-yellow-200');
+
+      tr.innerHTML = `
+        <td class="px-4 py-3 font-mono text-xs font-bold">${c.external_id || '-'}</td>
+        <td class="px-4 py-3 font-medium text-gray-900">${c.category || '-'}</td>
+        <td class="px-4 py-3 text-center font-bold">${conf}%</td>
+        <td class="px-4 py-3 text-center">
+          <span class="px-2.5 py-0.5 rounded-full text-xs font-bold border ${statusClass}">${c.status}</span>
+        </td>
+        <td class="px-4 py-3 font-mono text-xs">${(c.predictions || []).length} полей</td>
+        <td class="px-4 py-3 text-xs text-gray-500">${(c.missing || []).join(', ') || '—'}</td>
+      `;
+      tbody.appendChild(tr);
+    });
+  },
+
+  /**
+   * Отрисовка очереди карточек модерации Human-in-the-Loop.
+   * @param {Array} items
+   * @param {Function} onAction - callback(extId, attr, action)
+   */
+  renderReviewQueue(items, onAction) {
+    const cont = document.getElementById('review-queue-content');
+
+    if (!items || items.length === 0) {
+      cont.innerHTML = `
+        <div class="text-center py-12 text-gray-500">
+          <i class="fa-solid fa-circle-check text-green-500 text-5xl mb-3"></i>
+          <p class="font-bold text-gray-800 text-base">Очередь модерации пуста!</p>
+          <p class="text-xs text-gray-400 mt-1">Все карточки успешно проверены и согласованы автоматическим консенсусом.</p>
+        </div>
+      `;
+      return;
+    }
+
+    cont.innerHTML = '';
+    items.forEach(item => {
+      const cardEl = document.createElement('div');
+      cardEl.className = 'border border-gray-200 rounded-xl p-4 hover:border-gray-300 transition space-y-3 bg-white shadow-xs';
+
+      const conf = Math.round((item.overall_confidence || 0) * 100);
+      const reasons = (item.review_reasons || []).join('; ') || 'Требуется подтверждение оператора';
+
+      cardEl.innerHTML = `
+        <div class="flex items-center justify-between">
+          <div>
+            <span class="font-bold text-gray-900">${item.title || item.external_id || 'Товар'}</span>
+            <span class="ml-2 text-xs bg-gray-100 text-gray-700 px-2 py-0.5 rounded font-mono">${item.category || ''}</span>
+          </div>
+          <span class="text-xs font-bold px-2.5 py-0.5 rounded-full bg-yellow-100 text-yellow-800">${conf}%</span>
+        </div>
+        <p class="text-xs text-red-600 font-medium"><i class="fa-solid fa-circle-exclamation mr-1"></i> Причина: ${reasons}</p>
+        <div class="flex items-center justify-end space-x-2 pt-2 border-t border-gray-100">
+          <button data-action="approve" data-id="${item.external_id}" class="btn-review-approve px-3 py-1 bg-green-50 text-green-700 hover:bg-green-100 rounded-lg text-xs font-bold transition">
+            <i class="fa-solid fa-check mr-1"></i> Одобрить
+          </button>
+          <button data-action="reject" data-id="${item.external_id}" class="btn-review-reject px-3 py-1 bg-red-50 text-red-700 hover:bg-red-100 rounded-lg text-xs font-bold transition">
+            <i class="fa-solid fa-xmark mr-1"></i> Отклонить
+          </button>
+        </div>
+      `;
+
+      // Навешивание обработчиков кнопок
+      cardEl.querySelector('.btn-review-approve').addEventListener('click', () => onAction(item.external_id, 'brand', 'approve'));
+      cardEl.querySelector('.btn-review-reject').addEventListener('click', () => onAction(item.external_id, 'brand', 'reject'));
+
+      cont.appendChild(cardEl);
+    });
+  }
+};
+
+window.RenderService = RenderService;
+
+</script>
+<script>
+/**
+ * М.Видео AI — Главный контроллер пользовательского интерфейса (App Controller)
+ * Инициализирует обработчики событий, управляет жизненным циклом и маршрутизацией вкладок.
+ */
+
+document.addEventListener('DOMContentLoaded', () => {
+  let selectedBatchFile = null;
+  let lastSingleResponse = null;
+
+  // Инициализация сервисов
+  const api = window.apiService;
+  const render = window.RenderService;
+  const presets = window.PRESETS || {};
+
+  // ----------------- Переключение вкладок -----------------
+  function switchTab(tabId) {
+    document.querySelectorAll('.tab-content').forEach(el => el.classList.add('hidden'));
+    const targetTab = document.getElementById(`tab-${tabId}`);
+    if (targetTab) targetTab.classList.remove('hidden');
+
+    ['single', 'batch', 'review'].forEach(t => {
+      const btn = document.getElementById(`tab-btn-${t}`);
+      if (!btn) return;
+      if (t === tabId) {
+        btn.className = 'px-4 py-2 rounded-lg bg-white shadow-sm text-gray-900 transition flex items-center space-x-2';
+      } else {
+        btn.className = 'px-4 py-2 rounded-lg text-gray-600 hover:text-gray-900 transition flex items-center space-x-2';
+      }
+    });
+
+    if (tabId === 'review') {
+      loadReviewQueue();
+    }
+  }
+
+  // Навешиваем слушатели на кнопки переключения вкладок
+  document.getElementById('tab-btn-single')?.addEventListener('click', () => switchTab('single'));
+  document.getElementById('tab-btn-batch')?.addEventListener('click', () => switchTab('batch'));
+  document.getElementById('tab-btn-review')?.addEventListener('click', () => switchTab('review'));
+
+  // ----------------- Быстрые пресеты -----------------
+  document.querySelectorAll('[data-preset]').forEach(btn => {
+    btn.addEventListener('click', (e) => {
+      const key = e.currentTarget.getAttribute('data-preset');
+      const text = presets[key];
+      const inputEl = document.getElementById('raw_text');
+      if (inputEl && text) {
+        inputEl.value = text;
+        inputEl.focus();
+      }
+    });
+  });
+
+  // ----------------- Одиночное извлечение -----------------
+  const singleForm = document.getElementById('single-form');
+  singleForm?.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const btn = document.getElementById('submit-btn');
+    const rawTextEl = document.getElementById('raw_text');
+    const rawText = rawTextEl ? rawTextEl.value.trim() : '';
+
+    if (!rawText) return;
+
+    btn.disabled = true;
+    btn.innerHTML = `<i class="fa-solid fa-circle-notch fa-spin mr-2"></i><span>Извлечение характеристик...</span>`;
+
+    try {
+      const data = await api.extractSingle({ raw_text: rawText });
+      lastSingleResponse = data;
+      render.renderSingleResults(data);
+    } catch (err) {
+      alert(`Ошибка при обработке: ${err.message}`);
+    } finally {
+      btn.disabled = false;
+      btn.innerHTML = `<i class="fa-solid fa-wand-magic-sparkles mr-2"></i><span>Извлечь характеристики</span>`;
+    }
+  });
+
+  // Копирование JSON
+  document.getElementById('copy-json-btn')?.addEventListener('click', () => {
+    if (!lastSingleResponse) return;
+    navigator.clipboard.writeText(JSON.stringify(lastSingleResponse, null, 2));
+    alert('JSON-ответ успешно скопирован в буфер обмена!');
+  });
+
+  // ----------------- Пакетная обработка -----------------
+  const fileInput = document.getElementById('batch-file-input');
+  const dropZone = document.getElementById('drop-zone');
+
+  function updateSelectedFile(file) {
+    if (!file) return;
+    selectedBatchFile = file;
+    const label = document.getElementById('file-name-label');
+    if (label) {
+      label.innerText = `Выбран файл: ${file.name} (${Math.round(file.size / 1024)} КБ)`;
+    }
+    const processBtn = document.getElementById('batch-process-btn');
+    if (processBtn) processBtn.disabled = false;
+
+    const expJsonBtn = document.getElementById('batch-export-json-btn');
+    if (expJsonBtn) expJsonBtn.disabled = false;
+
+    const expCsvBtn = document.getElementById('batch-export-csv-btn');
+    if (expCsvBtn) expCsvBtn.disabled = false;
+  }
+
+  fileInput?.addEventListener('change', (e) => {
+    updateSelectedFile(e.target.files[0]);
+  });
+
+  // Drag & Drop
+  if (dropZone) {
+    ['dragenter', 'dragover'].forEach(eventName => {
+      dropZone.addEventListener(eventName, (e) => {
+        e.preventDefault();
+        dropZone.classList.add('drag-over');
+      });
+    });
+
+    ['dragleave', 'drop'].forEach(eventName => {
+      dropZone.addEventListener(eventName, (e) => {
+        e.preventDefault();
+        dropZone.classList.remove('drag-over');
+      });
+    });
+
+    dropZone.addEventListener('drop', (e) => {
+      const files = e.dataTransfer.files;
+      if (files && files.length > 0) {
+        updateSelectedFile(files[0]);
+      }
+    });
+  }
+
+  // Запуск пакетной обработки
+  document.getElementById('batch-process-btn')?.addEventListener('click', async () => {
+    if (!selectedBatchFile) return;
+    const btn = document.getElementById('batch-process-btn');
+    btn.disabled = true;
+    btn.innerHTML = `<i class="fa-solid fa-circle-notch fa-spin mr-2"></i><span>Обработка пакета...</span>`;
+
+    try {
+      const data = await api.extractBatch(selectedBatchFile);
+      render.renderBatchResults(data);
+    } catch (err) {
+      alert(`Ошибка при пакетной обработке: ${err.message}`);
+    } finally {
+      btn.disabled = false;
+      btn.innerHTML = `<i class="fa-solid fa-play mr-2"></i><span>Запустить пакетную обработку</span>`;
+    }
+  });
+
+  // Экспорт пакета
+  async function triggerExport(fmt) {
+    if (!selectedBatchFile) return;
+    try {
+      const blob = await api.exportBatch(selectedBatchFile, fmt);
+      const url = window.URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = `predictions.${fmt}`;
+      document.body.appendChild(a);
+      a.click();
+      a.remove();
+    } catch (err) {
+      alert(`Ошибка при экспорте: ${err.message}`);
+    }
+  }
+
+  document.getElementById('batch-export-json-btn')?.addEventListener('click', () => triggerExport('json'));
+  document.getElementById('batch-export-csv-btn')?.addEventListener('click', () => triggerExport('csv'));
+
+  // ----------------- Очередь модерации (HITL) -----------------
+  async function loadReviewQueue() {
+    const cont = document.getElementById('review-queue-content');
+    if (cont) {
+      cont.innerHTML = `<p class="text-sm text-gray-400 text-center py-8"><i class="fa-solid fa-spinner fa-spin mr-2"></i> Загрузка очереди...</p>`;
+    }
+
+    try {
+      const data = await api.getReviewQueue(25);
+      render.renderReviewQueue(data.items || [], handleReviewAction);
+    } catch (err) {
+      if (cont) {
+        cont.innerHTML = `<p class="text-sm text-red-500 text-center py-8">Ошибка: ${err.message}</p>`;
+      }
+    }
+  }
+
+  async function handleReviewAction(extId, attr, action) {
+    try {
+      await api.submitReviewOverride({
+        external_id: extId,
+        attribute: attr,
+        override_value: action === 'approve' ? 'Confirmed by operator' : 'Rejected by operator',
+        action: action,
+        reviewed_by: 'web-moderator',
+      });
+      alert(`Решение (${action}) успешно сохранено!`);
+      loadReviewQueue();
+    } catch (err) {
+      alert(`Ошибка сохранения: ${err.message}`);
+    }
+  }
+
+  document.getElementById('refresh-review-btn')?.addEventListener('click', loadReviewQueue);
+
+  // ----------------- Проверка статуса сервера -----------------
+  async function pollServerHealth() {
+    const statusEl = document.getElementById('api-status');
+    if (!statusEl) return;
+    const health = await api.checkHealth();
+    if (health.ok) {
+      statusEl.className = 'flex items-center text-xs text-green-700 bg-green-50 px-2.5 py-1 rounded-full border border-green-200';
+      statusEl.innerHTML = `<span class="w-2 h-2 rounded-full bg-green-500 mr-1.5 status-dot-pulse"></span>Сервер онлайн`;
+    } else {
+      statusEl.className = 'flex items-center text-xs text-red-700 bg-red-50 px-2.5 py-1 rounded-full border border-red-200';
+      statusEl.innerHTML = `<span class="w-2 h-2 rounded-full bg-red-500 mr-1.5"></span>Сервер оффлайн`;
+    }
+  }
+
+  pollServerHealth();
+});
+
+</script>
+</body>
+</html>

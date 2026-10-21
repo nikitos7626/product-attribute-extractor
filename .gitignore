@@ -64,3 +64,6 @@ backend/scripts/inspect_*.py
 .env
 .env.*
 !.env.example
+
+*.zip
+dist_staging/

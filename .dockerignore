@@ -1,0 +1,12 @@
+.git
+.gitignore
+__pycache__
+*.pyc
+*.pyo
+.pytest_cache
+.mypy_cache
+.ruff_cache
+dist_staging
+product-attribute-extractor.zip
+build_distribution.py
+*.pkl

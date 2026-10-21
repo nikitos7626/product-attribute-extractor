@@ -5,7 +5,11 @@
 
 class ApiService {
   constructor(baseUrl = '') {
-    this.baseUrl = baseUrl;
+    if (!baseUrl && typeof window !== 'undefined' && window.location.protocol === 'file:') {
+      this.baseUrl = 'http://localhost:8000';
+    } else {
+      this.baseUrl = baseUrl;
+    }
   }
 
   /**
