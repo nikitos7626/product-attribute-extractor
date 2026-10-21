@@ -120,7 +120,7 @@ with zipfile.ZipFile(zip_path, "w", zipfile.ZIP_DEFLATED) as zf:
     for root, dirs, files in os.walk(staging_dir):
         for f in files:
             full_path = Path(root) / f
-            arc_name = full_path.relative_to(staging_dir.parent)
+            arc_name = full_path.relative_to(staging_dir)
             zf.write(full_path, arc_name)
 
 print(f"Created ZIP archive at {zip_path} ({zip_path.stat().st_size / (1024*1024):.2f} MB)")
@@ -143,7 +143,7 @@ for desktop in DESKTOPS:
             shutil.rmtree(target_dir)
         except Exception as e:
             print(f"Warning removing {target_dir}: {e}")
-    shutil.copytree(staging_dir, target_dir, ignore=ignore_patterns)
+    shutil.copytree(staging_dir, target_dir, dirs_exist_ok=True, ignore=ignore_patterns)
     print(f"  -> Project folder deployed: {str(target_dir)}")
 
     # 2. Target ZIP
