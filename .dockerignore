@@ -10,3 +10,4 @@ dist_staging
 product-attribute-extractor.zip
 build_distribution.py
 *.pkl
+.codebase-memory

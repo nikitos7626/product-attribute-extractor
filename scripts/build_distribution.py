@@ -89,7 +89,7 @@ INCLUDE_PATTERNS = [
 def ignore_patterns(path, names):
     ignored = set()
     for name in names:
-        if name in ("__pycache__", ".pytest_cache", ".git", ".mypy_cache", ".ruff_cache", "skus.pkl", "dist_staging"):
+        if name in ("__pycache__", ".pytest_cache", ".git", ".mypy_cache", ".ruff_cache", "skus.pkl", "dist_staging", ".codebase-memory"):
             ignored.add(name)
         elif name.endswith((".pyc", ".pyo")):
             ignored.add(name)
