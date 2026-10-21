@@ -187,19 +187,47 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   }
 
-  async function handleReviewAction(extId, attr, action) {
+  async function handleReviewAction(extId, attr, action, newAttrs) {
     try {
-      await api.submitReviewOverride({
+      const payload = {
         external_id: extId,
-        attribute: attr,
-        override_value: action === 'approve' ? 'Confirmed by operator' : 'Rejected by operator',
         action: action,
         reviewed_by: 'web-moderator',
-      });
-      alert(`Решение (${action}) успешно сохранено!`);
-      loadReviewQueue();
+      };
+      if (newAttrs) {
+        payload.attributes = newAttrs;
+      }
+      if (attr && attr !== 'all') {
+        payload.attribute = attr;
+      }
+
+      await api.submitReviewOverride(payload);
+
+      // Анимация успешного удаления карточки из очереди
+      const cardEl = document.getElementById(`queue-card-${extId}`);
+      if (cardEl) {
+        cardEl.style.transition = 'all 0.35s ease';
+        cardEl.style.opacity = '0';
+        cardEl.style.transform = 'translateX(25px)';
+        setTimeout(() => {
+          cardEl.remove();
+          const cont = document.getElementById('review-queue-content');
+          if (cont && cont.children.length === 0) {
+            loadReviewQueue();
+          }
+        }, 350);
+      } else {
+        loadReviewQueue();
+      }
+
+      // Обновляем бейдж счетчика, если есть
+      const countEl = document.getElementById('review-queue-badge');
+      if (countEl) {
+        const cur = parseInt(countEl.innerText) || 0;
+        if (cur > 0) countEl.innerText = cur - 1;
+      }
     } catch (err) {
-      alert(`Ошибка сохранения: ${err.message}`);
+      alert(`Ошибка сохранения решения: ${err.message}`);
     }
   }
 

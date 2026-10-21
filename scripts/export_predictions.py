@@ -91,6 +91,7 @@ def export_predictions(
             "external_id": ext_id,
             "title": title,
             "category": res.get("category"),
+            "raw_text": raw_text,
             "overall_confidence": round(res.get("overall_confidence", 0.0), 4),
             "needs_review": res.get("needs_review", False),
             "extracted_attributes": flat_preds,

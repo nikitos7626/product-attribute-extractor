@@ -207,16 +207,12 @@ class BatchOut(BaseModel):
 
 
 class ReviewOverrideIn(BaseModel):
-
     external_id: str
-
-    attribute: str
-
-    override_value: str
-
+    attribute: str | None = None
+    override_value: str | None = None
+    attributes: dict[str, Any] | None = None
     action: str = "override"  # override | approve | reject
-
-    reviewed_by: str = "operator"
+    reviewed_by: str = "operator" 
 
 
 
