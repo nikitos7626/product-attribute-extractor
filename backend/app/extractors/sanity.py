@@ -70,6 +70,17 @@ class AttributeSanityValidator:
             "memory_ram", "cleaning_type", "defrost_system", "power", "cpu",
             "os", "volume",
         },
+        "headphones_wired": {
+            "working_time", "battery",
+            "screen_diagonal", "refresh_rate", "resolution", "memory_rom",
+            "memory_ram", "cleaning_type", "defrost_system", "power", "cpu",
+            "os", "volume",
+        },
+        "headphones_wireless": {
+            "screen_diagonal", "refresh_rate", "resolution", "memory_rom",
+            "memory_ram", "cleaning_type", "defrost_system", "power", "cpu",
+            "os", "volume",
+        },
         "tvs": {
             "cleaning_type", "defrost_system", "battery", "memory_ram",
             "working_time", "cpu", "os", "memory_rom", "volume", "warranty",
@@ -119,7 +130,9 @@ class AttributeSanityValidator:
         "tv": {"brand", "model", "screen_diagonal", "resolution", "refresh_rate", "color", "power", "display_tech"},
         "vacuum_cleaners": {"brand", "model", "power", "cleaning_type", "battery", "weight", "color", "working_time", "volume"},
         "refrigerators": {"brand", "model", "defrost_system", "color", "volume", "warranty", "dimensions", "weight"},
-        "headphones": {"brand", "model", "color", "weight", "working_time"},
+        "headphones": {"brand", "model", "color", "weight", "working_time", "connection_type"},
+        "headphones_wired": {"brand", "model", "color", "weight", "connection_type"},
+        "headphones_wireless": {"brand", "model", "color", "weight", "working_time", "battery", "connection_type"},
         "powerbanks": {"brand", "model", "battery", "color", "power", "weight"},
         "microwaves": {"brand", "model", "volume", "power", "color", "weight"},
         "tablets": {"brand", "model", "memory_rom", "memory_ram", "screen_diagonal", "battery", "color", "cpu", "os", "weight", "resolution", "refresh_rate"},
@@ -156,7 +169,37 @@ class AttributeSanityValidator:
     }
 
     @classmethod
-    def is_valid(cls, attr_name: str, value: str, category_key: str = "default") -> bool:
+    def is_wired_headphones(cls, text: str) -> bool:
+        """Определяет, являются ли наушники чисто проводными (нет Bluetooth/TWS/аккумулятора)."""
+        if not text:
+            return False
+        t = str(text).lower()
+        has_wireless = bool(re.search(
+            r"\b(?:беспроводн\w*|bluetooth|блютуз|tws|true\s*wireless|wireless|радиоканал|airpods|buds|freebuds|earbuds|airdots)\b",
+            t,
+            re.IGNORECASE,
+        ))
+        has_wired = bool(re.search(
+            r"\b(?:проводн\w*|кабел\w*|с\s+проводом|по\s+проводу|3\.5\s*мм|3\.5mm|mini-?jack|jack\s*3\.5|штекер|проводное|проводной|wired)\b",
+            t,
+            re.IGNORECASE,
+        ))
+        return has_wired and not has_wireless
+
+    @classmethod
+    def is_wireless_headphones(cls, text: str) -> bool:
+        """Определяет, являются ли наушники беспроводными (Bluetooth / TWS / радиоканал)."""
+        if not text:
+            return False
+        t = str(text).lower()
+        return bool(re.search(
+            r"\b(?:беспроводн\w*|bluetooth|блютуз|tws|true\s*wireless|wireless|радиоканал|airpods|buds|freebuds|earbuds|airdots)\b",
+            t,
+            re.IGNORECASE,
+        ))
+
+    @classmethod
+    def is_valid(cls, attr_name: str, value: str, category_key: str = "default", raw_text: str | None = None) -> bool:
         """
         Главная точка входа. Возвращает True, только если значение физически правдоподобно.
         """
@@ -164,6 +207,12 @@ class AttributeSanityValidator:
             return False
 
         val_lower = str(value).lower().strip()
+
+        if category_key == "headphones" and raw_text:
+            if cls.is_wired_headphones(raw_text):
+                category_key = "headphones_wired"
+            elif cls.is_wireless_headphones(raw_text):
+                category_key = "headphones_wireless"
 
         # 1. Проверка на соответствие белому списку атрибутов категории датасета
         if category_key and category_key != "default" and category_key in cls.ALLOWED_ATTRS_BY_CATEGORY:
@@ -193,7 +242,9 @@ class AttributeSanityValidator:
                 return 1000 <= val_mah <= 20000
             elif category_key == "smart_watches":
                 return 100 <= val_mah <= 1200
-            elif category_key == "headphones":
+            elif category_key == "headphones_wired":
+                return False
+            elif category_key in ("headphones", "headphones_wireless"):
                 return 25 <= val_mah <= 1500
             elif category_key == "vacuum_cleaners":
                 return 1000 <= val_mah <= 15000
@@ -375,7 +426,7 @@ class AttributeSanityValidator:
                 "изделие", "оборудование", "аппарат", "штука", "деталь", "запчасть",
                 "экран", "дисплей", "память", "батарея",
                 "аккумулятор", "чехол", "стекло", "зарядка", "оригинал", "новый", "новые", "новинка",
-                "гб", "gb", "мач", "mah", "tws", "anc", "bluetooth", "блютуз", "wireless", "беспроводной"
+                "гб", "gb", "мач", "mah", "tws", "anc", "bluetooth", "блютуз", "wireless", "true", "wired", "беспроводной", "проводной"
             }
             if category_key in ("smartphones", "laptops", "tablets", "tvs", "vacuum_cleaners", "refrigerators", "headphones", "desktops"):
                 bad_brand_words.update({
@@ -385,6 +436,8 @@ class AttributeSanityValidator:
 
         # 15. Время работы (Working Time)
         if attr_name == "working_time":
+            if category_key == "headphones_wired":
+                return False
             has_digits = bool(re.search(r"\d+", val_lower))
             has_time_unit = bool(re.search(r"(?:ч|час\w*|мин\w*|h|hr|m|sec|сек)\b", val_lower))
             return has_digits and has_time_unit and len(val_lower.split()) <= 4
@@ -449,6 +502,10 @@ class AttributeSanityValidator:
             elif category_key == "vacuum_cleaners":
                 return 15 <= p_val <= 3500
             return 5 <= p_val <= 5000
+
+        # 22. Тип подключения (Connection Type)
+        if attr_name == "connection_type":
+            return any(k in val_lower for k in ["проводн", "беспроводн", "tws", "bluetooth", "блютуз", "wired", "wireless"])
 
         return True
 

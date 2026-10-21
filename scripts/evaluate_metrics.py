@@ -49,6 +49,8 @@ def _values_match(pred: str, target: str, attr: str) -> bool:
         p_num = re.sub(r'[^\d]', '', p)
         t_num = re.sub(r'[^\d]', '', t)
         return p_num == t_num and p_num != ""
+    if attr == "connection_type":
+        return ("проводн" in p and "проводн" in t and "беспроводн" not in p and "беспроводн" not in t) or ("беспроводн" in p and "беспроводн" in t)
     return False
 
 

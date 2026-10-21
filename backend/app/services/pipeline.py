@@ -155,7 +155,19 @@ CATEGORY_SCHEMAS: dict[str, dict[str, Any]] = {
             "headset", "вкладыши", "внутриканальные"
         ],
         "required_attrs": {"brand", "model", "color"},
-        "gliner_labels": ["бренд", "модель", "цвет", "время работы"],
+        "gliner_labels": ["бренд", "модель", "цвет", "время работы", "тип подключения"],
+        "subtypes": {
+            "wired": {
+                "name_ru": "Проводные наушники",
+                "allowed_attrs": {"brand", "model", "color", "weight", "connection_type"},
+                "forbidden_attrs": {"working_time", "battery"},
+            },
+            "wireless": {
+                "name_ru": "Беспроводные наушники",
+                "allowed_attrs": {"brand", "model", "color", "weight", "working_time", "battery", "connection_type"},
+                "forbidden_attrs": set(),
+            },
+        },
     },
     "powerbanks": {
         "name_ru": "Внешние аккумуляторы (Power Bank)",
@@ -523,7 +535,7 @@ class CascadedExtractionPipeline:
         clean_t = title.strip()
         # Срезаем префиксы вроде "Восстановленный", "Уцененный", "Новый", "Смарт-", "Беспроводной"
         clean_t = re.sub(
-            r"^(?:восстановленн\w*|уцененн\w*|нов\w*|смарт[\s\-]|беспроводн\w*|портативн\w*|робот[\s\-])\s+",
+            r"^(?:восстановленн\w*|уцененн\w*|нов\w*|смарт[\s\-]|беспроводн\w*|проводн\w*|портативн\w*|робот[\s\-]|true\s*wireless\b|tws\b)\s+",
             "",
             clean_t,
             flags=re.IGNORECASE,
@@ -647,8 +659,20 @@ class CascadedExtractionPipeline:
         # ------------------------------------------------------------------
         cat_key, cat_name = self.detect_category(card)
         schema = CATEGORY_SCHEMAS.get(cat_key, CATEGORY_SCHEMAS["default"])
-        gliner_labels: list[str] = schema["gliner_labels"]
-        required_attrs: set[str] = schema["required_attrs"]
+        gliner_labels: list[str] = list(schema["gliner_labels"])
+        required_attrs: set[str] = set(schema["required_attrs"])
+        is_hp_wired = False
+        is_hp_wireless = False
+        effective_cat_key = cat_key
+        if cat_key == "headphones":
+            full_card_text = f"{raw_title} {raw_desc} {raw_text} {card.get('category', '')} {card.get('raw_cat', '')}".lower()
+            is_hp_wired = AttributeSanityValidator.is_wired_headphones(full_card_text)
+            is_hp_wireless = AttributeSanityValidator.is_wireless_headphones(full_card_text)
+            if is_hp_wired:
+                effective_cat_key = "headphones_wired"
+                gliner_labels = [lbl for lbl in gliner_labels if lbl != "время работы"]
+            elif is_hp_wireless:
+                effective_cat_key = "headphones_wireless"
 
         predictions_map: dict[str, Prediction] = {}
         extracted_alternatives: dict[str, list[dict[str, Any]]] = defaultdict(list)
@@ -656,10 +680,10 @@ class CascadedExtractionPipeline:
         # ------------------------------------------------------------------
         # ЭТАП 2: Tier 1 (Regex + FlashText)
         # ------------------------------------------------------------------
-        t1_preds = self.regex_extractor.extract(card, category_key=cat_key)
+        t1_preds = self.regex_extractor.extract(card, category_key=effective_cat_key)
         for p in t1_preds:
             # Строгая валидация физического здравого смысла и кросс-загрязнений
-            if not AttributeSanityValidator.is_valid(p["attribute"], p["value"], cat_key):
+            if not AttributeSanityValidator.is_valid(p["attribute"], p["value"], effective_cat_key, raw_text=raw_text or raw_desc):
                 continue
             predictions_map[p["attribute"]] = p
             extracted_alternatives[p["attribute"]].append(dict(p))
@@ -682,7 +706,7 @@ class CascadedExtractionPipeline:
 
             if needed_labels:
                 try:
-                    t2_preds = self.gliner_extractor.extract(card, target_labels=needed_labels, category_key=cat_key)
+                    t2_preds = self.gliner_extractor.extract(card, target_labels=needed_labels, category_key=effective_cat_key)
                 except Exception as e:
                     logger.warning("GLiNER extraction failed: %s; falling back to Tier 1", e)
                     if "tier2_gliner" not in degraded_tiers:
@@ -692,7 +716,7 @@ class CascadedExtractionPipeline:
                 for p in t2_preds:
                     attr = p["attribute"]
                     # Строгая валидация физического здравого смысла (отсечение перепутанных Гц в батарее и т.д.)
-                    if not AttributeSanityValidator.is_valid(attr, p["value"], cat_key):
+                    if not AttributeSanityValidator.is_valid(attr, p["value"], effective_cat_key, raw_text=raw_text or raw_desc):
                         continue
                     extracted_alternatives[attr].append(dict(p))
                     existing = predictions_map.get(attr)
@@ -931,13 +955,43 @@ class CascadedExtractionPipeline:
         # ------------------------------------------------------------------
         # ЭТАП 3.9: Слабый консенсус источников (Snorkel Multi-Source Consensus)
         # ------------------------------------------------------------------
+        if cat_key == "headphones":
+            if is_hp_wired:
+                predictions_map.pop("working_time", None)
+                predictions_map.pop("battery", None)
+                extracted_alternatives.pop("working_time", None)
+                extracted_alternatives.pop("battery", None)
+                if "connection_type" not in predictions_map:
+                    p_conn = Prediction(
+                        attribute="connection_type",
+                        value="проводные",
+                        confidence=0.97,
+                        source="domain_rule",
+                        raw="проводные",
+                        grounded=True,
+                    )
+                    predictions_map["connection_type"] = p_conn
+                    extracted_alternatives["connection_type"].append(dict(p_conn))
+            elif is_hp_wireless:
+                if "connection_type" not in predictions_map:
+                    p_conn = Prediction(
+                        attribute="connection_type",
+                        value="беспроводные",
+                        confidence=0.97,
+                        source="domain_rule",
+                        raw="беспроводные",
+                        grounded=True,
+                    )
+                    predictions_map["connection_type"] = p_conn
+                    extracted_alternatives["connection_type"].append(dict(p_conn))
+
         self.calibrator.apply_multi_source_consensus(predictions_map, extracted_alternatives)
 
         # ------------------------------------------------------------------
         # ЭТАП 4: Валидация полноты и расчет взвешенной уверенности
         # ------------------------------------------------------------------
         # Фильтрация по строгому белому списку атрибутов категории датасета
-        allowed_attrs = AttributeSanityValidator.ALLOWED_ATTRS_BY_CATEGORY.get(cat_key)
+        allowed_attrs = AttributeSanityValidator.ALLOWED_ATTRS_BY_CATEGORY.get(effective_cat_key) or AttributeSanityValidator.ALLOWED_ATTRS_BY_CATEGORY.get(cat_key)
         if allowed_attrs:
             predictions_map = {k: v for k, v in predictions_map.items() if k in allowed_attrs}
 
@@ -1028,6 +1082,7 @@ class CascadedExtractionPipeline:
             "external_id": card.get("external_id") or card.get("id"),
             "category": cat_name,
             "category_key": cat_key,
+            "subcategory": "wired" if is_hp_wired else ("wireless" if is_hp_wireless else None),
             "predictions": all_preds,
             "missing": final_missing,
             "overall_confidence": round(overall_conf, 4),

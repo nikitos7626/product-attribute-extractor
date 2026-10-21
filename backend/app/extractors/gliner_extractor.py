@@ -53,6 +53,7 @@ class GlinerExtractor:
         "разрешение экрана": "resolution",
         "тип уборки": "cleaning_type",
         "время работы": "working_time",
+        "тип подключения": "connection_type",
         "система разморозки": "defrost_system",
         "технология экрана": "display_tech",
         "объем": "volume",
@@ -288,6 +289,13 @@ class GlinerExtractor:
                 return self._units.dimensions(m.group(1), m.group(2), m.group(3), u)
             return raw_clean
 
+
+        if attr_key == "connection_type":
+            if any(w in low for w in ["проводн", "wired"]):
+                return "проводные"
+            if any(w in low for w in ["беспроводн", "wireless", "bluetooth", "блютуз", "tws"]):
+                return "беспроводные"
+            return raw_clean
 
         if attr_key == "working_time":
             m = re.search(r"(\d+(?:[.,]\d+)?)\s*(ч|час\w*|мин\w*|h|hr|m|sec|сек)?\b", low)

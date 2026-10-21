@@ -223,6 +223,27 @@ class RegexExtractor:
         re.IGNORECASE,
     )
 
+    # Тип подключения наушников
+    _HEADPHONES_WIRED_RE = re.compile(
+        r"\b(?:проводн\w*|с\s+проводом|по\s+проводу|проводное\s+подключение|проводной\s+тип|3\.5\s*мм|3\.5mm|mini-?jack|jack\s*3\.5|штекер|проводное|проводной|wired)\b",
+        re.IGNORECASE,
+    )
+    _HEADPHONES_WIRELESS_RE = re.compile(
+        r"\b(?:беспроводн\w*|bluetooth|блютуз|tws|true\s*wireless|wireless|радиоканал|airpods|buds|freebuds|earbuds|airdots)\b",
+        re.IGNORECASE,
+    )
+
+    # Время работы: "время автономной работы до 30 часов", "до 30 часов", "130 минут работы", "до 8 ч"
+    _WORKING_TIME_RE = re.compile(
+        r"(?:время\s+(?:автономной\s+)?работы|работает\s+до|автономност\w*|время\s+воспроизведения|до)\s*[:=—–-]?\s*"
+        r"(\d+(?:[.,]\d+)?)\s*(ч|час\w*|мин\w*|h|hr)\b",
+        re.IGNORECASE,
+    )
+    _WORKING_TIME_SUFFIX_RE = re.compile(
+        r"(\d+(?:[.,]\d+)?)\s*(ч|час\w*|мин\w*|h|hr)\s*(?:автономной\s+)?работы\b",
+        re.IGNORECASE,
+    )
+
     # Системы разморозки (Tier 1 fast regex)
     _DEFROST_PATTERNS: list[tuple[re.Pattern[str], str, float]] = [
         (re.compile(r"\b(?:total\s+no\s+frost|full\s+no\s+frost|тотал\s+ноу\s+фрост)\b", re.IGNORECASE), "No Frost", 0.98),
@@ -323,7 +344,10 @@ class RegexExtractor:
         self._colors: dict[str, tuple[str, int]] = colors or COLORS
 
         self._brand_kp = KeywordProcessor(case_sensitive=False)
+        stopwords = {"true", "wireless", "wired", "tws", "anc", "bluetooth", "блютуз", "наушники", "проводные", "беспроводные"}
         for alias, canon in self._brands.items():
+            if alias.lower().strip() in stopwords or canon.lower().strip() in stopwords:
+                continue
             self._brand_kp.add_keyword(alias, canon)
 
         # Предкомпилированные паттерны для цветов (границы без \b,
@@ -479,7 +503,7 @@ class RegexExtractor:
         # Физическая валидация здравого смысла и контекста категории
         valid_out: list[Prediction] = []
         for p in out:
-            if AttributeSanityValidator.is_valid(p["attribute"], p["value"], category_key):
+            if AttributeSanityValidator.is_valid(p["attribute"], p["value"], category_key, raw_text=full_text):
                 if "grounded" not in p:
                     p["grounded"] = True
                 p["confidence"] = round(p["confidence"], 4)
@@ -498,8 +522,8 @@ class RegexExtractor:
             return Prediction(attribute="brand", value=canon,
                               confidence=0.98, source="flashtext", raw=str(v))
 
-        hits_title = self._brand_kp.extract_keywords(title)
-        hits_desc = self._brand_kp.extract_keywords(description)
+        hits_title = [h for h in self._brand_kp.extract_keywords(title) if AttributeSanityValidator.is_valid("brand", h)]
+        hits_desc = [h for h in self._brand_kp.extract_keywords(description) if AttributeSanityValidator.is_valid("brand", h)]
         hits = hits_title or hits_desc
         if hits:
             canon = hits[0]
@@ -1005,6 +1029,61 @@ class RegexExtractor:
                     source="regex", raw=m.group(0).strip(),
                 )
                 break
+
+        # --- Тип подключения для наушников (connection_type) ---
+        is_hp_category = category_key in ("headphones", "headphones_wired", "headphones_wireless") or bool(re.search(r"\bнаушник\w*", title, re.IGNORECASE))
+        is_hp_wireless = bool(self._HEADPHONES_WIRELESS_RE.search(text))
+        is_hp_wired = bool(self._HEADPHONES_WIRED_RE.search(text))
+        if is_hp_category:
+            if is_hp_wireless:
+                yield Prediction(
+                    attribute="connection_type",
+                    value="беспроводные",
+                    confidence=self._conf(0.96, "беспроводные", title),
+                    source="regex",
+                    raw="беспроводные",
+                )
+            elif is_hp_wired:
+                yield Prediction(
+                    attribute="connection_type",
+                    value="проводные",
+                    confidence=self._conf(0.96, "проводные", title),
+                    source="regex",
+                    raw="проводные",
+                )
+
+        # --- Время работы (working_time): для беспроводных наушников, пылесосов и смарт-часов ---
+        # ДЛЯ ПРОВОДНЫХ НАУШНИКОВ ВРЕМЯ РАБОТЫ КАТЕГОРИЧЕСКИ ЗАПРЕЩЕНО!
+        is_strictly_wired = is_hp_wired and not is_hp_wireless
+        allow_working_time = (
+            category_key in ("vacuum_cleaners", "smart_watches", "headphones_wireless")
+            or (is_hp_category and not is_strictly_wired)
+        )
+        if allow_working_time and not is_strictly_wired:
+            wt_match = None
+            for m in self._WORKING_TIME_RE.finditer(text):
+                if not self._is_negated_or_filtered(text, m.start()):
+                    val_unit = m.group(2).lower()
+                    val_num = m.group(1).replace(",", ".")
+                    wt_match = (val_num, val_unit, m.group(0))
+                    break
+            if not wt_match:
+                for m in self._WORKING_TIME_SUFFIX_RE.finditer(text):
+                    if not self._is_negated_or_filtered(text, m.start()):
+                        val_unit = m.group(2).lower()
+                        val_num = m.group(1).replace(",", ".")
+                        wt_match = (val_num, val_unit, m.group(0))
+                        break
+            if wt_match:
+                v_num, v_unit, raw_str = wt_match
+                clean_unit = "мин" if "мин" in v_unit or v_unit == "m" else "ч"
+                yield Prediction(
+                    attribute="working_time",
+                    value=f"{v_num} {clean_unit}",
+                    confidence=self._conf(0.94, raw_str, title),
+                    source="regex",
+                    raw=raw_str.strip(),
+                )
 
     def _find_volume(self, text: str, title: str, category_key: str = "default") -> Prediction | None:
         matches = list(self._VOLUME_RE.finditer(text))

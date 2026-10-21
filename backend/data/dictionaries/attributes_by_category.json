@@ -5,7 +5,9 @@
   "tv":          ["brand", "model", "screen_diagonal", "resolution", "refresh_rate", "color", "power", "display_tech"],
   "vacuum_cleaners": ["brand", "model", "power", "cleaning_type", "battery", "weight", "color", "working_time", "volume"],
   "refrigerators": ["brand", "model", "defrost_system", "color", "volume", "warranty"],
-  "headphones":  ["brand", "model", "color", "weight", "working_time"],
+  "headphones":  ["brand", "model", "color", "weight", "working_time", "connection_type"],
+  "headphones_wired": ["brand", "model", "color", "weight", "connection_type"],
+  "headphones_wireless": ["brand", "model", "color", "weight", "working_time", "battery", "connection_type"],
   "powerbanks":  ["brand", "model", "battery", "color", "power", "weight"],
   "microwaves":  ["brand", "model", "volume", "power", "color", "weight"],
   "default":     ["brand", "model", "color"]

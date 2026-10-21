@@ -77,6 +77,8 @@ class PredictionOut(BaseModel):
 class CardOut(BaseModel):
     external_id: str | None = None
     category: str | None = None
+    category_key: str | None = None
+    subcategory: str | None = None
     predictions: list[PredictionOut]
     missing: list[str]
     overall_confidence: float = 0.0
