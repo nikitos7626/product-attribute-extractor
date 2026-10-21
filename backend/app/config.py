@@ -17,8 +17,9 @@ class Settings(BaseSettings):
     confidence_threshold: float = 0.87   # порог уверенности (ниже — флаг needs_review=True)
     gliner_threshold: float = 0.30       # порог вероятности сущностей в GLiNER
 
-    # Флаги активности уровней каскада
+    # Флаги активности уровней каскада и предзагрузки
     use_gliner: bool = True
+    preload_models: bool = True          # Eager loading: прогрев нейросетей при старте сервера для устранения Cold Start
     use_catalog_enricher: bool = True
     use_llm: bool = True
     fast_mode: bool = False              # Быстрый/автономный режим (без тяжелых внешних нейросетей GLiNER/LLM)

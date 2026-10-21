@@ -90,6 +90,10 @@ async def lifespan(app: FastAPI):
 
     app.state.pipeline = CascadedExtractionPipeline(use_gliner=True)
 
+    if getattr(settings, "preload_models", True):
+
+        app.state.pipeline.warmup()
+
     startup_configuration_checks(app.state.pipeline)
 
     yield

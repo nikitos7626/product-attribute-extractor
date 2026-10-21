@@ -560,6 +560,19 @@ class CascadedExtractionPipeline:
 
         self.taxonomy_manager = TaxonomyManager.get_instance()
 
+    def warmup(self) -> None:
+        """
+        Предварительный прогрев нейросетей и компонентов (Eager Loading / Pre-warming).
+        Загружает веса GLiNER в память до приёма входящего трафика, устраняя задержку первого холодного запроса (Cold Start).
+        """
+        if self.use_gliner and self.gliner_extractor:
+            try:
+                logger.info("Eager Loading: прогрев нейросети GLiNER (%s)...", self.gliner_extractor.model_name)
+                self.gliner_extractor._ensure_model()
+                logger.info("Eager Loading: модель GLiNER успешно прогрета и готова к мгновенному инференсу.")
+            except Exception as e:
+                logger.warning("Eager Loading: сбой прогрева GLiNER (активирован безопасный fallback): %s", e)
+
 
 
     def detect_category(self, card: dict[str, Any]) -> tuple[str, str]:

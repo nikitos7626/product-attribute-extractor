@@ -80,6 +80,10 @@ def get_pipeline(request: Request = None) -> CascadedExtractionPipeline:
 
         _lazy_pipeline = CascadedExtractionPipeline(use_gliner=True)
 
+        if getattr(settings, "preload_models", True):
+
+            _lazy_pipeline.warmup()
+
     return _lazy_pipeline
 
 
