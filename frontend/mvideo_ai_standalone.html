@@ -587,20 +587,21 @@ const RenderService = {
 
       let consensusTag = '';
       if (p.consensus) {
-        let sourcesDesc = 'Словарь + Локальный NER';
-        if (p.consensus_sources && p.consensus_sources.includes('flashtext') && p.consensus_sources.includes('gliner')) {
-          sourcesDesc = 'Словарь + Локальный NER';
-        } else if (p.consensus_sources && p.consensus_sources.includes('regex') && p.consensus_sources.includes('gliner')) {
-          sourcesDesc = 'Правило + Локальный NER';
-        } else if (p.consensus_sources && p.consensus_sources.length >= 2) {
-          sourcesDesc = `${p.consensus_sources.length} локальных метода`;
-        }
-        consensusTag = `<span class="inline-flex items-center text-xs font-bold text-indigo-700 bg-indigo-50 px-2.5 py-0.5 rounded-full border border-indigo-200" title="Локальное совпадение алгоритмов без вызова LLM (0 токенов, 0 ₽)"><i class="fa-solid fa-shield-halved mr-1 text-indigo-600"></i> Двойная проверка (${sourcesDesc})</span>`;
+        consensusTag = `<span class="inline-flex items-center text-xs font-bold text-indigo-700 bg-indigo-50 px-2.5 py-0.5 rounded-full border border-indigo-200" title="Значение независимо подтверждено двумя уровнями (Tier 1 + Tier 2). 0 токенов, 0 ₽."><i class="fa-solid fa-circle-check mr-1 text-indigo-600"></i> Подтверждено (Tier 1 + Tier 2)</span>`;
       } else if (p.status === 'valid' || p.status === 'high_confidence') {
-        consensusTag = `<span class="text-xs text-green-600 font-medium" title="${p.confidence_reason || 'Локальное извлечение без LLM (0 токенов)'}"><i class="fa-solid fa-check mr-1"></i> Проверено правилами</span>`;
+        consensusTag = `<span class="text-xs text-green-600 font-medium" title="${p.confidence_reason || 'Проверено по правилам (0 токенов)'}"><i class="fa-solid fa-check mr-1"></i> Проверено</span>`;
       } else {
         consensusTag = `<span class="text-xs text-amber-600 font-medium" title="${p.confidence_reason || ''}"><i class="fa-solid fa-triangle-exclamation mr-1"></i> Требует проверки</span>`;
       }
+
+      // Понятное название источника
+      let sourceName = p.source || '';
+      if (sourceName === 'flashtext') sourceName = 'Словарь';
+      else if (sourceName === 'regex') sourceName = 'Правило';
+      else if (sourceName === 'gliner') sourceName = 'NER-парсер';
+      else if (sourceName === 'catalog_kb') sourceName = 'База каталога';
+      else if (sourceName.startsWith('llm')) sourceName = 'LLM Fallback';
+      const tierPrefix = p.tier ? `${p.tier}: ` : '';
 
       tr.innerHTML = `
         <td class="px-6 py-4 font-bold text-gray-900">${p.attribute}</td>
@@ -608,8 +609,8 @@ const RenderService = {
         <td class="px-6 py-4 text-center">
           <span class="inline-block px-2.5 py-0.5 rounded-full text-xs font-bold ${pBadgeColor}">${pConf}%</span>
         </td>
-        <td class="px-6 py-4 text-gray-500 font-mono text-xs">
-          <span class="inline-block px-2 py-0.5 rounded font-bold ${p.source === 'catalog_kb' ? 'bg-purple-100 text-purple-800 border border-purple-200' : 'bg-gray-100 text-gray-700'}">${p.tier ? `${p.tier}: ` : ''}${p.source}</span>
+        <td class="px-6 py-4 text-gray-600 text-xs font-medium">
+          <span class="inline-block px-2 py-0.5 rounded font-semibold ${p.source === 'catalog_kb' ? 'bg-purple-100 text-purple-800 border border-purple-200' : 'bg-gray-100 text-gray-700'}">${tierPrefix}${sourceName}</span>
         </td>
         <td class="px-6 py-4">${consensusTag}</td>
       `;
