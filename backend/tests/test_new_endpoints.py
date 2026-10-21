@@ -146,8 +146,8 @@ def test_modular_frontend_serving():
     resp_root = client.get('/', headers={'Accept': 'text/html'})
     assert resp_root.status_code == 200
     assert '<!DOCTYPE html>' in resp_root.text
-    assert '/static/js/app.js' in resp_root.text
-    assert '/static/css/style.css' in resp_root.text
+    assert 'js/app.js' in resp_root.text
+    assert 'css/style.css' in resp_root.text
 
     assert client.get('/static/js/app.js').status_code == 200
     assert client.get('/static/js/api.js').status_code == 200

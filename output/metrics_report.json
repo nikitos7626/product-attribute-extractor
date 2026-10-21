@@ -1,29 +1,29 @@
 {
-  "timestamp": "2026-10-21 11:45:39",
-  "total_cards": 13,
+  "timestamp": "2026-10-21 14:55:49",
+  "total_cards": 8,
   "category_accuracy": 1.0,
-  "overall_coverage": 0.6923,
-  "avg_latency_ms": 617.15,
+  "overall_coverage": 0.625,
+  "avg_latency_ms": 1188.49,
   "macro_f1": 1.0,
-  "micro_f1": 0.995,
+  "micro_f1": 0.9913,
   "per_attribute_metrics": {
     "battery": {
       "precision": 1.0,
       "recall": 1.0,
       "f1_score": 1.0,
-      "tp": 6,
+      "tp": 3,
       "fp": 0,
       "fn": 0,
-      "support": 6
+      "support": 3
     },
     "brand": {
       "precision": 1.0,
       "recall": 1.0,
       "f1_score": 1.0,
-      "tp": 13,
+      "tp": 8,
       "fp": 0,
       "fn": 0,
-      "support": 13
+      "support": 8
     },
     "cleaning_type": {
       "precision": 1.0,
@@ -38,19 +38,19 @@
       "precision": 1.0,
       "recall": 1.0,
       "f1_score": 1.0,
-      "tp": 13,
+      "tp": 8,
       "fp": 0,
       "fn": 0,
-      "support": 13
+      "support": 8
     },
     "cpu": {
       "precision": 1.0,
       "recall": 1.0,
       "f1_score": 1.0,
-      "tp": 5,
+      "tp": 2,
       "fp": 0,
       "fn": 0,
-      "support": 5
+      "support": 2
     },
     "defrost_system": {
       "precision": 1.0,
@@ -74,57 +74,12 @@
       "precision": 1.0,
       "recall": 1.0,
       "f1_score": 1.0,
-      "tp": 5,
+      "tp": 2,
       "fp": 0,
       "fn": 0,
-      "support": 5
+      "support": 2
     },
     "memory_rom": {
-      "precision": 1.0,
-      "recall": 1.0,
-      "f1_score": 1.0,
-      "tp": 6,
-      "fp": 0,
-      "fn": 0,
-      "support": 6
-    },
-    "model": {
-      "precision": 1.0,
-      "recall": 1.0,
-      "f1_score": 1.0,
-      "tp": 13,
-      "fp": 0,
-      "fn": 0,
-      "support": 13
-    },
-    "os": {
-      "precision": 1.0,
-      "recall": 1.0,
-      "f1_score": 1.0,
-      "tp": 3,
-      "fp": 0,
-      "fn": 0,
-      "support": 3
-    },
-    "power": {
-      "precision": 1.0,
-      "recall": 1.0,
-      "f1_score": 1.0,
-      "tp": 5,
-      "fp": 0,
-      "fn": 0,
-      "support": 5
-    },
-    "refresh_rate": {
-      "precision": 1.0,
-      "recall": 1.0,
-      "f1_score": 1.0,
-      "tp": 6,
-      "fp": 0,
-      "fn": 0,
-      "support": 6
-    },
-    "resolution": {
       "precision": 1.0,
       "recall": 1.0,
       "f1_score": 1.0,
@@ -133,7 +88,7 @@
       "fn": 0,
       "support": 2
     },
-    "screen_diagonal": {
+    "model": {
       "precision": 1.0,
       "recall": 1.0,
       "f1_score": 1.0,
@@ -141,6 +96,51 @@
       "fp": 0,
       "fn": 0,
       "support": 8
+    },
+    "os": {
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1_score": 1.0,
+      "tp": 2,
+      "fp": 0,
+      "fn": 0,
+      "support": 2
+    },
+    "power": {
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1_score": 1.0,
+      "tp": 4,
+      "fp": 0,
+      "fn": 0,
+      "support": 4
+    },
+    "refresh_rate": {
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1_score": 1.0,
+      "tp": 2,
+      "fp": 0,
+      "fn": 0,
+      "support": 2
+    },
+    "resolution": {
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1_score": 1.0,
+      "tp": 1,
+      "fp": 0,
+      "fn": 0,
+      "support": 1
+    },
+    "screen_diagonal": {
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1_score": 1.0,
+      "tp": 3,
+      "fp": 0,
+      "fn": 0,
+      "support": 3
     },
     "volume": {
       "precision": 1.0,
@@ -164,10 +164,10 @@
       "precision": 1.0,
       "recall": 1.0,
       "f1_score": 1.0,
-      "tp": 7,
+      "tp": 4,
       "fp": 0,
       "fn": 0,
-      "support": 7
+      "support": 4
     },
     "working_time": {
       "precision": 1.0,

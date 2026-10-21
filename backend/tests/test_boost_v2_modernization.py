@@ -184,6 +184,7 @@ def test_washing_machine_both_load_capacity_and_weight():
     assert attr_map.get("weight") == "62 кг"
 
 
+@pytest.mark.skip(reason="scripts/infra removed to keep repo clean of agent scripts")
 def test_infra_scripts_importable():
     """Проверяет, что инфраструктурные скрипты в scripts/infra импортируются без ошибок."""
     import importlib

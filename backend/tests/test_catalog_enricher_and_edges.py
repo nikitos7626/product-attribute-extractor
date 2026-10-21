@@ -127,3 +127,64 @@ def test_edge_case_5_brand_duplication_guard(pipeline):
     assert preds["brand"] == "Xiaomi"
     assert not preds["model"].lower().startswith("xiaomi")
     assert "Redmi Note 13 Pro" in preds["model"]
+
+
+def test_dynamic_model_registration_by_id_and_auto_enrichment(pipeline):
+    """
+    Проверяет:
+    1. Автоматическую регистрацию новой модели по model_id в CatalogEnricher на лету.
+    2. Мгновенное обогащение последующей карточки того же model_id, где продавец опустил характеристики.
+    """
+    enricher = pipeline.catalog_enricher
+    assert enricher is not None
+
+    test_model_id = "MODEL-AUTOTEST-777"
+    test_brand = "QuantumTech"
+    test_model = "HyperPhone X"
+    test_specs = {
+        "battery": "6800 мАч",
+        "screen_diagonal": '6.8"',
+        "cpu": "Snapdragon 8 Gen 4",
+    }
+
+    # 1. Регистрация спецификаций модели по ID
+    ok = enricher.register_model_specs(
+        brand=test_brand,
+        model=test_model,
+        specs=test_specs,
+        model_id=test_model_id,
+        persist=False,
+    )
+    assert ok is True
+
+    # 2. Поиск по model_id
+    found_by_id = enricher.find_model_specs(model_id=test_model_id)
+    assert found_by_id is not None
+    assert found_by_id["battery"] == "6800 мАч"
+    assert found_by_id["cpu"] == "Snapdragon 8 Gen 4"
+
+    # 3. Поиск по brand + model
+    found_by_name = enricher.find_model_specs(brand=test_brand, model=test_model)
+    assert found_by_name is not None
+    assert found_by_name["battery"] == "6800 мАч"
+
+    # 4. Прогон карточки в пайплайне: продавец указал только model_id, память и цвет
+    card = {
+        "model_id": test_model_id,
+        "title": f"Смартфон {test_brand} {test_model} 12/256GB черный",
+        "description": "Продам новый телефон в коробке.",
+    }
+    res = pipeline.process_card(card)
+    preds = {p["attribute"]: p["value"] for p in res["predictions"]}
+    sources = {p["attribute"]: p.get("source") for p in res["predictions"]}
+
+    assert preds["brand"].lower() == test_brand.lower()
+    assert preds["model"] == test_model
+    assert preds["color"] in ("черный", "чёрный")
+    assert preds["memory_rom"] == "256 ГБ"
+
+    # Батарея и диагональ должны автоматически подтянуться из базы по model_id!
+    assert preds["battery"] == "6800 мАч"
+    assert sources["battery"] == "catalog_kb"
+    assert preds["screen_diagonal"] == '6.8"'
+    assert sources["screen_diagonal"] == "catalog_kb"
