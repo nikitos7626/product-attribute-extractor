@@ -20,7 +20,7 @@ from starlette.concurrency import run_in_threadpool
 
 from app.config import settings
 
-from app.schemas import BatchOut, CardIn, CardOut, ModelRegisterIn, PredictionOut, ReviewOverrideIn, ReviewQueueResponse
+from app.schemas import BatchOut, CardIn, CardOut, ModelRegisterIn, PredictionOut, ReviewOverrideIn, ReviewQueueResponse, ReviewQueueClearResponse
 
 from app.services.brand_registry import BrandRegistry, process_file_lock
 
@@ -933,7 +933,62 @@ def get_review_queue(limit: int = 50) -> ReviewQueueResponse:
     )
 
 
+@router.post("/review-queue/clear", response_model=ReviewQueueClearResponse)
+@router.delete("/review-queue", response_model=ReviewQueueClearResponse)
+def clear_review_queue() -> ReviewQueueClearResponse:
+    """
+    Очищает очередь ручной модерации (Human-in-the-Loop):
+    утверждает все оставшиеся сомнительные карточки (needs_review=False)
+    в output/predictions.json и синхронизирует output/predictions.csv.
+    """
+    base_dir = get_repo_root()
+    preds_path = base_dir / "output" / "predictions.json"
+    csv_path = base_dir / "output" / "predictions.csv"
+    lock_file = str(preds_path)
 
+    cleared_count = 0
+    with process_file_lock(lock_file):
+        if preds_path.exists():
+            try:
+                import json
+                with open(preds_path, "r", encoding="utf-8") as f:
+                    preds_data = json.load(f)
+                is_dict = isinstance(preds_data, dict)
+                items_list = preds_data.get("items", []) if is_dict else preds_data
+
+                for it in items_list:
+                    if it.get("needs_review") is True:
+                        cleared_count += 1
+                        it["needs_review"] = False
+                        if not it.get("status") or it.get("status") in ("pending", "needs_review"):
+                            it["status"] = "approved_by_operator"
+
+                tmp_preds = preds_path.with_suffix(".tmp")
+                with open(tmp_preds, "w", encoding="utf-8") as f:
+                    json.dump(preds_data, f, ensure_ascii=False, indent=2)
+                tmp_preds.replace(preds_path)
+            except Exception as e:
+                logger.error("Failed to clear review queue in predictions.json: %s", e)
+                raise HTTPException(500, f"Ошибка при очистке очереди: {e}")
+
+        if csv_path.exists():
+            try:
+                import pandas as pd
+                df = pd.read_csv(csv_path)
+                if "needs_review" in df.columns:
+                    df["needs_review"] = "NO"
+                    tmp_csv = csv_path.with_suffix(".tmp")
+                    df.to_csv(tmp_csv, index=False, encoding="utf-8-sig")
+                    tmp_csv.replace(csv_path)
+            except Exception as e:
+                logger.warning("Could not sync predictions.csv during clear_review_queue: %s", e)
+
+    return ReviewQueueClearResponse(
+        status="success",
+        message="Очередь модерации успешно очищена",
+        cleared_count=cleared_count,
+        remaining_in_queue=0,
+    )
 
 
 @router.post("/review-override")

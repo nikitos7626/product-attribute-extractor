@@ -78,6 +78,7 @@
         <button id="tab-btn-review" class="px-4 py-2 rounded-lg text-gray-600 hover:text-gray-900 transition flex items-center space-x-2">
           <i class="fa-solid fa-user-check text-mvideo-red"></i>
           <span>Очередь модерации</span>
+          <span id="review-queue-badge" class="hidden ml-1.5 px-2 py-0.5 text-xs font-bold rounded-full bg-mvideo-red text-white">0</span>
         </button>
       </div>
     </div>
@@ -221,10 +222,16 @@
             <p class="text-sm text-gray-500">Карточки с уверенностью ниже 87% или пропущенными обязательными полями категории.</p>
             <p class="text-xs text-gray-400 mt-0.5">Кликните на карточку или «Просмотреть и изменить», чтобы развернуть полный текст, отредактировать атрибуты и одобрить товар в каталог.</p>
           </div>
-          <button id="refresh-review-btn" class="px-4 py-2 bg-gray-100 hover:bg-gray-200 text-gray-700 font-bold rounded-xl text-xs flex items-center space-x-1.5 transition">
-            <i class="fa-solid fa-rotate"></i>
-            <span>Обновить очередь</span>
-          </button>
+          <div class="flex items-center space-x-2">
+            <button id="clear-review-btn" class="px-3.5 py-2 bg-red-50 hover:bg-red-100 text-mvideo-red font-bold rounded-xl text-xs flex items-center space-x-1.5 transition border border-red-200 shadow-sm" title="Очистить очередь модерации">
+              <i class="fa-solid fa-trash-can"></i>
+              <span>Очистить очередь</span>
+            </button>
+            <button id="refresh-review-btn" class="px-4 py-2 bg-gray-100 hover:bg-gray-200 text-gray-700 font-bold rounded-xl text-xs flex items-center space-x-1.5 transition">
+              <i class="fa-solid fa-rotate"></i>
+              <span>Обновить очередь</span>
+            </button>
+          </div>
         </div>
 
         <div id="review-queue-content" class="space-y-4">

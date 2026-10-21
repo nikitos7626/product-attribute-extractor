@@ -143,6 +143,7 @@
         <button id="tab-btn-review" class="px-4 py-2 rounded-lg text-gray-600 hover:text-gray-900 transition flex items-center space-x-2">
           <i class="fa-solid fa-user-check text-mvideo-red"></i>
           <span>Очередь модерации</span>
+          <span id="review-queue-badge" class="hidden ml-1.5 px-2 py-0.5 text-xs font-bold rounded-full bg-mvideo-red text-white">0</span>
         </button>
       </div>
     </div>
@@ -286,10 +287,16 @@
             <p class="text-sm text-gray-500">Карточки с уверенностью ниже 87% или пропущенными обязательными полями категории.</p>
             <p class="text-xs text-gray-400 mt-0.5">Кликните на карточку или «Просмотреть и изменить», чтобы развернуть полный текст, отредактировать атрибуты и одобрить товар в каталог.</p>
           </div>
-          <button id="refresh-review-btn" class="px-4 py-2 bg-gray-100 hover:bg-gray-200 text-gray-700 font-bold rounded-xl text-xs flex items-center space-x-1.5 transition">
-            <i class="fa-solid fa-rotate"></i>
-            <span>Обновить очередь</span>
-          </button>
+          <div class="flex items-center space-x-2">
+            <button id="clear-review-btn" class="px-3.5 py-2 bg-red-50 hover:bg-red-100 text-mvideo-red font-bold rounded-xl text-xs flex items-center space-x-1.5 transition border border-red-200 shadow-sm" title="Очистить очередь модерации">
+              <i class="fa-solid fa-trash-can"></i>
+              <span>Очистить очередь</span>
+            </button>
+            <button id="refresh-review-btn" class="px-4 py-2 bg-gray-100 hover:bg-gray-200 text-gray-700 font-bold rounded-xl text-xs flex items-center space-x-1.5 transition">
+              <i class="fa-solid fa-rotate"></i>
+              <span>Обновить очередь</span>
+            </button>
+          </div>
         </div>
 
         <div id="review-queue-content" class="space-y-4">
@@ -418,6 +425,20 @@ class ApiService {
     const response = await fetch(`${this.baseUrl}/api/extract/review-queue?limit=${limit}`);
     if (!response.ok) {
       throw new Error(`Не удалось загрузить очередь модерации (${response.status})`);
+    }
+    return await response.json();
+  }
+
+  /**
+   * Очистка всей очереди ручной модерации.
+   * @returns {Promise<Object>}
+   */
+  async clearReviewQueue() {
+    const response = await fetch(`${this.baseUrl}/api/extract/review-queue/clear`, {
+      method: 'POST',
+    });
+    if (!response.ok) {
+      throw new Error(`Не удалось очистить очередь (${response.status})`);
     }
     return await response.json();
   }
@@ -1066,6 +1087,16 @@ document.addEventListener('DOMContentLoaded', () => {
     try {
       const data = await api.getReviewQueue(25);
       render.renderReviewQueue(data.items || [], handleReviewAction);
+      const countEl = document.getElementById('review-queue-badge');
+      if (countEl) {
+        if (data.total_in_queue > 0) {
+          countEl.innerText = data.total_in_queue;
+          countEl.classList.remove('hidden');
+        } else {
+          countEl.innerText = '0';
+          countEl.classList.add('hidden');
+        }
+      }
     } catch (err) {
       if (cont) {
         cont.innerHTML = `<p class="text-sm text-red-500 text-center py-8">Ошибка: ${err.message}</p>`;
@@ -1133,6 +1164,24 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   document.getElementById('refresh-review-btn')?.addEventListener('click', loadReviewQueue);
+
+  document.getElementById('clear-review-btn')?.addEventListener('click', async () => {
+    if (!confirm('Вы уверены, что хотите очистить очередь модерации? Все неразрешенные карточки будут помечены как проверенные.')) {
+      return;
+    }
+    const cont = document.getElementById('review-queue-content');
+    if (cont) {
+      cont.innerHTML = `<p class="text-sm text-gray-400 text-center py-8"><i class="fa-solid fa-spinner fa-spin mr-2"></i> Очистка очереди...</p>`;
+    }
+    try {
+      const res = await api.clearReviewQueue();
+      alert(`Очередь модерации успешно очищена! Обработано карточек: ${res.cleared_count || 0}`);
+      await loadReviewQueue();
+    } catch (err) {
+      alert(`Ошибка при очистке очереди: ${err.message}`);
+      await loadReviewQueue();
+    }
+  });
 
   // ----------------- Проверка статуса сервера -----------------
   async function pollServerHealth() {

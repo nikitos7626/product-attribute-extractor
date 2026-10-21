@@ -180,6 +180,16 @@ document.addEventListener('DOMContentLoaded', () => {
     try {
       const data = await api.getReviewQueue(25);
       render.renderReviewQueue(data.items || [], handleReviewAction);
+      const countEl = document.getElementById('review-queue-badge');
+      if (countEl) {
+        if (data.total_in_queue > 0) {
+          countEl.innerText = data.total_in_queue;
+          countEl.classList.remove('hidden');
+        } else {
+          countEl.innerText = '0';
+          countEl.classList.add('hidden');
+        }
+      }
     } catch (err) {
       if (cont) {
         cont.innerHTML = `<p class="text-sm text-red-500 text-center py-8">Ошибка: ${err.message}</p>`;
@@ -247,6 +257,24 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   document.getElementById('refresh-review-btn')?.addEventListener('click', loadReviewQueue);
+
+  document.getElementById('clear-review-btn')?.addEventListener('click', async () => {
+    if (!confirm('Вы уверены, что хотите очистить очередь модерации? Все неразрешенные карточки будут помечены как проверенные.')) {
+      return;
+    }
+    const cont = document.getElementById('review-queue-content');
+    if (cont) {
+      cont.innerHTML = `<p class="text-sm text-gray-400 text-center py-8"><i class="fa-solid fa-spinner fa-spin mr-2"></i> Очистка очереди...</p>`;
+    }
+    try {
+      const res = await api.clearReviewQueue();
+      alert(`Очередь модерации успешно очищена! Обработано карточек: ${res.cleared_count || 0}`);
+      await loadReviewQueue();
+    } catch (err) {
+      alert(`Ошибка при очистке очереди: ${err.message}`);
+      await loadReviewQueue();
+    }
+  });
 
   // ----------------- Проверка статуса сервера -----------------
   async function pollServerHealth() {

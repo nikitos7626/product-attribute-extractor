@@ -103,6 +103,28 @@ def test_review_queue_and_override_endpoints():
     assert data_ov["action_recorded"]["override_value"] == "титановый серый"
     assert data_ov["action_recorded"]["reviewed_by"] == "qa_operator"
 
+def test_clear_review_queue_endpoint():
+    """Тест эндпоинта массовой очистки очереди модерации (POST /review-queue/clear и DELETE /review-queue)."""
+    # Вызов очистки
+    resp_clear = client.post("/api/extract/review-queue/clear")
+    assert resp_clear.status_code == 200
+    data_clear = resp_clear.json()
+    assert data_clear["status"] == "success"
+    assert "cleared_count" in data_clear
+    assert data_clear["remaining_in_queue"] == 0
+
+    # Проверка, что после очистки очередь возвращает 0 элементов
+    resp_q = client.get("/api/extract/review-queue")
+    assert resp_q.status_code == 200
+    assert resp_q.json()["total_in_queue"] == 0
+    assert len(resp_q.json()["items"]) == 0
+
+    # Проверка метода DELETE
+    resp_del = client.delete("/api/extract/review-queue")
+    assert resp_del.status_code == 200
+    assert resp_del.json()["status"] == "success"
+    assert resp_del.json()["remaining_in_queue"] == 0
+
 
 def test_api_key_auth_protection():
     """Тест защищенного режима авторизации: блокировка без ключа и пропуск с валидным ключом."""

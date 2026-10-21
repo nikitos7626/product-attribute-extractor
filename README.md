@@ -112,6 +112,7 @@ python scripts/export_predictions.py --input data/sample_cards.json --format bot
 | `POST` | `/api/extract/export` | Пакетный экспорт в стандартизированные файлы `predictions.json` / `predictions.csv` |
 | `GET` | `/api/extract/taxonomy`| Схемы категорий, обязательные атрибуты и белые списки |
 | `GET` | `/api/extract/review-queue` | Очередь карточек для ручной проверки Human-in-the-Loop (`needs_review: true`) |
+| `POST` | `/api/extract/review-queue/clear` | Массовая очистка/утверждение очереди модерации (`DELETE /api/extract/review-queue`) |
 | `POST` | `/api/extract/review-override` | Сохранение решения модератора по переопределению/утверждению атрибута |
 | `GET` | `/api/extract/metrics` | Стандартизированный JSON-отчет валидации качества (Per-Attribute F1/P/R) |
 | `POST` | `/api/extract/brands/register` | Динамическое добавление нового бренда в словарь без перезапуска |
@@ -275,6 +276,7 @@ python scripts/review_queue.py --auto-approve-conf 0.90
 ### 2. REST API эндпоинты модерации:
 - `GET /api/extract/review-queue?limit=50`: возвращает список ожидающих проверки карточек.
 - `POST /api/extract/review-override`: сохраняет ручное решение модератора по переопределению атрибута или утверждению карточки в `output/reviewed_predictions.json`.
+- `POST /api/extract/review-queue/clear` (или `DELETE /api/extract/review-queue`): массово очищает очередь ручной модерации, утверждая карточки и синхронизируя `output/predictions.json` и `output/predictions.csv`.
 
 ---
 

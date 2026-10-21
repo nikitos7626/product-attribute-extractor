@@ -93,6 +93,20 @@ class ApiService {
   }
 
   /**
+   * Очистка всей очереди ручной модерации.
+   * @returns {Promise<Object>}
+   */
+  async clearReviewQueue() {
+    const response = await fetch(`${this.baseUrl}/api/extract/review-queue/clear`, {
+      method: 'POST',
+    });
+    if (!response.ok) {
+      throw new Error(`Не удалось очистить очередь (${response.status})`);
+    }
+    return await response.json();
+  }
+
+  /**
    * Отправка решения оператора модерации.
    * @param {Object} overrideData - { external_id, attribute, override_value, action, reviewed_by }
    * @returns {Promise<Object>}

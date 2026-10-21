@@ -226,6 +226,18 @@ class ReviewQueueResponse(BaseModel):
 
 
 
+class ReviewQueueClearResponse(BaseModel):
+
+    status: str = 'success'
+
+    message: str = 'Очередь модерации успешно очищена'
+
+    cleared_count: int = 0
+
+    remaining_in_queue: int = 0
+
+
+
 class ModelRegisterIn(BaseModel):
 
     model_config = ConfigDict(coerce_numbers_to_str=True)
