@@ -7,6 +7,7 @@ from fastapi import Depends, FastAPI, File, Request, UploadFile
 from fastapi.exceptions import RequestValidationError
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import FileResponse, JSONResponse
+from fastapi.staticfiles import StaticFiles
 
 from app.config import settings
 from app.routers import extract
@@ -69,6 +70,11 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
+# Монтирование модульного фронтенда (/static)
+STATIC_DIR = Path(__file__).resolve().parent / "static"
+if STATIC_DIR.exists():
+    app.mount("/static", StaticFiles(directory=str(STATIC_DIR)), name="static")
+
 
 @app.middleware("http")
 async def request_id_tracing_middleware(request: Request, call_next):
@@ -93,7 +99,7 @@ async def api_key_auth_middleware(request: Request, call_next):
         return await call_next(request)
 
     public_paths = {"/", "/health", "/docs", "/redoc", "/openapi.json", "/api", "/api/info", "/api/extract/health"}
-    if request.url.path in public_paths or request.method == "OPTIONS":
+    if request.url.path in public_paths or request.url.path.startswith("/static") or request.method == "OPTIONS":
         return await call_next(request)
 
     provided_key = request.headers.get("X-API-Key")
@@ -202,7 +208,7 @@ def root_ui(request: Request):
                 "openapi_schema": "/openapi.json",
             },
         })
-    static_file = os.path.join(os.path.dirname(__file__), "static", "index.html")
+    static_file = str(STATIC_DIR / "index.html")
     return FileResponse(static_file)
 
 

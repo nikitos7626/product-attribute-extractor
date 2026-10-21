@@ -1,0 +1,63 @@
+/* ==========================================================================
+   М.Видео AI — Таблицы стилей интерфейса извлечения характеристик товаров
+   ========================================================================== */
+
+/* Брендовые цвета М.Видео */
+:root {
+  --mvideo-red: #e31235;
+  --mvideo-darkred: #b80c29;
+  --mvideo-dark: #1e2229;
+  --mvideo-light: #f4f5f7;
+}
+
+/* Плавные переходы элементов интерфейса */
+.transition-smooth {
+  transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Кастомный скроллбар для JSON-просмотрщика и очередей */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+::-webkit-scrollbar-track {
+  background: #f1f1f1;
+  border-radius: 4px;
+}
+::-webkit-scrollbar-thumb {
+  background: #cbd5e1;
+  border-radius: 4px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #94a3b8;
+}
+
+/* Анимация пульсации статуса сервера */
+@keyframes pulse-dot {
+  0%, 100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 0.5;
+    transform: scale(1.15);
+  }
+}
+
+.status-dot-pulse {
+  animation: pulse-dot 2s infinite ease-in-out;
+}
+
+/* Стилизация области Drag & Drop */
+.drag-over {
+  border-color: var(--mvideo-red) !important;
+  background-color: #fef2f2 !important;
+}
+
+/* Кодовый блок вывода JSON */
+.code-viewer {
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+  font-size: 0.8125rem;
+  line-height: 1.45;
+  tab-size: 2;
+}

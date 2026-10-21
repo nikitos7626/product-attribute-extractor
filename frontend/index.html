@@ -1,0 +1,326 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>М.Видео AI · Извлечение характеристик товаров</title>
+  
+  <!-- Внешние библиотеки стилей (Tailwind CDN, FontAwesome) -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  
+  <!-- Кастомные стили фронтенда -->
+  <link rel="stylesheet" href="/static/css/style.css">
+
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            mvideo: {
+              red: '#e31235',
+              darkred: '#b80c29',
+              dark: '#1e2229',
+              light: '#f4f5f7'
+            }
+          }
+        }
+      }
+    }
+  </script>
+</head>
+<body class="bg-gray-50 text-gray-800 min-h-screen flex flex-col font-sans">
+
+  <!-- ==================== ШАПКА САЙТА (HEADER) ==================== -->
+  <header class="bg-white border-b border-gray-200 sticky top-0 z-50 shadow-sm">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
+      <div class="flex items-center space-x-3">
+        <div class="w-10 h-10 rounded-lg bg-mvideo-red flex items-center justify-center text-white font-extrabold text-xl shadow-md">
+          M
+        </div>
+        <div>
+          <span class="text-xl font-bold text-gray-900 tracking-tight">М.Видео <span class="text-mvideo-red">AI</span></span>
+          <span class="ml-2 text-xs font-semibold uppercase tracking-wider bg-red-100 text-mvideo-red px-2 py-0.5 rounded-full">VolgaDev 2026</span>
+        </div>
+      </div>
+      <div class="flex items-center space-x-4">
+        <a href="/docs" target="_blank" class="text-sm font-medium text-gray-600 hover:text-mvideo-red transition flex items-center">
+          <i class="fa-solid fa-code mr-1.5"></i> Swagger API
+        </a>
+        <div id="api-status" class="flex items-center text-xs text-green-700 bg-green-50 px-2.5 py-1 rounded-full border border-green-200">
+          <span class="w-2 h-2 rounded-full bg-green-500 mr-1.5 status-dot-pulse"></span>
+          Сервер онлайн
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- ==================== ОСНОВНОЙ КОНТЕНТ (MAIN) ==================== -->
+  <main class="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-8">
+    
+    <!-- Заголовок страницы и навигация по вкладкам -->
+    <div class="mb-6 flex flex-col md:flex-row md:items-center justify-between gap-4">
+      <div>
+        <h1 class="text-3xl font-extrabold text-gray-900 sm:text-4xl tracking-tight">
+          Автоматическое заполнение характеристик
+        </h1>
+        <p class="mt-2 text-base text-gray-600">
+          Каскадный пайплайн: <span class="font-semibold text-gray-800">Tier 1 (Regex & FlashText)</span> + <span class="font-semibold text-gray-800">Tier 2 (GLiNER NER)</span> + <span class="font-semibold text-gray-800">Snorkel Consensus</span> с калибровкой уверенности (порог: 87%).
+        </p>
+      </div>
+
+      <!-- Вкладки (Tabs) -->
+      <div class="flex p-1 bg-gray-200 rounded-xl space-x-1 self-start md:self-auto text-sm font-semibold">
+        <button id="tab-btn-single" class="px-4 py-2 rounded-lg bg-white shadow-sm text-gray-900 transition flex items-center space-x-2">
+          <i class="fa-solid fa-file-lines text-mvideo-red"></i>
+          <span>Одиночная карточка</span>
+        </button>
+        <button id="tab-btn-batch" class="px-4 py-2 rounded-lg text-gray-600 hover:text-gray-900 transition flex items-center space-x-2">
+          <i class="fa-solid fa-boxes-stacked"></i>
+          <span>Пакетная обработка</span>
+        </button>
+        <button id="tab-btn-review" class="px-4 py-2 rounded-lg text-gray-600 hover:text-gray-900 transition flex items-center space-x-2">
+          <i class="fa-solid fa-user-check"></i>
+          <span>Очередь модерации</span>
+        </button>
+      </div>
+    </div>
+
+    <!-- ==================== ВКЛАДКА 1: ОДИНОЧНАЯ КАРТОЧКА ==================== -->
+    <div id="tab-single" class="tab-content">
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-8">
+        
+        <!-- Левая колонка: Ввод карточки -->
+        <div class="lg:col-span-5 space-y-6">
+          <div class="bg-white rounded-2xl shadow-sm border border-gray-200 p-6">
+            <div class="flex items-center justify-between mb-4">
+              <h2 class="text-lg font-bold text-gray-900 flex items-center">
+                <i class="fa-solid fa-file-pen text-mvideo-red mr-2"></i> Входная карточка
+              </h2>
+              <span class="text-xs text-gray-500">Только текст</span>
+            </div>
+
+            <!-- Быстрые пресеты -->
+            <div class="mb-5">
+              <div class="flex items-center justify-between mb-2">
+                <label class="text-xs font-bold text-gray-500 uppercase tracking-wider">Примеры каталога М.Видео:</label>
+              </div>
+              <div class="flex flex-wrap gap-1.5">
+                <button type="button" data-preset="samsung" class="text-xs bg-gray-100 hover:bg-gray-200 text-gray-700 px-2.5 py-1 rounded-lg transition font-medium">Samsung A32</button>
+                <button type="button" data-preset="iphone16" class="text-xs bg-gray-100 hover:bg-gray-200 text-gray-700 px-2.5 py-1 rounded-lg transition font-medium">iPhone 16</button>
+                <button type="button" data-preset="lenovo" class="text-xs bg-gray-100 hover:bg-gray-200 text-gray-700 px-2.5 py-1 rounded-lg transition font-medium">Ноутбук Lenovo</button>
+                <button type="button" data-preset="washing" class="text-xs bg-gray-100 hover:bg-gray-200 text-gray-700 px-2.5 py-1 rounded-lg transition font-medium">Стиралка Haier</button>
+                <button type="button" data-preset="sony_tv" class="text-xs bg-gray-100 hover:bg-gray-200 text-gray-700 px-2.5 py-1 rounded-lg transition font-medium">ТВ Sony 50"</button>
+                <button type="button" data-preset="vacuum" class="text-xs bg-gray-100 hover:bg-gray-200 text-gray-700 px-2.5 py-1 rounded-lg transition font-medium">Робот-пылесос</button>
+                <button type="button" data-preset="fridge" class="text-xs bg-gray-100 hover:bg-gray-200 text-gray-700 px-2.5 py-1 rounded-lg transition font-medium">Холодильник AEG</button>
+              </div>
+            </div>
+
+            <!-- Форма отправки -->
+            <form id="single-form" class="space-y-4">
+              <div>
+                <label for="raw_text" class="block text-sm font-semibold text-gray-700 mb-1">
+                  Название и/или описание товара:
+                </label>
+                <textarea id="raw_text" rows="8" required
+                  placeholder="Вставьте заголовок или сплошное описание карточки товара из маркетплейса..."
+                  class="w-full rounded-xl border border-gray-300 p-3 text-sm focus:border-mvideo-red focus:ring-1 focus:ring-mvideo-red transition"></textarea>
+              </div>
+
+              <button type="submit" id="submit-btn"
+                class="w-full bg-mvideo-red hover:bg-mvideo-darkred text-white font-bold py-3 px-4 rounded-xl shadow-md transition flex items-center justify-center space-x-2 text-sm">
+                <i class="fa-solid fa-wand-magic-sparkles"></i>
+                <span>Извлечь характеристики</span>
+              </button>
+            </form>
+          </div>
+        </div>
+
+        <!-- Правая колонка: Результаты -->
+        <div class="lg:col-span-7 space-y-6">
+          
+          <!-- Плейсхолдер пустого состояния -->
+          <div id="empty-state" class="bg-white rounded-2xl shadow-sm border border-dashed border-gray-300 p-12 text-center text-gray-400">
+            <i class="fa-solid fa-cube text-5xl mb-4 text-gray-300"></i>
+            <h3 class="text-lg font-bold text-gray-700">Ожидание входных данных</h3>
+            <p class="text-sm mt-1 max-w-sm mx-auto">Выберите пример выше или введите текст карточки и нажмите кнопку извлечения.</p>
+          </div>
+
+          <!-- Карточка с результатами -->
+          <div id="results-card" class="hidden bg-white rounded-2xl shadow-sm border border-gray-200 overflow-hidden">
+            
+            <!-- Заголовок карточки результата -->
+            <div class="p-6 border-b border-gray-100 bg-gray-50/50 flex flex-wrap items-center justify-between gap-4">
+              <div>
+                <span class="text-xs font-bold text-gray-500 uppercase tracking-wider">Категория:</span>
+                <span id="category-name" class="ml-2 text-base font-extrabold text-gray-900 bg-white px-3 py-1 rounded-lg border border-gray-200 shadow-xs">
+                  Электроника
+                </span>
+              </div>
+              <div id="status-badge"></div>
+            </div>
+
+            <div id="status-description" class="hidden mx-6 mt-4 p-3 rounded-xl bg-amber-50 border border-amber-200 text-xs text-amber-800 font-medium"></div>
+
+            <!-- Шкала уверенности и пропущенные поля -->
+            <div class="p-6 border-b border-gray-100 grid grid-cols-1 md:grid-cols-2 gap-6">
+              <div>
+                <div class="flex items-center justify-between text-xs font-bold text-gray-600 mb-1">
+                  <span>Общая уверенность (Confidence):</span>
+                  <span id="confidence-value" class="text-sm font-extrabold text-gray-900">0%</span>
+                </div>
+                <div class="w-full bg-gray-200 rounded-full h-2.5">
+                  <div id="confidence-bar" class="h-2.5 rounded-full bg-green-500" style="width: 0%"></div>
+                </div>
+                <p class="text-[11px] text-gray-400 mt-1">Порог автоматического подтверждения: 87%</p>
+              </div>
+
+              <div>
+                <span class="text-xs font-bold text-gray-600 block mb-1">Пропущенные обязательные поля:</span>
+                <div id="missing-tags" class="flex flex-wrap gap-1"></div>
+              </div>
+            </div>
+
+            <!-- Таблица характеристик -->
+            <div class="overflow-x-auto">
+              <table class="w-full text-left text-sm text-gray-600">
+                <thead class="bg-gray-50 text-xs uppercase font-bold text-gray-500 border-b border-gray-100">
+                  <tr>
+                    <th class="px-6 py-3">Характеристика</th>
+                    <th class="px-6 py-3">Значение</th>
+                    <th class="px-6 py-3 text-center">Скор</th>
+                    <th class="px-6 py-3">Источник</th>
+                    <th class="px-6 py-3">Верификация</th>
+                  </tr>
+                </thead>
+                <tbody id="attributes-table" class="divide-y divide-gray-100"></tbody>
+              </table>
+            </div>
+
+            <!-- JSON дебаггер -->
+            <div class="p-6 bg-gray-50 border-t border-gray-100">
+              <div class="flex items-center justify-between mb-2">
+                <span class="text-xs font-bold text-gray-500 uppercase tracking-wider">Машиночитаемый JSON-ответ:</span>
+                <button type="button" id="copy-json-btn" class="text-xs text-gray-600 hover:text-mvideo-red font-medium transition flex items-center">
+                  <i class="fa-regular fa-copy mr-1"></i> Копировать JSON
+                </button>
+              </div>
+              <pre id="json-viewer" class="bg-gray-900 text-gray-100 p-4 rounded-xl text-xs overflow-x-auto max-h-56 code-viewer"></pre>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ==================== ВКЛАДКА 2: ПАКЕТНАЯ ОБРАБОТКА ==================== -->
+    <div id="tab-batch" class="tab-content hidden space-y-6">
+      <div class="bg-white rounded-2xl shadow-sm border border-gray-200 p-6">
+        <h2 class="text-lg font-bold text-gray-900 mb-2 flex items-center">
+          <i class="fa-solid fa-boxes-stacked text-mvideo-red mr-2"></i> Пакетная выгрузка карточек (CSV / JSON)
+        </h2>
+        <p class="text-sm text-gray-500 mb-6">Загрузите файл со списком товаров для извлечения характеристик через неблокирующий пул потоков.</p>
+
+        <!-- Зона Drag & Drop -->
+        <div id="drop-zone" class="border-2 border-dashed border-gray-300 rounded-2xl p-8 text-center hover:border-mvideo-red transition cursor-pointer bg-gray-50/50">
+          <i class="fa-solid fa-cloud-arrow-up text-4xl text-gray-400 mb-3"></i>
+          <p class="text-sm font-bold text-gray-700">Перетащите CSV или JSON файл сюда или нажмите для выбора</p>
+          <p class="text-xs text-gray-400 mt-1">Поддерживаются форматы: .csv, .json (до 50 МБ)</p>
+          <input type="file" id="batch-file-input" accept=".csv,.json" class="hidden">
+          <button type="button" onclick="document.getElementById('batch-file-input').click()" class="mt-4 px-4 py-2 bg-white border border-gray-300 rounded-xl text-xs font-bold text-gray-700 hover:bg-gray-50 shadow-xs transition">
+            Выбрать файл на диске
+          </button>
+        </div>
+
+        <div class="mt-4 flex flex-wrap items-center justify-between gap-4">
+          <div id="file-name-label" class="text-xs font-semibold text-gray-600">Файл не выбран</div>
+          <div class="flex items-center space-x-2">
+            <button id="batch-process-btn" disabled class="px-5 py-2.5 bg-mvideo-red disabled:bg-gray-300 hover:bg-mvideo-darkred text-white text-xs font-bold rounded-xl shadow-xs transition flex items-center space-x-1.5">
+              <i class="fa-solid fa-play"></i>
+              <span>Запустить обработку</span>
+            </button>
+            <button id="batch-export-json-btn" disabled class="px-4 py-2.5 bg-gray-100 disabled:opacity-50 hover:bg-gray-200 text-gray-700 text-xs font-bold rounded-xl transition flex items-center space-x-1.5">
+              <i class="fa-solid fa-file-arrow-down"></i>
+              <span>JSON</span>
+            </button>
+            <button id="batch-export-csv-btn" disabled class="px-4 py-2.5 bg-gray-100 disabled:opacity-50 hover:bg-gray-200 text-gray-700 text-xs font-bold rounded-xl transition flex items-center space-x-1.5">
+              <i class="fa-solid fa-file-csv"></i>
+              <span>CSV</span>
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Сводка результатов пакета -->
+      <div id="batch-results-container" class="hidden bg-white rounded-2xl shadow-sm border border-gray-200 overflow-hidden">
+        <div class="p-4 border-b border-gray-100 bg-gray-50 flex flex-wrap items-center justify-between gap-4">
+          <h3 class="font-bold text-gray-900 text-sm flex items-center">
+            <i class="fa-solid fa-list-check text-mvideo-red mr-2"></i> Результаты пакета (<span id="batch-total-count">0</span>)
+          </h3>
+          <div class="flex items-center space-x-4 text-xs font-semibold">
+            <span class="text-green-700 bg-green-50 px-2 py-0.5 rounded border border-green-200">
+              Одобрено: <b id="batch-approved-count">0</b>
+            </span>
+            <span class="text-yellow-700 bg-yellow-50 px-2 py-0.5 rounded border border-yellow-200">
+              На ревью: <b id="batch-review-count">0</b>
+            </span>
+            <span class="text-red-700 bg-red-50 px-2 py-0.5 rounded border border-red-200">
+              Сбои: <b id="batch-failed-count">0</b>
+            </span>
+          </div>
+        </div>
+        <div class="overflow-x-auto max-h-96">
+          <table class="w-full text-left text-xs text-gray-600">
+            <thead class="bg-gray-50 text-[11px] uppercase font-bold text-gray-500 sticky top-0 border-b border-gray-100">
+              <tr>
+                <th class="px-4 py-2">ID</th>
+                <th class="px-4 py-2">Категория</th>
+                <th class="px-4 py-2 text-center">Скор</th>
+                <th class="px-4 py-2 text-center">Статус</th>
+                <th class="px-4 py-2">Атрибуты</th>
+                <th class="px-4 py-2">Пропущено</th>
+              </tr>
+            </thead>
+            <tbody id="batch-table-body" class="divide-y divide-gray-100"></tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- ==================== ВКЛАДКА 3: ОЧЕРЕДЬ МОДЕРАЦИИ ==================== -->
+    <div id="tab-review" class="tab-content hidden space-y-6">
+      <div class="bg-white rounded-2xl shadow-sm border border-gray-200 p-6">
+        <div class="flex items-center justify-between mb-4">
+          <div>
+            <h2 class="text-lg font-bold text-gray-900 flex items-center">
+              <i class="fa-solid fa-user-check text-mvideo-red mr-2"></i> Очередь ручной модерации (Human-in-the-Loop)
+            </h2>
+            <p class="text-sm text-gray-500">Карточки с уверенностью ниже 87% или пропущенными обязательными полями категории.</p>
+          </div>
+          <button id="refresh-review-btn" class="px-4 py-2 bg-gray-100 hover:bg-gray-200 text-gray-700 font-bold rounded-xl text-xs flex items-center space-x-1.5 transition">
+            <i class="fa-solid fa-rotate"></i>
+            <span>Обновить очередь</span>
+          </button>
+        </div>
+
+        <div id="review-queue-content" class="space-y-4">
+          <p class="text-sm text-gray-400 text-center py-8">Загрузка очереди модерации...</p>
+        </div>
+      </div>
+    </div>
+
+  </main>
+
+  <!-- ==================== ПОДВАЛ (FOOTER) ==================== -->
+  <footer class="bg-white border-t border-gray-200 py-4 mt-auto">
+    <div class="max-w-7xl mx-auto px-4 text-center text-xs text-gray-500">
+      Хакатон VolgaDev 2026 · Кейс М.Видео: «ИИ для автоматического заполнения характеристик товаров»
+    </div>
+  </footer>
+
+  <!-- ==================== МОДУЛЬНЫЕ СКРИПТЫ ==================== -->
+  <script src="/static/js/presets.js"></script>
+  <script src="/static/js/api.js"></script>
+  <script src="/static/js/render.js"></script>
+  <script src="/static/js/app.js"></script>
+</body>
+</html>
