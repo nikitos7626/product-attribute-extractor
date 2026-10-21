@@ -10,11 +10,17 @@ if sys.platform == "win32":
 
 REPO_ROOT = Path(__file__).resolve().parent.parent
 
-# Desktop target locations
-DESKTOPS = [
-    Path(r"C:\Users\nikit\OneDrive\Рабочий стол"),
-    Path(r"C:\Users\nikit\Desktop"),
+# Desktop target locations (cross-platform discovery)
+home = Path.home()
+candidates = [
+    home / "OneDrive" / "Рабочий стол",
+    home / "OneDrive" / "Desktop",
+    home / "Desktop",
+    home / "Рабочий стол",
 ]
+DESKTOPS = [p for p in candidates if p.exists()]
+if not DESKTOPS:
+    DESKTOPS = [home / "Desktop"]
 
 print(f"Repository Root: {REPO_ROOT}")
 

@@ -1,0 +1,550 @@
+{
+  "GigaChat/GigaChat-3-Pro": {
+    "avg_latency_ms": 726.2,
+    "valid_json_rate_pct": 50.0,
+    "target_accuracy_pct": 35.7,
+    "sanity_rate_pct": 50.0,
+    "total_targets": 14,
+    "matched_targets": 5,
+    "details": [
+      {
+        "title": "Смартфон Apple iPhone 15 Pro Max 256GB синий титан",
+        "targets": [
+          "battery",
+          "screen_diagonal"
+        ],
+        "extracted": {},
+        "expected": {
+          "battery": "4852 мАч",
+          "screen_diagonal": "6.7\""
+        },
+        "matches": 0,
+        "latency_ms": 734.7
+      },
+      {
+        "title": "Смартфон Samsung Galaxy S24 Ultra 12/512GB серый",
+        "targets": [
+          "battery",
+          "screen_diagonal"
+        ],
+        "extracted": {
+          "screen_diagonal": "6.8\""
+        },
+        "expected": {
+          "battery": "5000 мАч",
+          "screen_diagonal": "6.8\""
+        },
+        "matches": 1,
+        "latency_ms": 821.0
+      },
+      {
+        "title": "Смартфон Xiaomi Redmi Note 13 8/256GB Black",
+        "targets": [
+          "battery",
+          "screen_diagonal"
+        ],
+        "extracted": {},
+        "expected": {
+          "battery": "5000 мАч",
+          "screen_diagonal": "6.67\""
+        },
+        "matches": 0,
+        "latency_ms": 698.8
+      },
+      {
+        "title": "Ноутбук Apple MacBook Air 13 M3/8/256GB Space Grey",
+        "targets": [
+          "cpu",
+          "screen_diagonal"
+        ],
+        "extracted": {
+          "cpu": "Apple M3",
+          "screen_diagonal": "13.6\""
+        },
+        "expected": {
+          "cpu": "Apple M3",
+          "screen_diagonal": "13.6\""
+        },
+        "matches": 2,
+        "latency_ms": 825.0
+      },
+      {
+        "title": "Холодильник Haier C2F637CFMV No Frost серебристый",
+        "targets": [
+          "volume"
+        ],
+        "extracted": {},
+        "expected": {
+          "volume": "386 л"
+        },
+        "matches": 0,
+        "latency_ms": 586.3
+      },
+      {
+        "title": "Вертикальный пылесос Dyson V15 Detect Absolute золотой",
+        "targets": [
+          "volume",
+          "power"
+        ],
+        "extracted": {},
+        "expected": {
+          "power": "240 Вт",
+          "volume": "0.77 л"
+        },
+        "matches": 0,
+        "latency_ms": 658.4
+      },
+      {
+        "title": "Микроволновая печь Gorenje MO20E1W белый",
+        "targets": [
+          "volume",
+          "power"
+        ],
+        "extracted": {
+          "volume": "20 л",
+          "power": "700 Вт"
+        },
+        "expected": {
+          "volume": "20 л",
+          "power": "800 Вт"
+        },
+        "matches": 1,
+        "latency_ms": 778.3
+      },
+      {
+        "title": "Беспроводные наушники Sony WH-1000XM5 черный",
+        "targets": [
+          "working_time"
+        ],
+        "extracted": {
+          "working_time": "30 ч"
+        },
+        "expected": {
+          "working_time": "30 ч"
+        },
+        "matches": 1,
+        "latency_ms": 707.1
+      }
+    ]
+  },
+  "ai-sage/GigaChat3-10B-A1.8B": {
+    "avg_latency_ms": 515.0,
+    "valid_json_rate_pct": 100.0,
+    "target_accuracy_pct": 57.1,
+    "sanity_rate_pct": 100.0,
+    "total_targets": 14,
+    "matched_targets": 8,
+    "details": [
+      {
+        "title": "Смартфон Apple iPhone 15 Pro Max 256GB синий титан",
+        "targets": [
+          "battery",
+          "screen_diagonal"
+        ],
+        "extracted": {
+          "battery": "4352 мАч",
+          "screen_diagonal": "6.1\""
+        },
+        "expected": {
+          "battery": "4852 мАч",
+          "screen_diagonal": "6.7\""
+        },
+        "matches": 0,
+        "latency_ms": 666.1
+      },
+      {
+        "title": "Смартфон Samsung Galaxy S24 Ultra 12/512GB серый",
+        "targets": [
+          "battery",
+          "screen_diagonal"
+        ],
+        "extracted": {
+          "battery": "5000 мАч",
+          "screen_diagonal": "6.8\""
+        },
+        "expected": {
+          "battery": "5000 мАч",
+          "screen_diagonal": "6.8\""
+        },
+        "matches": 2,
+        "latency_ms": 486.1
+      },
+      {
+        "title": "Смартфон Xiaomi Redmi Note 13 8/256GB Black",
+        "targets": [
+          "battery",
+          "screen_diagonal"
+        ],
+        "extracted": {
+          "battery": "5000 мАч",
+          "screen_diagonal": "6.67\""
+        },
+        "expected": {
+          "battery": "5000 мАч",
+          "screen_diagonal": "6.67\""
+        },
+        "matches": 2,
+        "latency_ms": 547.5
+      },
+      {
+        "title": "Ноутбук Apple MacBook Air 13 M3/8/256GB Space Grey",
+        "targets": [
+          "cpu",
+          "screen_diagonal"
+        ],
+        "extracted": {
+          "cpu": "Apple M3",
+          "screen_diagonal": "13.3\""
+        },
+        "expected": {
+          "cpu": "Apple M3",
+          "screen_diagonal": "13.6\""
+        },
+        "matches": 1,
+        "latency_ms": 503.2
+      },
+      {
+        "title": "Холодильник Haier C2F637CFMV No Frost серебристый",
+        "targets": [
+          "volume"
+        ],
+        "extracted": {
+          "volume": "360 л"
+        },
+        "expected": {
+          "volume": "386 л"
+        },
+        "matches": 0,
+        "latency_ms": 476.2
+      },
+      {
+        "title": "Вертикальный пылесос Dyson V15 Detect Absolute золотой",
+        "targets": [
+          "volume",
+          "power"
+        ],
+        "extracted": {
+          "volume": "38.5 дБ",
+          "power": "215 Вт"
+        },
+        "expected": {
+          "power": "240 Вт",
+          "volume": "0.77 л"
+        },
+        "matches": 0,
+        "latency_ms": 495.6
+      },
+      {
+        "title": "Микроволновая печь Gorenje MO20E1W белый",
+        "targets": [
+          "volume",
+          "power"
+        ],
+        "extracted": {
+          "volume": "20 литров",
+          "power": "800 Вт"
+        },
+        "expected": {
+          "volume": "20 л",
+          "power": "800 Вт"
+        },
+        "matches": 2,
+        "latency_ms": 476.7
+      },
+      {
+        "title": "Беспроводные наушники Sony WH-1000XM5 черный",
+        "targets": [
+          "working_time"
+        ],
+        "extracted": {
+          "working_time": "30 часов"
+        },
+        "expected": {
+          "working_time": "30 ч"
+        },
+        "matches": 1,
+        "latency_ms": 468.5
+      }
+    ]
+  },
+  "openai/gpt-oss-120b": {
+    "avg_latency_ms": 2573.3,
+    "valid_json_rate_pct": 100.0,
+    "target_accuracy_pct": 57.1,
+    "sanity_rate_pct": 100.0,
+    "total_targets": 14,
+    "matched_targets": 8,
+    "details": [
+      {
+        "title": "Смартфон Apple iPhone 15 Pro Max 256GB синий титан",
+        "targets": [
+          "battery",
+          "screen_diagonal"
+        ],
+        "extracted": {
+          "battery": "4352 мАч",
+          "screen_diagonal": "6.1\""
+        },
+        "expected": {
+          "battery": "4852 мАч",
+          "screen_diagonal": "6.7\""
+        },
+        "matches": 0,
+        "latency_ms": 6692.2
+      },
+      {
+        "title": "Смартфон Samsung Galaxy S24 Ultra 12/512GB серый",
+        "targets": [
+          "battery",
+          "screen_diagonal"
+        ],
+        "extracted": {
+          "battery": "5000 мАч",
+          "screen_diagonal": "6.8\""
+        },
+        "expected": {
+          "battery": "5000 мАч",
+          "screen_diagonal": "6.8\""
+        },
+        "matches": 2,
+        "latency_ms": 1249.7
+      },
+      {
+        "title": "Смартфон Xiaomi Redmi Note 13 8/256GB Black",
+        "targets": [
+          "battery",
+          "screen_diagonal"
+        ],
+        "extracted": {
+          "battery": "5000 мАч",
+          "screen_diagonal": "6.67\""
+        },
+        "expected": {
+          "battery": "5000 мАч",
+          "screen_diagonal": "6.67\""
+        },
+        "matches": 2,
+        "latency_ms": 1348.4
+      },
+      {
+        "title": "Ноутбук Apple MacBook Air 13 M3/8/256GB Space Grey",
+        "targets": [
+          "cpu",
+          "screen_diagonal"
+        ],
+        "extracted": {
+          "cpu": "Apple M3",
+          "screen_diagonal": "13.6\""
+        },
+        "expected": {
+          "cpu": "Apple M3",
+          "screen_diagonal": "13.6\""
+        },
+        "matches": 2,
+        "latency_ms": 1509.2
+      },
+      {
+        "title": "Холодильник Haier C2F637CFMV No Frost серебристый",
+        "targets": [
+          "volume"
+        ],
+        "extracted": {
+          "volume": "363 л"
+        },
+        "expected": {
+          "volume": "386 л"
+        },
+        "matches": 0,
+        "latency_ms": 1366.9
+      },
+      {
+        "title": "Вертикальный пылесос Dyson V15 Detect Absolute золотой",
+        "targets": [
+          "volume",
+          "power"
+        ],
+        "extracted": {
+          "volume": "0.76 л",
+          "power": "600 Вт"
+        },
+        "expected": {
+          "power": "240 Вт",
+          "volume": "0.77 л"
+        },
+        "matches": 0,
+        "latency_ms": 5981.7
+      },
+      {
+        "title": "Микроволновая печь Gorenje MO20E1W белый",
+        "targets": [
+          "volume",
+          "power"
+        ],
+        "extracted": {
+          "volume": "20 л",
+          "power": "800 Вт"
+        },
+        "expected": {
+          "volume": "20 л",
+          "power": "800 Вт"
+        },
+        "matches": 2,
+        "latency_ms": 1190.0
+      },
+      {
+        "title": "Беспроводные наушники Sony WH-1000XM5 черный",
+        "targets": [
+          "working_time"
+        ],
+        "extracted": {
+          "working_time": "30 ч"
+        },
+        "expected": {
+          "working_time": "30 ч"
+        },
+        "matches": 0,
+        "latency_ms": 1248.2
+      }
+    ]
+  },
+  "Qwen/Qwen3.6-35B-A3B": {
+    "avg_latency_ms": 8569.3,
+    "valid_json_rate_pct": 100.0,
+    "target_accuracy_pct": 57.1,
+    "sanity_rate_pct": 100.0,
+    "total_targets": 14,
+    "matched_targets": 8,
+    "details": [
+      {
+        "title": "Смартфон Apple iPhone 15 Pro Max 256GB синий титан",
+        "targets": [
+          "battery",
+          "screen_diagonal"
+        ],
+        "extracted": {
+          "battery": "3687 мАч",
+          "screen_diagonal": "6.1\""
+        },
+        "expected": {
+          "battery": "4852 мАч",
+          "screen_diagonal": "6.7\""
+        },
+        "matches": 0,
+        "latency_ms": 8185.1
+      },
+      {
+        "title": "Смартфон Samsung Galaxy S24 Ultra 12/512GB серый",
+        "targets": [
+          "battery",
+          "screen_diagonal"
+        ],
+        "extracted": {
+          "battery": "5000 мАч",
+          "screen_diagonal": "6.8\""
+        },
+        "expected": {
+          "battery": "5000 мАч",
+          "screen_diagonal": "6.8\""
+        },
+        "matches": 2,
+        "latency_ms": 8769.8
+      },
+      {
+        "title": "Смартфон Xiaomi Redmi Note 13 8/256GB Black",
+        "targets": [
+          "battery",
+          "screen_diagonal"
+        ],
+        "extracted": {
+          "battery": "5000 мАч",
+          "screen_diagonal": "6.67\""
+        },
+        "expected": {
+          "battery": "5000 мАч",
+          "screen_diagonal": "6.67\""
+        },
+        "matches": 2,
+        "latency_ms": 8584.1
+      },
+      {
+        "title": "Ноутбук Apple MacBook Air 13 M3/8/256GB Space Grey",
+        "targets": [
+          "cpu",
+          "screen_diagonal"
+        ],
+        "extracted": {
+          "cpu": "Apple M3",
+          "screen_diagonal": "13.3\""
+        },
+        "expected": {
+          "cpu": "Apple M3",
+          "screen_diagonal": "13.6\""
+        },
+        "matches": 1,
+        "latency_ms": 8728.8
+      },
+      {
+        "title": "Холодильник Haier C2F637CFMV No Frost серебристый",
+        "targets": [
+          "volume"
+        ],
+        "extracted": {
+          "volume": "360 л"
+        },
+        "expected": {
+          "volume": "386 л"
+        },
+        "matches": 0,
+        "latency_ms": 8653.6
+      },
+      {
+        "title": "Вертикальный пылесос Dyson V15 Detect Absolute золотой",
+        "targets": [
+          "volume",
+          "power"
+        ],
+        "extracted": {
+          "volume": "38.5 дБ",
+          "power": "215 Вт"
+        },
+        "expected": {
+          "power": "240 Вт",
+          "volume": "0.77 л"
+        },
+        "matches": 0,
+        "latency_ms": 8543.1
+      },
+      {
+        "title": "Микроволновая печь Gorenje MO20E1W белый",
+        "targets": [
+          "volume",
+          "power"
+        ],
+        "extracted": {
+          "volume": "20 л",
+          "power": "800 Вт"
+        },
+        "expected": {
+          "volume": "20 л",
+          "power": "800 Вт"
+        },
+        "matches": 2,
+        "latency_ms": 8849.0
+      },
+      {
+        "title": "Беспроводные наушники Sony WH-1000XM5 черный",
+        "targets": [
+          "working_time"
+        ],
+        "extracted": {
+          "working_time": "30 часов"
+        },
+        "expected": {
+          "working_time": "30 ч"
+        },
+        "matches": 1,
+        "latency_ms": 8240.5
+      }
+    ]
+  }
+}

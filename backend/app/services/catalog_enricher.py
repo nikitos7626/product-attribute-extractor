@@ -275,6 +275,7 @@ class CatalogEnricher:
                 "value": val,
                 "confidence": float(getattr(settings, "prior_catalog_kb", 0.94)),
                 "source": "catalog_kb",
+                "tier": "Tier 2.5",
                 "raw": val,
                 "grounded": True,
             })

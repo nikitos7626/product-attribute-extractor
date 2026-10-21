@@ -42,7 +42,7 @@ class Settings(BaseSettings):
     # Ключи и секреты НИКОГДА не зашиваются в код и передаются через окружение
     llm_api_base: str = "https://hub.gigaschool.ru/api/v1/llm/v1"
     llm_api_key: str = ""
-    llm_model: str = "GigaChat/GigaChat-3-Pro"
+    llm_model: str = "ai-sage/GigaChat3-10B-A1.8B"
     enforce_llm_grounding: bool = True
     llm_timeout_seconds: float = 3.5
     llm_max_retries: int = 2
@@ -60,6 +60,7 @@ class Settings(BaseSettings):
     prior_regex: float = 0.90
     prior_gliner: float = 0.88
     prior_llm_grounded: float = 0.86
+    force_review_on_llm: bool = True     # Строгий контроль качества: при использовании LLM всегда отправлять на проверку человеку
     prior_default: float = 0.75
 
     # Гиперпараметры калибратора уверенности и многоисточникового консенсуса

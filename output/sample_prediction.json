@@ -1,116 +1,28 @@
 {
   "metadata": {
-    "description": "Компактный образец стандартизированного вывода предсказаний М.Видео AI (CardOut)",
+    "description": "Компактный образец стандартизированного вывода предсказаний М.Видео AI (3 карточки)",
     "schema_version": "2.2.0",
     "total_samples": 3
   },
   "samples": [
     {
-      "external_id": "sku-101",
-      "category": "Смартфоны",
-      "predictions": [
-        {
-          "attribute": "brand",
-          "value": "Apple",
-          "confidence": 0.99,
-          "source": "flashtext",
-          "raw": "Apple",
-          "grounded": true,
-          "consensus": true,
-          "consensus_sources": [
-            "flashtext",
-            "gliner"
-          ],
-          "confidence_reason": "Повышенная уверенность (0.99): подтверждено независимым консенсусом (flashtext, gliner)",
-          "status": "confirmed_by_consensus"
-        },
-        {
-          "attribute": "color",
-          "value": "синий",
-          "confidence": 0.99,
-          "source": "flashtext",
-          "raw": "синий",
-          "grounded": true,
-          "consensus": true,
-          "consensus_sources": [
-            "flashtext",
-            "gliner"
-          ],
-          "confidence_reason": "Повышенная уверенность (0.99): подтверждено независимым консенсусом (flashtext, gliner)",
-          "status": "confirmed_by_consensus"
-        },
-        {
-          "attribute": "model",
-          "value": "iPhone 15 Pro Max",
-          "confidence": 0.99,
-          "source": "regex",
-          "raw": "iPhone 15 Pro Max",
-          "grounded": true,
-          "consensus": true,
-          "consensus_sources": [
-            "regex",
-            "gliner"
-          ],
-          "confidence_reason": "Повышенная уверенность (0.99): подтверждено независимым консенсусом (regex, gliner)",
-          "status": "confirmed_by_consensus"
-        },
-        {
-          "attribute": "memory_rom",
-          "value": "256 ГБ",
-          "confidence": 0.99,
-          "source": "regex",
-          "raw": "256gb",
-          "grounded": true,
-          "consensus": true,
-          "consensus_sources": [
-            "regex",
-            "gliner"
-          ],
-          "confidence_reason": "Повышенная уверенность (0.99): подтверждено независимым консенсусом (regex, gliner)",
-          "status": "confirmed_by_consensus"
-        },
-        {
-          "attribute": "battery",
-          "value": "4422 мАч",
-          "confidence": 0.99,
-          "source": "gliner",
-          "raw": "4422 мАч",
-          "grounded": true,
-          "consensus": true,
-          "consensus_sources": [
-            "gliner",
-            "regex"
-          ],
-          "confidence_reason": "Повышенная уверенность (0.99): подтверждено независимым консенсусом (gliner, regex)",
-          "status": "confirmed_by_consensus"
-        },
-        {
-          "attribute": "screen_diagonal",
-          "value": "6.7\"",
-          "confidence": 0.94,
-          "source": "catalog_kb",
-          "raw": "6.7\"",
-          "grounded": true,
-          "consensus": null,
-          "consensus_sources": null,
-          "confidence_reason": "Уверенное извлечение (0.94): верифицировано компонентом catalog_kb",
-          "status": "valid"
-        }
+      "external_id": "mvideo-20077299",
+      "title": "Холодильник HAIER CEF535ASG",
+      "category": "Холодильники",
+      "overall_confidence": 0.3408,
+      "needs_review": true,
+      "extracted_attributes": {
+        "brand": "Haier",
+        "model": "CEF535ASG"
+      },
+      "missing_required": [
+        "color",
+        "defrost_system"
       ],
-      "missing": [],
-      "overall_confidence": 0.9815,
-      "needs_review": false,
-      "status": "approved",
-      "status_description": "Все обязательные атрибуты успешно извлечены и верифицированы (уверенность: 0.98). Карточка готова к публикации.",
-      "review_reasons": [],
+      "latency_ms": 5360.74,
       "warnings": [],
       "degraded_tiers": [],
-      "taxonomy_status": "healthy"
-    },
-    {
-      "external_id": "sku-102",
-      "category": "Холодильники",
-      "predictions": [
+      "detailed_predictions": [
         {
           "attribute": "brand",
           "value": "Haier",
@@ -123,81 +35,41 @@
             "flashtext",
             "gliner"
           ],
+          "tier": "Tier 1",
           "confidence_reason": "Повышенная уверенность (0.99): подтверждено независимым консенсусом (flashtext, gliner)",
-          "status": "confirmed_by_consensus"
-        },
-        {
-          "attribute": "color",
-          "value": "серебристый",
-          "confidence": 0.99,
-          "source": "flashtext",
-          "raw": "серебристый",
-          "grounded": true,
-          "consensus": true,
-          "consensus_sources": [
-            "flashtext",
-            "gliner"
-          ],
-          "confidence_reason": "Повышенная уверенность (0.99): подтверждено независимым консенсусом (flashtext, gliner)",
-          "status": "confirmed_by_consensus"
-        },
-        {
-          "attribute": "volume",
-          "value": "346 л",
-          "confidence": 0.99,
-          "source": "gliner",
-          "raw": "346 л",
-          "grounded": true,
-          "consensus": true,
-          "consensus_sources": [
-            "gliner",
-            "regex"
-          ],
-          "confidence_reason": "Повышенная уверенность (0.99): подтверждено независимым консенсусом (gliner, regex)",
-          "status": "confirmed_by_consensus"
-        },
-        {
-          "attribute": "defrost_system",
-          "value": "No Frost",
-          "confidence": 0.99,
-          "source": "regex",
-          "raw": "no frost",
-          "grounded": true,
-          "consensus": true,
-          "consensus_sources": [
-            "regex",
-            "gliner"
-          ],
-          "confidence_reason": "Повышенная уверенность (0.99): подтверждено независимым консенсусом (regex, gliner)",
           "status": "confirmed_by_consensus"
         },
         {
           "attribute": "model",
           "value": "CEF535ASG",
-          "confidence": 0.9485,
+          "confidence": 0.9386,
           "source": "gliner",
           "raw": "CEF535ASG",
           "grounded": true,
-          "consensus": null,
-          "consensus_sources": null,
-          "confidence_reason": "Уверенное извлечение (0.95): верифицировано компонентом gliner",
+          "tier": "Tier 2",
+          "confidence_reason": "Уверенное извлечение (0.94): верифицировано компонентом gliner",
           "status": "valid"
         }
-      ],
-      "missing": [],
-      "overall_confidence": 0.9816,
-      "needs_review": false,
-      "status": "approved",
-      "status_description": "Все обязательные атрибуты успешно извлечены и верифицированы (уверенность: 0.98). Карточка готова к публикации.",
-      "review_reasons": [],
-      "warnings": [],
-      "degraded_tiers": [],
-      "taxonomy_status": "healthy"
+      ]
     },
     {
-      "external_id": "sku-103",
-      "category": "Стиральные машины",
-      "predictions": [
+      "external_id": "mvideo-20077298",
+      "title": "Холодильник HAIER CEF535AWG",
+      "category": "Холодильники",
+      "overall_confidence": 0.3382,
+      "needs_review": true,
+      "extracted_attributes": {
+        "brand": "Haier",
+        "model": "CEF535AWG"
+      },
+      "missing_required": [
+        "color",
+        "defrost_system"
+      ],
+      "latency_ms": 170.34,
+      "warnings": [],
+      "degraded_tiers": [],
+      "detailed_predictions": [
         {
           "attribute": "brand",
           "value": "Haier",
@@ -210,58 +82,69 @@
             "flashtext",
             "gliner"
           ],
+          "tier": "Tier 1",
           "confidence_reason": "Повышенная уверенность (0.99): подтверждено независимым консенсусом (flashtext, gliner)",
           "status": "confirmed_by_consensus"
         },
         {
-          "attribute": "color",
-          "value": "белый",
+          "attribute": "model",
+          "value": "CEF535AWG",
+          "confidence": 0.9243,
+          "source": "gliner",
+          "raw": "CEF535AWG",
+          "grounded": true,
+          "tier": "Tier 2",
+          "confidence_reason": "Уверенное извлечение (0.92): верифицировано компонентом gliner",
+          "status": "valid"
+        }
+      ]
+    },
+    {
+      "external_id": "mvideo-20078182",
+      "title": "Холодильник Gorenje NRK620EABXL4",
+      "category": "Холодильники",
+      "overall_confidence": 0.3429,
+      "needs_review": true,
+      "extracted_attributes": {
+        "brand": "Gorenje",
+        "model": "NRK620EABXL4"
+      },
+      "missing_required": [
+        "color",
+        "defrost_system"
+      ],
+      "latency_ms": 167.17,
+      "warnings": [],
+      "degraded_tiers": [],
+      "detailed_predictions": [
+        {
+          "attribute": "brand",
+          "value": "Gorenje",
           "confidence": 0.99,
           "source": "flashtext",
-          "raw": "белый",
+          "raw": "Gorenje",
           "grounded": true,
           "consensus": true,
           "consensus_sources": [
             "flashtext",
             "gliner"
           ],
+          "tier": "Tier 1",
           "confidence_reason": "Повышенная уверенность (0.99): подтверждено независимым консенсусом (flashtext, gliner)",
           "status": "confirmed_by_consensus"
         },
         {
-          "attribute": "load_capacity",
-          "value": "6 кг",
-          "confidence": 0.95,
-          "source": "regex",
-          "raw": "6 кг",
-          "grounded": true,
-          "consensus": null,
-          "consensus_sources": null,
-          "confidence_reason": "Высокая уверенность (0.95): прямое совпадение в каталоге / правилах (regex)",
-          "status": "high_confidence"
-        },
-        {
           "attribute": "model",
-          "value": "HW60-1010FD",
-          "confidence": 0.9431,
+          "value": "NRK620EABXL4",
+          "confidence": 0.9501,
           "source": "gliner",
-          "raw": "HW60-1010FD",
+          "raw": "NRK620EABXL4",
           "grounded": true,
-          "consensus": null,
-          "consensus_sources": null,
-          "confidence_reason": "Уверенное извлечение (0.94): верифицировано компонентом gliner",
-          "status": "valid"
+          "tier": "Tier 2",
+          "confidence_reason": "Высокая уверенность (0.95): прямое совпадение в каталоге / правилах (gliner)",
+          "status": "high_confidence"
         }
-      ],
-      "missing": [],
-      "overall_confidence": 0.968,
-      "needs_review": false,
-      "status": "approved",
-      "status_description": "Все обязательные атрибуты успешно извлечены и верифицированы (уверенность: 0.97). Карточка готова к публикации.",
-      "review_reasons": [],
-      "warnings": [],
-      "degraded_tiers": [],
-      "taxonomy_status": "healthy"
+      ]
     }
   ]
 }

@@ -1,11 +1,11 @@
 {
-  "timestamp": "2026-10-21 15:48:25",
+  "timestamp": "2026-10-21 21:10:02",
   "total_cards": 13,
   "category_accuracy": 1.0,
-  "overall_coverage": 0.4615,
-  "avg_latency_ms": 2.52,
-  "macro_f1": 0.9474,
-  "micro_f1": 0.995,
+  "overall_coverage": 0.6923,
+  "avg_latency_ms": 617.27,
+  "macro_f1": 1.0,
+  "micro_f1": 0.9951,
   "per_attribute_metrics": {
     "battery": {
       "precision": 1.0,
@@ -26,12 +26,12 @@
       "support": 13
     },
     "cleaning_type": {
-      "precision": 0.0,
-      "recall": 0.0,
-      "f1_score": 0.0,
-      "tp": 0,
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1_score": 1.0,
+      "tp": 1,
       "fp": 0,
-      "fn": 1,
+      "fn": 0,
       "support": 1
     },
     "color": {
@@ -69,6 +69,15 @@
       "fp": 0,
       "fn": 0,
       "support": 1
+    },
+    "display_tech": {
+      "precision": 0.0,
+      "recall": 0.0,
+      "f1_score": 0.0,
+      "tp": 0,
+      "fp": 1,
+      "fn": 0,
+      "support": 0
     },
     "memory_ram": {
       "precision": 1.0,
