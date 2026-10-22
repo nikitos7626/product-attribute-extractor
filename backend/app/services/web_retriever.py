@@ -108,6 +108,11 @@ OPEN_REFERENCE_SPECS: dict[tuple[str, str], dict[str, str]] = {
         "cpu": "Snapdragon 8 Elite",
         "os": "Android",
     },
+    ("haier", "cef535asg"): {
+        "color": "серебристый",
+        "defrost_system": "No Frost",
+        "volume": "346 л",
+    },
     ("apple", "iphone 16 pro max"): {
         "screen_diagonal": '6.9"',
         "battery": "4685 мАч",

@@ -291,30 +291,15 @@ const RenderService = {
 
         <!-- Разворачиваемая форма деталей и редактирования (по умолчанию скрыта) -->
         <div id="details-${item.external_id}" class="details-panel hidden pt-3 border-t border-gray-100 space-y-3.5">
-          <!-- Умные ссылки на открытые базы данных и AI-подтягивание по ссылке -->
-          <div class="bg-blue-50/70 border border-blue-200 rounded-lg p-2.5 text-xs space-y-2">
-            <div class="flex flex-wrap items-center justify-between gap-1 text-blue-900 font-bold">
-              <span><i class="fa-solid fa-globe mr-1.5 text-blue-600"></i> Открытые источники и поиск спецификаций:</span>
-              <div class="flex items-center space-x-1.5 text-[11px] font-normal">
-                <a href="https://market.yandex.ru/search?text=${encodeURIComponent(item.title || item.raw_text || '')}" target="_blank" rel="noopener noreferrer" class="text-blue-600 hover:text-blue-800 underline font-semibold flex items-center">
-                  <i class="fa-solid fa-arrow-up-right-from-square mr-1"></i> Яндекс.Маркет
-                </a>
-                <span>·</span>
-                <a href="https://www.dns-shop.ru/search/?q=${encodeURIComponent(item.title || item.raw_text || '')}" target="_blank" rel="noopener noreferrer" class="text-blue-600 hover:text-blue-800 underline font-semibold flex items-center">
-                  <i class="fa-solid fa-arrow-up-right-from-square mr-1"></i> DNS
-                </a>
-                <span>·</span>
-                <a href="https://ya.ru/search/?text=${encodeURIComponent('характеристики ' + (item.title || ''))}" target="_blank" rel="noopener noreferrer" class="text-blue-600 hover:text-blue-800 underline font-semibold flex items-center">
-                  <i class="fa-solid fa-magnifying-glass mr-1"></i> Поиск в сети
-                </a>
-              </div>
+          <!-- Автоматический поиск и заполнение характеристик через ИИ (Tier 3) -->
+          <div class="flex items-center justify-between bg-purple-50/70 border border-purple-200 rounded-lg p-2.5 text-xs">
+            <div class="flex items-center text-purple-900 font-semibold">
+              <i class="fa-solid fa-brain mr-2 text-purple-600 text-sm"></i>
+              <span>Автоматический поиск спецификаций через ИИ (Tier 3 LLM / Открытые базы)</span>
             </div>
-            <div class="flex items-center space-x-1.5">
-              <input type="url" id="url-input-${item.external_id}" placeholder="Вставьте ссылку на страницу товара из открытого источника для автозаполнения..." class="w-full text-xs bg-white border border-blue-300 rounded-md px-2.5 py-1.5 focus:outline-none focus:ring-1 focus:ring-blue-500 font-normal" />
-              <button type="button" class="btn-fetch-url shrink-0 px-3 py-1.5 bg-blue-600 hover:bg-blue-700 text-white rounded-md text-xs font-bold transition flex items-center shadow-xs" data-id="${item.external_id}">
-                <i class="fa-solid fa-wand-magic-sparkles mr-1.5"></i> Подтянуть через ИИ
-              </button>
-            </div>
+            <button type="button" class="btn-auto-enrich-ai px-3 py-1.5 bg-purple-600 hover:bg-purple-700 text-white rounded-md text-xs font-bold transition flex items-center shadow-xs" data-id="${item.external_id}">
+              <i class="fa-solid fa-wand-magic-sparkles mr-1.5"></i> Заполнить автоматически через ИИ
+            </button>
           </div>
 
           <!-- Исходный текст карточки -->
@@ -425,27 +410,27 @@ const RenderService = {
         }
       });
 
-      // Обработчик "Подтянуть через ИИ по внешней ссылке"
-      cardEl.querySelector('.btn-fetch-url')?.addEventListener('click', async (e) => {
+      // Обработчик "Автоматически дозаполнить через ИИ" без ручного ввода ссылок
+      cardEl.querySelector('.btn-auto-enrich-ai')?.addEventListener('click', async (e) => {
         e.stopPropagation();
-        const inputEl = cardEl.querySelector(`#url-input-${item.external_id}`);
-        const url = inputEl ? inputEl.value.trim() : '';
-        if (!url) {
-          alert('Пожалуйста, вставьте ссылку на страницу товара.');
-          return;
-        }
-        const btn = cardEl.querySelector('.btn-fetch-url');
+        const btn = cardEl.querySelector('.btn-auto-enrich-ai');
         if (btn) {
           btn.disabled = true;
-          btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin mr-1.5"></i> Загрузка...';
+          btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin mr-1.5"></i> ИИ ищет в открытых источниках...';
         }
         try {
-          const apiService = window.api || new ApiService();
-          const data = await apiService.extractFromUrl(url, item.category, item.title);
-          if (data && data.card_result && data.card_result.predictions) {
+          const apiService = window.apiService || new ApiService();
+          const cardData = {
+            title: item.title || '',
+            description: item.description || '',
+            raw_text: item.raw_text || item.title || '',
+            category: item.category || null,
+          };
+          const data = await apiService.extractSingle(cardData);
+          if (data && data.predictions) {
             let updatedCount = 0;
             const gridEl = cardEl.querySelector(`#attr-grid-${item.external_id}`);
-            data.card_result.predictions.forEach(p => {
+            data.predictions.forEach(p => {
               let attrInput = cardEl.querySelector(`.queue-attr-input[data-card-id="${item.external_id}"][data-attr="${p.attribute}"]`);
               if (attrInput) {
                 attrInput.value = p.value;
@@ -453,30 +438,29 @@ const RenderService = {
                 attrInput.style.borderColor = '#10b981';
                 updatedCount++;
               } else if (gridEl && p.attribute && p.value) {
-                // Добавляем новое поле
                 const newFieldEl = document.createElement('div');
-                newFieldEl.className = 'bg-gray-50 border border-green-300 rounded-lg p-2.5 space-y-1.5';
+                newFieldEl.className = 'bg-gray-50 border border-purple-300 rounded-lg p-2.5 space-y-1.5';
                 newFieldEl.innerHTML = `
                   <div class="flex items-center justify-between text-xs">
                     <span class="font-bold text-gray-700 font-mono">${p.attribute}</span>
-                    <span class="text-[10px] bg-green-100 text-green-800 px-1.5 py-0.5 rounded font-mono">из URL</span>
+                    <span class="text-[10px] bg-purple-100 text-purple-800 px-1.5 py-0.5 rounded font-mono font-bold">Tier 3: LLM Fallback</span>
                   </div>
                   <input type="text" data-card-id="${item.external_id}" data-attr="${p.attribute}" value="${p.value}" 
-                    style="background-color: #ecfdf5; border-color: #10b981;"
+                    style="background-color: #ecfdf5; border-color: #8b5cf6;"
                     class="queue-attr-input w-full text-xs font-semibold text-gray-900 border rounded-md px-2.5 py-1.5 focus:outline-none" />
                 `;
                 gridEl.appendChild(newFieldEl);
                 updatedCount++;
               }
             });
-            alert(`Успешно подтянуты данные по ссылке!\nОбновлено полей: ${updatedCount}\nИсточник: ${data.page_title || url}`);
+            alert(`ИИ успешно дозаполнил ${updatedCount} характеристик из открытых источников!`);
           }
         } catch (err) {
-          alert(`Ошибка подтягивания по ссылке: ${err.message}`);
+          alert(`Ошибка автоматического дозаполнения: ${err.message}`);
         } finally {
           if (btn) {
             btn.disabled = false;
-            btn.innerHTML = '<i class="fa-solid fa-wand-magic-sparkles mr-1.5"></i> Подтянуть через ИИ';
+            btn.innerHTML = '<i class="fa-solid fa-wand-magic-sparkles mr-1.5"></i> Дозаполнить через ИИ';
           }
         }
       });

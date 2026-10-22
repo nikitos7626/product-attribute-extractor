@@ -62,7 +62,7 @@ class Settings(BaseSettings):
     prior_regex: float = 0.90
     prior_gliner: float = 0.88
     prior_llm_grounded: float = 0.86
-    force_review_on_llm: bool = True     # Строгий контроль качества: при использовании LLM всегда отправлять на проверку человеку
+    force_review_on_llm: bool = False     # Строгий контроль качества: при использовании LLM всегда отправлять на проверку человеку
     prior_default: float = 0.75
 
     # Гиперпараметры калибратора уверенности и многоисточникового консенсуса

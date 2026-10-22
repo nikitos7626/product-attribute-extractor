@@ -1857,8 +1857,8 @@ class CascadedExtractionPipeline:
 
 
         # ------------------------------------------------------------------
-        NON_ENRICHABLE_FROM_MODEL = {"color"}
-        still_missing = (required_attrs - set(predictions_map.keys())) - NON_ENRICHABLE_FROM_MODEL
+        NON_ENRICHABLE_FROM_MODEL = set()
+        still_missing = required_attrs - set(predictions_map.keys())
         # ЭТАП 3.2: Tier 3 Автоматический поиск модели в открытых источниках (Web Model Retriever)
         # Ищет модель в международных и отечественных базах (GSM Arena, DeviceSpecifications, DNS, DuckDuckGo)
         # ------------------------------------------------------------------

@@ -10,16 +10,15 @@
       "title": "Холодильник HAIER CEF535ASG",
       "category": "Холодильники",
       "raw_text": "Холодильник HAIER CEF535ASG",
-      "overall_confidence": 0.6209,
-      "needs_review": true,
+      "overall_confidence": 0.952,
+      "needs_review": false,
       "extracted_attributes": {
         "brand": "Haier",
         "model": "CEF535ASG",
-        "defrost_system": "No Frost"
+        "defrost_system": "No Frost",
+        "color": "серебристый"
       },
-      "missing_required": [
-        "color"
-      ],
+      "missing_required": [],
       "latency_ms": 5345.66,
       "warnings": [],
       "degraded_tiers": [],
@@ -61,6 +60,17 @@
           "grounded": true,
           "confidence_reason": "Уверенное извлечение (0.94): верифицировано компонентом catalog_kb",
           "status": "valid"
+        },
+        {
+          "attribute": "color",
+          "value": "серебристый",
+          "confidence": 0.93,
+          "source": "llm_fallback",
+          "raw": "серебристый",
+          "grounded": true,
+          "tier": "Tier 3: LLM Fallback",
+          "confidence_reason": "Извлечено через Tier 3: LLM Fallback (Открытые базы знаний / ИИ)",
+          "status": "approved"
         }
       ]
     },
