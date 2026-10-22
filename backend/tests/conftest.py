@@ -17,10 +17,12 @@ def preserve_tracked_files():
     """Сохраняет исходные файлы артефактов и баз знаний, предотвращая загрязнение git working tree при тестах."""
     preds_p = REPO_ROOT / "output" / "predictions.json"
     rev_p = REPO_ROOT / "output" / "reviewed_predictions.json"
+    queue_p = REPO_ROOT / "output" / "review_queue.json"
     kb_p = REPO_ROOT / "backend" / "data" / "dictionaries" / "catalog_models_kb.json"
 
     orig_preds = preds_p.read_bytes() if preds_p.exists() else None
     orig_rev = rev_p.read_bytes() if rev_p.exists() else None
+    orig_queue = queue_p.read_bytes() if queue_p.exists() else None
     orig_kb = kb_p.read_bytes() if kb_p.exists() else None
 
     yield
@@ -35,7 +37,12 @@ def preserve_tracked_files():
     elif rev_p.exists():
         rev_p.unlink()
 
+    if orig_queue is not None:
+        queue_p.write_bytes(orig_queue)
+    elif queue_p.exists():
+        queue_p.unlink()
+
     if orig_kb is not None:
         kb_p.write_bytes(orig_kb)
     elif kb_p.exists():
-        kb_p.unlink()
+        kb_p.unlink()

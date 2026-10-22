@@ -1,0 +1,107 @@
+{
+  "metadata": {
+    "description": "Оперативная очередь ручной модерации характеристик товаров (Human-in-the-Loop)",
+    "total_cards": 1,
+    "total_needs_review": 1,
+    "last_updated": "2026-10-22T21:15:00.000000"
+  },
+  "items": [
+    {
+      "external_id": "card-cbb181cc",
+      "title": "Смартфон Nothing Phone (4a) 256 ГБ белый. Экран 6.78 дюймов 120 Гц. Процессор MediaTek Dimensity 7200 Pro. Батарея 5000 мАч.",
+      "category": "Смартфоны",
+      "raw_text": "Смартфон Nothing Phone (4a) 256 ГБ белый. Экран 6.78 дюймов 120 Гц. Процессор MediaTek Dimensity 7200 Pro. Батарея 5000 мАч.",
+      "description": "",
+      "overall_confidence": 0.9399,
+      "needs_review": true,
+      "status": "needs_review",
+      "status_description": "Требуется ручная проверка (2 замечаний): Низкая уверенность поля 'model': 0.84 (порог 0.87); Зафиксирован конфликт источников для атрибута 'model'",
+      "review_reasons": [
+        "Низкая уверенность поля 'model': 0.84 (порог 0.87); Зафиксирован конфликт источников для атрибута 'model'",
+        "Низкая уверенность поля 'cpu': 0.82 (порог 0.87); Зафиксирован конфликт источников для атрибута 'cpu'"
+      ],
+      "warnings": [],
+      "degraded_tiers": [],
+      "extracted_attributes": {
+        "brand": "Nothing",
+        "color": "белый",
+        "model": "Phone (4a)",
+        "memory_rom": "256 ГБ",
+        "screen_diagonal": "6,78\"",
+        "battery": "5000 мАч",
+        "refresh_rate": "120 Гц",
+        "cpu": "MediaTek Dimensity 7200",
+        "memory_ram": "12 ГБ"
+      },
+      "missing_required": [],
+      "detailed_predictions": [
+        {
+          "attribute": "brand",
+          "value": "Nothing",
+          "confidence": 0.99,
+          "source": "flashtext",
+          "tier": "Tier 1"
+        },
+        {
+          "attribute": "color",
+          "value": "белый",
+          "confidence": 0.99,
+          "source": "flashtext",
+          "tier": "Tier 1"
+        },
+        {
+          "attribute": "model",
+          "value": "Phone (4a)",
+          "confidence": 0.84,
+          "source": "regex",
+          "tier": "Tier 1",
+          "conflict": true
+        },
+        {
+          "attribute": "memory_rom",
+          "value": "256 ГБ",
+          "confidence": 0.99,
+          "source": "gliner",
+          "tier": "Tier 2"
+        },
+        {
+          "attribute": "screen_diagonal",
+          "value": "6,78\"",
+          "confidence": 0.99,
+          "source": "regex",
+          "tier": "Tier 1"
+        },
+        {
+          "attribute": "battery",
+          "value": "5000 мАч",
+          "confidence": 0.99,
+          "source": "gliner",
+          "tier": "Tier 2"
+        },
+        {
+          "attribute": "refresh_rate",
+          "value": "120 Гц",
+          "confidence": 0.9,
+          "source": "regex",
+          "tier": "Tier 1"
+        },
+        {
+          "attribute": "cpu",
+          "value": "MediaTek Dimensity 7200",
+          "confidence": 0.82,
+          "source": "regex",
+          "tier": "Tier 1",
+          "conflict": true
+        },
+        {
+          "attribute": "memory_ram",
+          "value": "12 ГБ",
+          "confidence": 0.94,
+          "source": "catalog_kb",
+          "tier": "Tier 2.5"
+        }
+      ],
+      "enqueued_at": "2026-10-22T21:15:00.000000"
+    }
+  ]
+}

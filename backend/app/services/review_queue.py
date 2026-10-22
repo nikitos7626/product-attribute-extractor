@@ -55,6 +55,7 @@ class ReviewQueueService:
     def __init__(self, base_dir: Path | None = None):
         self.base_dir = base_dir or get_repo_root()
         self.output_dir = self.base_dir / "output"
+        self.queue_path = self.output_dir / "review_queue.json"
         self.preds_path = self.output_dir / "predictions.json"
         self.reviewed_path = self.output_dir / "reviewed_predictions.json"
         self.csv_path = self.output_dir / "predictions.csv"
@@ -171,14 +172,14 @@ class ReviewQueueService:
 
         item_dict = self._extract_item_dict(card, result)
         self._ensure_output_dir()
-        lock_file = str(self.preds_path)
+        lock_file = str(self.queue_path)
 
         with self._lock:
             with process_file_lock(lock_file):
-                preds_data: dict[str, Any] = {"metadata": {}, "items": []}
-                if self.preds_path.exists():
+                queue_data: dict[str, Any] = {"metadata": {}, "items": []}
+                if self.queue_path.exists():
                     try:
-                        with open(self.preds_path, "r", encoding="utf-8") as f:
+                        with open(self.queue_path, "r", encoding="utf-8") as f:
                             loaded = json.load(f)
                             if isinstance(loaded, dict):
                                 preds_data = loaded
@@ -209,10 +210,10 @@ class ReviewQueueService:
                 )
                 preds_data["metadata"]["total_cards"] = len(items)
 
-                tmp_file = self.preds_path.with_suffix(".tmp")
+                tmp_file = self.queue_path.with_suffix(".tmp")
                 with open(tmp_file, "w", encoding="utf-8") as f:
                     json.dump(preds_data, f, ensure_ascii=False, indent=2)
-                tmp_file.replace(self.preds_path)
+                tmp_file.replace(self.queue_path)
                 logger.info("Enqueued card '%s' into review queue (total_flagged=%d)", ext_id, preds_data["metadata"]["total_needs_review"])
 
         return item_dict
@@ -235,14 +236,14 @@ class ReviewQueueService:
             return 0
 
         self._ensure_output_dir()
-        lock_file = str(self.preds_path)
+        lock_file = str(self.queue_path)
 
         with self._lock:
             with process_file_lock(lock_file):
-                preds_data: dict[str, Any] = {"metadata": {}, "items": []}
-                if self.preds_path.exists():
+                queue_data: dict[str, Any] = {"metadata": {}, "items": []}
+                if self.queue_path.exists():
                     try:
-                        with open(self.preds_path, "r", encoding="utf-8") as f:
+                        with open(self.queue_path, "r", encoding="utf-8") as f:
                             loaded = json.load(f)
                             if isinstance(loaded, dict):
                                 preds_data = loaded
@@ -270,10 +271,10 @@ class ReviewQueueService:
                 )
                 preds_data["metadata"]["total_cards"] = len(items)
 
-                tmp_file = self.preds_path.with_suffix(".tmp")
+                tmp_file = self.queue_path.with_suffix(".tmp")
                 with open(tmp_file, "w", encoding="utf-8") as f:
                     json.dump(preds_data, f, ensure_ascii=False, indent=2)
-                tmp_file.replace(self.preds_path)
+                tmp_file.replace(self.queue_path)
 
         return len(flagged_items)
 
@@ -281,15 +282,15 @@ class ReviewQueueService:
         """
         Возвращает количество карточек в очереди ручной модерации и срез элементов.
         """
-        if not self.preds_path.exists():
+        if not self.queue_path.exists():
             return 0, []
 
         try:
-            with open(self.preds_path, "r", encoding="utf-8") as f:
+            with open(self.queue_path, "r", encoding="utf-8") as f:
                 data = json.load(f)
             items = data.get("items", []) if isinstance(data, dict) else data
         except Exception as e:
-            logger.error("Error reading %s: %s", self.preds_path, e)
+            logger.error("Error reading %s: %s", self.queue_path, e)
             return 0, []
 
         flagged = [it for it in items if is_needs_review(it)]
@@ -300,13 +301,13 @@ class ReviewQueueService:
         Очищает очередь ручной модерации, утверждая оставшиеся сомнительные карточки.
         """
         cleared_count = 0
-        lock_file = str(self.preds_path)
+        lock_file = str(self.queue_path)
 
         with self._lock:
             with process_file_lock(lock_file):
-                if self.preds_path.exists():
+                if self.queue_path.exists():
                     try:
-                        with open(self.preds_path, "r", encoding="utf-8") as f:
+                        with open(self.queue_path, "r", encoding="utf-8") as f:
                             preds_data = json.load(f)
                         is_dict = isinstance(preds_data, dict)
                         items_list = preds_data.get("items", []) if is_dict else preds_data
@@ -323,25 +324,14 @@ class ReviewQueueService:
                             preds_data["metadata"]["total_needs_review"] = 0
                             preds_data["metadata"]["last_updated"] = datetime.datetime.now().isoformat()
 
-                        tmp_preds = self.preds_path.with_suffix(".tmp")
+                        tmp_preds = self.queue_path.with_suffix(".tmp")
                         with open(tmp_preds, "w", encoding="utf-8") as f:
                             json.dump(preds_data, f, ensure_ascii=False, indent=2)
-                        tmp_preds.replace(self.preds_path)
+                        tmp_preds.replace(self.queue_path)
                     except Exception as e:
-                        logger.error("Failed to clear review queue in predictions.json: %s", e)
+                        logger.error("Failed to clear review queue in %s: %s", self.queue_path, e)
 
-                if self.csv_path.exists():
-                    try:
-                        with process_file_lock(str(self.csv_path), timeout=5.0):
-                            import pandas as pd
-                            df = pd.read_csv(self.csv_path)
-                            if "needs_review" in df.columns:
-                                df["needs_review"] = "NO"
-                                tmp_csv = self.csv_path.with_suffix(".tmp")
-                                df.to_csv(tmp_csv, index=False, encoding="utf-8-sig")
-                                tmp_csv.replace(self.csv_path)
-                    except Exception as e:
-                        logger.warning("Could not sync predictions.csv during clear_queue: %s", e)
+
 
         return {
             "status": "success",
@@ -424,7 +414,32 @@ class ReviewQueueService:
                     json.dump(reviewed_store, f, ensure_ascii=False, indent=2)
                 tmp_rev.replace(self.reviewed_path)
 
-                # 2. Обновление статуса карточки в output/predictions.json
+                                # 2. Обновление статуса карточки в review_queue.json
+                if self.queue_path.exists():
+                    try:
+                        with process_file_lock(str(self.queue_path)):
+                            with open(self.queue_path, "r", encoding="utf-8") as qf:
+                                q_data = json.load(qf)
+                        q_items = q_data.get("items", []) if isinstance(q_data, dict) else q_data
+                        for it in q_items:
+                            if str(it.get("external_id")) == str(body.external_id):
+                                it["needs_review"] = False
+                                it["status"] = "approved_by_operator" if body.action in ("approve", "override") else "rejected_by_operator"
+                                if getattr(body, "attributes", None):
+                                    it["extracted_attributes"] = dict(body.attributes)
+                                break
+                        if isinstance(q_data, dict):
+                            q_data.setdefault("metadata", {})
+                            q_data["metadata"]["total_needs_review"] = sum(1 for it in q_items if it.get("needs_review") is True)
+                            q_data["metadata"]["last_updated"] = timestamp
+                        tmp_q = self.queue_path.with_suffix(".tmp")
+                        with open(tmp_q, "w", encoding="utf-8") as qf:
+                            json.dump(q_data, qf, ensure_ascii=False, indent=2)
+                        tmp_q.replace(self.queue_path)
+                    except Exception as e:
+                        logger.warning("Could not update %s for external_id %s: %s", self.queue_path, body.external_id, e)
+
+                # 2b. Обновление статуса карточки в output/predictions.json
                 target_brand = ""
                 target_model = ""
                 target_title = ""
