@@ -128,6 +128,7 @@ class GlinerExtractor:
     ) -> list[Prediction]:
         title = (card.get("title") or "").strip()
         description = (card.get("description") or "").strip()
+        full_context = f"{title} {description} {card.get('raw_text', '')}".strip()
 
         try:
             model = self._ensure_model()
@@ -144,7 +145,7 @@ class GlinerExtractor:
                 t_labels = target_labels or self.TITLE_LABELS
                 title_entities = model.predict_entities(title, t_labels, threshold=self.threshold)
                 for ent in sorted(title_entities, key=lambda x: float(x.get("score", 0.0)), reverse=True):
-                    pred = self._entity_to_prediction(ent, is_title=True, category_key=category_key)
+                    pred = self._entity_to_prediction(ent, is_title=True, category_key=category_key, raw_text_context=full_context)
                     if pred and pred["attribute"] not in seen_attrs:
                         predictions.append(pred)
                         seen_attrs.add(pred["attribute"])
@@ -154,7 +155,7 @@ class GlinerExtractor:
                 d_labels = target_labels or self.DESC_LABELS
                 desc_entities = model.predict_entities(description, d_labels, threshold=self.threshold)
                 for ent in sorted(desc_entities, key=lambda x: float(x.get("score", 0.0)), reverse=True):
-                    pred = self._entity_to_prediction(ent, is_title=False, category_key=category_key)
+                    pred = self._entity_to_prediction(ent, is_title=False, category_key=category_key, raw_text_context=full_context)
                     if pred and pred["attribute"] not in seen_attrs:
                         predictions.append(pred)
                         seen_attrs.add(pred["attribute"])
@@ -163,7 +164,7 @@ class GlinerExtractor:
 
         return predictions
 
-    def _entity_to_prediction(self, ent: dict, is_title: bool, category_key: str = "default") -> Prediction | None:
+    def _entity_to_prediction(self, ent: dict, is_title: bool, category_key: str = "default", raw_text_context: str | None = None) -> Prediction | None:
         label = ent["label"]
         attr_key = self.LABEL_TO_ATTR.get(label)
         if not attr_key:
@@ -173,15 +174,15 @@ class GlinerExtractor:
         score = float(ent["score"])
 
         # Валидация физического здравого смысла и контекста категории
-        if not self._validator.is_valid(attr_key, raw_text, category_key=category_key):
+        if not self._validator.is_valid(attr_key, raw_text, category_key=category_key, raw_text=raw_text_context):
             return None
 
         # Нормализация
-        canon_val = self._normalize(attr_key, raw_text)
+        canon_val = self._normalize(attr_key, raw_text, raw_text_context=raw_text_context)
         if not canon_val:
             return None
 
-        if not self._validator.is_valid(attr_key, canon_val, category_key=category_key):
+        if not self._validator.is_valid(attr_key, canon_val, category_key=category_key, raw_text=raw_text_context):
             return None
 
         # Калибровка уверенности:
@@ -200,7 +201,7 @@ class GlinerExtractor:
             grounded=True,
         )
 
-    def _normalize(self, attr_key: str, raw: str) -> str:
+    def _normalize(self, attr_key: str, raw: str, raw_text_context: str | None = None) -> str:
         raw_clean = raw.strip().rstrip(".,;:")
         low = raw_clean.lower()
 
@@ -267,6 +268,32 @@ class GlinerExtractor:
             return raw_clean
 
         if attr_key == "cleaning_type":
+            ctx = (raw_text_context or raw_clean).lower()
+            has_wet_neg = bool(re.search(
+                r"(?:"
+                r"\b(?:нет|без|не\s+(?:поддержива\w*|предназначен\w*|рассчитан\w*|подходит|входит|комплект\w*)|отсутству\w*|не\s+умеет|не\s+моет)"
+                r"[^.,;!?()\n]{0,50}\b(?:насадк\w*|режим\w*|функци\w*|возможност\w*|для)?\s*(?:влажн\w*|мыть[яе]|пол\w*)\b"
+                r"|\b(?:насадк\w*|режим\w*|функци\w*|возможност\w*|для)?\s*(?:влажн\w*|мыть[яе]|полов)\b[^.,;!?()\n]{0,40}\b(?:отсутству\w*|не\s+(?:предусмотрен\w*|входит|поддержива\w*|рассчитан\w*|подходит)|нет)\b"
+                r"|\b(?:только|исключительно)\s+(?:для\s+)?сух\w*\b"
+                r"|\bсух\w*(?:\s+уборк\w*)?[^.,;!?()\n]{0,30}\b(?:а\s+не|но\s+не|без)\s+(?:для\s+)?влажн\w*\b"
+                r"|\bне\s+моет(?:\s+пол\w*)?\b"
+                r")",
+                ctx,
+            ))
+            has_dry_neg = bool(re.search(
+                r"(?:"
+                r"\b(?:нет|без|не\s+(?:поддержива\w*|предназначен\w*|рассчитан\w*|подходит|входит|комплект\w*)|отсутству\w*)"
+                r"[^.,;!?()\n]{0,50}\b(?:насадк\w*|режим\w*|функци\w*|для)?\s*сух\w*\b"
+                r"|\b(?:насадк\w*|режим\w*|функци\w*|для)?\s*сух\w*\b[^.,;!?()\n]{0,40}\b(?:отсутству\w*|не\s+(?:предусмотрен\w*|входит|поддержива\w*|рассчитан\w*|подходит)|нет)\b"
+                r"|\b(?:только|исключительно)\s+(?:для\s+)?влажн\w*\b"
+                r"|\bвлажн\w*(?:\s+уборк\w*)?[^.,;!?()\n]{0,30}\b(?:а\s+не|но\s+не|без)\s+(?:для\s+)?сух\w*\b"
+                r")",
+                ctx,
+            ))
+            if has_wet_neg and not has_dry_neg:
+                return "сухая"
+            if has_dry_neg and not has_wet_neg:
+                return "влажная"
             if "сух" in low and "влажн" in low:
                 return "сухая и влажная"
             if "влажн" in low:

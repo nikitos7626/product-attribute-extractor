@@ -134,6 +134,10 @@ class RegexExtractor:
     _MODEL_PATTERNS = [
         re.compile(r"\b(iphone\s+(?:se|\d{1,2}(?:\s*(?:pro\s*max|pro|plus|mini))?))\b", re.IGNORECASE),
         re.compile(r"\b((?:galaxy|гэлакси)\s+[szanmfe]\d{1,2}[a-z]?(?:\s*(?:ultra|plus|\+|fe|pro|5g))?)\b", re.IGNORECASE),
+        # Пылесосы Dyson (V11, V12, V15, V8, V10, V7, V6, Gen5, Omni-glide, Outsize, Cinetic)
+        re.compile(r"\b(?:dyson|дайсон)\s+((?:v\d{1,2}|gen5(?:detect)?|omni-glide|outsize|cinetic|micro\s*\d*(?:\.\d+)?|supersonic|airwrap|corrale|airstrait)(?:\s+(?:detect(?:\s+slim)?|absolute(?:\s+(?:plus|\+|pro))?|extra|fluffy|animal|motorhead|total\s+clean|torque\s+drive|pro|\+))*)\b", re.IGNORECASE),
+        re.compile(r"\b(?:dreame|дреме)\s+((?:[vthrldzg]\d{1,2}[a-z]?|bot\s+[a-z]\d{1,2}[a-z]?|h\d{2}(?:\s*dual)?)(?:\s+(?:pro|ultra|plus|max|pure|slim|extra))*)\b", re.IGNORECASE),
+        re.compile(r"\b(?:roborock|роборок)\s+((?:[sq]\s*\d{1,2}[a-z]?|dyad(?:\s*pro)?|q\s*revo(?:\s*(?:maxv|pro))?)(?:\s+(?:pro|ultra|plus|max|pure))*)\b", re.IGNORECASE),
         re.compile(r"\b([szanmfe]\d{1,2}[a-z]?(?:\s*(?:ultra|plus|\+|fe|pro|5g)))\b", re.IGNORECASE),
         re.compile(r"(?:samsung|самсунг)\s+([a-zа-я]\d{2}[a-zа-я]?(?:\s*(?:5g|5г|ultra|plus|fe))?)", re.IGNORECASE),
         re.compile(r"\b(redmi(?:\s+note)?\s+\d{1,2}[a-z]?(?:\s*(?:pro\s*\+|pro|plus|\+|s|turbo))?)\b", re.IGNORECASE),
@@ -157,7 +161,8 @@ class RegexExtractor:
         re.compile(r"\b(nova\s+\d{1,2}[a-z]?(?:\s*(?:pro|se|i|y))?)\b", re.IGNORECASE),
         re.compile(r"\b((?:hot|нот|note|zero|smart|смарт)\s+\d{1,2}[a-z]?(?:\s*(?:pro|play|vip|plus|про|плюс))?)\b", re.IGNORECASE),
         re.compile(r"\b(oneplus\s+(?:\d{1,2}[a-z]?|nord(?:\s+(?:ce|\d+|n\d+))?)(?:\s*(?:pro|r|open))?)\b", re.IGNORECASE),
-        re.compile(r"\b(pixel\s+\d{1,2}[a-z]?(?:\s*(?:pro(?:\s*xl)?|a))?)\b", re.IGNORECASE),
+        re.compile(r"\b(pixel\s+\d{1,2}[a-z]?(?:\s*(?:pro(?:\s*xl)?|a))?)\b", re.IGNORECASE),
+        re.compile(r"\b(v\d{1,2}(?:\s+(?:detect(?:\s+slim)?|absolute(?:\s+(?:plus|\+|pro))?|extra|fluffy|animal|motorhead|total\s+clean|torque\s+drive|pro|\+))*)\b", re.IGNORECASE),
     ]
     # Экран: 6.7", 6.7 дюйма, 6,7 ″, 6,4-дюймовым, диагональ — 50 дюймов
     _SCREEN_RE = re.compile(
@@ -250,8 +255,54 @@ class RegexExtractor:
         (re.compile(r"\b(?:no\s+frost|frost\s+free|ноу\s+фрост|но\s+фрост)\b", re.IGNORECASE), "No Frost", 0.96),
         (re.compile(r"\b(?:капельн\w*(?:\s+(?:систем\w*|размораживан\w*))?)\b", re.IGNORECASE), "Капельная", 0.95),
         (re.compile(r"\b(?:ручн\w*(?:\s+(?:систем\w*|размораживан\w*))?)\b", re.IGNORECASE), "Ручная", 0.92),
-        (re.compile(r"\b(?:автоматическ\w*(?:\s+(?:систем\w*|размораживан\w*))?)\b", re.IGNORECASE), "Автоматическая", 0.90),
-    ]
+        (re.compile(r"\b(?:автоматическ\w*(?:\s+(?:систем\w*|размораживан\w*))?)\b", re.IGNORECASE), "Автоматическая", 0.90),
+    ]
+
+    # Тип уборки для пылесосов (Tier 1 fast regex & negation guards)
+    _CT_WET_NEGATED_RE = re.compile(
+        r"(?:"
+        r"\b(?:нет|без|не\s+(?:поддержива\w*|предназначен\w*|рассчитан\w*|подходит|входит|комплект\w*)|отсутству\w*|не\s+умеет|не\s+моет)"
+        r"[^.,;!?()\n]{0,50}\b(?:насадк\w*|режим\w*|функци\w*|возможност\w*|для)?\s*(?:влажн\w*|мыть[яе]|пол\w*)\b"
+        r"|\b(?:насадк\w*|режим\w*|функци\w*|возможност\w*|для)?\s*(?:влажн\w*|мыть[яе]|полов)\b[^.,;!?()\n]{0,40}\b(?:отсутству\w*|не\s+(?:предусмотрен\w*|входит|поддержива\w*|рассчитан\w*|подходит)|нет)\b"
+        r"|\b(?:только|исключительно)\s+(?:для\s+)?сух\w*\b"
+        r"|\bсух\w*(?:\s+уборк\w*)?[^.,;!?()\n]{0,30}\b(?:а\s+не|но\s+не|без)\s+(?:для\s+)?влажн\w*\b"
+        r"|\bне\s+моет(?:\s+пол\w*)?\b"
+        r")",
+        re.IGNORECASE,
+    )
+
+    _CT_DRY_NEGATED_RE = re.compile(
+        r"(?:"
+        r"\b(?:нет|без|не\s+(?:поддержива\w*|предназначен\w*|рассчитан\w*|подходит|входит|комплект\w*)|отсутству\w*)"
+        r"[^.,;!?()\n]{0,50}\b(?:насадк\w*|режим\w*|функци\w*|для)?\s*сух\w*\b"
+        r"|\b(?:насадк\w*|режим\w*|функци\w*|для)?\s*сух\w*\b[^.,;!?()\n]{0,40}\b(?:отсутству\w*|не\s+(?:предусмотрен\w*|входит|поддержива\w*|рассчитан\w*|подходит)|нет)\b"
+        r"|\b(?:только|исключительно)\s+(?:для\s+)?влажн\w*\b"
+        r"|\bвлажн\w*(?:\s+уборк\w*)?[^.,;!?()\n]{0,30}\b(?:а\s+не|но\s+не|без)\s+(?:для\s+)?сух\w*\b"
+        r")",
+        re.IGNORECASE,
+    )
+
+    _CT_BOTH_RE = re.compile(
+        r"\b(?:"
+        r"сух\w*\s+и\s+влажн\w*|влажн\w*\s+и\s+сух\w*|"
+        r"сух\w*[\s/]+влажн\w*|влажн\w*[\s/]+сух\w*|"
+        r"сухая\s*,\s*влажная|влажная\s*,\s*сухая|"
+        r"комбинированн\w*(?:\s+уборк\w*)?|"
+        r"(?:2\s*в\s*1|два\s+в\s+одном)\b[^.,;!?()\n]{0,40}\b(?:сух\w*|влажн\w*)"
+        r")\b",
+        re.IGNORECASE,
+    )
+
+    _CT_DRY_ONLY_RE = re.compile(
+        r"\b(?:сух\w*\s+уборк\w*|для\s+сухой\s+уборки|сухой\s+тип\s+уборки)\b",
+        re.IGNORECASE,
+    )
+
+    _CT_WET_ONLY_RE = re.compile(
+        r"\b(?:влажн\w*\s+уборк\w*|для\s+влажной\s+уборки|влажный\s+тип\s+уборки|моющий\s+пылесос)\b",
+        re.IGNORECASE,
+    )
+
 
 
     # CPU-паттерны: (regex, base_confidence). Идём по порядку,
@@ -500,6 +551,15 @@ class RegexExtractor:
                 out.append(pred)
                 seen_attrs.add(pred["attribute"])
 
+        # 5. Тип уборки для пылесосов (cleaning_type) с учетом отрицаний
+        is_vacuum = category_key == "vacuum_cleaners" or bool(re.search(r"\b(?:пылесос\w*|vacuum|робот-пылесос\w*|dyson|дайсон)\b", full_text, re.IGNORECASE))
+        if is_vacuum or category_key == "default":
+            if "cleaning_type" not in seen_attrs:
+                ct_pred = self._find_cleaning_type(full_text, title=title_lower)
+                if ct_pred:
+                    out.append(ct_pred)
+                    seen_attrs.add("cleaning_type")
+
         # Физическая валидация здравого смысла и контекста категории
         valid_out: list[Prediction] = []
         for p in out:
@@ -1183,6 +1243,86 @@ class RegexExtractor:
                 )
         return None
 
+    @classmethod
+    def is_wet_cleaning_negated(cls, text: str) -> bool:
+        return bool(cls._CT_WET_NEGATED_RE.search(text))
+
+    @classmethod
+    def is_dry_cleaning_negated(cls, text: str) -> bool:
+        return bool(cls._CT_DRY_NEGATED_RE.search(text))
+
+    def _find_cleaning_type(self, text: str, title: str = "") -> Prediction | None:
+        """Определяет тип уборки для пылесосов с приоритетом отрицаний и явных ограничений."""
+        if not text:
+            return None
+
+        # 1. Эксплицитное отрицание влажной уборки ("нет насадки для влажной", "только для сухой")
+        has_wet_neg = self.is_wet_cleaning_negated(text)
+        has_dry_neg = self.is_dry_cleaning_negated(text)
+
+        if has_wet_neg and not has_dry_neg:
+            m = self._CT_WET_NEGATED_RE.search(text)
+            raw = m.group(0) if m else "сухая"
+            return Prediction(
+                attribute="cleaning_type",
+                value="сухая",
+                confidence=self._conf(0.96, raw, title),
+                source="regex",
+                raw=raw.strip(),
+                grounded=True,
+            )
+
+        if has_dry_neg and not has_wet_neg:
+            m = self._CT_DRY_NEGATED_RE.search(text)
+            raw = m.group(0) if m else "влажная"
+            return Prediction(
+                attribute="cleaning_type",
+                value="влажная",
+                confidence=self._conf(0.96, raw, title),
+                source="regex",
+                raw=raw.strip(),
+                grounded=True,
+            )
+
+        # 2. Эксплицитная комбинированная уборка (сухая и влажная / комбинированная)
+        m_both = self._CT_BOTH_RE.search(text)
+        if m_both and not has_wet_neg and not has_dry_neg:
+            return Prediction(
+                attribute="cleaning_type",
+                value="сухая и влажная",
+                confidence=self._conf(0.96, m_both.group(0), title),
+                source="regex",
+                raw=m_both.group(0).strip(),
+                grounded=True,
+            )
+
+        # 3. Чисто сухая уборка
+        m_dry = self._CT_DRY_ONLY_RE.search(text)
+        if m_dry and not has_dry_neg:
+            return Prediction(
+                attribute="cleaning_type",
+                value="сухая",
+                confidence=self._conf(0.94, m_dry.group(0), title),
+                source="regex",
+                raw=m_dry.group(0).strip(),
+                grounded=True,
+            )
+
+        # 4. Чисто влажная уборка / моющий пылесос
+        m_wet = self._CT_WET_ONLY_RE.search(text)
+        if m_wet and not has_wet_neg:
+            val = "сухая и влажная" if "моющий" in m_wet.group(0).lower() else "влажная"
+            return Prediction(
+                attribute="cleaning_type",
+                value=val,
+                confidence=self._conf(0.93, m_wet.group(0), title),
+                source="regex",
+                raw=m_wet.group(0).strip(),
+                grounded=True,
+            )
+
+        return None
+
     # ================== CPU / OS / GPU ==================
 
 
@@ -1257,7 +1397,7 @@ class RegexExtractor:
             low = w.lower()
             if low == "iphone":
                 fixed_words.append("iPhone")
-            elif low in {"galaxy", "redmi", "note", "edge", "xperia", "ultra", "plus", "pro", "max", "mini", "lite", "play", "neo", "turbo", "fusion", "gaming", "strix", "zephyrus", "zenbook", "vivobook", "macbook", "air", "thinkpad", "ideapad", "legion", "nitro", "aspire", "victus", "omen"}:
+            elif low in {"galaxy", "redmi", "note", "edge", "xperia", "ultra", "plus", "pro", "max", "mini", "lite", "play", "neo", "turbo", "fusion", "gaming", "strix", "zephyrus", "zenbook", "vivobook", "macbook", "air", "thinkpad", "ideapad", "legion", "nitro", "aspire", "victus", "omen", "detect", "slim", "absolute", "fluffy", "animal", "extra", "motorhead", "cinetic", "outsize", "supersonic", "airwrap"}:
                 fixed_words.append(low.capitalize())
             elif low in {"gt", "tuf", "rog"}:
                 fixed_words.append(low.upper())

@@ -430,7 +430,15 @@ class WebModelRetriever:
 
         # 13. Тип уборки (Cleaning Type)
         if "cleaning_type" in missing_attrs:
-            if re.search(r"\b(wet and dry|wet & dry|сухая и влажная|влажная и сухая|mopping)\b", text, re.IGNORECASE):
+            has_wet_neg = bool(re.search(
+                r"\b(?:нет|без|не\s+(?:поддержива\w*|предназначен\w*|рассчитан\w*|подходит|входит|комплект\w*)|отсутству\w*)[^.,;!?()\n]{0,50}\b(?:насадк\w*|режим\w*|функци\w*|для)?\s*(?:влажн\w*|мыть[яе])\b"
+                r"|\b(?:только|исключительно)\s+(?:для\s+)?сух\w*\b",
+                text,
+                re.IGNORECASE,
+            ))
+            if has_wet_neg:
+                specs["cleaning_type"] = "сухая"
+            elif re.search(r"\b(wet and dry|wet & dry|сухая и влажная|влажная и сухая|mopping)\b", text, re.IGNORECASE):
                 specs["cleaning_type"] = "сухая и влажная"
             elif re.search(r"\b(dry|сухая)\b", text, re.IGNORECASE):
                 specs["cleaning_type"] = "сухая"

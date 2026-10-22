@@ -1546,6 +1546,9 @@ class CascadedExtractionPipeline:
 
                         continue
 
+                    elif attr in ("cleaning_type", "model") and existing.get("source") == "regex":
+                        # Детерминированный regex для модели или типа уборки (с учетом отрицаний) не должен затираться сырым span из GLiNER
+                        continue
                     elif existing.get("confidence", 0) < p["confidence"]:
 
                         predictions_map[attr] = p
@@ -2094,6 +2097,62 @@ class CascadedExtractionPipeline:
 
 
 
+        # Коррекция характеристик пылесосов с учетом отрицаний в тексте
+        if cat_key == "vacuum_cleaners" or "cleaning_type" in predictions_map:
+            full_card_text = f"{card.get('title', '')} {card.get('description', '')} {card.get('raw_text', '')}".strip()
+            # 1. Если cleaning_type не найден или требует калибровки
+            if "cleaning_type" not in predictions_map:
+                ct_pred = self.regex_extractor._find_cleaning_type(full_card_text, title=card.get("title", ""))
+                if ct_pred and AttributeSanityValidator.is_valid("cleaning_type", ct_pred["value"], cat_key, raw_text=full_card_text):
+                    predictions_map["cleaning_type"] = ct_pred
+                    extracted_alternatives["cleaning_type"].append(dict(ct_pred))
+            else:
+                # Проверяем на противоречие с отрицаниями в тексте
+                curr_ct = str(predictions_map["cleaning_type"]["value"]).lower()
+                if "влажн" in curr_ct or "комбинир" in curr_ct:
+                    if self.regex_extractor.is_wet_cleaning_negated(full_card_text):
+                        p_fix = Prediction(
+                            attribute="cleaning_type",
+                            value="сухая",
+                            confidence=0.96,
+                            source="domain_rule_negation",
+                            raw="сухая (отрицание влажной уборки)",
+                            grounded=True,
+                        )
+                        predictions_map["cleaning_type"] = p_fix
+                        extracted_alternatives["cleaning_type"].append(dict(p_fix))
+                elif "сух" in curr_ct:
+                    if self.regex_extractor.is_dry_cleaning_negated(full_card_text):
+                        p_fix = Prediction(
+                            attribute="cleaning_type",
+                            value="влажная",
+                            confidence=0.96,
+                            source="domain_rule_negation",
+                            raw="влажная (отрицание сухой уборки)",
+                            grounded=True,
+                        )
+                        predictions_map["cleaning_type"] = p_fix
+                        extracted_alternatives["cleaning_type"].append(dict(p_fix))
+
+        # Защита от мусорных слов в названии модели
+        if "model" in predictions_map:
+            if not AttributeSanityValidator.is_valid("model", predictions_map["model"]["value"], cat_key, raw_text=raw_text or raw_desc):
+                del predictions_map["model"]
+                # Попытка восстановить модель через эвристический парсер заголовка или regex
+                t_str = card.get("title") or ""
+                _, heur_m = self._parse_title_structure(t_str, cat_name)
+                if heur_m and AttributeSanityValidator.is_valid("model", heur_m, cat_key, raw_text=raw_text or raw_desc):
+                    p_rec = Prediction(
+                        attribute="model",
+                        value=self.regex_extractor._canon_model(heur_m),
+                        confidence=0.92,
+                        source="heuristic_title_recovery",
+                        raw=heur_m,
+                        grounded=True,
+                    )
+                    predictions_map["model"] = p_rec
+                    extracted_alternatives["model"].append(dict(p_rec))
+
         self.calibrator.apply_multi_source_consensus(predictions_map, extracted_alternatives)
 
 
