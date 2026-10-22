@@ -1339,6 +1339,7 @@ class CascadedExtractionPipeline:
 
             r"пл[её]нк(?:а|и|у|ой|е|ах|ами)|"
             r"сумк\w*|"
+            r"рюкзак\w*|"
             r"кронштейн\w*|"
 
 

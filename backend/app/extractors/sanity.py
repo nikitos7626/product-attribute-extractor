@@ -1563,9 +1563,11 @@ class AttributeSanityValidator:
             else:
                 if category_key in ("refrigerators", "washing_machines") and val_num < 300:
                     val_g = val_num * 1000
-                elif category_key == "laptops" and val_num < 20:
+                elif category_key in ("vacuum_cleaners", "microwaves", "tvs", "monitors", "laptops") and val_num < 100:
                     val_g = val_num * 1000
                 elif category_key == "powerbanks" and val_num < 5:
+                    val_g = val_num * 1000
+                elif category_key in ("smartphones", "smart_watches", "headphones", "tablets") and val_num < 1.0:
                     val_g = val_num * 1000
                 else:
                     val_g = val_num
@@ -1762,7 +1764,7 @@ class AttributeSanityValidator:
 
 
                 "гб", "gb", "мач", "mah", "tws", "anc", "bluetooth", "блютуз", "wireless", "true", "wired", "беспроводной", "проводной",
-                "напольный", "ортопедический", "неизвестно", "неизвестен", "нет", "n/a", "#n/a"
+                "напольный", "ортопедический", "неизвестно", "неизвестен", "неизвестный", "нет", "нет бренда", "без бренда", "не указан", "не указано", "отсутствует", "n/a", "#n/a", "unknown", "none", "null"
             }
 
 
