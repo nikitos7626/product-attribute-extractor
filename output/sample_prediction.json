@@ -10,16 +10,18 @@
       "title": "Холодильник HAIER CEF535ASG",
       "category": "Холодильники",
       "raw_text": "Холодильник HAIER CEF535ASG",
-      "overall_confidence": 0.952,
-      "needs_review": false,
+      "overall_confidence": 0.6811,
+      "needs_review": true,
       "extracted_attributes": {
         "brand": "Haier",
         "model": "CEF535ASG",
-        "defrost_system": "No Frost",
-        "color": "серебристый"
+        "color": "серебристый",
+        "defrost_system": "No Frost"
       },
-      "missing_required": [],
-      "latency_ms": 5345.66,
+      "missing_required": [
+        "volume"
+      ],
+      "latency_ms": 5421.77,
       "warnings": [],
       "degraded_tiers": [],
       "detailed_predictions": [
@@ -51,6 +53,17 @@
           "status": "valid"
         },
         {
+          "attribute": "color",
+          "value": "серебристый",
+          "confidence": 0.94,
+          "source": "catalog_kb",
+          "tier": "Tier 2.5",
+          "raw": "серебристый",
+          "grounded": true,
+          "confidence_reason": "Уверенное извлечение (0.94): верифицировано компонентом catalog_kb",
+          "status": "valid"
+        },
+        {
           "attribute": "defrost_system",
           "value": "No Frost",
           "confidence": 0.94,
@@ -60,17 +73,6 @@
           "grounded": true,
           "confidence_reason": "Уверенное извлечение (0.94): верифицировано компонентом catalog_kb",
           "status": "valid"
-        },
-        {
-          "attribute": "color",
-          "value": "серебристый",
-          "confidence": 0.93,
-          "source": "llm_fallback",
-          "raw": "серебристый",
-          "grounded": true,
-          "tier": "Tier 3: LLM Fallback",
-          "confidence_reason": "Извлечено через Tier 3: LLM Fallback (Открытые базы знаний / ИИ)",
-          "status": "approved"
         }
       ]
     },
@@ -79,7 +81,7 @@
       "title": "Холодильник HAIER CEF535AWG",
       "category": "Холодильники",
       "raw_text": "Холодильник HAIER CEF535AWG",
-      "overall_confidence": 0.6177,
+      "overall_confidence": 0.442,
       "needs_review": true,
       "extracted_attributes": {
         "brand": "Haier",
@@ -87,9 +89,10 @@
         "defrost_system": "No Frost"
       },
       "missing_required": [
-        "color"
+        "color",
+        "volume"
       ],
-      "latency_ms": 158.97,
+      "latency_ms": 167.19,
       "warnings": [],
       "degraded_tiers": [],
       "detailed_predictions": [
@@ -138,7 +141,7 @@
       "title": "Холодильник Gorenje NRK620EABXL4",
       "category": "Холодильники",
       "raw_text": "Холодильник Gorenje NRK620EABXL4",
-      "overall_confidence": 0.3429,
+      "overall_confidence": 0.2454,
       "needs_review": true,
       "extracted_attributes": {
         "brand": "Gorenje",
@@ -146,9 +149,10 @@
       },
       "missing_required": [
         "color",
-        "defrost_system"
+        "defrost_system",
+        "volume"
       ],
-      "latency_ms": 176.85,
+      "latency_ms": 184.23,
       "warnings": [],
       "degraded_tiers": [],
       "detailed_predictions": [

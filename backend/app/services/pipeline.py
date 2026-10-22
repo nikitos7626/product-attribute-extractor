@@ -509,7 +509,7 @@ CATEGORY_SCHEMAS: dict[str, dict[str, Any]] = {
 
 
 
-        "required_attrs": {"brand", "model", "cpu", "memory_ram", "memory_rom", "screen_diagonal"},
+        "required_attrs": {"brand", "model", "color", "cpu", "memory_ram", "memory_rom", "screen_diagonal"},
 
 
 
@@ -557,7 +557,7 @@ CATEGORY_SCHEMAS: dict[str, dict[str, Any]] = {
 
 
 
-        "required_attrs": {"brand", "model", "cleaning_type", "color"},
+        "required_attrs": {"brand", "model", "color", "cleaning_type", "power"},
 
 
 
@@ -581,7 +581,7 @@ CATEGORY_SCHEMAS: dict[str, dict[str, Any]] = {
 
 
 
-        "required_attrs": {"brand", "model", "defrost_system", "color"},
+        "required_attrs": {"brand", "model", "color", "defrost_system", "volume"},
 
 
 
@@ -625,7 +625,7 @@ CATEGORY_SCHEMAS: dict[str, dict[str, Any]] = {
 
 
 
-        "required_attrs": {"brand", "model", "color"},
+        "required_attrs": {"brand", "model", "color", "connection_type"},
 
 
 
@@ -717,7 +717,7 @@ CATEGORY_SCHEMAS: dict[str, dict[str, Any]] = {
 
 
 
-        "required_attrs": {"brand", "model", "battery", "color"},
+        "required_attrs": {"brand", "model", "color", "battery", "power"},
 
 
 

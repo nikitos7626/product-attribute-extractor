@@ -123,7 +123,8 @@
       "screen_diagonal": "55,0\"",
       "resolution": "3840×2160",
       "refresh_rate": "120 Гц",
-      "power": "40 Вт"
+      "power": "40 Вт",
+      "display_tech": "OLED"
     }
   },
   {
