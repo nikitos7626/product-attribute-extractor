@@ -1372,7 +1372,7 @@ def health(pipeline: CascadedExtractionPipeline = Depends(get_pipeline)) -> dict
 
 
 @router.post("", response_model=CardOut, response_model_exclude_none=True)
-@router.post("/", response_model=CardOut, response_model_exclude_none=True)
+@router.post("/", response_model=CardOut, response_model_exclude_none=True, include_in_schema=False)
 
 
 
@@ -1815,7 +1815,7 @@ async def export_batch_predictions(
 
 
 @router.get("/review-queue", response_model=ReviewQueueResponse)
-@router.get("/review/queue", response_model=ReviewQueueResponse)
+@router.get("/review/queue", response_model=ReviewQueueResponse, include_in_schema=False)
 def get_review_queue(limit: int = 5) -> ReviewQueueResponse:
     """
     Возвращает список карточек из очереди ручной модерации (Human-in-the-Loop),
@@ -1829,9 +1829,9 @@ def get_review_queue(limit: int = 5) -> ReviewQueueResponse:
 
 
 @router.post("/review-queue/clear", response_model=ReviewQueueClearResponse)
-@router.post("/review/queue/clear", response_model=ReviewQueueClearResponse)
-@router.delete("/review-queue", response_model=ReviewQueueClearResponse)
-@router.delete("/review/queue", response_model=ReviewQueueClearResponse)
+@router.post("/review/queue/clear", response_model=ReviewQueueClearResponse, include_in_schema=False)
+@router.delete("/review-queue", response_model=ReviewQueueClearResponse, include_in_schema=False)
+@router.delete("/review/queue", response_model=ReviewQueueClearResponse, include_in_schema=False)
 def clear_review_queue() -> ReviewQueueClearResponse:
     """
     Очищает очередь ручной модерации (Human-in-the-Loop):
@@ -1848,9 +1848,9 @@ def clear_review_queue() -> ReviewQueueClearResponse:
 
 
 @router.post("/review-override")
-@router.post("/review/override")
-@router.post("/review-queue/override")
-@router.post("/review/queue/override")
+@router.post("/review/override", include_in_schema=False)
+@router.post("/review-queue/override", include_in_schema=False)
+@router.post("/review/queue/override", include_in_schema=False)
 def submit_review_override(body: ReviewOverrideIn) -> dict:
     """
     Применяет ручное решение модератора (Human-in-the-Loop):

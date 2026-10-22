@@ -339,11 +339,11 @@ def extract_alias(
 
 
 
-@app.post("/extract/batch", response_model=BatchOut, response_model_exclude_none=True, tags=["extract"], summary="Пакетное извлечение характеристик (Root Alias)")
+@app.post("/extract/batch", response_model=BatchOut, response_model_exclude_none=True, tags=["extract"], include_in_schema=False)
 
 
 
-@app.post("/batch", response_model=BatchOut, response_model_exclude_none=True, tags=["extract"], summary="Пакетное извлечение характеристик (Root Alias)")
+@app.post("/batch", response_model=BatchOut, response_model_exclude_none=True, tags=["extract"], include_in_schema=False)
 
 async def extract_batch_alias(
     request: Request,
@@ -357,37 +357,37 @@ async def extract_batch_alias(
     return await extract.extract_batch(request=request, file=file, pipeline=pipeline)
 
 
-@app.get("/review-queue", response_model=ReviewQueueResponse, tags=["extract"], summary="Очередь модерации (Root Alias)")
-@app.get("/review/queue", response_model=ReviewQueueResponse, tags=["extract"], summary="Очередь модерации (Root Alias)")
-@app.get("/api/review/queue", response_model=ReviewQueueResponse, tags=["extract"], summary="Очередь модерации (API Alias)")
-@app.get("/api/review-queue", response_model=ReviewQueueResponse, tags=["extract"], summary="Очередь модерации (API Alias)")
+@app.get("/review-queue", response_model=ReviewQueueResponse, tags=["extract"], include_in_schema=False)
+@app.get("/review/queue", response_model=ReviewQueueResponse, tags=["extract"], include_in_schema=False)
+@app.get("/api/review/queue", response_model=ReviewQueueResponse, tags=["extract"], include_in_schema=False)
+@app.get("/api/review-queue", response_model=ReviewQueueResponse, tags=["extract"], include_in_schema=False)
 def review_queue_root_alias(limit: int = 5) -> ReviewQueueResponse:
     return extract.get_review_queue(limit=limit)
 
 
-@app.post("/api/review/queue/clear", response_model=ReviewQueueClearResponse, tags=["extract"])
-@app.post("/api/review-queue/clear", response_model=ReviewQueueClearResponse, tags=["extract"])
-@app.delete("/api/review/queue", response_model=ReviewQueueClearResponse, tags=["extract"])
-@app.delete("/api/review-queue", response_model=ReviewQueueClearResponse, tags=["extract"])
-@app.post("/review/queue/clear", response_model=ReviewQueueClearResponse, tags=["extract"])
-@app.post("/review-queue/clear", response_model=ReviewQueueClearResponse, tags=["extract"])
-@app.delete("/review/queue", response_model=ReviewQueueClearResponse, tags=["extract"])
-@app.delete("/review-queue", response_model=ReviewQueueClearResponse, tags=["extract"])
+@app.post("/api/review/queue/clear", response_model=ReviewQueueClearResponse, tags=["extract"], include_in_schema=False)
+@app.post("/api/review-queue/clear", response_model=ReviewQueueClearResponse, tags=["extract"], include_in_schema=False)
+@app.delete("/api/review/queue", response_model=ReviewQueueClearResponse, tags=["extract"], include_in_schema=False)
+@app.delete("/api/review-queue", response_model=ReviewQueueClearResponse, tags=["extract"], include_in_schema=False)
+@app.post("/review/queue/clear", response_model=ReviewQueueClearResponse, tags=["extract"], include_in_schema=False)
+@app.post("/review-queue/clear", response_model=ReviewQueueClearResponse, tags=["extract"], include_in_schema=False)
+@app.delete("/review/queue", response_model=ReviewQueueClearResponse, tags=["extract"], include_in_schema=False)
+@app.delete("/review-queue", response_model=ReviewQueueClearResponse, tags=["extract"], include_in_schema=False)
 def clear_review_queue_root_alias() -> ReviewQueueClearResponse:
     return extract.clear_review_queue()
 
 
-@app.post("/api/review-override", tags=["extract"])
-@app.post("/api/review/override", tags=["extract"])
-@app.post("/review-override", tags=["extract"])
-@app.post("/review/override", tags=["extract"])
+@app.post("/api/review-override", tags=["extract"], include_in_schema=False)
+@app.post("/api/review/override", tags=["extract"], include_in_schema=False)
+@app.post("/review-override", tags=["extract"], include_in_schema=False)
+@app.post("/review/override", tags=["extract"], include_in_schema=False)
 def review_override_root_alias(body: ReviewOverrideIn) -> dict:
     return extract.submit_review_override(body)
 
 
 
 
-@app.get("/", summary="Интерактивный веб-интерфейс М.Видео AI")
+@app.get("/", summary="Интерактивный веб-интерфейс М.Видео AI", include_in_schema=False)
 
 
 
@@ -455,7 +455,7 @@ def root_ui(request: Request):
 
 
 
-@app.get("/api", summary="Спецификация и каталог эндпоинтов сервиса")
+@app.get("/api", summary="Спецификация и каталог эндпоинтов сервиса", include_in_schema=False)
 
 
 
