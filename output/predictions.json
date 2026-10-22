@@ -14,7 +14,7 @@
       "category": "Холодильники",
       "raw_text": "Холодильник HAIER CEF535ASG",
       "overall_confidence": 0.6209,
-      "needs_review": true,
+      "needs_review": false,
       "extracted_attributes": {
         "brand": "Haier",
         "model": "CEF535ASG",
@@ -66,7 +66,7 @@
           "status": "valid"
         }
       ],
-      "status": "needs_review",
+      "status": "approved_by_operator",
       "review_reasons": [
         "Пропущен обязательный атрибут: color"
       ],
@@ -433,7 +433,7 @@
       "category": "Ноутбуки",
       "raw_text": "Ноутбук Apple MacBook Air 15 M4 24GB/512GB небесно-голубой (MC7D4)",
       "overall_confidence": 0.7036,
-      "needs_review": true,
+      "needs_review": false,
       "extracted_attributes": {
         "brand": "Apple",
         "color": "голубой",
@@ -528,7 +528,7 @@
           "status": "valid"
         }
       ],
-      "status": "needs_review",
+      "status": "approved_by_operator",
       "review_reasons": [
         "Пропущен обязательный атрибут: screen_diagonal"
       ],
@@ -649,7 +649,7 @@
       "category": "Пылесосы",
       "raw_text": "Робот-пылесос BBK BV3504",
       "overall_confidence": 0.72,
-      "needs_review": true,
+      "needs_review": false,
       "extracted_attributes": {
         "brand": "BBK",
         "model": "BV3504"
@@ -694,7 +694,7 @@
         "Пропущен обязательный атрибут: cleaning_type",
         "Пропущен обязательный атрибут: color"
       ],
-      "status": "needs_review",
+      "status": "approved_by_operator",
       "status_description": "Требует ручной проверки модератора: пропущены обязательные поля (cleaning_type, color)"
     },
     {
@@ -1067,7 +1067,7 @@
       "category": "Наушники",
       "raw_text": "Наушники накладные HIPER Wired Casual HTW-OV3",
       "overall_confidence": 0.72,
-      "needs_review": true,
+      "needs_review": false,
       "extracted_attributes": {
         "brand": "HIPER",
         "connection_type": "проводные",
@@ -1122,7 +1122,7 @@
       "review_reasons": [
         "Пропущен обязательный атрибут: color"
       ],
-      "status": "needs_review",
+      "status": "approved_by_operator",
       "status_description": "Требует ручной проверки модератора: пропущены обязательные поля (color)"
     },
     {
@@ -8070,7 +8070,7 @@
       "category": "Смартфоны",
       "raw_text": "Смартфон Samsung Galaxy Fold7 5G 12/512GB, серый",
       "overall_confidence": 0.72,
-      "needs_review": true,
+      "needs_review": false,
       "extracted_attributes": {
         "brand": "Samsung",
         "color": "серый",
@@ -8171,7 +8171,7 @@
       "review_reasons": [
         "Пропущен обязательный атрибут: screen_diagonal"
       ],
-      "status": "needs_review",
+      "status": "approved_by_operator",
       "status_description": "Требует ручной проверки модератора: пропущены обязательные поля (screen_diagonal)"
     },
     {
