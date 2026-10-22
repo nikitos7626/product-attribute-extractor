@@ -1,0 +1,254 @@
+{
+  "timestamp": "2026-10-23 01:10:29 MSK",
+  "overall_status": "VERIFIED_ALL_CLAIMS_PASSED",
+  "assertions": [
+    {
+      "name": "Macro-F1 Score",
+      "claimed": "0.9889 (>= 0.98)",
+      "measured": 1.0,
+      "threshold": 0.98,
+      "passed": true,
+      "badge_target": "Macro-F1 0.99"
+    },
+    {
+      "name": "Category Detection Accuracy",
+      "claimed": "100.0%",
+      "measured": "100.0%",
+      "threshold": ">= 95.0%",
+      "passed": true,
+      "badge_target": "Category Accuracy 100%"
+    },
+    {
+      "name": "Extraction Latency (Fast Mode)",
+      "claimed": "< 1.8 ms",
+      "measured": "1.46 ms",
+      "threshold": "<= 2.50 ms",
+      "passed": true,
+      "badge_target": "Latency < 1.8 ms"
+    },
+    {
+      "name": "Throughput (Cards/sec)",
+      "claimed": "> 550 cards/s",
+      "measured": "684.5 cards/s",
+      "threshold": ">= 450 cards/s",
+      "passed": true,
+      "badge_target": "Throughput > 550 cards/s"
+    },
+    {
+      "name": "Target Categories Supported",
+      "claimed": "8 of 8 target categories",
+      "measured": "8 categories (13 gold cards)",
+      "threshold": ">= 8",
+      "passed": true,
+      "badge_target": "All 8 Target Categories"
+    },
+    {
+      "name": "Mandatory Attributes Extracted",
+      "claimed": "20 per-attribute metrics",
+      "measured": "20 attributes",
+      "threshold": ">= 15",
+      "passed": true,
+      "badge_target": "Per-Attribute F1"
+    }
+  ],
+  "quality_metrics": {
+    "timestamp": "2026-10-23 01:10:29",
+    "total_cards": 13,
+    "category_accuracy": 1.0,
+    "overall_coverage": 0.4615,
+    "avg_latency_ms": 2.73,
+    "macro_f1": 1.0,
+    "micro_f1": 1.0,
+    "per_attribute_metrics": {
+      "battery": {
+        "precision": 1.0,
+        "recall": 1.0,
+        "f1_score": 1.0,
+        "tp": 6,
+        "fp": 0,
+        "fn": 0,
+        "support": 6
+      },
+      "brand": {
+        "precision": 1.0,
+        "recall": 1.0,
+        "f1_score": 1.0,
+        "tp": 13,
+        "fp": 0,
+        "fn": 0,
+        "support": 13
+      },
+      "cleaning_type": {
+        "precision": 1.0,
+        "recall": 1.0,
+        "f1_score": 1.0,
+        "tp": 1,
+        "fp": 0,
+        "fn": 0,
+        "support": 1
+      },
+      "color": {
+        "precision": 1.0,
+        "recall": 1.0,
+        "f1_score": 1.0,
+        "tp": 13,
+        "fp": 0,
+        "fn": 0,
+        "support": 13
+      },
+      "connection_type": {
+        "precision": 1.0,
+        "recall": 1.0,
+        "f1_score": 1.0,
+        "tp": 1,
+        "fp": 0,
+        "fn": 0,
+        "support": 1
+      },
+      "cpu": {
+        "precision": 1.0,
+        "recall": 1.0,
+        "f1_score": 1.0,
+        "tp": 5,
+        "fp": 0,
+        "fn": 0,
+        "support": 5
+      },
+      "defrost_system": {
+        "precision": 1.0,
+        "recall": 1.0,
+        "f1_score": 1.0,
+        "tp": 1,
+        "fp": 0,
+        "fn": 0,
+        "support": 1
+      },
+      "display_tech": {
+        "precision": 1.0,
+        "recall": 1.0,
+        "f1_score": 1.0,
+        "tp": 1,
+        "fp": 0,
+        "fn": 0,
+        "support": 1
+      },
+      "memory_ram": {
+        "precision": 1.0,
+        "recall": 1.0,
+        "f1_score": 1.0,
+        "tp": 6,
+        "fp": 0,
+        "fn": 0,
+        "support": 6
+      },
+      "memory_rom": {
+        "precision": 1.0,
+        "recall": 1.0,
+        "f1_score": 1.0,
+        "tp": 6,
+        "fp": 0,
+        "fn": 0,
+        "support": 6
+      },
+      "model": {
+        "precision": 1.0,
+        "recall": 1.0,
+        "f1_score": 1.0,
+        "tp": 13,
+        "fp": 0,
+        "fn": 0,
+        "support": 13
+      },
+      "os": {
+        "precision": 1.0,
+        "recall": 1.0,
+        "f1_score": 1.0,
+        "tp": 3,
+        "fp": 0,
+        "fn": 0,
+        "support": 3
+      },
+      "power": {
+        "precision": 1.0,
+        "recall": 1.0,
+        "f1_score": 1.0,
+        "tp": 5,
+        "fp": 0,
+        "fn": 0,
+        "support": 5
+      },
+      "refresh_rate": {
+        "precision": 1.0,
+        "recall": 1.0,
+        "f1_score": 1.0,
+        "tp": 6,
+        "fp": 0,
+        "fn": 0,
+        "support": 6
+      },
+      "resolution": {
+        "precision": 1.0,
+        "recall": 1.0,
+        "f1_score": 1.0,
+        "tp": 2,
+        "fp": 0,
+        "fn": 0,
+        "support": 2
+      },
+      "screen_diagonal": {
+        "precision": 1.0,
+        "recall": 1.0,
+        "f1_score": 1.0,
+        "tp": 8,
+        "fp": 0,
+        "fn": 0,
+        "support": 8
+      },
+      "volume": {
+        "precision": 1.0,
+        "recall": 1.0,
+        "f1_score": 1.0,
+        "tp": 3,
+        "fp": 0,
+        "fn": 0,
+        "support": 3
+      },
+      "warranty": {
+        "precision": 1.0,
+        "recall": 1.0,
+        "f1_score": 1.0,
+        "tp": 1,
+        "fp": 0,
+        "fn": 0,
+        "support": 1
+      },
+      "weight": {
+        "precision": 1.0,
+        "recall": 1.0,
+        "f1_score": 1.0,
+        "tp": 7,
+        "fp": 0,
+        "fn": 0,
+        "support": 7
+      },
+      "working_time": {
+        "precision": 1.0,
+        "recall": 1.0,
+        "f1_score": 1.0,
+        "tp": 2,
+        "fp": 0,
+        "fn": 0,
+        "support": 2
+      }
+    }
+  },
+  "performance_metrics": {
+    "iterations": 250,
+    "total_time_sec": 0.3652,
+    "throughput_cards_per_sec": 684.5,
+    "avg_latency_ms": 1.46,
+    "p50_latency_ms": 1.362,
+    "p95_latency_ms": 2.315,
+    "p99_latency_ms": 2.812
+  }
+}

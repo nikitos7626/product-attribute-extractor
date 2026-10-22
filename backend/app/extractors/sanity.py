@@ -179,6 +179,10 @@ class AttributeSanityValidator:
 
 
         "poled": "pOLED",
+        "qned": "QNED",
+        "led": "LED",
+        "лед": "LED",
+        "dled": "Direct LED",
 
 
 

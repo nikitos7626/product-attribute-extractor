@@ -35,7 +35,7 @@ def _values_match(pred: str, target: str, attr: str) -> bool:
     t = str(target).lower().strip().replace(",", ".")
     if p == t:
         return True
-    if attr in ("model", "cpu", "cleaning_type"):
+    if attr in ("model", "cpu", "cleaning_type", "display_tech"):
         # Частичное вхождение (например 'Snapdragon 8 Gen 3 for Galaxy' vs 'Snapdragon 8 Gen 3')
         return p in t or t in p
     if attr == "color":

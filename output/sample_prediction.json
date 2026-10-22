@@ -10,18 +10,17 @@
       "title": "Холодильник HAIER CEF535ASG",
       "category": "Холодильники",
       "raw_text": "Холодильник HAIER CEF535ASG",
-      "overall_confidence": 0.6811,
-      "needs_review": true,
+      "overall_confidence": 0.9495,
+      "needs_review": false,
       "extracted_attributes": {
         "brand": "Haier",
         "model": "CEF535ASG",
+        "defrost_system": "No Frost",
         "color": "серебристый",
-        "defrost_system": "No Frost"
+        "volume": "346 л"
       },
-      "missing_required": [
-        "volume"
-      ],
-      "latency_ms": 5421.77,
+      "missing_required": [],
+      "latency_ms": 5097.06,
       "warnings": [],
       "degraded_tiers": [],
       "detailed_predictions": [
@@ -53,6 +52,17 @@
           "status": "valid"
         },
         {
+          "attribute": "defrost_system",
+          "value": "No Frost",
+          "confidence": 0.94,
+          "source": "catalog_kb",
+          "tier": "Tier 2.5",
+          "raw": "No Frost",
+          "grounded": true,
+          "confidence_reason": "Уверенное извлечение (0.94): верифицировано компонентом catalog_kb",
+          "status": "valid"
+        },
+        {
           "attribute": "color",
           "value": "серебристый",
           "confidence": 0.94,
@@ -64,12 +74,12 @@
           "status": "valid"
         },
         {
-          "attribute": "defrost_system",
-          "value": "No Frost",
+          "attribute": "volume",
+          "value": "346 л",
           "confidence": 0.94,
           "source": "catalog_kb",
           "tier": "Tier 2.5",
-          "raw": "No Frost",
+          "raw": "346 л",
           "grounded": true,
           "confidence_reason": "Уверенное извлечение (0.94): верифицировано компонентом catalog_kb",
           "status": "valid"
@@ -92,7 +102,7 @@
         "color",
         "volume"
       ],
-      "latency_ms": 167.19,
+      "latency_ms": 156.94,
       "warnings": [],
       "degraded_tiers": [],
       "detailed_predictions": [
@@ -152,7 +162,7 @@
         "defrost_system",
         "volume"
       ],
-      "latency_ms": 184.23,
+      "latency_ms": 135.9,
       "warnings": [],
       "degraded_tiers": [],
       "detailed_predictions": [

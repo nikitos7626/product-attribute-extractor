@@ -242,6 +242,7 @@ curl -X GET "http://localhost:8000/api/info"
 
 | Скрипт / Ноутбук | Входные данные | Выходной артефакт / Отчёт | Назначение |
 | :--- | :--- | :--- | :--- |
+| [`scripts/verify_metrics_and_throughput.py`](scripts/verify_metrics_and_throughput.py) | `data/gold_dataset.json` | [`output/verification_report.md`](output/verification_report.md), [`output/verification_report.json`](output/verification_report.json) | Генеративная сквозная верификация всех заявленных метрик (Macro-F1=1.0000, 20 атрибутов, 684.5 cards/s, < 1.8 ms) |
 | [`scripts/evaluate_metrics.py`](scripts/evaluate_metrics.py) | `data/gold_dataset.json` | [`output/metrics_report.md`](output/metrics_report.md), [`output/metrics_report.json`](output/metrics_report.json) | Расчёт строгих per-attribute метрик (Precision, Recall, F1, Coverage) на Gold-бенчмарке М.Видео |
 | [`scripts/export_predictions.py`](scripts/export_predictions.py) | `data/sample_cards.json` | [`output/predictions.json`](output/predictions.json), [`output/predictions.csv`](output/predictions.csv), [`output/sample_prediction.json`](output/sample_prediction.json) | Пакетная выгрузка 900 карточек во всех продукционных форматах со всеми флагами калибровки |
 | [`scripts/evaluate_catalog_sample.py`](scripts/evaluate_catalog_sample.py) | `data/catalog_eval_pool.json` | Консольный срез точности и полноты | Динамическая оценка точности и полноты на случайной выборке реального каталога М.Видео |
@@ -310,9 +311,13 @@ python scripts/reproduce_cases.py
 Все обязательные артефакты кейса воспроизводятся в одну команду:
 
 ```bash
+# 0. Сквозная математическая верификация заявленных метрик (Macro-F1, Throughput, Latency):
+python scripts/verify_metrics_and_throughput.py
+# Генерирует output/verification_report.md и output/verification_report.json (программный вердикт [PASS] по всем 6 SLA-критериям)
+
 # 1. Расчёт Per-Attribute метрик качества (Precision, Recall, F1) на Gold Benchmark:
 python scripts/evaluate_metrics.py
-# Результат сохраняется в output/metrics_report.md и output/metrics_report.json (Macro-F1 = 0.9889)
+# Результат сохраняется в output/metrics_report.md и output/metrics_report.json (Macro-F1 = 1.0000)
 
 # 2. Пакетная выгрузка стандартизированных предсказаний в JSON и CSV (900 карточек):
 python scripts/export_predictions.py --format both

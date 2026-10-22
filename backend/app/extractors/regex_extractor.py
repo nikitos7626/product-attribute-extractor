@@ -1075,6 +1075,14 @@ class RegexExtractor:
                     out.append(ct_pred)
                     seen_attrs.add("cleaning_type")
 
+        # 6. Технология экрана (display_tech) для ТВ, мониторов, смартфонов
+        is_display_cat = category_key in ("tvs", "tv", "monitors", "smartphones", "laptops", "default")
+        if is_display_cat and "display_tech" not in seen_attrs:
+            dt_pred = self._find_display_tech(full_text, title=title_lower)
+            if dt_pred:
+                out.append(dt_pred)
+                seen_attrs.add("display_tech")
+
         # Физическая валидация здравого смысла и контекста категории
 
         valid_out: list[Prediction] = []
@@ -2526,6 +2534,25 @@ class RegexExtractor:
 
 
 
+
+    def _find_display_tech(self, text: str, title: str = "") -> Prediction | None:
+        """Извлечение технологии дисплея (OLED, QLED, Mini-LED, IPS, VA, LED и т.д.) с приоритетом заголовка."""
+        for target_text, base_conf in ((title, 0.98), (text, 0.92)):
+            if not target_text:
+                continue
+            for raw_k, canon_v in sorted(AttributeSanityValidator.ALLOWED_DISPLAY_TECHS.items(), key=lambda x: len(x[0]), reverse=True):
+                pat = rf"(?<![a-zA-Zа-яА-Я0-9]){re.escape(raw_k)}(?![a-zA-Zа-яА-Я0-9])"
+                m = re.search(pat, target_text, re.IGNORECASE)
+                if m:
+                    return Prediction(
+                        attribute="display_tech",
+                        value=canon_v,
+                        confidence=base_conf,
+                        source="regex",
+                        raw=m.group(0),
+                        grounded=True,
+                    )
+        return None
 
     def _find_cpu(self, text: str):
 

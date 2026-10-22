@@ -256,6 +256,19 @@ class TaxonomyManager:
 
 
 
+    def _load_fallback_taxonomy(self) -> None:
+        """Загружает встроенный резервный справочник таксономии М.Видео."""
+        fallback_map = {
+            "1": "Смартфоны", "2": "Ноутбуки", "3": "Телевизоры", "4": "Пылесосы",
+            "5": "Холодильники", "6": "Наушники", "7": "Внешние аккумуляторы",
+            "8": "Микроволновые печи", "9": "Стиральные машины", "10": "Планшеты"
+        }
+        self.id_to_name = dict(fallback_map)
+        for name in fallback_map.values():
+            self.normalized_names[name.lower()] = name
+        self.categories_count = 0
+        logger.info("Loaded embedded fallback taxonomy: %d categories", self.categories_count)
+
     def load(self) -> None:
 
 
@@ -281,6 +294,7 @@ class TaxonomyManager:
 
 
                 logger.warning("TAXONOMY ALERT: %s. Активирован безопасный резервный контур категорий.", self.error_message)
+                self._load_fallback_taxonomy()
 
 
 

@@ -44,12 +44,12 @@
         "shelf_ready_count": 4,
         "shelf_readiness_rate": 1.0,
         "required_attrs": [
-          "screen_diagonal",
-          "memory_rom",
           "model",
+          "memory_rom",
           "battery",
           "color",
-          "brand"
+          "brand",
+          "screen_diagonal"
         ],
         "attributes": {
           "brand": {
@@ -74,9 +74,9 @@
             "role": "Обязательный (MVP)"
           },
           "memory_ram": {
-            "count": 3,
-            "fill_rate": 0.75,
-            "sparsity": 0.25,
+            "count": 4,
+            "fill_rate": 1.0,
+            "sparsity": 0.0,
             "is_required_for_release": false,
             "role": "Опциональный (Enrichment)"
           },
@@ -138,11 +138,11 @@
         "shelf_readiness_rate": 1.0,
         "required_attrs": [
           "cpu",
-          "screen_diagonal",
-          "memory_ram",
-          "memory_rom",
           "model",
-          "brand"
+          "memory_rom",
+          "memory_ram",
+          "brand",
+          "screen_diagonal"
         ],
         "attributes": {
           "brand": {
@@ -216,10 +216,10 @@
         "shelf_ready_count": 2,
         "shelf_readiness_rate": 1.0,
         "required_attrs": [
-          "model",
+          "resolution",
           "brand",
-          "screen_diagonal",
-          "resolution"
+          "model",
+          "screen_diagonal"
         ],
         "attributes": {
           "brand": {
@@ -270,6 +270,13 @@
             "sparsity": 0.0,
             "is_required_for_release": false,
             "role": "Опциональный (Enrichment)"
+          },
+          "display_tech": {
+            "count": 1,
+            "fill_rate": 0.5,
+            "sparsity": 0.5,
+            "is_required_for_release": false,
+            "role": "Опциональный (Enrichment)"
           }
         },
         "business_justification": "screen_diagonal (95% поисковых переходов в ТВ) и resolution (4K vs FHD) — главные факторы ценообразования и фасетной навигации в ритейле."
@@ -279,9 +286,9 @@
         "shelf_ready_count": 1,
         "shelf_readiness_rate": 1.0,
         "required_attrs": [
-          "model",
-          "brand",
           "cleaning_type",
+          "brand",
+          "model",
           "color"
         ],
         "attributes": {
@@ -349,8 +356,8 @@
         "shelf_ready_count": 1,
         "shelf_readiness_rate": 1.0,
         "required_attrs": [
-          "model",
           "brand",
+          "model",
           "color"
         ],
         "attributes": {
@@ -404,9 +411,9 @@
         "shelf_ready_count": 1,
         "shelf_readiness_rate": 1.0,
         "required_attrs": [
-          "model",
-          "brand",
           "battery",
+          "brand",
+          "model",
           "color"
         ],
         "attributes": {
@@ -460,9 +467,9 @@
         "shelf_ready_count": 1,
         "shelf_readiness_rate": 1.0,
         "required_attrs": [
-          "model",
-          "brand",
           "defrost_system",
+          "brand",
+          "model",
           "color"
         ],
         "attributes": {
@@ -517,9 +524,9 @@
         "shelf_readiness_rate": 1.0,
         "required_attrs": [
           "model",
-          "power",
           "color",
           "brand",
+          "power",
           "volume"
         ],
         "attributes": {
@@ -589,8 +596,8 @@
   "dictionaries": {
     "total_taxonomy_categories_count": 6570,
     "specialized_archetype_categories_count": 12,
-    "knowledge_base_models_count": 9761,
-    "brands_dictionary_count": 4625,
+    "knowledge_base_models_count": 9771,
+    "brands_dictionary_count": 4616,
     "supported_categories": [
       "smartphones",
       "laptops",
