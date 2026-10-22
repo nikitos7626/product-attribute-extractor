@@ -17,6 +17,26 @@ class ApiService {
    * @param {Object} cardData - { title, description, raw_text, category, seller_attributes }
    * @returns {Promise<Object>} CardOut результат извлечения
    */
+  /**
+   * Извлечение характеристик по внешней веб-ссылке (URL).
+   * @param {string} url
+   * @param {string|null} category
+   * @param {string|null} title
+   * @returns {Promise<Object>}
+   */
+  async extractFromUrl(url, category = null, title = null) {
+    const response = await fetch(`${this.baseUrl}/api/extract/from-url`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ url, category, title }),
+    });
+    if (!response.ok) {
+      const err = await response.json().catch(() => ({}));
+      throw new Error(err.detail || `Не удалось загрузить страницу (${response.status})`);
+    }
+    return await response.json();
+  }
+
   async extractSingle(cardData) {
     const response = await fetch(`${this.baseUrl}/api/extract`, {
       method: 'POST',

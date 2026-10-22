@@ -226,6 +226,21 @@ class ReviewQueueResponse(BaseModel):
 
 
 
+
+
+class UrlExtractIn(BaseModel):
+    url: str
+    category: str | None = None
+    title: str | None = None
+
+
+class UrlExtractOut(BaseModel):
+    status: str = "success"
+    url: str
+    page_title: str
+    extracted_text_snippet: str
+    card_result: CardOut
+
 class ReviewQueueClearResponse(BaseModel):
 
     status: str = 'success'

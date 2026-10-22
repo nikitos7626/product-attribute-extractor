@@ -76,6 +76,39 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   });
 
+  // ----------------- Загрузка одиночной карточки по ссылке (URL) -----------------
+  document.getElementById('single-fetch-url-btn')?.addEventListener('click', async () => {
+    const input = document.getElementById('single-url-input');
+    const url = input ? input.value.trim() : '';
+    if (!url) {
+      alert('Пожалуйста, введите URL страницы товара');
+      return;
+    }
+    const btn = document.getElementById('single-fetch-url-btn');
+    if (btn) {
+      btn.disabled = true;
+      btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin mr-1.5"></i> Загрузка...';
+    }
+    try {
+      const data = await api.extractFromUrl(url);
+      if (data && data.card_result) {
+        const rawTextEl = document.getElementById('raw_text');
+        if (rawTextEl) {
+          rawTextEl.value = (data.page_title ? data.page_title + '\n\n' : '') + data.extracted_text_snippet;
+        }
+        lastSingleResponse = data.card_result;
+        render.renderSingleResults(data.card_result);
+      }
+    } catch (err) {
+      alert(`Ошибка загрузки по ссылке: ${err.message}`);
+    } finally {
+      if (btn) {
+        btn.disabled = false;
+        btn.innerHTML = '<i class="fa-solid fa-wand-magic-sparkles mr-1.5"></i> Загрузить';
+      }
+    }
+  });
+
   // Копирование JSON
   document.getElementById('copy-json-btn')?.addEventListener('click', () => {
     if (!lastSingleResponse) return;

@@ -44,16 +44,44 @@ class CatalogEnricher:
                     cls._instance = cls(kb_path=kb_path)
         return cls._instance
 
+    @staticmethod
+    def _resolve_kb_path(user_path: str | None = None) -> str:
+        from pathlib import Path
+        if user_path:
+            return str(Path(user_path).resolve())
+
+        default_file = Path(getattr(settings, "catalog_kb_path", "data/dictionaries/catalog_models_kb.json"))
+        backend_dir = Path(__file__).resolve().parent.parent.parent
+        repo_root = backend_dir.parent
+        dict_dir = backend_dir / "data" / "dictionaries"
+
+        candidates = [
+            backend_dir / default_file,
+            repo_root / default_file,
+            dict_dir / default_file.name,
+            backend_dir / "data" / "dictionaries" / "catalog_models_kb.json",
+            repo_root / "data" / "dictionaries" / "catalog_models_kb.json",
+            Path(DEFAULT_KB_PATH),
+        ]
+        for c in candidates:
+            if c and c.is_file():
+                return str(c.resolve())
+        return str((backend_dir / default_file).resolve())
+
     def __init__(self, kb_path: str | None = None) -> None:
-        self.kb_path = kb_path or DEFAULT_KB_PATH
+        self.kb_path = self._resolve_kb_path(kb_path)
         self._lock = threading.Lock()
         self.kb: dict[str, dict[str, dict[str, str]]] = {}
         self.models_by_id: dict[str, dict[str, str]] = {}
+        self.status: str = "healthy"  # healthy | degraded | failed
+        self.error_message: str | None = None
         self._load_kb()
 
     def _load_kb(self) -> None:
         if not os.path.exists(self.kb_path):
-            logger.warning("Catalog KB file not found at %s", self.kb_path)
+            self.status = "degraded"
+            self.error_message = f"Файл базы знаний Catalog KB не найден: {self.kb_path}"
+            logger.warning("CATALOG KB ALERT: %s. Активирован безопасный фоллбэк.", self.error_message)
             self.kb = {}
             self.models_by_id = {}
             return
@@ -62,23 +90,40 @@ class CatalogEnricher:
             with open(self.kb_path, "r", encoding="utf-8") as f:
                 raw_data = json.load(f)
 
+            if not isinstance(raw_data, dict):
+                self.status = "failed"
+                self.error_message = f"Некорректная структура Catalog KB: ожидался словарь, получен {type(raw_data).__name__}"
+                logger.error("CATALOG KB ALERT: %s", self.error_message)
+                self.kb = {}
+                self.models_by_id = {}
+                return
+
             with self._lock:
-                if isinstance(raw_data, dict) and "_by_id" in raw_data:
+                if "_by_id" in raw_data:
                     self.models_by_id = dict(raw_data.pop("_by_id"))
                 else:
                     self.models_by_id = {}
                 self.kb = raw_data
 
             total_models = sum(len(mods) for mods in self.kb.values() if isinstance(mods, dict))
-            logger.info(
-                "Loaded Catalog KB v%s: %d vendors, %d models, %d indexed by model_id",
-                self.version,
-                len(self.kb),
-                total_models,
-                len(self.models_by_id),
-            )
+            if total_models == 0 and not self.models_by_id:
+                self.status = "degraded"
+                self.error_message = "Catalog KB пуст (0 моделей)"
+                logger.warning("CATALOG KB ALERT: %s", self.error_message)
+            else:
+                self.status = "healthy"
+                self.error_message = None
+                logger.info(
+                    "Loaded Catalog KB v%s: %d vendors, %d models, %d indexed by model_id",
+                    self.version,
+                    len(self.kb),
+                    total_models,
+                    len(self.models_by_id),
+                )
         except Exception as e:
-            logger.error("Failed to load Catalog KB from %s: %s", self.kb_path, e)
+            self.status = "failed"
+            self.error_message = f"Критическая ошибка чтения Catalog KB: {e}"
+            logger.critical("CATALOG KB CRITICAL: %s", self.error_message, exc_info=True)
             self.kb = {}
             self.models_by_id = {}
 
@@ -108,7 +153,8 @@ class CatalogEnricher:
             "vendors_count": len(self.kb),
             "models_count": self.size(),
             "models_by_id_count": len(self.models_by_id),
-            "status": "ready" if self.kb or self.models_by_id else "empty",
+            "status": self.status,
+            "error_message": self.error_message,
         }
 
     def register_model_specs(
@@ -264,6 +310,15 @@ class CatalogEnricher:
         по model_id или паре brand+model.
         """
         if not missing_attrs:
+            return []
+
+        if self.status != "healthy":
+            logger.warning(
+                "Catalog KB is degraded (%s): %s. Skipping KB enrichment for model '%s'.",
+                self.status,
+                self.error_message,
+                model or model_id,
+            )
             return []
 
         specs = self.find_model_specs(brand=brand, model=model, model_id=model_id)

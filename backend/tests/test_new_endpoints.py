@@ -176,3 +176,65 @@ def test_modular_frontend_serving():
     assert client.get('/static/js/presets.js').status_code == 200
     assert client.get('/static/js/render.js').status_code == 200
     assert client.get('/static/css/style.css').status_code == 200
+
+
+def test_catalog_enricher_robust_degradation():
+    """Тест исключения silent-failure в CatalogEnricher: фиксация статуса деградации и предупреждений."""
+    from app.services.catalog_enricher import CatalogEnricher
+    from app.services.pipeline import CascadedExtractionPipeline
+
+    # 1. Создание экземпляра с несуществующим файлом
+    broken_enricher = CatalogEnricher(kb_path="definitely_non_existent_kb_file.json")
+    assert broken_enricher.status == "degraded"
+    assert "не найден" in broken_enricher.error_message
+    assert broken_enricher.get_info()["status"] == "degraded"
+
+    # 2. Вызов enrich не падает молча, а возвращает пустой список с логированием
+    preds = broken_enricher.enrich(
+        brand="Apple",
+        model="iPhone 15",
+        missing_attrs={"color", "memory_rom"},
+        category_key="smartphones",
+    )
+    assert preds == []
+
+    # 3. Интеграция в пайплайн: явное добавление в degraded_tiers и warnings
+    p = CascadedExtractionPipeline(use_gliner=False, use_llm=False)
+    p.catalog_enricher = broken_enricher
+    res = p.process_card({"title": "Смартфон Apple iPhone 15"})
+    assert "tier2_5_catalog_kb" in res["degraded_tiers"]
+    assert any("деградированном режиме" in w for w in res["warnings"])
+
+
+def test_universal_seller_attributes_handling():
+    """Тест универсальной обработки атрибутов продавца (seller_attributes) для всех категорий."""
+    from app.services.pipeline import CascadedExtractionPipeline
+
+    pipeline = CascadedExtractionPipeline(use_gliner=False, use_llm=False)
+    card = {
+        "title": "Холодильник Haier",
+        "category": "refrigerators",
+        "seller_attributes": {
+            "цвет": "серебристый",
+            "объем": "346 л",
+            "система_размораживания": "No Frost",
+        },
+    }
+    res = pipeline.process_card(card)
+    attrs = {p["attribute"]: p["value"] for p in res["predictions"]}
+    assert attrs.get("color") == "серебристый"
+    assert attrs.get("volume") == "346 л"
+    assert attrs.get("defrost_system") == "No Frost"
+
+
+def test_extract_from_url_endpoint():
+    """Тест эндпоинта извлечения характеристик по внешней веб-ссылке (POST /api/extract/from-url)."""
+    # 1. Некорректный URL -> 400 Bad Request
+    resp_bad = client.post("/api/extract/from-url", json={"url": "not-a-valid-url"})
+    assert resp_bad.status_code == 400
+
+    # 2. Недоступный хост -> 502 Bad Gateway с пояснением ошибки
+    resp_unreach = client.post("/api/extract/from-url", json={"url": "https://non-existent-domain-123456789.org/test"})
+    assert resp_unreach.status_code == 502
+    assert "Не удалось загрузить" in resp_unreach.json()["detail"]
+

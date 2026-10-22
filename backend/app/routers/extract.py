@@ -20,7 +20,7 @@ from starlette.concurrency import run_in_threadpool
 
 from app.config import settings
 
-from app.schemas import BatchOut, CardIn, CardOut, ModelRegisterIn, PredictionOut, ReviewOverrideIn, ReviewQueueResponse, ReviewQueueClearResponse
+from app.schemas import BatchOut, CardIn, CardOut, ModelRegisterIn, PredictionOut, ReviewOverrideIn, ReviewQueueResponse, ReviewQueueClearResponse, UrlExtractIn, UrlExtractOut
 
 from app.services.brand_registry import BrandRegistry, process_file_lock
 
@@ -159,6 +159,91 @@ def _run(card: CardIn, pipeline: CascadedExtractionPipeline | None = None) -> Ca
     )
 
 
+@router.post("/from-url", response_model=UrlExtractOut)
+async def extract_from_url(
+    body: UrlExtractIn,
+    pipeline: CascadedExtractionPipeline = Depends(get_pipeline),
+) -> UrlExtractOut:
+    """
+    Извлекает характеристики товара по внешней ссылке на страницу товара в открытом доступе
+    (DNS, маркетплейсы, сайты производителей, агрегаторы электроники).
+    Безопасно скачивает HTML, очищает текст и прогоняет через каскадный пайплайн ИИ.
+    """
+    import html
+    import re
+    import urllib.parse
+    import httpx
+
+    target_url = body.url.strip()
+    if not target_url.startswith(("http://", "https://")):
+        target_url = "https://" + target_url
+
+    parsed = urllib.parse.urlparse(target_url)
+    if not parsed.netloc or "." not in parsed.netloc:
+        raise HTTPException(400, "Указан некорректный URL страницы товара (отсутствует доменное имя)")
+
+    headers = {
+        "User-Agent": (
+            "Mozilla/5.0 (Windows NT 10.0; Win64; x64) "
+            "AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36"
+        ),
+        "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8",
+        "Accept-Language": "ru-RU,ru;q=0.9,en-US;q=0.8,en;q=0.7",
+    }
+
+    try:
+        async with httpx.AsyncClient(timeout=6.0, follow_redirects=True, headers=headers) as client:
+            resp = await client.get(target_url)
+            resp.raise_for_status()
+            raw_html = resp.text
+    except Exception as e:
+        logger.warning("Failed to fetch product URL %s: %s", target_url, e)
+        raise HTTPException(502, f"Не удалось загрузить страницу по внешней ссылке: {e}")
+
+    # Извлечение заголовка страницы (<title>...</title>)
+    title_match = re.search(r"<title[^>]*>(.*?)</title>", raw_html, re.IGNORECASE | re.DOTALL)
+    page_title = ""
+    if title_match:
+        page_title = html.unescape(title_match.group(1)).strip()
+        page_title = re.sub(r"\s*[—–|-]\s*(купить в|интернет-магазин|каталог|dns|яндекс|мвидео).*$", "", page_title, flags=re.IGNORECASE).strip()
+
+    # Удаление служебных тегов
+    clean_html = re.sub(r"<(script|style|svg|nav|footer)[^>]*>.*?</\1>", " ", raw_html, flags=re.IGNORECASE | re.DOTALL)
+    clean_text = re.sub(r"<[^>]+>", " ", clean_html)
+    clean_text = html.unescape(clean_text)
+    clean_text = re.sub(r"\s+", " ", clean_text).strip()
+
+    snippet = clean_text[:400] + ("..." if len(clean_text) > 400 else "")
+
+    card_dict = {
+        "title": body.title or page_title,
+        "description": clean_text[:15000],
+        "category": body.category,
+    }
+    res = pipeline.process_card(card_dict)
+
+    card_out = CardOut(
+        external_id=res.get("external_id") or "from-url",
+        category=res["category"],
+        predictions=[PredictionOut(**p) for p in res["predictions"]],
+        missing=res["missing"],
+        overall_confidence=res["overall_confidence"],
+        needs_review=res["needs_review"],
+        status=res.get("status", "approved"),
+        status_description=res.get("status_description", ""),
+        review_reasons=res.get("review_reasons", []),
+        warnings=res.get("warnings", []),
+        degraded_tiers=res.get("degraded_tiers", []),
+        taxonomy_status=res.get("taxonomy_status"),
+    )
+
+    return UrlExtractOut(
+        status="success",
+        url=target_url,
+        page_title=page_title,
+        extracted_text_snippet=snippet,
+        card_result=card_out,
+    )
 
 
 

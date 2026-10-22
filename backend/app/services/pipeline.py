@@ -1247,11 +1247,17 @@ class CascadedExtractionPipeline:
 
 
 
-        if self.use_catalog_enricher and (not self.catalog_enricher or self.catalog_enricher.size() == 0):
-
-            degraded_tiers.append("tier3_catalog_kb")
-
-            warnings_list.append("Catalog KB is empty or missing; catalog enrichment skipped.")
+        if self.use_catalog_enricher:
+            kb_obj = getattr(self, "catalog_enricher", None)
+            kb_status = getattr(kb_obj, "status", "unavailable") if kb_obj else "missing"
+            kb_size = kb_obj.size() if kb_obj else 0
+            if not kb_obj or kb_status != "healthy" or kb_size == 0:
+                degraded_tiers.append("tier2_5_catalog_kb")
+                kb_err = getattr(kb_obj, "error_message", None) if kb_obj else "Каталожный модуль не инициализирован"
+                warnings_list.append(
+                    f"Каталожный справочник моделей работает в деградированном режиме ({kb_status}): "
+                    f"{kb_err or '0 моделей в базе'}. Обогащение переключено на правила и LLM."
+                )
 
 
 
@@ -1368,6 +1374,53 @@ class CascadedExtractionPipeline:
         predictions_map: dict[str, Prediction] = {}
 
         extracted_alternatives: dict[str, list[dict[str, Any]]] = defaultdict(list)
+
+        # ------------------------------------------------------------------
+        # ЭТАП 0.5: Обработка и валидация атрибутов продавца (Seller Attributes)
+        # ------------------------------------------------------------------
+        seller_attrs = card.get("seller_attributes") or {}
+        if isinstance(seller_attrs, dict) and seller_attrs:
+            ATTR_SYNONYMS = {
+                "диагональ": "screen_diagonal",
+                "экран": "screen_diagonal",
+                "процессор": "cpu",
+                "память": "memory_rom",
+                "встроенная_память": "memory_rom",
+                "оперативная_память": "memory_ram",
+                "озу": "memory_ram",
+                "пзу": "memory_rom",
+                "разрешение": "resolution",
+                "аккумулятор": "battery",
+                "батарея": "battery",
+                "цвет": "color",
+                "бренд": "brand",
+                "марка": "brand",
+                "производитель": "brand",
+                "модель": "model",
+                "мощность": "power",
+                "объем": "volume",
+                "тип_уборки": "cleaning_type",
+                "система_размораживания": "defrost_system",
+            }
+            for s_key, s_val in seller_attrs.items():
+                s_key_str = str(s_key).strip().lower().replace("-", "_").replace(" ", "_")
+                s_val_str = str(s_val).strip()
+                if not s_key_str or not s_val_str:
+                    continue
+                canon_key = ATTR_SYNONYMS.get(s_key_str, s_key_str)
+                if AttributeSanityValidator.is_valid(canon_key, s_val_str, effective_cat_key):
+                    p_seller = {
+                        "attribute": canon_key,
+                        "value": s_val_str,
+                        "confidence": 0.95,
+                        "source": "seller_attributes",
+                        "tier": "Tier 0.5",
+                        "raw": s_val_str,
+                        "grounded": True,
+                    }
+                    extracted_alternatives[canon_key].append(dict(p_seller))
+                    if canon_key not in predictions_map:
+                        predictions_map[canon_key] = p_seller
 
 
 

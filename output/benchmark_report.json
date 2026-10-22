@@ -1,0 +1,39 @@
+{
+  "metadata": {
+    "timestamp": "2026-10-22 12:30:11",
+    "environment": {
+      "os": "win32",
+      "python": "3.13.5",
+      "cpu_count": 8
+    },
+    "num_unique_sample_cards": 900
+  },
+  "benchmarks": {
+    "tier1_fast_deterministic": {
+      "name": "Детерминированный режим (Tier 1: FlashText + Regex + KB)",
+      "iterations": 300,
+      "total_time_seconds": 0.443,
+      "throughput_cards_per_sec": 676.9,
+      "latency_ms": {
+        "avg": 1.48,
+        "p50": 1.42,
+        "p95": 2.34,
+        "p99": 2.79
+      },
+      "status": "PASS (>550 cards/s claim verified)"
+    },
+    "tier2_hybrid_gliner": {
+      "name": "Гибридный каскадный режим (Tier 1 + Tier 2 GLiNER)",
+      "iterations": 15,
+      "total_time_seconds": 2.604,
+      "throughput_cards_per_sec": 5.8,
+      "latency_ms": {
+        "avg": 173.57,
+        "p50": 163.0,
+        "p95": 206.82,
+        "p99": 206.82
+      },
+      "status": "PASS (Sub-second neural inference)"
+    }
+  }
+}

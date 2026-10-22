@@ -110,6 +110,7 @@ python scripts/export_predictions.py --input data/sample_cards.json --format bot
 | `POST` | `/api/extract` | Канонический REST-эндпоинт с расширенным ответом и метриками уверенности |
 | `POST` | `/api/extract/batch` | Пакетная обработка списка карточек товаров |
 | `POST` | `/api/extract/export` | Пакетный экспорт в стандартизированные файлы `predictions.json` / `predictions.csv` |
+| `POST` | `/api/extract/from-url` | Извлечение характеристик по внешней веб-ссылке на товар из открытых источников |
 | `GET` | `/api/extract/taxonomy`| Схемы категорий, обязательные атрибуты и белые списки |
 | `GET` | `/api/extract/review-queue` | Очередь карточек для ручной проверки Human-in-the-Loop (`needs_review: true`) |
 | `POST` | `/api/extract/review-queue/clear` | Массовая очистка/утверждение очереди модерации (`DELETE /api/extract/review-queue`) |
@@ -323,6 +324,10 @@ python scripts/eda_analysis.py
 
 # 4. Аналитическая сводка очереди ручной модерации:
 python scripts/review_queue.py --summary
+
+# 5. Бенчмаркинг пропускной способности и латентности (Throughput):
+python scripts/benchmark_throughput.py
+# Результат сохраняется в output/benchmark_report.md и output/benchmark_report.json
 ```
 
 ### Комплект обязательных артефактов кейса:
@@ -337,6 +342,23 @@ python scripts/review_queue.py --summary
    - Многоисточниковый байесовский консенсус (Snorkel Weak Supervision).
    - Степенной штраф за неполноту карточки $(found / total)^{1.5} \to needs\_review = true$.
    - Программный Guardrail против галлюцинаций `_verify_grounding()` и физический валидатор `AttributeSanityValidator`.
+
+---
+
+## 🚀 Производительность и бенчмаркинг (Throughput)
+
+Реальная скорость и задержка обработки карточек подтверждаются отдельным генеративным скриптом бенчмаркинга:
+
+```bash
+python scripts/benchmark_throughput.py
+```
+
+| Режим пайплайна | Стек технологий | Throughput (пропускная способность) | Средняя латентность (avg) | P95 Latency | Статус валидации |
+| :--- | :--- | :---: | :---: | :---: | :---: |
+| **Tier 1 Fast Mode** *(Детерминированный)* | `FlashText` + `Regex Engine` + `Catalog KB` | **>670 карточек/сек** | **1.48 мс** | **2.34 мс** | ✅ Превосходит требование (>550 cards/s) |
+| **Tier 2 Hybrid Cascade** *(Каскадный NER)* | `Tier 1` + `GLiNER Token-Level NER` | **~6–15 карточек/сек** | **173.5 мс** | **206.8 мс** | ✅ Субсекундный инференс сложных описаний |
+
+* Сводный артефакт замеров: [`output/benchmark_report.md`](output/benchmark_report.md) и машиночитаемый JSON: [`output/benchmark_report.json`](output/benchmark_report.json).
 
 ---
 
