@@ -104,8 +104,14 @@ class ApiService {
    * @param {number} limit
    * @returns {Promise<Object>} ReviewQueueResponse
    */
-  async getReviewQueue(limit = 5) {
-    const response = await fetch(`${this.baseUrl}/api/extract/review-queue?limit=${limit}`);
+    async getReviewQueue(limit = 5) {
+    let response = await fetch(`${this.baseUrl}/api/extract/review/queue?limit=${limit}`);
+    if (!response.ok) {
+      response = await fetch(`${this.baseUrl}/api/extract/review-queue?limit=${limit}`);
+    }
+    if (!response.ok) {
+      response = await fetch(`${this.baseUrl}/api/review/queue?limit=${limit}`);
+    }
     if (!response.ok) {
       throw new Error(`Не удалось загрузить очередь модерации (${response.status})`);
     }
@@ -116,10 +122,15 @@ class ApiService {
    * Очистка всей очереди ручной модерации.
    * @returns {Promise<Object>}
    */
-  async clearReviewQueue() {
-    const response = await fetch(`${this.baseUrl}/api/extract/review-queue/clear`, {
+    async clearReviewQueue() {
+    let response = await fetch(`${this.baseUrl}/api/extract/review/queue/clear`, {
       method: 'POST',
     });
+    if (!response.ok) {
+      response = await fetch(`${this.baseUrl}/api/extract/review-queue/clear`, {
+        method: 'POST',
+      });
+    }
     if (!response.ok) {
       throw new Error(`Не удалось очистить очередь (${response.status})`);
     }
@@ -131,17 +142,22 @@ class ApiService {
    * @param {Object} overrideData - { external_id, attribute, override_value, action, reviewed_by }
    * @returns {Promise<Object>}
    */
-  async submitReviewOverride(overrideData) {
-    const response = await fetch(`${this.baseUrl}/api/extract/review-override`, {
+    async submitReviewOverride(overrideData) {
+    let response = await fetch(`${this.baseUrl}/api/extract/review-override`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(overrideData),
     });
-
+    if (!response.ok) {
+      response = await fetch(`${this.baseUrl}/api/extract/review/override`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(overrideData),
+      });
+    }
     if (!response.ok) {
       throw new Error(`Не удалось сохранить решение (${response.status})`);
     }
-
     return await response.json();
   }
 

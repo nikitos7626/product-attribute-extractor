@@ -238,3 +238,63 @@ def test_extract_from_url_endpoint():
     assert resp_unreach.status_code == 502
     assert "Не удалось загрузить" in resp_unreach.json()["detail"]
 
+
+
+def test_single_card_enqueues_to_review_queue_and_moderation_e2e():
+    """Тест автоматического добавления сомнительной карточки (needs_review=True) в очередь модерации."""
+    # 1. Очищаем очередь для чистоты теста
+    client.post("/api/extract/review-queue/clear")
+    q_initial = client.get("/api/extract/review/queue").json()
+    assert q_initial["total_in_queue"] == 0
+
+    # 2. Одиночное извлечение карточки Lenovo с низкой уверенностью (needs_review=True)
+    card_payload = {
+        "raw_text": (
+            'Ноутбук Lenovo IdeaPad 3 Gen7 82RK003TRU оборудован шестиядерным процессором Intel Core i3 1215U 1.2 ГГц. '
+            'Конфигурацией устройства предусмотрено наличие экрана разрешением 1920х1080 пикселей и диагональю 15,6". '
+            'Частота обновления экрана составляет 60 Гц. Оперативный модуль для хранения данных обладает объемом 8 ГБ, '
+            'объем жесткого диска — 512 ГБ.'
+        )
+    }
+    resp = client.post("/extract", json=card_payload)
+    assert resp.status_code == 200
+    card_data = resp.json()
+    assert card_data["needs_review"] is True
+    ext_id = card_data["external_id"]
+    assert ext_id is not None
+
+    # 3. Проверяем, что карточка мгновенно появилась в очереди модерации по обоим путям
+    for endpoint in ["/api/extract/review/queue", "/api/extract/review-queue", "/review/queue", "/review-queue"]:
+        resp_q = client.get(endpoint)
+        assert resp_q.status_code == 200
+        q_data = resp_q.json()
+        assert q_data["total_in_queue"] >= 1
+        item_ids = [it["external_id"] for it in q_data["items"]]
+        assert ext_id in item_ids
+        target_item = next(it for it in q_data["items"] if it["external_id"] == ext_id)
+        assert target_item["needs_review"] is True
+        assert len(target_item["review_reasons"]) > 0
+        assert "Lenovo" in target_item["title"] or "Lenovo" in target_item["raw_text"]
+        assert isinstance(target_item["extracted_attributes"], dict)
+        assert isinstance(target_item["detailed_predictions"], list)
+
+    # 4. Проверяем ручное одобрение карточки модератором
+    override_payload = {
+        "external_id": ext_id,
+        "action": "approve",
+        "reviewed_by": "test_moderator",
+        "attributes": {
+            "brand": "Lenovo",
+            "model": "IdeaPad 3",
+            "cpu": "Intel Core i3 1215U",
+        },
+    }
+    resp_approve = client.post("/api/extract/review-override", json=override_payload)
+    assert resp_approve.status_code == 200
+    assert resp_approve.json()["status"] == "success"
+
+    # 5. Проверяем, что после утверждения карточка исчезла из очереди модерации
+    resp_q_after = client.get("/api/extract/review/queue")
+    assert resp_q_after.status_code == 200
+    remaining_ids = [it["external_id"] for it in resp_q_after.json()["items"]]
+    assert ext_id not in remaining_ids

@@ -219,7 +219,7 @@
                 </span>
               </div>
               <div class="flex items-center space-x-2">
-                <div id="llm-usage-badge"></div>
+                <div id="llm-usage-badge" class="hidden"></div>
                 <div id="status-badge"></div>
               </div>
             </div>
@@ -434,7 +434,13 @@ class ApiService {
    * @returns {Promise<Object>} ReviewQueueResponse
    */
   async getReviewQueue(limit = 5) {
-    const response = await fetch(`${this.baseUrl}/api/extract/review-queue?limit=${limit}`);
+    let response = await fetch(`${this.baseUrl}/api/extract/review/queue?limit=${limit}`);
+    if (!response.ok) {
+      response = await fetch(`${this.baseUrl}/api/extract/review-queue?limit=${limit}`);
+    }
+    if (!response.ok) {
+      response = await fetch(`${this.baseUrl}/api/review/queue?limit=${limit}`);
+    }
     if (!response.ok) {
       throw new Error(`Не удалось загрузить очередь модерации (${response.status})`);
     }
@@ -446,9 +452,14 @@ class ApiService {
    * @returns {Promise<Object>}
    */
   async clearReviewQueue() {
-    const response = await fetch(`${this.baseUrl}/api/extract/review-queue/clear`, {
+    let response = await fetch(`${this.baseUrl}/api/extract/review/queue/clear`, {
       method: 'POST',
     });
+    if (!response.ok) {
+      response = await fetch(`${this.baseUrl}/api/extract/review-queue/clear`, {
+        method: 'POST',
+      });
+    }
     if (!response.ok) {
       throw new Error(`Не удалось очистить очередь (${response.status})`);
     }
@@ -461,16 +472,21 @@ class ApiService {
    * @returns {Promise<Object>}
    */
   async submitReviewOverride(overrideData) {
-    const response = await fetch(`${this.baseUrl}/api/extract/review-override`, {
+    let response = await fetch(`${this.baseUrl}/api/extract/review-override`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(overrideData),
     });
-
+    if (!response.ok) {
+      response = await fetch(`${this.baseUrl}/api/extract/review/override`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(overrideData),
+      });
+    }
     if (!response.ok) {
       throw new Error(`Не удалось сохранить решение (${response.status})`);
     }
-
     return await response.json();
   }
 
@@ -566,9 +582,10 @@ const RenderService = {
       if (hasLlm) {
         llmBadge.className = 'inline-flex items-center text-[11px] font-bold text-purple-700 bg-purple-50 px-2.5 py-1 rounded-full border border-purple-200';
         llmBadge.innerHTML = `<i class="fa-solid fa-brain mr-1.5 text-purple-600"></i> Использован LLM Fallback (Tier 3)`;
+        llmBadge.classList.remove('hidden');
       } else {
-        llmBadge.className = 'inline-flex items-center text-[11px] font-bold text-emerald-700 bg-emerald-50 px-2.5 py-1 rounded-full border border-emerald-200';
-        llmBadge.innerHTML = `<i class="fa-solid fa-bolt mr-1.5 text-emerald-600"></i> LLM не вызывалась (0 токенов, 0 ₽)`;
+        llmBadge.className = 'hidden';
+        llmBadge.innerHTML = '';
       }
     }
 
@@ -1065,6 +1082,14 @@ document.addEventListener('DOMContentLoaded', () => {
       const data = await api.extractSingle({ raw_text: rawText });
       lastSingleResponse = data;
       render.renderSingleResults(data);
+      if (data.needs_review) {
+        await updateQueueBadge();
+        const countEl = document.getElementById('review-queue-badge');
+        if (countEl && countEl.classList.contains('hidden')) {
+          countEl.innerText = '1';
+          countEl.classList.remove('hidden');
+        }
+      }
     } catch (err) {
       alert(`Ошибка при обработке: ${err.message}`);
     } finally {
@@ -1243,12 +1268,8 @@ document.addEventListener('DOMContentLoaded', () => {
 Автоматически закрыто повторяющихся карточек: ${res.auto_resolved_duplicates.length}`);
       }
 
-      // Обновляем бейдж счетчика, если есть
-      const countEl = document.getElementById('review-queue-badge');
-      if (countEl) {
-        const cur = parseInt(countEl.innerText) || 0;
-        if (cur > 0) countEl.innerText = cur - 1;
-      }
+      // Обновляем бейдж счетчика из сервера
+      await updateQueueBadge();
     } catch (err) {
       alert(`Ошибка сохранения решения: ${err.message}`);
     }
@@ -1274,6 +1295,23 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   });
 
+  // ----------------- Синхронизация бейджа очереди -----------------
+  async function updateQueueBadge() {
+    try {
+      const data = await api.getReviewQueue(1);
+      const countEl = document.getElementById('review-queue-badge');
+      if (countEl) {
+        if (data.total_in_queue > 0) {
+          countEl.innerText = data.total_in_queue;
+          countEl.classList.remove('hidden');
+        } else {
+          countEl.innerText = '0';
+          countEl.classList.add('hidden');
+        }
+      }
+    } catch (_) {}
+  }
+
   // ----------------- Проверка статуса сервера -----------------
   async function pollServerHealth() {
     const statusEl = document.getElementById('api-status');
@@ -1289,6 +1327,7 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   pollServerHealth();
+  updateQueueBadge();
 });
 
 </script>

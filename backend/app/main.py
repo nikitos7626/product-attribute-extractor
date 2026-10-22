@@ -22,7 +22,7 @@ from app.config import settings
 
 from app.routers import extract
 
-from app.schemas import BatchOut, CardIn, CardOut
+from app.schemas import BatchOut, CardIn, CardOut, ReviewOverrideIn, ReviewQueueClearResponse, ReviewQueueResponse
 
 from app.services.pipeline import CascadedExtractionPipeline, TaxonomyManager
 
@@ -357,6 +357,35 @@ async def extract_batch_alias(
     """
 
     return await extract.extract_batch(file=file, pipeline=pipeline)
+
+
+@app.get("/review-queue", response_model=ReviewQueueResponse, tags=["extract"], summary="Очередь модерации (Root Alias)")
+@app.get("/review/queue", response_model=ReviewQueueResponse, tags=["extract"], summary="Очередь модерации (Root Alias)")
+@app.get("/api/review/queue", response_model=ReviewQueueResponse, tags=["extract"], summary="Очередь модерации (API Alias)")
+@app.get("/api/review-queue", response_model=ReviewQueueResponse, tags=["extract"], summary="Очередь модерации (API Alias)")
+def review_queue_root_alias(limit: int = 5) -> ReviewQueueResponse:
+    return extract.get_review_queue(limit=limit)
+
+
+@app.post("/api/review/queue/clear", response_model=ReviewQueueClearResponse, tags=["extract"])
+@app.post("/api/review-queue/clear", response_model=ReviewQueueClearResponse, tags=["extract"])
+@app.delete("/api/review/queue", response_model=ReviewQueueClearResponse, tags=["extract"])
+@app.delete("/api/review-queue", response_model=ReviewQueueClearResponse, tags=["extract"])
+@app.post("/review/queue/clear", response_model=ReviewQueueClearResponse, tags=["extract"])
+@app.post("/review-queue/clear", response_model=ReviewQueueClearResponse, tags=["extract"])
+@app.delete("/review/queue", response_model=ReviewQueueClearResponse, tags=["extract"])
+@app.delete("/review-queue", response_model=ReviewQueueClearResponse, tags=["extract"])
+def clear_review_queue_root_alias() -> ReviewQueueClearResponse:
+    return extract.clear_review_queue()
+
+
+@app.post("/api/review-override", tags=["extract"])
+@app.post("/api/review/override", tags=["extract"])
+@app.post("/review-override", tags=["extract"])
+@app.post("/review/override", tags=["extract"])
+def review_override_root_alias(body: ReviewOverrideIn) -> dict:
+    return extract.submit_review_override(body)
+
 
 
 

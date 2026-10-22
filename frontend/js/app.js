@@ -68,6 +68,14 @@ document.addEventListener('DOMContentLoaded', () => {
       const data = await api.extractSingle({ raw_text: rawText });
       lastSingleResponse = data;
       render.renderSingleResults(data);
+      if (data.needs_review) {
+        await updateQueueBadge();
+        const countEl = document.getElementById('review-queue-badge');
+        if (countEl && countEl.classList.contains('hidden')) {
+          countEl.innerText = '1';
+          countEl.classList.remove('hidden');
+        }
+      }
     } catch (err) {
       alert(`Ошибка при обработке: ${err.message}`);
     } finally {
@@ -246,12 +254,8 @@ document.addEventListener('DOMContentLoaded', () => {
 Автоматически закрыто повторяющихся карточек: ${res.auto_resolved_duplicates.length}`);
       }
 
-      // Обновляем бейдж счетчика, если есть
-      const countEl = document.getElementById('review-queue-badge');
-      if (countEl) {
-        const cur = parseInt(countEl.innerText) || 0;
-        if (cur > 0) countEl.innerText = cur - 1;
-      }
+      // Обновляем бейдж счетчика из сервера
+      await updateQueueBadge();
     } catch (err) {
       alert(`Ошибка сохранения решения: ${err.message}`);
     }
@@ -277,6 +281,23 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   });
 
+  // ----------------- Синхронизация бейджа очереди -----------------
+  async function updateQueueBadge() {
+    try {
+      const data = await api.getReviewQueue(1);
+      const countEl = document.getElementById('review-queue-badge');
+      if (countEl) {
+        if (data.total_in_queue > 0) {
+          countEl.innerText = data.total_in_queue;
+          countEl.classList.remove('hidden');
+        } else {
+          countEl.innerText = '0';
+          countEl.classList.add('hidden');
+        }
+      }
+    } catch (_) {}
+  }
+
   // ----------------- Проверка статуса сервера -----------------
   async function pollServerHealth() {
     const statusEl = document.getElementById('api-status');
@@ -292,4 +313,5 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   pollServerHealth();
+  updateQueueBadge();
 });

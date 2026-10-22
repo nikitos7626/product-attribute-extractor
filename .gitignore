@@ -67,3 +67,4 @@ backend/scripts/inspect_*.py
 
 *.zip
 dist_staging/
+backend/app/static/

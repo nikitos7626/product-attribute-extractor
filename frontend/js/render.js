@@ -45,9 +45,10 @@ const RenderService = {
       if (hasLlm) {
         llmBadge.className = 'inline-flex items-center text-[11px] font-bold text-purple-700 bg-purple-50 px-2.5 py-1 rounded-full border border-purple-200';
         llmBadge.innerHTML = `<i class="fa-solid fa-brain mr-1.5 text-purple-600"></i> Использован LLM Fallback (Tier 3)`;
+        llmBadge.classList.remove('hidden');
       } else {
-        llmBadge.className = 'inline-flex items-center text-[11px] font-bold text-emerald-700 bg-emerald-50 px-2.5 py-1 rounded-full border border-emerald-200';
-        llmBadge.innerHTML = `<i class="fa-solid fa-bolt mr-1.5 text-emerald-600"></i> LLM не вызывалась (0 токенов, 0 ₽)`;
+        llmBadge.className = 'hidden';
+        llmBadge.innerHTML = '';
       }
     }
 
