@@ -740,17 +740,8 @@ class RegexExtractor:
 
 
 
-        self._brand_kp = KeywordProcessor(case_sensitive=False)
-
-        stopwords = {"true", "wireless", "wired", "tws", "anc", "bluetooth", "блютуз", "наушники", "проводные", "беспроводные"}
-
-        for alias, canon in self._brands.items():
-
-            if alias.lower().strip() in stopwords or canon.lower().strip() in stopwords:
-
-                continue
-
-            self._brand_kp.add_keyword(alias, canon)
+        self._init_brand_keywords()
+        self._init_color_keywords()
 
 
 
@@ -795,6 +786,27 @@ class RegexExtractor:
 
 
 
+
+    def _init_brand_keywords(self) -> None:
+        """Инициализация FlashText процессора брендов с поддержкой границ слов для кириллицы."""
+        self._brand_kp = KeywordProcessor(case_sensitive=False)
+        cyrillic_chars = "абвгдеёжзийклмнопрстуфхцчшщъыьэюяАБВГДЕЁЖЗИЙКЛМНОПРСТУФХЦЧШЩЪЫЬЭЮЯ"
+        for c in cyrillic_chars:
+            self._brand_kp.add_non_word_boundary(c)
+        stopwords = {"true", "wireless", "wired", "tws", "anc", "bluetooth", "блютуз", "наушники", "проводные", "беспроводные"}
+        for alias, canon in self._brands.items():
+            if alias.lower().strip() in stopwords or canon.lower().strip() in stopwords:
+                continue
+            self._brand_kp.add_keyword(alias, canon)
+
+    def _init_color_keywords(self) -> None:
+        """Инициализация FlashText процессора цветов с поддержкой границ слов для кириллицы."""
+        self._color_kp = KeywordProcessor(case_sensitive=False)
+        cyrillic_chars = "абвгдеёжзийклмнопрстуфхцчшщъыьэюяАБВГДЕЁЖЗИЙКЛМНОПРСТУФХЦЧШЩЪЫЬЭЮЯ"
+        for c in cyrillic_chars:
+            self._color_kp.add_non_word_boundary(c)
+        for alias, (canon, prio) in self._colors.items():
+            self._color_kp.add_keyword(alias, canon)
 
     def _on_new_brand(self, alias: str, canon: str) -> None:
 

@@ -615,9 +615,7 @@ class AttributeSanityValidator:
 
 
         "антрацит", "бирюз", "оливк", "коралл", "шампань", "хаки", "сиренев", "малинов", "сапфир", "песочн", "рубин",
-
-
-
+        "нержавеющ", "сталь", "пурпур", "крем", "кофе", "лайм", "кость", "полуночн", "сияющ",
     }
 
 
@@ -960,11 +958,8 @@ class AttributeSanityValidator:
 
 
 
-                # Смартфон не может иметь батарею 144 мАч или 50 000 мАч
-
-
-
-                return 800 <= val_mah <= 12000
+                # Смартфон: от 800 мАч до 25000 мАч (включая защищенные Oukitel, Blackview)
+                return 800 <= val_mah <= 25000
 
 
 
@@ -1076,11 +1071,8 @@ class AttributeSanityValidator:
 
 
 
-                # Смартфон: от 3.5" (iPhone 4) до 7.8" (Fold в раскрытом виде)
-
-
-
-                return 3.5 <= diag <= 7.8
+                # Смартфон: от 3.5" (iPhone 4) до 8.3" (Fold / Mate X в раскрытом виде)
+                return 3.5 <= diag <= 8.3
 
 
 
@@ -1564,14 +1556,19 @@ class AttributeSanityValidator:
 
 
             val_num = float(m.group(1).replace(",", "."))
-
-
-
-            unit = (m.group(2) or "г").lower()
-
-
-
-            val_g = val_num * 1000 if "к" in unit else val_num
+            explicit_unit = m.group(2)
+            if explicit_unit:
+                unit = explicit_unit.lower()
+                val_g = val_num * 1000 if ("к" in unit or "k" in unit) else val_num
+            else:
+                if category_key in ("refrigerators", "washing_machines") and val_num < 300:
+                    val_g = val_num * 1000
+                elif category_key == "laptops" and val_num < 20:
+                    val_g = val_num * 1000
+                elif category_key == "powerbanks" and val_num < 5:
+                    val_g = val_num * 1000
+                else:
+                    val_g = val_num
 
 
 
@@ -1764,10 +1761,8 @@ class AttributeSanityValidator:
 
 
 
-                "гб", "gb", "мач", "mah", "tws", "anc", "bluetooth", "блютуз", "wireless", "true", "wired", "беспроводной", "проводной"
-
-
-
+                "гб", "gb", "мач", "mah", "tws", "anc", "bluetooth", "блютуз", "wireless", "true", "wired", "беспроводной", "проводной",
+                "напольный", "ортопедический", "неизвестно", "неизвестен", "нет", "n/a", "#n/a"
             }
 
 

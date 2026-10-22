@@ -1338,9 +1338,7 @@ class CascadedExtractionPipeline:
 
 
             r"пл[её]нк(?:а|и|у|ой|е|ах|ами)|"
-
-
-
+            r"сумк\w*|"
             r"кронштейн\w*|"
 
 
@@ -3954,7 +3952,7 @@ class CascadedExtractionPipeline:
 
 
 
-                    self.brand_registry.register_brand(b_val)
+                    self.brand_registry.register_brand(b_val, persist=False)
 
 
 
