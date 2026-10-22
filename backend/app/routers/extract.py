@@ -971,7 +971,7 @@ async def export_batch_predictions(
 
 @router.get("/review-queue", response_model=ReviewQueueResponse)
 
-def get_review_queue(limit: int = 50) -> ReviewQueueResponse:
+def get_review_queue(limit: int = 5) -> ReviewQueueResponse:
 
     """
 

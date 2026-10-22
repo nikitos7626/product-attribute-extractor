@@ -28348,6 +28348,10 @@
       "memory_rom": "2 ТБ",
       "screen_tech": "OLED",
       "resolution": "2880x1800 пикс."
+    },
+    "rog phone 9 pro": {
+      "screen_diagonal": "6.78\"",
+      "battery": "5800 мАч"
     }
   },
   "taurus": {

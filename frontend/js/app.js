@@ -179,7 +179,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     try {
-      const data = await api.getReviewQueue(25);
+      const data = await api.getReviewQueue(5);
       render.renderReviewQueue(data.items || [], handleReviewAction);
       const countEl = document.getElementById('review-queue-badge');
       if (countEl) {

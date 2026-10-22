@@ -418,6 +418,8 @@ class StrictLlmFallbackExtractor:
                 "value": val_clean,
                 "confidence": 0.88,
                 "source": "llm_strict",
+                "tier": "Tier 3: LLM Fallback",
+                "confidence_reason": "Извлечено через Tier 3: LLM Fallback (Strict Guardrail)",
                 "raw": val_clean,
                 "grounded": True,
             })

@@ -32,7 +32,15 @@ const RenderService = {
 
     // 3. Статус валидации и публикация
     const llmBadge = document.getElementById('llm-usage-badge');
-    const hasLlm = (data.predictions || []).some(p => p.source === 'llm_fallback' || p.source === 'llm_strict' || p.source === 'llm_new_product' || p.tier === 'Tier 3');
+    const hasLlm = (data.predictions || []).some(p => 
+      p.source === 'llm_fallback' || 
+      p.source === 'llm_strict' || 
+      p.source === 'llm_new_product' || 
+      p.source === 'tier3_web_search' ||
+      (p.tier && p.tier.toLowerCase().includes('tier 3')) ||
+      (p.tier && p.tier.toLowerCase().includes('llm')) ||
+      (p.source && p.source.toLowerCase().includes('llm'))
+    );
     if (llmBadge) {
       if (hasLlm) {
         llmBadge.className = 'inline-flex items-center text-[11px] font-bold text-purple-700 bg-purple-50 px-2.5 py-1 rounded-full border border-purple-200';
@@ -112,7 +120,11 @@ const RenderService = {
           <span class="inline-block px-2.5 py-0.5 rounded-full text-xs font-bold ${pBadgeColor}" title="${scoreTooltip}">${pConf}%</span>
         </td>
         <td class="px-6 py-4 text-gray-600 text-xs font-medium">
-          <span class="inline-block px-2 py-0.5 rounded font-mono font-bold ${p.source === 'catalog_kb' ? 'bg-purple-100 text-purple-800 border border-purple-200' : 'bg-gray-100 text-gray-700'}" title="${scoreTooltip}">${tierPrefix}${techSource}</span>${consensusBadge}
+          <span class="inline-flex items-center px-2 py-0.5 rounded font-mono font-bold ${
+            (p.tier && p.tier.toLowerCase().includes('tier 3')) || (p.source && p.source.toLowerCase().includes('llm'))
+              ? 'bg-purple-100 text-purple-800 border border-purple-200 shadow-sm'
+              : (p.source === 'catalog_kb' ? 'bg-indigo-100 text-indigo-800 border border-indigo-200' : 'bg-gray-100 text-gray-700')
+          }" title="${scoreTooltip}">${(p.tier && p.tier.toLowerCase().includes('tier 3')) || (p.source && p.source.toLowerCase().includes('llm')) ? '<i class="fa-solid fa-brain mr-1 text-purple-600"></i>' : ''}${tierPrefix}${techSource}</span>${consensusBadge}
         </td>
       `;
       table.appendChild(tr);

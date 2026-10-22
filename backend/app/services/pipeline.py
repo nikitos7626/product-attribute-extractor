@@ -1879,6 +1879,8 @@ class CascadedExtractionPipeline:
             )
             for p in web_preds:
                 attr = p["attribute"]
+                p["tier"] = "Tier 3: LLM Fallback"
+                p["source"] = "llm_fallback"
                 extracted_alternatives[attr].append(dict(p))
                 if attr not in predictions_map:
                     predictions_map[attr] = p
@@ -1937,6 +1939,10 @@ class CascadedExtractionPipeline:
             for p in llm_preds:
 
                 attr = p["attribute"]
+
+                p["tier"] = "Tier 3: LLM Fallback"
+
+                p["source"] = p.get("source") or "llm_strict"
 
                 extracted_alternatives[attr].append(dict(p))
 

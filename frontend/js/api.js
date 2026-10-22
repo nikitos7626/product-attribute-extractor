@@ -104,7 +104,7 @@ class ApiService {
    * @param {number} limit
    * @returns {Promise<Object>} ReviewQueueResponse
    */
-  async getReviewQueue(limit = 25) {
+  async getReviewQueue(limit = 5) {
     const response = await fetch(`${this.baseUrl}/api/extract/review-queue?limit=${limit}`);
     if (!response.ok) {
       throw new Error(`Не удалось загрузить очередь модерации (${response.status})`);
