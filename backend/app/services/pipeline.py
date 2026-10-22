@@ -2010,7 +2010,7 @@ class CascadedExtractionPipeline:
 
                     model_id=str(card_mid) if card_mid else None,
 
-                    persist=True,
+                    persist=False,
 
                 )
 
