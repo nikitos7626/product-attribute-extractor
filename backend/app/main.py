@@ -310,7 +310,7 @@ app.include_router(extract.router)
 
 
 
-@app.post("/extract", response_model=CardOut, tags=["extract"], summary="Извлечение характеристик карточки (Root Alias)")
+@app.post("/extract", response_model=CardOut, response_model_exclude_none=True, tags=["extract"], summary="Извлечение характеристик карточки (Root Alias)")
 
 
 
@@ -334,11 +334,11 @@ def extract_alias(
 
 
 
-@app.post("/extract/batch", response_model=BatchOut, tags=["extract"], summary="Пакетное извлечение характеристик (Root Alias)")
+@app.post("/extract/batch", response_model=BatchOut, response_model_exclude_none=True, tags=["extract"], summary="Пакетное извлечение характеристик (Root Alias)")
 
 
 
-@app.post("/batch", response_model=BatchOut, tags=["extract"], summary="Пакетное извлечение характеристик (Root Alias)")
+@app.post("/batch", response_model=BatchOut, response_model_exclude_none=True, tags=["extract"], summary="Пакетное извлечение характеристик (Root Alias)")
 
 async def extract_batch_alias(
 
