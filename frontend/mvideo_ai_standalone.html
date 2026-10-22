@@ -829,14 +829,14 @@ const RenderService = {
 
         <!-- Разворачиваемая форма деталей и редактирования (по умолчанию скрыта) -->
         <div id="details-${item.external_id}" class="details-panel hidden pt-3 border-t border-gray-100 space-y-3.5">
-          <!-- Автоматический поиск и заполнение характеристик через ИИ (Tier 3) -->
+          <!-- Автоматический каскад характеристик (Tier 1 -> Tier 2 -> Tier 2.5 -> Tier 3) -->
           <div class="flex items-center justify-between bg-purple-50/70 border border-purple-200 rounded-lg p-2.5 text-xs">
             <div class="flex items-center text-purple-900 font-semibold">
-              <i class="fa-solid fa-brain mr-2 text-purple-600 text-sm"></i>
-              <span>Автоматический поиск спецификаций через ИИ (Tier 3 LLM / Открытые базы)</span>
+              <i class="fa-solid fa-wand-magic-sparkles mr-2 text-purple-600 text-sm"></i>
+              <span>Характеристики автоматически обработаны каскадом (Tier 1–2.5 FastRules/NER + Tier 3 ИИ). Оператор выполняет сверку.</span>
             </div>
-            <button type="button" class="btn-auto-enrich-ai px-3 py-1.5 bg-purple-600 hover:bg-purple-700 text-white rounded-md text-xs font-bold transition flex items-center shadow-xs" data-id="${item.external_id}">
-              <i class="fa-solid fa-wand-magic-sparkles mr-1.5"></i> Заполнить автоматически через ИИ
+            <button type="button" class="btn-auto-enrich-ai px-2.5 py-1 text-purple-700 hover:text-purple-900 bg-white hover:bg-purple-100 rounded-md text-[11px] font-bold border border-purple-300 transition flex items-center shadow-xs" data-id="${item.external_id}">
+              <i class="fa-solid fa-arrows-rotate mr-1"></i> Повторный запрос ИИ
             </button>
           </div>
 

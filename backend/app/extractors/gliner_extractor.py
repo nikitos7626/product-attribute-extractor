@@ -208,6 +208,12 @@ class GlinerExtractor:
         if attr_key == "brand":
             return BRANDS.get(low, raw_clean)
 
+        if attr_key == "model":
+            # Очистка суффиксов памяти из названия модели
+            m_clean = re.sub(r"(?i)\s+\d+/\d+\s*(?:gb|гб|tb|тб)?$", "", raw_clean).strip()
+            m_clean = re.sub(r"(?i)\s+\d+\s*(?:gb|гб|tb|тб)$", "", m_clean).strip()
+            return m_clean or raw_clean
+
         if attr_key == "color":
             # Очистка префиксов вида "колор голд", "цв синий", "цвет черный"
             clean_color = re.sub(r"^(?:цвет|колор|цв\.?|color[:\s]*)\s*", "", raw_clean, flags=re.I).strip()

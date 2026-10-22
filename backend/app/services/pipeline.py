@@ -485,7 +485,7 @@ CATEGORY_SCHEMAS: dict[str, dict[str, Any]] = {
 
 
 
-        "required_attrs": {"brand", "model", "memory_rom", "screen_diagonal", "battery", "color"},
+        "required_attrs": {"brand", "model", "memory_ram", "memory_rom", "screen_diagonal", "battery", "color"},
 
 
 
@@ -765,7 +765,7 @@ CATEGORY_SCHEMAS: dict[str, dict[str, Any]] = {
 
 
 
-        "required_attrs": {"brand", "model", "screen_diagonal", "memory_rom", "battery", "color"},
+        "required_attrs": {"brand", "model", "memory_ram", "memory_rom", "screen_diagonal", "battery", "color"},
 
 
 

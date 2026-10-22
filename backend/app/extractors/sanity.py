@@ -1397,9 +1397,10 @@ class AttributeSanityValidator:
             if val_clean in cls.BAD_MODEL_WORDS:
                 return False
             # 2. Содержит родовые слова категорий без номера модели ("флагманский смартфон", "игровой ноутбук" и др.)
-            for w in cls.BAD_MODEL_WORDS:
-                if w in val_clean and not bool(re.search(r"\d", val_clean)):
-                    return False
+            has_model_specifier = bool(re.search(r"(?:\d|\b(?:x|xs|xr|se|gt|pro|ultra|max|plus|air|mini|fold|flip|lite|neo|prime|one|duo|fe)\b)", val_clean))
+            words = [w for w in re.findall(r"\w+", val_clean) if w not in cls.BAD_MODEL_WORDS and not re.fullmatch(r"^[а-яё]{3,}(?:ый|ий|ой|ая|яя|ое|ее|ые|ие)$", w)]
+            if not words and not has_model_specifier:
+                return False
 
             # Одиночные русские прилагательные и причастия (беспроводной, моющий, вертикальный и т.д.)
             if len(val_lower.split()) == 1 and re.fullmatch(r"^[а-яё]{3,}(?:ый|ий|ой|ая|яя|ое|ее|ые|ие)$", val_lower):
