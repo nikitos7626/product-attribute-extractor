@@ -51,7 +51,6 @@ logs/
 
 # Presentations & VM deployment
 *.pptx
-review_cards.py
 backend/scripts/vm_exec.py
 backend/scripts/deploy_*.py
 backend/scripts/test_llm_remote.py

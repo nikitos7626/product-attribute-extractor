@@ -1,11 +1,277 @@
 {
   "metadata": {
     "description": "Оперативная очередь ручной модерации характеристик товаров (Human-in-the-Loop)",
-    "total_cards": 12,
-    "total_needs_review": 0,
-    "last_updated": "2026-10-22T22:28:15.216809"
+    "total_cards": 15,
+    "total_needs_review": 4,
+    "last_updated": "2026-10-23T01:45:57.055292"
   },
   "items": [
+    {
+      "external_id": "card-637a409b",
+      "title": "Смартфон Apple iPhone 15",
+      "category": "Смартфоны",
+      "raw_text": "Смартфон Apple iPhone 15",
+      "description": "",
+      "overall_confidence": 0.7589,
+      "needs_review": true,
+      "status": "needs_review",
+      "status_description": "Требуется ручная проверка (2 замечаний): Пропущены обязательные атрибуты категории 'Смартфоны': color; Общая уверенность карточки (0.76) ниже допустимого порога (0.87)",
+      "review_reasons": [
+        "Пропущены обязательные атрибуты категории 'Смартфоны': color",
+        "Общая уверенность карточки (0.76) ниже допустимого порога (0.87)"
+      ],
+      "warnings": [],
+      "degraded_tiers": [],
+      "extracted_attributes": {
+        "brand": "Apple",
+        "model": "iPhone 15",
+        "memory_rom": "512 ГБ",
+        "battery": "3349 мАч",
+        "memory_ram": "6 ГБ",
+        "screen_diagonal": "6,12\""
+      },
+      "missing_required": [
+        "color"
+      ],
+      "detailed_predictions": [
+        {
+          "attribute": "brand",
+          "value": "Apple",
+          "confidence": 0.99,
+          "source": "flashtext",
+          "tier": "Tier 1",
+          "raw": "Apple",
+          "grounded": true,
+          "consensus": true,
+          "consensus_sources": [
+            "flashtext",
+            "gliner"
+          ],
+          "confidence_reason": "Повышенная уверенность (0.99): подтверждено независимым консенсусом (flashtext, gliner)",
+          "status": "confirmed_by_consensus"
+        },
+        {
+          "attribute": "model",
+          "value": "iPhone 15",
+          "confidence": 0.99,
+          "source": "regex",
+          "tier": "Tier 1",
+          "raw": "iPhone 15",
+          "grounded": true,
+          "consensus": true,
+          "consensus_sources": [
+            "regex",
+            "gliner"
+          ],
+          "confidence_reason": "Повышенная уверенность (0.99): подтверждено независимым консенсусом (regex, gliner)",
+          "status": "confirmed_by_consensus"
+        },
+        {
+          "attribute": "memory_rom",
+          "value": "512 ГБ",
+          "confidence": 0.94,
+          "source": "catalog_kb",
+          "tier": "Tier 2.5",
+          "raw": "512 ГБ",
+          "grounded": true,
+          "consensus": null,
+          "consensus_sources": null,
+          "confidence_reason": "Уверенное извлечение (0.94): верифицировано компонентом catalog_kb",
+          "status": "valid"
+        },
+        {
+          "attribute": "battery",
+          "value": "3349 мАч",
+          "confidence": 0.94,
+          "source": "catalog_kb",
+          "tier": "Tier 2.5",
+          "raw": "3349 мАч",
+          "grounded": true,
+          "consensus": null,
+          "consensus_sources": null,
+          "confidence_reason": "Уверенное извлечение (0.94): верифицировано компонентом catalog_kb",
+          "status": "valid"
+        },
+        {
+          "attribute": "memory_ram",
+          "value": "6 ГБ",
+          "confidence": 0.94,
+          "source": "catalog_kb",
+          "tier": "Tier 2.5",
+          "raw": "6 ГБ",
+          "grounded": true,
+          "consensus": null,
+          "consensus_sources": null,
+          "confidence_reason": "Уверенное извлечение (0.94): верифицировано компонентом catalog_kb",
+          "status": "valid"
+        },
+        {
+          "attribute": "screen_diagonal",
+          "value": "6,12\"",
+          "confidence": 0.94,
+          "source": "catalog_kb",
+          "tier": "Tier 2.5",
+          "raw": "6,12\"",
+          "grounded": true,
+          "consensus": null,
+          "consensus_sources": null,
+          "confidence_reason": "Уверенное извлечение (0.94): верифицировано компонентом catalog_kb",
+          "status": "valid"
+        }
+      ],
+      "enqueued_at": "2026-10-23T01:45:57.054433"
+    },
+    {
+      "external_id": "card-77fd40be",
+      "title": "??????????? LG No Frost ???????????",
+      "category": "Холодильники",
+      "raw_text": "??????????? LG No Frost ???????????",
+      "description": "",
+      "overall_confidence": 0.2325,
+      "needs_review": true,
+      "status": "needs_review",
+      "status_description": "Требуется ручная проверка (2 замечаний): Пропущены обязательные атрибуты категории 'Холодильники': color, model, volume; Общая уверенность карточки (0.23) ниже допустимого порога (0.87)",
+      "review_reasons": [
+        "Пропущены обязательные атрибуты категории 'Холодильники': color, model, volume",
+        "Общая уверенность карточки (0.23) ниже допустимого порога (0.87)"
+      ],
+      "warnings": [
+        "Fast mode active: using deterministic Tier 1 and KB extractors only."
+      ],
+      "degraded_tiers": [
+        "fast_mode"
+      ],
+      "extracted_attributes": {
+        "brand": "LG",
+        "defrost_system": "No Frost"
+      },
+      "missing_required": [
+        "color",
+        "model",
+        "volume"
+      ],
+      "detailed_predictions": [
+        {
+          "attribute": "brand",
+          "value": "LG",
+          "confidence": 0.88,
+          "source": "flashtext",
+          "tier": "Tier 1",
+          "raw": "LG",
+          "grounded": true,
+          "consensus": null,
+          "consensus_sources": null,
+          "confidence_reason": "Уверенное извлечение (0.88): верифицировано компонентом flashtext",
+          "status": "valid"
+        },
+        {
+          "attribute": "defrost_system",
+          "value": "No Frost",
+          "confidence": 0.96,
+          "source": "regex",
+          "tier": "Tier 1",
+          "raw": "no frost",
+          "grounded": true,
+          "consensus": null,
+          "consensus_sources": null,
+          "confidence_reason": "Высокая уверенность (0.96): прямое совпадение в каталоге / правилах (regex)",
+          "status": "high_confidence"
+        }
+      ],
+      "enqueued_at": "2026-10-23T01:38:57.990951"
+    },
+    {
+      "external_id": "card-149a311c",
+      "title": "Смартфон Apple iPhone 15 Pro 256GB",
+      "category": "Смартфоны",
+      "raw_text": "Смартфон Apple iPhone 15 Pro 256GB",
+      "description": "",
+      "overall_confidence": 0.4221,
+      "needs_review": true,
+      "status": "needs_review",
+      "status_description": "Требуется ручная проверка (2 замечаний): Пропущены обязательные атрибуты категории 'Смартфоны': battery, color, memory_ram; Общая уверенность карточки (0.42) ниже допустимого порога (0.87)",
+      "review_reasons": [
+        "Пропущены обязательные атрибуты категории 'Смартфоны': battery, color, memory_ram",
+        "Общая уверенность карточки (0.42) ниже допустимого порога (0.87)"
+      ],
+      "warnings": [],
+      "degraded_tiers": [],
+      "extracted_attributes": {
+        "brand": "Apple",
+        "model": "iPhone 15 Pro",
+        "memory_rom": "256 ГБ",
+        "screen_diagonal": "6.1\""
+      },
+      "missing_required": [
+        "battery",
+        "color",
+        "memory_ram"
+      ],
+      "detailed_predictions": [
+        {
+          "attribute": "brand",
+          "value": "Apple",
+          "confidence": 0.99,
+          "source": "flashtext",
+          "tier": "Tier 1",
+          "raw": "Apple",
+          "grounded": true,
+          "consensus": true,
+          "consensus_sources": [
+            "flashtext",
+            "gliner"
+          ],
+          "confidence_reason": "Повышенная уверенность (0.99): подтверждено независимым консенсусом (flashtext, gliner)",
+          "status": "confirmed_by_consensus"
+        },
+        {
+          "attribute": "model",
+          "value": "iPhone 15 Pro",
+          "confidence": 0.99,
+          "source": "regex",
+          "tier": "Tier 1",
+          "raw": "iPhone 15 Pro",
+          "grounded": true,
+          "consensus": true,
+          "consensus_sources": [
+            "regex",
+            "gliner"
+          ],
+          "confidence_reason": "Повышенная уверенность (0.99): подтверждено независимым консенсусом (regex, gliner)",
+          "status": "confirmed_by_consensus"
+        },
+        {
+          "attribute": "memory_rom",
+          "value": "256 ГБ",
+          "confidence": 0.99,
+          "source": "regex",
+          "tier": "Tier 1",
+          "raw": "256gb",
+          "grounded": true,
+          "consensus": true,
+          "consensus_sources": [
+            "regex",
+            "gliner"
+          ],
+          "confidence_reason": "Повышенная уверенность (0.99): подтверждено независимым консенсусом (regex, gliner)",
+          "status": "confirmed_by_consensus"
+        },
+        {
+          "attribute": "screen_diagonal",
+          "value": "6.1\"",
+          "confidence": 0.94,
+          "source": "catalog_kb",
+          "tier": "Tier 2.5",
+          "raw": "6.1\"",
+          "grounded": true,
+          "consensus": null,
+          "consensus_sources": null,
+          "confidence_reason": "Уверенное извлечение (0.94): верифицировано компонентом catalog_kb",
+          "status": "valid"
+        }
+      ],
+      "enqueued_at": "2026-10-23T01:37:46.511913"
+    },
     {
       "external_id": "card-a280bc57",
       "title": "Ноутбук Lenovo IdeaPad 3 Gen7 82RK003TRU оборудован шестиядерным процессором Intel Core i3 1215U 1.2 ГГц. Конфигурацией",
@@ -133,8 +399,8 @@
       "raw_text": "Смартфон Apple iPhone 15 128GB",
       "description": "",
       "overall_confidence": 0.7655,
-      "needs_review": false,
-      "status": "approved_by_operator",
+      "needs_review": true,
+      "status": "needs_review",
       "status_description": "Требуется ручная проверка (2 замечаний): Пропущены обязательные атрибуты категории 'Смартфоны': color; Общая уверенность карточки (0.77) ниже допустимого порога (0.87)",
       "review_reasons": [
         "Пропущены обязательные атрибуты категории 'Смартфоны': color",
@@ -147,8 +413,8 @@
         "model": "iPhone 15",
         "memory_rom": "128 ГБ",
         "memory_ram": "6 ГБ",
-        "battery": "3349 мАч",
-        "screen_diagonal": "6,12\""
+        "screen_diagonal": "6,12\"",
+        "battery": "3349 мАч"
       },
       "missing_required": [
         "color"
@@ -216,19 +482,6 @@
           "status": "valid"
         },
         {
-          "attribute": "battery",
-          "value": "3349 мАч",
-          "confidence": 0.94,
-          "source": "catalog_kb",
-          "tier": "Tier 2.5",
-          "raw": "3349 мАч",
-          "grounded": true,
-          "consensus": null,
-          "consensus_sources": null,
-          "confidence_reason": "Уверенное извлечение (0.94): верифицировано компонентом catalog_kb",
-          "status": "valid"
-        },
-        {
           "attribute": "screen_diagonal",
           "value": "6,12\"",
           "confidence": 0.94,
@@ -240,9 +493,22 @@
           "consensus_sources": null,
           "confidence_reason": "Уверенное извлечение (0.94): верифицировано компонентом catalog_kb",
           "status": "valid"
+        },
+        {
+          "attribute": "battery",
+          "value": "3349 мАч",
+          "confidence": 0.94,
+          "source": "catalog_kb",
+          "tier": "Tier 2.5",
+          "raw": "3349 мАч",
+          "grounded": true,
+          "consensus": null,
+          "consensus_sources": null,
+          "confidence_reason": "Уверенное извлечение (0.94): верифицировано компонентом catalog_kb",
+          "status": "valid"
         }
       ],
-      "enqueued_at": "2026-10-22T22:28:14.029647"
+      "enqueued_at": "2026-10-23T01:39:57.560619"
     },
     {
       "external_id": "card-05f8e161",

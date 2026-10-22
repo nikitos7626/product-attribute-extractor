@@ -54,6 +54,7 @@ def export_predictions(
     elif input_path.lower().endswith(".csv"):
         import pandas as pd
         df = pd.read_csv(input_path)
+        df = df.where(pd.notnull(df), None)
         cards_in = df.to_dict(orient="records")
     else:
         raise ValueError("Поддерживаются только форматы .json и .csv")

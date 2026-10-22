@@ -1043,7 +1043,7 @@ class CascadedExtractionPipeline:
 
 
 
-        use_web_retriever: bool = True,
+        use_web_retriever: bool = False,
 
 
 
@@ -1113,7 +1113,7 @@ class CascadedExtractionPipeline:
 
 
 
-        self.catalog_enricher = CatalogEnricher() if use_catalog_enricher else None
+        self.catalog_enricher = CatalogEnricher.get_instance() if use_catalog_enricher else None
 
 
 

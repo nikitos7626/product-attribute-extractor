@@ -1,3 +1,8 @@
+import sys
+from pathlib import Path
+_backend_dir = Path(__file__).resolve().parent.parent
+if str(_backend_dir) not in sys.path:
+    sys.path.insert(0, str(_backend_dir))
 import logging
 
 import os
@@ -216,7 +221,7 @@ async def api_key_auth_middleware(request: Request, call_next):
 
     public_paths = {"/", "/health", "/docs", "/redoc", "/openapi.json", "/api", "/api/info", "/api/extract/health"}
 
-    if request.url.path in public_paths or request.url.path.startswith("/static") or request.method == "OPTIONS":
+    if request.url.path in public_paths or request.url.path.startswith("/static") or request.url.path.startswith("/css") or request.url.path.startswith("/js") or request.url.path == "/favicon.ico" or request.method == "OPTIONS":
 
         return await call_next(request)
 
@@ -341,22 +346,15 @@ def extract_alias(
 @app.post("/batch", response_model=BatchOut, response_model_exclude_none=True, tags=["extract"], summary="Пакетное извлечение характеристик (Root Alias)")
 
 async def extract_batch_alias(
-
-    file: UploadFile = File(...),
-
+    request: Request,
+    file: UploadFile | None = File(None),
     pipeline: CascadedExtractionPipeline = Depends(extract.get_pipeline),
-
 ) -> BatchOut:
-
     """
-
     Пакетная обработка карточек товаров: POST /extract/batch или POST /batch -> BatchOut.
-
     Дублирует /api/extract/batch для максимальной совместимости со спецификацией М.Видео.
-
     """
-
-    return await extract.extract_batch(file=file, pipeline=pipeline)
+    return await extract.extract_batch(request=request, file=file, pipeline=pipeline)
 
 
 @app.get("/review-queue", response_model=ReviewQueueResponse, tags=["extract"], summary="Очередь модерации (Root Alias)")

@@ -239,7 +239,7 @@ def main():
         f.write(f"- **Категорийная точность:** `{round(cat_accuracy * 100, 1)}%`\n\n")
         f.write("| Атрибут | Precision | Recall | F1-Score | Support (эталонных карточек) |\n")
         f.write("| :--- | :---: | :---: | :---: | :---: |\n")
-        for k, v in quality.get("per_attribute", {}).items():
+        for k, v in sorted((quality.get("per_attribute_metrics") or quality.get("per_attribute") or {}).items()):
             f.write(f"| `{k}` | {v.get('precision', 0.0)} | {v.get('recall', 0.0)} | **{v.get('f1_score', 0.0)}** | {v.get('support', 0)} |\n")
 
     logger.info("Saved verification Markdown report to %s", md_path)

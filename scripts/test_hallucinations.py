@@ -10,7 +10,7 @@ from app.extractors.llm_extractor import StrictLlmFallbackExtractor
 
 sys.stdout.reconfigure(encoding="utf-8")
 
-def test_hallucination_models():
+def run_hallucination_models():
     print("=" * 80)
     print("ЭКСПЕРИМЕНТ: ПРЯМАЯ ПРОВОКАЦИЯ LLM НА ВЫДУМЫВАНИЕ ХАРАКТЕРИСТИК")
     print("Проверяем, как разные модели реагируют на вымышленный товар без характеристик:")
@@ -73,4 +73,4 @@ def test_hallucination_models():
                 print(f"    • [ПРОПУЩЕНО В КАТАЛОГ!] {p.attribute}: {p.value}")
 
 if __name__ == "__main__":
-    test_hallucination_models()
+    run_hallucination_models()

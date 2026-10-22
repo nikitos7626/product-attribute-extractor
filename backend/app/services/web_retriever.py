@@ -249,7 +249,7 @@ class WebModelRetriever:
                     brand=clean_brand,
                     model=clean_model,
                     specs=valid_specs_for_kb,
-                    persist=True,
+                    persist=False,
                 )
                 logger.info(
                     "Tier 3 Web Search: успешно найдены и сохранены в Catalog KB %d атрибутов для %s %s: %s",

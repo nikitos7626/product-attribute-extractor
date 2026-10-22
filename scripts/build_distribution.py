@@ -1,3 +1,4 @@
+import re
 import os
 import shutil
 import zipfile
@@ -32,18 +33,13 @@ api = (REPO_ROOT / "frontend" / "js" / "api.js").read_text(encoding="utf-8")
 render = (REPO_ROOT / "frontend" / "js" / "render.js").read_text(encoding="utf-8")
 app = (REPO_ROOT / "frontend" / "js" / "app.js").read_text(encoding="utf-8")
 
-# Replace link css
-html_standalone = html.replace(
-    '<link rel="stylesheet" href="css/style.css">',
-    f'<style>\n{css}\n</style>'
+# Replace link css (handling optional cache-busting query params like ?v=1.4.0)
+html_standalone = re.sub(
+    r'<link\s+rel="stylesheet"\s+href="css/style\.css(?:\?[^"]*)?"\s*>',
+    f'<style>\n{css}\n</style>',
+    html,
 )
 
-old_scripts = (
-    '<script src="js/presets.js"></script>\n'
-    '  <script src="js/api.js"></script>\n'
-    '  <script src="js/render.js"></script>\n'
-    '  <script src="js/app.js"></script>'
-)
 new_scripts = f"""<script>
 {presets}
 </script>
@@ -57,14 +53,20 @@ new_scripts = f"""<script>
 {app}
 </script>"""
 
-if old_scripts in html_standalone:
-    html_standalone = html_standalone.replace(old_scripts, new_scripts)
+script_pattern = re.compile(
+    r'<script\s+src="js/presets\.js(?:\?[^"]*)?"></script>\s*'
+    r'<script\s+src="js/api\.js(?:\?[^"]*)?"></script>\s*'
+    r'<script\s+src="js/render\.js(?:\?[^"]*)?"></script>\s*'
+    r'<script\s+src="js/app\.js(?:\?[^"]*)?"></script>',
+    re.IGNORECASE | re.DOTALL,
+)
+
+if script_pattern.search(html_standalone):
+    html_standalone = script_pattern.sub(new_scripts, html_standalone, count=1)
 else:
-    print("Notice: old_scripts block not directly matched, trying normalized newlines")
-    html_standalone_norm = html_standalone.replace("\r\n", "\n")
-    old_scripts_norm = old_scripts.replace("\r\n", "\n")
-    assert old_scripts_norm in html_standalone_norm, "old_scripts not found in html"
-    html_standalone = html_standalone_norm.replace(old_scripts_norm, new_scripts)
+    print("Notice: regex script pattern not matched, attempting line-by-line replacement")
+    html_standalone = re.sub(r'<script\s+src="js/[^"]+"></script>', '', html_standalone)
+    html_standalone = html_standalone.replace("</body>", f"{new_scripts}\n</body>")
 
 standalone_path = REPO_ROOT / "frontend" / "mvideo_ai_standalone.html"
 standalone_path.write_text(html_standalone, encoding="utf-8")

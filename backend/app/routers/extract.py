@@ -1417,44 +1417,38 @@ def extract_one(
 
 
 @router.post("/batch", response_model=BatchOut, response_model_exclude_none=True)
-
-
-
 async def extract_batch(
-
-
-
-    file: UploadFile = File(...),
-
-
-
+    request: Request,
+    file: UploadFile | None = File(None),
     pipeline: CascadedExtractionPipeline = Depends(get_pipeline),
-
-
-
 ) -> BatchOut:
-
-
-
     """
-
-
-
-    Файл CSV или JSON → список карточек с извлечёнными атрибутами (неблокирующий тредпул).
-
-
-
+    Пакетная обработка карточек: принимает файл (CSV/JSON через multipart)
+    или прямое тело JSON {"items": [...]} / [...] с неблокирующим тредпулом.
     """
-
-
-
-    raw_bytes = await file.read()
-
-
-
-    rows = _rows_from_file(file.filename or "", raw_bytes)
-
-
+    content_type = request.headers.get("content-type", "") if request is not None else ""
+    if file is not None and file.filename:
+        raw_bytes = await file.read()
+        rows = _rows_from_file(file.filename or "", raw_bytes)
+    elif "application/json" in content_type:
+        try:
+            body = await request.json()
+            if isinstance(body, dict):
+                rows = body.get("items") or body.get("cards") or [body]
+            elif isinstance(body, list):
+                rows = body
+            else:
+                rows = []
+        except Exception as e:
+            raise HTTPException(status_code=400, detail=f"Invalid JSON payload: {e}")
+    elif file is not None:
+        raw_bytes = await file.read()
+        rows = _rows_from_file(file.filename or "input.json", raw_bytes)
+    else:
+        raise HTTPException(
+            status_code=400,
+            detail="Требуется файл (multipart/form-data: file) или JSON-тело (application/json: {'items': [...]})"
+        )
 
     cards = await run_in_threadpool(_process_batch_sync, rows, pipeline)
 

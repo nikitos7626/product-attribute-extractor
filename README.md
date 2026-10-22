@@ -2,9 +2,9 @@
 
 [![Python 3.10+](https://img.shields.io/badge/Python-3.10%2B-blue.svg?logo=python&logoColor=white)](https://www.python.org/)
 [![FastAPI](https://img.shields.io/badge/FastAPI-0.115%2B-009688.svg?logo=fastapi&logoColor=white)](https://fastapi.tiangolo.com/)
-[![Tests 130 PASS](https://img.shields.io/badge/Tests-130%20PASS%20(100%25)-brightgreen.svg)](backend/tests/)
-[![Throughput](https://img.shields.io/badge/Throughput->550%20cards%2Fs-blue.svg)](#-производительность)
-[![Macro-F1 0.99](https://img.shields.io/badge/Macro--F1-0.99-success.svg)](output/metrics_report.md)
+[![Tests 130 PASS](https://img.shields.io/badge/Tests-208%20PASS%20(100%25)-brightgreen.svg)](backend/tests/)
+[![Throughput](https://img.shields.io/badge/Throughput->550%20cards%2Fs-blue.svg))(#-производительность-и-бенчмаркинг-throughput)
+[![Macro-F1 0.99](https://img.shields.io/badge/Macro--F1-1.00-success.svg)](output/metrics_report.md)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
 
 > 🌐 **Публичный веб-интерфейс:** [https://tochka-sborki-2026-team-059.hub.gigaschool.ru](https://tochka-sborki-2026-team-059.hub.gigaschool.ru)  
@@ -371,8 +371,8 @@ python scripts/benchmark_throughput.py
 
 | № | Критерий кейса | Реализация в репозитории | Артефакт / Код |
 | :-: | :--- | :--- | :--- |
-| **1** | **Покрытие обязательных сценариев** | Полный комплект артефактов: EDA по каталогу М.Видео, Per-Attribute метрики (Macro-F1 0.9889), экспорт 900 офферов, полная цепочка «произвольная карточка $\to$ предсказания» без локальных зависимостей. | [`notebooks/eda_mvideo_dataset.ipynb`](notebooks/eda_mvideo_dataset.ipynb), [`output/metrics_report.md`](output/metrics_report.md), [`output/predictions.csv`](output/predictions.csv) |
-| **2** | **Соблюдение ограничений и защита от галлюцинаций** | Программная проверка наличия значений в тексте (`_verify_grounding`), физический валидатор (`AttributeSanityValidator`), безопасное управление секретами (нулевые зашитые ключи, опциональная `API_KEY` авторизация), документирование KB (`v1.4.0`) и моделей (`urchade/gliner_medium-v2.1`). | [`backend/app/extractors/llm_extractor.py`](backend/app/extractors/llm_extractor.py), [`backend/app/extractors/sanity.py`](backend/app/extractors/sanity.py), [`backend/app/main.py`](backend/app/main.py) |
+| **1** | **Покрытие обязательных сценариев** | Полный комплект артефактов: EDA по каталогу М.Видео, Per-Attribute метрики (Macro-F1 1.0000), экспорт 900 офферов, полная цепочка «произвольная карточка $\to$ предсказания» без локальных зависимостей. | [`notebooks/eda_mvideo_dataset.ipynb`](notebooks/eda_mvideo_dataset.ipynb), [`output/metrics_report.md`](output/metrics_report.md), [`output/predictions.csv`](output/predictions.csv) |
+| **2** | **Соблюдение ограничений и защита от галлюцинаций** | Программная проверка наличия значений в тексте (`_verify_grounding`), физический валидатор (`AttributeSanityValidator`), безопасное управление секретами (нулевые зашитые ключи, опциональная `API_KEY` авторизация), документирование KB (`v1.4.0`) и моделей (`urchade/gliner_multi-v2.1`). | [`backend/app/extractors/llm_extractor.py`](backend/app/extractors/llm_extractor.py), [`backend/app/extractors/sanity.py`](backend/app/extractors/sanity.py), [`backend/app/main.py`](backend/app/main.py) |
 | **3** | **Сквозной сценарий без заглушек** | Промышленный экспорт предсказаний, детерминированные пути исполнения (Tier 1 $\to$ Tier 2 $\to$ Tier 3), консольный CLI, корректный graceful-fallback при отсутствии внешней KB. | `POST /api/extract/export`, [`backend/run_cli.py`](backend/run_cli.py), [`scripts/export_predictions.py`](scripts/export_predictions.py) |
 | **4** | **Воспроизводимость и переносимость** | Полная переносимость (0 жестко зашитых локальных путей во всех скриптах), запуск в 1 команду, автономная сборка в Docker с оффлайн-кэшированием весов моделей. | [`Dockerfile`](Dockerfile), [`scripts/evaluate_metrics.py`](scripts/evaluate_metrics.py), [`docker-compose.yml`](docker-compose.yml) |
 | **5** | **Архитектура и расширяемость** | Типизированные интерфейсы `@runtime_checkable Protocol` (`BaseExtractor`, `KnowledgeBaseInterface`), версионирование KB (`v1.4.0`), таксономия на 6570 категорий, поддержка думающих моделей (Reasoning). | [`backend/app/extractors/base.py`](backend/app/extractors/base.py), [`backend/app/services/catalog_enricher.py`](backend/app/services/catalog_enricher.py) |
