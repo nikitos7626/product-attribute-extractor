@@ -1,11 +1,1126 @@
 {
   "metadata": {
     "description": "Оперативная очередь ручной модерации характеристик товаров (Human-in-the-Loop)",
-    "total_cards": 1,
-    "total_needs_review": 1,
-    "last_updated": "2026-10-22T21:15:00.000000"
+    "total_cards": 12,
+    "total_needs_review": 0,
+    "last_updated": "2026-10-22T22:28:15.216809"
   },
   "items": [
+    {
+      "external_id": "card-a280bc57",
+      "title": "Ноутбук Lenovo IdeaPad 3 Gen7 82RK003TRU оборудован шестиядерным процессором Intel Core i3 1215U 1.2 ГГц. Конфигурацией",
+      "category": "Ноутбуки",
+      "raw_text": "Ноутбук Lenovo IdeaPad 3 Gen7 82RK003TRU оборудован шестиядерным процессором Intel Core i3 1215U 1.2 ГГц. Конфигурацией устройства предусмотрено наличие экрана разрешением 1920х1080 пикселей и диагональю 15,6\". Частота обновления экрана составляет 60 Гц. Оперативный модуль для хранения данных обладает объемом 8 ГБ, объем жесткого диска — 512 ГБ.",
+      "description": "",
+      "overall_confidence": 0.7595,
+      "needs_review": false,
+      "status": "approved_by_operator",
+      "status_description": "Требуется ручная проверка (4 замечаний): Пропущены обязательные атрибуты категории 'Ноутбуки': color; Общая уверенность карточки (0.76) ниже допустимого порога (0.87)",
+      "review_reasons": [
+        "Пропущены обязательные атрибуты категории 'Ноутбуки': color",
+        "Общая уверенность карточки (0.76) ниже допустимого порога (0.87)",
+        "Низкая уверенность поля 'cpu': 0.86 (порог 0.87)",
+        "Зафиксирован конфликт источников для атрибута 'cpu'"
+      ],
+      "warnings": [],
+      "degraded_tiers": [],
+      "extracted_attributes": {
+        "brand": "Lenovo",
+        "model": "IdeaPad 3",
+        "cpu": "Intel Core i3 1215U"
+      },
+      "missing_required": [
+        "color"
+      ],
+      "detailed_predictions": [
+        {
+          "attribute": "brand",
+          "value": "Lenovo",
+          "confidence": 0.99,
+          "source": "flashtext",
+          "tier": "Tier 1",
+          "raw": "Lenovo",
+          "grounded": true,
+          "consensus": true,
+          "consensus_sources": [
+            "flashtext",
+            "gliner"
+          ],
+          "confidence_reason": "Повышенная уверенность (0.99): подтверждено независимым консенсусом (flashtext, gliner)",
+          "status": "confirmed_by_consensus"
+        },
+        {
+          "attribute": "model",
+          "value": "Ideapad 3 Gen7",
+          "confidence": 0.99,
+          "source": "regex",
+          "tier": "Tier 1",
+          "raw": "IdeaPad 3 Gen7",
+          "grounded": true,
+          "consensus": true,
+          "consensus_sources": [
+            "regex",
+            "gliner"
+          ],
+          "confidence_reason": "Повышенная уверенность (0.99): подтверждено независимым консенсусом (regex, gliner)",
+          "status": "confirmed_by_consensus"
+        },
+        {
+          "attribute": "cpu",
+          "value": "Intel Core i3",
+          "confidence": 0.86,
+          "source": "regex",
+          "tier": "Tier 1",
+          "raw": "intel core i3",
+          "grounded": true,
+          "consensus": null,
+          "consensus_sources": null,
+          "confidence_reason": "Сниженная уверенность (0.86): зафиксировано разногласие между экстракторами",
+          "status": "conflict"
+        },
+        {
+          "attribute": "memory_ram",
+          "value": "8 ГБ",
+          "confidence": 0.93,
+          "source": "regex",
+          "tier": "Tier 1",
+          "raw": "оперативный модуль для хранения данных обладает объемом 8 гб",
+          "grounded": true,
+          "consensus": null,
+          "consensus_sources": null,
+          "confidence_reason": "Уверенное извлечение (0.93): верифицировано компонентом regex",
+          "status": "valid"
+        },
+        {
+          "attribute": "memory_rom",
+          "value": "512 ГБ",
+          "confidence": 0.99,
+          "source": "gliner",
+          "tier": "Tier 2",
+          "raw": "512 ГБ",
+          "grounded": true,
+          "consensus": true,
+          "consensus_sources": [
+            "gliner",
+            "regex"
+          ],
+          "confidence_reason": "Повышенная уверенность (0.99): подтверждено независимым консенсусом (gliner, regex)",
+          "status": "confirmed_by_consensus"
+        },
+        {
+          "attribute": "screen_diagonal",
+          "value": "15,6\"",
+          "confidence": 0.99,
+          "source": "gliner",
+          "tier": "Tier 2",
+          "raw": "15,6\"",
+          "grounded": true,
+          "consensus": true,
+          "consensus_sources": [
+            "gliner",
+            "regex"
+          ],
+          "confidence_reason": "Повышенная уверенность (0.99): подтверждено независимым консенсусом (gliner, regex)",
+          "status": "confirmed_by_consensus"
+        }
+      ],
+      "enqueued_at": "2026-10-22T22:28:15.200638"
+    },
+    {
+      "external_id": "card-159fb440",
+      "title": "Смартфон Apple iPhone 15 128GB",
+      "category": "Смартфоны",
+      "raw_text": "Смартфон Apple iPhone 15 128GB",
+      "description": "",
+      "overall_confidence": 0.7655,
+      "needs_review": false,
+      "status": "approved_by_operator",
+      "status_description": "Требуется ручная проверка (2 замечаний): Пропущены обязательные атрибуты категории 'Смартфоны': color; Общая уверенность карточки (0.77) ниже допустимого порога (0.87)",
+      "review_reasons": [
+        "Пропущены обязательные атрибуты категории 'Смартфоны': color",
+        "Общая уверенность карточки (0.77) ниже допустимого порога (0.87)"
+      ],
+      "warnings": [],
+      "degraded_tiers": [],
+      "extracted_attributes": {
+        "brand": "Apple",
+        "model": "iPhone 15",
+        "memory_rom": "128 ГБ",
+        "memory_ram": "6 ГБ",
+        "battery": "3349 мАч",
+        "screen_diagonal": "6,12\""
+      },
+      "missing_required": [
+        "color"
+      ],
+      "detailed_predictions": [
+        {
+          "attribute": "brand",
+          "value": "Apple",
+          "confidence": 0.99,
+          "source": "flashtext",
+          "tier": "Tier 1",
+          "raw": "Apple",
+          "grounded": true,
+          "consensus": true,
+          "consensus_sources": [
+            "flashtext",
+            "gliner"
+          ],
+          "confidence_reason": "Повышенная уверенность (0.99): подтверждено независимым консенсусом (flashtext, gliner)",
+          "status": "confirmed_by_consensus"
+        },
+        {
+          "attribute": "model",
+          "value": "iPhone 15",
+          "confidence": 0.99,
+          "source": "regex",
+          "tier": "Tier 1",
+          "raw": "iPhone 15",
+          "grounded": true,
+          "consensus": true,
+          "consensus_sources": [
+            "regex",
+            "gliner"
+          ],
+          "confidence_reason": "Повышенная уверенность (0.99): подтверждено независимым консенсусом (regex, gliner)",
+          "status": "confirmed_by_consensus"
+        },
+        {
+          "attribute": "memory_rom",
+          "value": "128 ГБ",
+          "confidence": 0.99,
+          "source": "regex",
+          "tier": "Tier 1",
+          "raw": "128gb",
+          "grounded": true,
+          "consensus": true,
+          "consensus_sources": [
+            "regex",
+            "gliner"
+          ],
+          "confidence_reason": "Повышенная уверенность (0.99): подтверждено независимым консенсусом (regex, gliner)",
+          "status": "confirmed_by_consensus"
+        },
+        {
+          "attribute": "memory_ram",
+          "value": "6 ГБ",
+          "confidence": 0.94,
+          "source": "catalog_kb",
+          "tier": "Tier 2.5",
+          "raw": "6 ГБ",
+          "grounded": true,
+          "consensus": null,
+          "consensus_sources": null,
+          "confidence_reason": "Уверенное извлечение (0.94): верифицировано компонентом catalog_kb",
+          "status": "valid"
+        },
+        {
+          "attribute": "battery",
+          "value": "3349 мАч",
+          "confidence": 0.94,
+          "source": "catalog_kb",
+          "tier": "Tier 2.5",
+          "raw": "3349 мАч",
+          "grounded": true,
+          "consensus": null,
+          "consensus_sources": null,
+          "confidence_reason": "Уверенное извлечение (0.94): верифицировано компонентом catalog_kb",
+          "status": "valid"
+        },
+        {
+          "attribute": "screen_diagonal",
+          "value": "6,12\"",
+          "confidence": 0.94,
+          "source": "catalog_kb",
+          "tier": "Tier 2.5",
+          "raw": "6,12\"",
+          "grounded": true,
+          "consensus": null,
+          "consensus_sources": null,
+          "confidence_reason": "Уверенное извлечение (0.94): верифицировано компонентом catalog_kb",
+          "status": "valid"
+        }
+      ],
+      "enqueued_at": "2026-10-22T22:28:14.029647"
+    },
+    {
+      "external_id": "card-05f8e161",
+      "title": "Робот-пылесос Xiaomi Robot Vacuum E10 белый с управлением со смартфона",
+      "category": "Пылесосы",
+      "raw_text": "Робот-пылесос Xiaomi Robot Vacuum E10 белый с управлением со смартфона",
+      "description": "",
+      "overall_confidence": 0.6911,
+      "needs_review": false,
+      "status": "approved_by_operator",
+      "status_description": "Требуется ручная проверка (2 замечаний): Пропущены обязательные атрибуты категории 'Пылесосы': power; Общая уверенность карточки (0.69) ниже допустимого порога (0.87)",
+      "review_reasons": [
+        "Пропущены обязательные атрибуты категории 'Пылесосы': power",
+        "Общая уверенность карточки (0.69) ниже допустимого порога (0.87)"
+      ],
+      "warnings": [],
+      "degraded_tiers": [],
+      "extracted_attributes": {
+        "brand": "Xiaomi",
+        "color": "белый",
+        "model": "E10",
+        "cleaning_type": "сухая и влажная"
+      },
+      "missing_required": [
+        "power"
+      ],
+      "detailed_predictions": [
+        {
+          "attribute": "brand",
+          "value": "Xiaomi",
+          "confidence": 0.99,
+          "source": "flashtext",
+          "tier": "Tier 1",
+          "raw": "Xiaomi",
+          "grounded": true,
+          "consensus": true,
+          "consensus_sources": [
+            "flashtext",
+            "gliner"
+          ],
+          "confidence_reason": "Повышенная уверенность (0.99): подтверждено независимым консенсусом (flashtext, gliner)",
+          "status": "confirmed_by_consensus"
+        },
+        {
+          "attribute": "color",
+          "value": "белый",
+          "confidence": 0.99,
+          "source": "flashtext",
+          "tier": "Tier 1",
+          "raw": "белый",
+          "grounded": true,
+          "consensus": true,
+          "consensus_sources": [
+            "flashtext",
+            "gliner"
+          ],
+          "confidence_reason": "Повышенная уверенность (0.99): подтверждено независимым консенсусом (flashtext, gliner)",
+          "status": "confirmed_by_consensus"
+        },
+        {
+          "attribute": "model",
+          "value": "E10",
+          "confidence": 0.9445,
+          "source": "gliner",
+          "tier": "Tier 2",
+          "raw": "E10",
+          "grounded": true,
+          "consensus": null,
+          "consensus_sources": null,
+          "confidence_reason": "Уверенное извлечение (0.94): верифицировано компонентом gliner",
+          "status": "valid"
+        },
+        {
+          "attribute": "cleaning_type",
+          "value": "сухая и влажная",
+          "confidence": 0.94,
+          "source": "catalog_kb",
+          "tier": "Tier 2.5",
+          "raw": "сухая и влажная",
+          "grounded": true,
+          "consensus": null,
+          "consensus_sources": null,
+          "confidence_reason": "Уверенное извлечение (0.94): верифицировано компонентом catalog_kb",
+          "status": "valid"
+        }
+      ],
+      "enqueued_at": "2026-10-22T22:25:31.096313"
+    },
+    {
+      "external_id": "card-04f99539",
+      "title": "Смартфон CoolNewTech UltraPhone 256GB синий",
+      "category": "Смартфоны",
+      "raw_text": "Смартфон CoolNewTech UltraPhone 256GB синий",
+      "description": "",
+      "overall_confidence": 0.5618,
+      "needs_review": false,
+      "status": "approved_by_operator",
+      "status_description": "Требуется ручная проверка (3 замечаний): Пропущены обязательные атрибуты категории 'Смартфоны': memory_ram, screen_diagonal; Общая уверенность карточки (0.56) ниже допустимого порога (0.87)",
+      "review_reasons": [
+        "Пропущены обязательные атрибуты категории 'Смартфоны': memory_ram, screen_diagonal",
+        "Общая уверенность карточки (0.56) ниже допустимого порога (0.87)",
+        "Низкая уверенность поля 'brand': 0.80 (порог 0.87)"
+      ],
+      "warnings": [],
+      "degraded_tiers": [],
+      "extracted_attributes": {
+        "color": "синий",
+        "memory_rom": "256 ГБ",
+        "brand": "Coolnewtech",
+        "model": "UltraPhone",
+        "battery": "5010 мАч"
+      },
+      "missing_required": [
+        "memory_ram",
+        "screen_diagonal"
+      ],
+      "detailed_predictions": [
+        {
+          "attribute": "color",
+          "value": "синий",
+          "confidence": 0.99,
+          "source": "flashtext",
+          "tier": "Tier 1",
+          "raw": "синий",
+          "grounded": true,
+          "consensus": true,
+          "consensus_sources": [
+            "flashtext",
+            "gliner"
+          ],
+          "confidence_reason": "Повышенная уверенность (0.99): подтверждено независимым консенсусом (flashtext, gliner)",
+          "status": "confirmed_by_consensus"
+        },
+        {
+          "attribute": "memory_rom",
+          "value": "256 ГБ",
+          "confidence": 0.99,
+          "source": "regex",
+          "tier": "Tier 1",
+          "raw": "256gb",
+          "grounded": true,
+          "consensus": true,
+          "consensus_sources": [
+            "regex",
+            "gliner"
+          ],
+          "confidence_reason": "Повышенная уверенность (0.99): подтверждено независимым консенсусом (regex, gliner)",
+          "status": "confirmed_by_consensus"
+        },
+        {
+          "attribute": "brand",
+          "value": "Coolnewtech",
+          "confidence": 0.8,
+          "source": "gliner",
+          "tier": "Tier 2",
+          "raw": "CoolNewTech",
+          "grounded": true,
+          "consensus": null,
+          "consensus_sources": null,
+          "confidence_reason": "Низкая уверенность (0.80 < 0.87): рекомендуется ручная проверка атрибута 'brand'",
+          "status": "uncertain"
+        },
+        {
+          "attribute": "model",
+          "value": "UltraPhone",
+          "confidence": 0.947,
+          "source": "gliner",
+          "tier": "Tier 2",
+          "raw": "UltraPhone",
+          "grounded": true,
+          "consensus": null,
+          "consensus_sources": null,
+          "confidence_reason": "Уверенное извлечение (0.95): верифицировано компонентом gliner",
+          "status": "valid"
+        },
+        {
+          "attribute": "battery",
+          "value": "5010 мАч",
+          "confidence": 0.94,
+          "source": "catalog_kb",
+          "tier": "Tier 2.5",
+          "raw": "5010 мАч",
+          "grounded": true,
+          "consensus": null,
+          "consensus_sources": null,
+          "confidence_reason": "Уверенное извлечение (0.94): верифицировано компонентом catalog_kb",
+          "status": "valid"
+        }
+      ],
+      "enqueued_at": "2026-10-22T22:25:29.461133"
+    },
+    {
+      "external_id": "card-6c517cbc",
+      "title": "смачунг гэлакси S24 Ultra 256gb фиолетовый",
+      "category": "Смартфоны",
+      "raw_text": "смачунг гэлакси S24 Ultra 256gb фиолетовый",
+      "description": "",
+      "overall_confidence": 0.9402,
+      "needs_review": false,
+      "status": "approved_by_operator",
+      "status_description": "Требуется ручная проверка (2 замечаний): Низкая уверенность поля 'model': 0.84 (порог 0.87); Зафиксирован конфликт источников для атрибута 'model'",
+      "review_reasons": [
+        "Низкая уверенность поля 'model': 0.84 (порог 0.87)",
+        "Зафиксирован конфликт источников для атрибута 'model'"
+      ],
+      "warnings": [],
+      "degraded_tiers": [],
+      "extracted_attributes": {
+        "brand": "Samsung",
+        "color": "фиолетовый",
+        "model": "Galaxy S24 Ultra",
+        "memory_rom": "256 ГБ",
+        "memory_ram": "12 ГБ",
+        "battery": "5000 мАч",
+        "screen_diagonal": "6.8\""
+      },
+      "missing_required": [],
+      "detailed_predictions": [
+        {
+          "attribute": "brand",
+          "value": "Samsung",
+          "confidence": 0.95,
+          "source": "flashtext",
+          "tier": "Tier 1",
+          "raw": "Samsung",
+          "grounded": true,
+          "consensus": null,
+          "consensus_sources": null,
+          "confidence_reason": "Высокая уверенность (0.95): прямое совпадение в каталоге / правилах (flashtext)",
+          "status": "high_confidence"
+        },
+        {
+          "attribute": "color",
+          "value": "фиолетовый",
+          "confidence": 0.99,
+          "source": "flashtext",
+          "tier": "Tier 1",
+          "raw": "фиолетовый",
+          "grounded": true,
+          "consensus": true,
+          "consensus_sources": [
+            "flashtext",
+            "gliner"
+          ],
+          "confidence_reason": "Повышенная уверенность (0.99): подтверждено независимым консенсусом (flashtext, gliner)",
+          "status": "confirmed_by_consensus"
+        },
+        {
+          "attribute": "model",
+          "value": "Galaxy S24 Ultra",
+          "confidence": 0.84,
+          "source": "regex",
+          "tier": "Tier 1",
+          "raw": "гэлакси S24 Ultra",
+          "grounded": true,
+          "consensus": null,
+          "consensus_sources": null,
+          "confidence_reason": "Сниженная уверенность (0.84): зафиксировано разногласие между экстракторами",
+          "status": "conflict"
+        },
+        {
+          "attribute": "memory_rom",
+          "value": "256 ГБ",
+          "confidence": 0.99,
+          "source": "regex",
+          "tier": "Tier 1",
+          "raw": "256gb",
+          "grounded": true,
+          "consensus": true,
+          "consensus_sources": [
+            "regex",
+            "gliner"
+          ],
+          "confidence_reason": "Повышенная уверенность (0.99): подтверждено независимым консенсусом (regex, gliner)",
+          "status": "confirmed_by_consensus"
+        },
+        {
+          "attribute": "memory_ram",
+          "value": "12 ГБ",
+          "confidence": 0.94,
+          "source": "catalog_kb",
+          "tier": "Tier 2.5",
+          "raw": "12 ГБ",
+          "grounded": true,
+          "consensus": null,
+          "consensus_sources": null,
+          "confidence_reason": "Уверенное извлечение (0.94): верифицировано компонентом catalog_kb",
+          "status": "valid"
+        },
+        {
+          "attribute": "battery",
+          "value": "5000 мАч",
+          "confidence": 0.94,
+          "source": "catalog_kb",
+          "tier": "Tier 2.5",
+          "raw": "5000 мАч",
+          "grounded": true,
+          "consensus": null,
+          "consensus_sources": null,
+          "confidence_reason": "Уверенное извлечение (0.94): верифицировано компонентом catalog_kb",
+          "status": "valid"
+        },
+        {
+          "attribute": "screen_diagonal",
+          "value": "6.8\"",
+          "confidence": 0.94,
+          "source": "catalog_kb",
+          "tier": "Tier 2.5",
+          "raw": "6.8\"",
+          "grounded": true,
+          "consensus": null,
+          "consensus_sources": null,
+          "confidence_reason": "Уверенное извлечение (0.94): верифицировано компонентом catalog_kb",
+          "status": "valid"
+        }
+      ],
+      "enqueued_at": "2026-10-22T22:25:28.056443"
+    },
+    {
+      "external_id": "card-5f9b7a69",
+      "title": "Смартфон Samsung S24 256GB",
+      "category": "Смартфоны",
+      "raw_text": "Смартфон Samsung S24 256GB",
+      "description": "",
+      "overall_confidence": 0.7655,
+      "needs_review": false,
+      "status": "approved_by_operator",
+      "status_description": "Требуется ручная проверка (2 замечаний): Пропущены обязательные атрибуты категории 'Смартфоны': color; Общая уверенность карточки (0.77) ниже допустимого порога (0.87)",
+      "review_reasons": [
+        "Пропущены обязательные атрибуты категории 'Смартфоны': color",
+        "Общая уверенность карточки (0.77) ниже допустимого порога (0.87)"
+      ],
+      "warnings": [],
+      "degraded_tiers": [],
+      "extracted_attributes": {
+        "brand": "Samsung",
+        "model": "S24",
+        "memory_rom": "256 ГБ",
+        "memory_ram": "12 ГБ",
+        "battery": "5000 мАч",
+        "screen_diagonal": "6.8\""
+      },
+      "missing_required": [
+        "color"
+      ],
+      "detailed_predictions": [
+        {
+          "attribute": "brand",
+          "value": "Samsung",
+          "confidence": 0.99,
+          "source": "flashtext",
+          "tier": "Tier 1",
+          "raw": "Samsung",
+          "grounded": true,
+          "consensus": true,
+          "consensus_sources": [
+            "flashtext",
+            "gliner"
+          ],
+          "confidence_reason": "Повышенная уверенность (0.99): подтверждено независимым консенсусом (flashtext, gliner)",
+          "status": "confirmed_by_consensus"
+        },
+        {
+          "attribute": "model",
+          "value": "S24",
+          "confidence": 0.99,
+          "source": "regex",
+          "tier": "Tier 1",
+          "raw": "Samsung S24",
+          "grounded": true,
+          "consensus": true,
+          "consensus_sources": [
+            "regex",
+            "gliner"
+          ],
+          "confidence_reason": "Повышенная уверенность (0.99): подтверждено независимым консенсусом (regex, gliner)",
+          "status": "confirmed_by_consensus"
+        },
+        {
+          "attribute": "memory_rom",
+          "value": "256 ГБ",
+          "confidence": 0.99,
+          "source": "regex",
+          "tier": "Tier 1",
+          "raw": "256gb",
+          "grounded": true,
+          "consensus": true,
+          "consensus_sources": [
+            "regex",
+            "gliner"
+          ],
+          "confidence_reason": "Повышенная уверенность (0.99): подтверждено независимым консенсусом (regex, gliner)",
+          "status": "confirmed_by_consensus"
+        },
+        {
+          "attribute": "memory_ram",
+          "value": "12 ГБ",
+          "confidence": 0.94,
+          "source": "catalog_kb",
+          "tier": "Tier 2.5",
+          "raw": "12 ГБ",
+          "grounded": true,
+          "consensus": null,
+          "consensus_sources": null,
+          "confidence_reason": "Уверенное извлечение (0.94): верифицировано компонентом catalog_kb",
+          "status": "valid"
+        },
+        {
+          "attribute": "battery",
+          "value": "5000 мАч",
+          "confidence": 0.94,
+          "source": "catalog_kb",
+          "tier": "Tier 2.5",
+          "raw": "5000 мАч",
+          "grounded": true,
+          "consensus": null,
+          "consensus_sources": null,
+          "confidence_reason": "Уверенное извлечение (0.94): верифицировано компонентом catalog_kb",
+          "status": "valid"
+        },
+        {
+          "attribute": "screen_diagonal",
+          "value": "6.8\"",
+          "confidence": 0.94,
+          "source": "catalog_kb",
+          "tier": "Tier 2.5",
+          "raw": "6.8\"",
+          "grounded": true,
+          "consensus": null,
+          "consensus_sources": null,
+          "confidence_reason": "Уверенное извлечение (0.94): верифицировано компонентом catalog_kb",
+          "status": "valid"
+        }
+      ],
+      "enqueued_at": "2026-10-22T22:25:27.787109"
+    },
+    {
+      "external_id": "card-2492a1aa",
+      "title": "Смартфон Apple iPhone 15 Pro Max 256GB синий титан",
+      "category": "Смартфоны",
+      "raw_text": "Флагманский смартфон",
+      "description": "Флагманский смартфон",
+      "overall_confidence": 0.7722,
+      "needs_review": false,
+      "status": "approved_by_operator",
+      "status_description": "Требуется ручная проверка (2 замечаний): Пропущены обязательные атрибуты категории 'Смартфоны': memory_ram; Общая уверенность карточки (0.77) ниже допустимого порога (0.87)",
+      "review_reasons": [
+        "Пропущены обязательные атрибуты категории 'Смартфоны': memory_ram",
+        "Общая уверенность карточки (0.77) ниже допустимого порога (0.87)"
+      ],
+      "warnings": [],
+      "degraded_tiers": [],
+      "extracted_attributes": {
+        "brand": "Apple",
+        "color": "синий",
+        "model": "iPhone 15 Pro Max",
+        "memory_rom": "256 ГБ",
+        "battery": "4852 мАч",
+        "screen_diagonal": "6.7\""
+      },
+      "missing_required": [
+        "memory_ram"
+      ],
+      "detailed_predictions": [
+        {
+          "attribute": "brand",
+          "value": "Apple",
+          "confidence": 0.99,
+          "source": "flashtext",
+          "tier": "Tier 1",
+          "raw": "Apple",
+          "grounded": true,
+          "consensus": true,
+          "consensus_sources": [
+            "flashtext",
+            "gliner"
+          ],
+          "confidence_reason": "Повышенная уверенность (0.99): подтверждено независимым консенсусом (flashtext, gliner)",
+          "status": "confirmed_by_consensus"
+        },
+        {
+          "attribute": "color",
+          "value": "синий",
+          "confidence": 0.99,
+          "source": "flashtext",
+          "tier": "Tier 1",
+          "raw": "синий",
+          "grounded": true,
+          "consensus": true,
+          "consensus_sources": [
+            "flashtext",
+            "gliner"
+          ],
+          "confidence_reason": "Повышенная уверенность (0.99): подтверждено независимым консенсусом (flashtext, gliner)",
+          "status": "confirmed_by_consensus"
+        },
+        {
+          "attribute": "model",
+          "value": "iPhone 15 Pro Max",
+          "confidence": 0.99,
+          "source": "regex",
+          "tier": "Tier 1",
+          "raw": "iPhone 15 Pro Max",
+          "grounded": true,
+          "consensus": true,
+          "consensus_sources": [
+            "regex",
+            "gliner"
+          ],
+          "confidence_reason": "Повышенная уверенность (0.99): подтверждено независимым консенсусом (regex, gliner)",
+          "status": "confirmed_by_consensus"
+        },
+        {
+          "attribute": "memory_rom",
+          "value": "256 ГБ",
+          "confidence": 0.99,
+          "source": "regex",
+          "tier": "Tier 1",
+          "raw": "256gb",
+          "grounded": true,
+          "consensus": true,
+          "consensus_sources": [
+            "regex",
+            "gliner"
+          ],
+          "confidence_reason": "Повышенная уверенность (0.99): подтверждено независимым консенсусом (regex, gliner)",
+          "status": "confirmed_by_consensus"
+        },
+        {
+          "attribute": "battery",
+          "value": "4852 мАч",
+          "confidence": 0.94,
+          "source": "catalog_kb",
+          "tier": "Tier 2.5",
+          "raw": "4852 мАч",
+          "grounded": true,
+          "consensus": null,
+          "consensus_sources": null,
+          "confidence_reason": "Уверенное извлечение (0.94): верифицировано компонентом catalog_kb",
+          "status": "valid"
+        },
+        {
+          "attribute": "screen_diagonal",
+          "value": "6.7\"",
+          "confidence": 0.94,
+          "source": "catalog_kb",
+          "tier": "Tier 2.5",
+          "raw": "6.7\"",
+          "grounded": true,
+          "consensus": null,
+          "consensus_sources": null,
+          "confidence_reason": "Уверенное извлечение (0.94): верифицировано компонентом catalog_kb",
+          "status": "valid"
+        }
+      ],
+      "enqueued_at": "2026-10-22T22:25:27.442450"
+    },
+    {
+      "external_id": "card-3c781e77",
+      "title": "Холодильник LG No Frost серебристый",
+      "category": "Холодильники",
+      "raw_text": "Высота 200 см",
+      "description": "Высота 200 см",
+      "overall_confidence": 0.6819,
+      "needs_review": false,
+      "status": "approved_by_operator",
+      "status_description": "Требуется ручная проверка (3 замечаний): Пропущены обязательные атрибуты категории 'Холодильники': volume; Общая уверенность карточки (0.68) ниже допустимого порога (0.87)",
+      "review_reasons": [
+        "Пропущены обязательные атрибуты категории 'Холодильники': volume",
+        "Общая уверенность карточки (0.68) ниже допустимого порога (0.87)",
+        "Низкая уверенность поля 'model': 0.85 (порог 0.87)"
+      ],
+      "warnings": [],
+      "degraded_tiers": [],
+      "extracted_attributes": {
+        "brand": "LG",
+        "color": "серебристый",
+        "defrost_system": "No Frost",
+        "model": "No Frost"
+      },
+      "missing_required": [
+        "volume"
+      ],
+      "detailed_predictions": [
+        {
+          "attribute": "brand",
+          "value": "LG",
+          "confidence": 0.99,
+          "source": "flashtext",
+          "tier": "Tier 1",
+          "raw": "LG",
+          "grounded": true,
+          "consensus": true,
+          "consensus_sources": [
+            "flashtext",
+            "gliner"
+          ],
+          "confidence_reason": "Повышенная уверенность (0.99): подтверждено независимым консенсусом (flashtext, gliner)",
+          "status": "confirmed_by_consensus"
+        },
+        {
+          "attribute": "color",
+          "value": "серебристый",
+          "confidence": 0.99,
+          "source": "flashtext",
+          "tier": "Tier 1",
+          "raw": "серебристый",
+          "grounded": true,
+          "consensus": true,
+          "consensus_sources": [
+            "flashtext",
+            "gliner"
+          ],
+          "confidence_reason": "Повышенная уверенность (0.99): подтверждено независимым консенсусом (flashtext, gliner)",
+          "status": "confirmed_by_consensus"
+        },
+        {
+          "attribute": "defrost_system",
+          "value": "No Frost",
+          "confidence": 0.99,
+          "source": "regex",
+          "tier": "Tier 1",
+          "raw": "no frost",
+          "grounded": true,
+          "consensus": true,
+          "consensus_sources": [
+            "regex",
+            "gliner"
+          ],
+          "confidence_reason": "Повышенная уверенность (0.99): подтверждено независимым консенсусом (regex, gliner)",
+          "status": "confirmed_by_consensus"
+        },
+        {
+          "attribute": "model",
+          "value": "No Frost",
+          "confidence": 0.85,
+          "source": "syntax_heuristic",
+          "tier": "Tier 1",
+          "raw": "No Frost",
+          "grounded": true,
+          "consensus": null,
+          "consensus_sources": null,
+          "confidence_reason": "Низкая уверенность (0.85 < 0.87): рекомендуется ручная проверка атрибута 'model'",
+          "status": "uncertain"
+        }
+      ],
+      "enqueued_at": "2026-10-22T22:24:53.174213"
+    },
+    {
+      "external_id": "bad-2",
+      "title": "Товар",
+      "category": "Электроника и техника",
+      "raw_text": "Товар",
+      "description": "",
+      "overall_confidence": 0.1732,
+      "needs_review": false,
+      "status": "approved_by_operator",
+      "status_description": "Требуется ручная проверка (2 замечаний): Пропущены обязательные атрибуты категории 'Электроника и техника': brand, color; Общая уверенность карточки (0.17) ниже допустимого порога (0.87)",
+      "review_reasons": [
+        "Пропущены обязательные атрибуты категории 'Электроника и техника': brand, color",
+        "Общая уверенность карточки (0.17) ниже допустимого порога (0.87)"
+      ],
+      "warnings": [],
+      "degraded_tiers": [],
+      "extracted_attributes": {
+        "model": "Неизвестно"
+      },
+      "missing_required": [
+        "brand",
+        "color"
+      ],
+      "detailed_predictions": [
+        {
+          "attribute": "model",
+          "value": "Неизвестно",
+          "confidence": 0.9,
+          "source": "llm_new_product",
+          "tier": "Tier 1",
+          "raw": "Неизвестно",
+          "grounded": true,
+          "consensus": null,
+          "consensus_sources": null,
+          "confidence_reason": "Уверенное извлечение (0.90): верифицировано компонентом llm_new_product",
+          "status": "valid"
+        }
+      ],
+      "enqueued_at": "2026-10-22T22:24:43.057111"
+    },
+    {
+      "external_id": "card-88629e02",
+      "title": "Наушники Apple AirPods Pro 2",
+      "category": "Наушники",
+      "raw_text": "Беспроводные",
+      "description": "Беспроводные",
+      "overall_confidence": 0.5981,
+      "needs_review": false,
+      "status": "approved_by_operator",
+      "status_description": "Требуется ручная проверка (4 замечаний): Пропущены обязательные атрибуты категории 'Наушники': color; Общая уверенность карточки (0.60) ниже допустимого порога (0.87)",
+      "review_reasons": [
+        "Пропущены обязательные атрибуты категории 'Наушники': color",
+        "Общая уверенность карточки (0.60) ниже допустимого порога (0.87)",
+        "Низкая уверенность поля 'connection_type': 0.84 (порог 0.87)",
+        "Зафиксирован конфликт источников для атрибута 'connection_type'"
+      ],
+      "warnings": [],
+      "degraded_tiers": [],
+      "extracted_attributes": {
+        "brand": "Apple",
+        "connection_type": "беспроводные",
+        "model": "AirPods Pro 2"
+      },
+      "missing_required": [
+        "color"
+      ],
+      "detailed_predictions": [
+        {
+          "attribute": "brand",
+          "value": "Apple",
+          "confidence": 0.99,
+          "source": "flashtext",
+          "tier": "Tier 1",
+          "raw": "Apple",
+          "grounded": true,
+          "consensus": true,
+          "consensus_sources": [
+            "flashtext",
+            "gliner"
+          ],
+          "confidence_reason": "Повышенная уверенность (0.99): подтверждено независимым консенсусом (flashtext, gliner)",
+          "status": "confirmed_by_consensus"
+        },
+        {
+          "attribute": "connection_type",
+          "value": "беспроводные",
+          "confidence": 0.84,
+          "source": "regex",
+          "tier": "Tier 1",
+          "raw": "беспроводные",
+          "grounded": true,
+          "consensus": null,
+          "consensus_sources": null,
+          "confidence_reason": "Сниженная уверенность (0.84): зафиксировано разногласие между экстракторами",
+          "status": "conflict"
+        },
+        {
+          "attribute": "model",
+          "value": "AirPods Pro 2",
+          "confidence": 0.9391,
+          "source": "gliner",
+          "tier": "Tier 2",
+          "raw": "AirPods Pro 2",
+          "grounded": true,
+          "consensus": null,
+          "consensus_sources": null,
+          "confidence_reason": "Уверенное извлечение (0.94): верифицировано компонентом gliner",
+          "status": "valid"
+        }
+      ],
+      "enqueued_at": "2026-10-22T22:24:33.272967"
+    },
+    {
+      "external_id": "999",
+      "title": "Смартфон Apple iPhone 15 128GB",
+      "category": "Смартфоны",
+      "raw_text": "Смартфон Apple iPhone 15 128GB",
+      "description": "",
+      "overall_confidence": 0.7655,
+      "needs_review": false,
+      "status": "approved_by_operator",
+      "status_description": "Требуется ручная проверка (2 замечаний): Пропущены обязательные атрибуты категории 'Смартфоны': color; Общая уверенность карточки (0.77) ниже допустимого порога (0.87)",
+      "review_reasons": [
+        "Пропущены обязательные атрибуты категории 'Смартфоны': color",
+        "Общая уверенность карточки (0.77) ниже допустимого порога (0.87)"
+      ],
+      "warnings": [],
+      "degraded_tiers": [],
+      "extracted_attributes": {
+        "brand": "Apple",
+        "model": "iPhone 15",
+        "memory_rom": "128 ГБ",
+        "memory_ram": "6 ГБ",
+        "battery": "3349 мАч",
+        "screen_diagonal": "6,12\""
+      },
+      "missing_required": [
+        "color"
+      ],
+      "detailed_predictions": [
+        {
+          "attribute": "brand",
+          "value": "Apple",
+          "confidence": 0.99,
+          "source": "flashtext",
+          "tier": "Tier 1",
+          "raw": "Apple",
+          "grounded": true,
+          "consensus": true,
+          "consensus_sources": [
+            "flashtext",
+            "gliner"
+          ],
+          "confidence_reason": "Повышенная уверенность (0.99): подтверждено независимым консенсусом (flashtext, gliner)",
+          "status": "confirmed_by_consensus"
+        },
+        {
+          "attribute": "model",
+          "value": "iPhone 15",
+          "confidence": 0.99,
+          "source": "regex",
+          "tier": "Tier 1",
+          "raw": "iPhone 15",
+          "grounded": true,
+          "consensus": true,
+          "consensus_sources": [
+            "regex",
+            "gliner"
+          ],
+          "confidence_reason": "Повышенная уверенность (0.99): подтверждено независимым консенсусом (regex, gliner)",
+          "status": "confirmed_by_consensus"
+        },
+        {
+          "attribute": "memory_rom",
+          "value": "128 ГБ",
+          "confidence": 0.99,
+          "source": "regex",
+          "tier": "Tier 1",
+          "raw": "128gb",
+          "grounded": true,
+          "consensus": true,
+          "consensus_sources": [
+            "regex",
+            "gliner"
+          ],
+          "confidence_reason": "Повышенная уверенность (0.99): подтверждено независимым консенсусом (regex, gliner)",
+          "status": "confirmed_by_consensus"
+        },
+        {
+          "attribute": "memory_ram",
+          "value": "6 ГБ",
+          "confidence": 0.94,
+          "source": "catalog_kb",
+          "tier": "Tier 2.5",
+          "raw": "6 ГБ",
+          "grounded": true,
+          "consensus": null,
+          "consensus_sources": null,
+          "confidence_reason": "Уверенное извлечение (0.94): верифицировано компонентом catalog_kb",
+          "status": "valid"
+        },
+        {
+          "attribute": "battery",
+          "value": "3349 мАч",
+          "confidence": 0.94,
+          "source": "catalog_kb",
+          "tier": "Tier 2.5",
+          "raw": "3349 мАч",
+          "grounded": true,
+          "consensus": null,
+          "consensus_sources": null,
+          "confidence_reason": "Уверенное извлечение (0.94): верифицировано компонентом catalog_kb",
+          "status": "valid"
+        },
+        {
+          "attribute": "screen_diagonal",
+          "value": "6,12\"",
+          "confidence": 0.94,
+          "source": "catalog_kb",
+          "tier": "Tier 2.5",
+          "raw": "6,12\"",
+          "grounded": true,
+          "consensus": null,
+          "consensus_sources": null,
+          "confidence_reason": "Уверенное извлечение (0.94): верифицировано компонентом catalog_kb",
+          "status": "valid"
+        }
+      ],
+      "enqueued_at": "2026-10-22T22:24:32.204375"
+    },
     {
       "external_id": "card-cbb181cc",
       "title": "Смартфон Nothing Phone (4a) 256 ГБ белый. Экран 6.78 дюймов 120 Гц. Процессор MediaTek Dimensity 7200 Pro. Батарея 5000 мАч.",
@@ -13,8 +1128,8 @@
       "raw_text": "Смартфон Nothing Phone (4a) 256 ГБ белый. Экран 6.78 дюймов 120 Гц. Процессор MediaTek Dimensity 7200 Pro. Батарея 5000 мАч.",
       "description": "",
       "overall_confidence": 0.9399,
-      "needs_review": true,
-      "status": "needs_review",
+      "needs_review": false,
+      "status": "approved_by_operator",
       "status_description": "Требуется ручная проверка (2 замечаний): Низкая уверенность поля 'model': 0.84 (порог 0.87); Зафиксирован конфликт источников для атрибута 'model'",
       "review_reasons": [
         "Низкая уверенность поля 'model': 0.84 (порог 0.87); Зафиксирован конфликт источников для атрибута 'model'",

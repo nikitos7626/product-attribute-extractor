@@ -11950,7 +11950,8 @@
     },
     "cef535asg": {
       "defrost_system": "No Frost",
-      "color": "серебристый"
+      "color": "серебристый",
+      "volume": "346 л"
     },
     "cef535awg": {
       "defrost_system": "No Frost"
@@ -41494,7 +41495,7 @@
       "resolution": "1920x1080 Full HD"
     },
     "ideapad 3": {
-      "cpu": "Intel Core i3 12xxxx",
+      "cpu": "Intel Core i3 1215U",
       "memory_rom": "256 ГБ",
       "screen_tech": "IPS",
       "resolution": "1920x1080 Full HD"
