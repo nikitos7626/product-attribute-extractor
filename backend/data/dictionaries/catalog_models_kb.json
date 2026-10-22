@@ -735,7 +735,7 @@
       "resolution": "2340x1080 Пикс"
     },
     "galaxy s25": {
-      "battery": "5000 мАч",
+      "battery": "4000 мАч",
       "screen_diagonal": "6.9\"",
       "cpu": "Snapdragon 8 Elite for Galaxy",
       "memory_ram": "12 ГБ",
@@ -4118,12 +4118,12 @@
       "battery": "4852 мАч"
     },
     "iphone 15": {
-      "screen_diagonal": "6.1\"",
+      "screen_diagonal": "6,12\"",
       "cpu": "A16 Bionic",
-      "memory_rom": "128 ГБ",
+      "memory_rom": "512 ГБ",
       "screen_tech": "Super Retina XDR",
       "resolution": "2556x1179 Пикс",
-      "battery": "3877 мАч",
+      "battery": "3349 мАч",
       "memory_ram": "6 ГБ"
     },
     "iphone 13": {
@@ -11947,6 +11947,12 @@
       "screen_diagonal": "75.0\"",
       "screen_tech": "LED",
       "resolution": "4K Ultra HD (3840x2160 Пикс)"
+    },
+    "cef535asg": {
+      "defrost_system": "No Frost"
+    },
+    "cef535awg": {
+      "defrost_system": "No Frost"
     }
   },
   "nitecore": {
@@ -15619,6 +15625,12 @@
       "memory_rom": "128 ГБ",
       "screen_tech": "IPS",
       "resolution": "1640x720 Пикс"
+    },
+    "e10": {
+      "cleaning_type": "сухая и влажная"
+    },
+    "mi robot vacuum": {
+      "cleaning_type": "сухая и влажная"
     }
   },
   "mie": {
@@ -52042,6 +52054,11 @@
     "телевизор смарт 32 дюйма безрамочный android asm01": {
       "screen_diagonal": "32.0\"",
       "resolution": "HD (1366x768 Пикс)"
+    }
+  },
+  "coolnewtech": {
+    "ultraphone": {
+      "battery": "5010 мАч"
     }
   }
 }

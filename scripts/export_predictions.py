@@ -62,7 +62,7 @@ def export_predictions(
     print(f"📥 Источник: {input_path}")
     print(f"⚙️ Режим: GLiNER={use_gliner}, CatalogKB=True, LLM={use_llm}")
 
-    pipeline = CascadedExtractionPipeline(use_gliner=use_gliner, use_llm=use_llm)
+    pipeline = CascadedExtractionPipeline(use_gliner=use_gliner, use_web_retriever=False, use_llm=use_llm)
 
     results: list[dict[str, Any]] = []
     t_start = time.perf_counter()

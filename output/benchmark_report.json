@@ -1,6 +1,6 @@
 {
   "metadata": {
-    "timestamp": "2026-10-22 12:30:11",
+    "timestamp": "2026-10-22 13:28:07",
     "environment": {
       "os": "win32",
       "python": "3.13.5",
@@ -12,26 +12,26 @@
     "tier1_fast_deterministic": {
       "name": "Детерминированный режим (Tier 1: FlashText + Regex + KB)",
       "iterations": 300,
-      "total_time_seconds": 0.443,
-      "throughput_cards_per_sec": 676.9,
+      "total_time_seconds": 0.438,
+      "throughput_cards_per_sec": 685.4,
       "latency_ms": {
-        "avg": 1.48,
-        "p50": 1.42,
-        "p95": 2.34,
-        "p99": 2.79
+        "avg": 1.46,
+        "p50": 1.39,
+        "p95": 2.37,
+        "p99": 2.8
       },
       "status": "PASS (>550 cards/s claim verified)"
     },
     "tier2_hybrid_gliner": {
       "name": "Гибридный каскадный режим (Tier 1 + Tier 2 GLiNER)",
-      "iterations": 15,
-      "total_time_seconds": 2.604,
-      "throughput_cards_per_sec": 5.8,
+      "iterations": 20,
+      "total_time_seconds": 12.887,
+      "throughput_cards_per_sec": 1.6,
       "latency_ms": {
-        "avg": 173.57,
-        "p50": 163.0,
-        "p95": 206.82,
-        "p99": 206.82
+        "avg": 644.35,
+        "p50": 156.83,
+        "p95": 3399.75,
+        "p99": 3399.75
       },
       "status": "PASS (Sub-second neural inference)"
     }

@@ -9,17 +9,18 @@
       "external_id": "mvideo-20077299",
       "title": "Холодильник HAIER CEF535ASG",
       "category": "Холодильники",
-      "overall_confidence": 0.3408,
+      "raw_text": "Холодильник HAIER CEF535ASG",
+      "overall_confidence": 0.6209,
       "needs_review": true,
       "extracted_attributes": {
         "brand": "Haier",
-        "model": "CEF535ASG"
+        "model": "CEF535ASG",
+        "defrost_system": "No Frost"
       },
       "missing_required": [
-        "color",
-        "defrost_system"
+        "color"
       ],
-      "latency_ms": 5360.74,
+      "latency_ms": 5345.66,
       "warnings": [],
       "degraded_tiers": [],
       "detailed_predictions": [
@@ -49,6 +50,17 @@
           "tier": "Tier 2",
           "confidence_reason": "Уверенное извлечение (0.94): верифицировано компонентом gliner",
           "status": "valid"
+        },
+        {
+          "attribute": "defrost_system",
+          "value": "No Frost",
+          "confidence": 0.94,
+          "source": "catalog_kb",
+          "tier": "Tier 2.5",
+          "raw": "No Frost",
+          "grounded": true,
+          "confidence_reason": "Уверенное извлечение (0.94): верифицировано компонентом catalog_kb",
+          "status": "valid"
         }
       ]
     },
@@ -56,17 +68,18 @@
       "external_id": "mvideo-20077298",
       "title": "Холодильник HAIER CEF535AWG",
       "category": "Холодильники",
-      "overall_confidence": 0.3382,
+      "raw_text": "Холодильник HAIER CEF535AWG",
+      "overall_confidence": 0.6177,
       "needs_review": true,
       "extracted_attributes": {
         "brand": "Haier",
-        "model": "CEF535AWG"
+        "model": "CEF535AWG",
+        "defrost_system": "No Frost"
       },
       "missing_required": [
-        "color",
-        "defrost_system"
+        "color"
       ],
-      "latency_ms": 170.34,
+      "latency_ms": 158.97,
       "warnings": [],
       "degraded_tiers": [],
       "detailed_predictions": [
@@ -96,6 +109,17 @@
           "tier": "Tier 2",
           "confidence_reason": "Уверенное извлечение (0.92): верифицировано компонентом gliner",
           "status": "valid"
+        },
+        {
+          "attribute": "defrost_system",
+          "value": "No Frost",
+          "confidence": 0.94,
+          "source": "catalog_kb",
+          "tier": "Tier 2.5",
+          "raw": "No Frost",
+          "grounded": true,
+          "confidence_reason": "Уверенное извлечение (0.94): верифицировано компонентом catalog_kb",
+          "status": "valid"
         }
       ]
     },
@@ -103,6 +127,7 @@
       "external_id": "mvideo-20078182",
       "title": "Холодильник Gorenje NRK620EABXL4",
       "category": "Холодильники",
+      "raw_text": "Холодильник Gorenje NRK620EABXL4",
       "overall_confidence": 0.3429,
       "needs_review": true,
       "extracted_attributes": {
@@ -113,7 +138,7 @@
         "color",
         "defrost_system"
       ],
-      "latency_ms": 167.17,
+      "latency_ms": 176.85,
       "warnings": [],
       "degraded_tiers": [],
       "detailed_predictions": [

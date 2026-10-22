@@ -31,6 +31,7 @@ from app.extractors.sanity import AttributeSanityValidator
 from app.services.brand_registry import BrandRegistry
 
 from app.services.catalog_enricher import CatalogEnricher
+from app.services.web_retriever import WebModelRetriever
 
 from app.services.confidence_calibrator import ConfidenceCalibrator
 
@@ -512,6 +513,8 @@ class CascadedExtractionPipeline:
 
         use_catalog_enricher: bool = True,
 
+        use_web_retriever: bool = True,
+
         use_llm: bool = True,
 
         confidence_threshold: float = 0.87,
@@ -531,10 +534,13 @@ class CascadedExtractionPipeline:
             use_gliner = False
 
             use_llm = False
+            use_web_retriever = False
 
         self.use_gliner = use_gliner
 
         self.use_catalog_enricher = use_catalog_enricher
+
+        self.use_web_retriever = use_web_retriever
 
         self.use_llm = use_llm
 
@@ -543,6 +549,8 @@ class CascadedExtractionPipeline:
         self.gliner_extractor = GlinerExtractor(threshold=gliner_threshold) if use_gliner else None
 
         self.catalog_enricher = CatalogEnricher() if use_catalog_enricher else None
+
+        self.web_retriever = WebModelRetriever(enabled=use_web_retriever) if use_web_retriever else None
 
         self.llm_extractor = (
 
@@ -1847,6 +1855,34 @@ class CascadedExtractionPipeline:
                     predictions_map[attr] = p
 
 
+
+        # ------------------------------------------------------------------
+        NON_ENRICHABLE_FROM_MODEL = {"color"}
+        still_missing = (required_attrs - set(predictions_map.keys())) - NON_ENRICHABLE_FROM_MODEL
+        # ЭТАП 3.2: Tier 3 Автоматический поиск модели в открытых источниках (Web Model Retriever)
+        # Ищет модель в международных и отечественных базах (GSM Arena, DeviceSpecifications, DNS, DuckDuckGo)
+        # ------------------------------------------------------------------
+        if (
+            self.use_web_retriever
+            and self.web_retriever
+            and still_missing
+            and ("brand" in predictions_map or "model" in predictions_map)
+        ):
+            b_val = predictions_map.get("brand", {}).get("value", "")
+            m_val = predictions_map.get("model", {}).get("value", "")
+            web_preds = self.web_retriever.retrieve_model_specs(
+                brand=b_val,
+                model=m_val,
+                category_key=cat_key,
+                missing_attrs=still_missing,
+                title=raw_title or card.get("title", ""),
+            )
+            for p in web_preds:
+                attr = p["attribute"]
+                extracted_alternatives[attr].append(dict(p))
+                if attr not in predictions_map:
+                    predictions_map[attr] = p
+            still_missing = (required_attrs - set(predictions_map.keys())) - NON_ENRICHABLE_FROM_MODEL
 
         # ------------------------------------------------------------------
 

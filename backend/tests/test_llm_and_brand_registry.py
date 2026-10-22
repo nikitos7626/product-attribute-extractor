@@ -111,7 +111,7 @@ def test_pipeline_with_mocked_llm_enrichment():
     """
     Проверяет полный сквозной пайплайн с точечным вызовом LLM при отсутствии данных в каталоге.
     """
-    pipeline = CascadedExtractionPipeline(use_gliner=False, use_catalog_enricher=False, use_llm=True)
+    pipeline = CascadedExtractionPipeline(use_gliner=False, use_catalog_enricher=False, use_web_retriever=False, use_llm=True)
     pipeline.llm_extractor.is_enabled = True
     pipeline.llm_extractor.enforce_grounding = False
 

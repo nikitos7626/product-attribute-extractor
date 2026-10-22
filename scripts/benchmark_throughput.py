@@ -90,6 +90,7 @@ def run_benchmark(
     fast_pipeline = CascadedExtractionPipeline(
         use_gliner=False,
         use_catalog_enricher=True,
+        use_web_retriever=False,
         use_llm=False,
     )
     # Warmup
