@@ -130,3 +130,24 @@ def test_sanity_validator_blocks_negated_cleaning_type():
     assert not AttributeSanityValidator.is_valid("cleaning_type", "сухая", "vacuum_cleaners", raw_text=negated_dry_text)
     assert not AttributeSanityValidator.is_valid("cleaning_type", "сухая и влажная", "vacuum_cleaners", raw_text=negated_dry_text)
     assert AttributeSanityValidator.is_valid("cleaning_type", "влажная", "vacuum_cleaners", raw_text=negated_dry_text)
+
+
+def test_nothing_phone_4a_model_and_category():
+    """
+    Проверяет карточку Nothing Phone (4a):
+    1. Категория должна быть 'Смартфоны' (не 'Электроника и техника')
+    2. Модель должна быть 'Phone (4a)', а не просто 'Phone'
+    3. Бренд должен быть 'Nothing'
+    4. Так как цвет/батарея не указаны, карточка должна требовать ручной проверки (needs_review=True)
+    """
+    card = {"title": "Nothing Phone (4a)", "description": ""}
+    pipe = CascadedExtractionPipeline(use_gliner=True, use_catalog_enricher=True, use_llm=False)
+    res = pipe.process_card(card)
+
+    assert res.get("category_key") == "smartphones", f"Expected category smartphones, got {res.get('category_key')}"
+    preds = {p["attribute"]: p["value"] for p in res.get("predictions", [])}
+
+    assert preds.get("brand") == "Nothing", f"Expected brand Nothing, got {preds.get('brand')}"
+    assert preds.get("model") == "Phone (4a)", f"Expected model 'Phone (4a)', got {preds.get('model')}"
+    assert res.get("needs_review") is True, "Card must require review due to missing required fields"
+    assert "color" in res.get("missing", []), "Expected 'color' in missing fields"

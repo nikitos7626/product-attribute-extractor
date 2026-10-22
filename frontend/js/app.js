@@ -85,7 +85,89 @@ document.addEventListener('DOMContentLoaded', () => {
   });
 
 
-  // Копирование JSON
+
+  // ----------------- Действия в карте модерации одиночной карточки -----------------
+  document.getElementById('single-approve-btn')?.addEventListener('click', async () => {
+    if (!lastSingleResponse) return;
+    const btn = document.getElementById('single-approve-btn');
+    btn.disabled = true;
+    btn.innerHTML = `<i class="fa-solid fa-spinner fa-spin mr-1.5"></i> Сохранение...`;
+
+    try {
+      const newAttrs = {};
+      document.querySelectorAll('.single-attr-input').forEach(inp => {
+        const attr = inp.getAttribute('data-single-attr');
+        const val = inp.value.trim();
+        if (val) newAttrs[attr] = val;
+      });
+
+      const extId = lastSingleResponse.external_id || 'card-single';
+      await api.submitReviewOverride({
+        external_id: extId,
+        action: 'approve',
+        reviewed_by: 'web-moderator',
+        attributes: newAttrs,
+      });
+
+      // Обновляем статус карточки
+      const statusBadge = document.getElementById('status-badge');
+      if (statusBadge) {
+        statusBadge.className = 'inline-flex items-center px-3 py-1 rounded-full text-xs font-bold bg-green-100 text-green-800 border border-green-200';
+        statusBadge.innerHTML = `<i class="fa-solid fa-circle-check mr-1.5"></i> Одобрено оператором (Каталог обновлен)`;
+      }
+
+      const successEl = document.getElementById('single-review-success');
+      if (successEl) {
+        successEl.classList.remove('hidden');
+      }
+
+      lastSingleResponse.needs_review = false;
+      lastSingleResponse.status = 'approved_by_operator';
+
+      // Обновляем бейдж очереди
+      await updateQueueBadge();
+    } catch (err) {
+      alert(`Ошибка сохранения: ${err.message}`);
+    } finally {
+      btn.disabled = false;
+      btn.innerHTML = `<i class="fa-solid fa-check mr-2"></i> Сохранить и одобрить (Опубликовать)`;
+    }
+  });
+
+  document.getElementById('single-reject-btn')?.addEventListener('click', async () => {
+    if (!lastSingleResponse) return;
+    if (!confirm('Вы уверены, что хотите отклонить эту карточку?')) return;
+
+    try {
+      const extId = lastSingleResponse.external_id || 'card-single';
+      await api.submitReviewOverride({
+        external_id: extId,
+        action: 'reject',
+        reviewed_by: 'web-moderator',
+      });
+
+      const statusBadge = document.getElementById('status-badge');
+      if (statusBadge) {
+        statusBadge.className = 'inline-flex items-center px-3 py-1 rounded-full text-xs font-bold bg-red-100 text-red-800 border border-red-200';
+        statusBadge.innerHTML = `<i class="fa-solid fa-xmark mr-1.5"></i> Отклонено модератором`;
+      }
+
+      lastSingleResponse.needs_review = false;
+      lastSingleResponse.status = 'rejected';
+      await updateQueueBadge();
+    } catch (err) {
+      alert(`Ошибка при отклонении: ${err.message}`);
+    }
+  });
+
+  document.getElementById('single-open-queue-btn')?.addEventListener('click', () => {
+    const queueTabBtn = document.getElementById('tab-queue');
+    if (queueTabBtn) {
+      queueTabBtn.click();
+    }
+  });
+
+    // Копирование JSON
   document.getElementById('copy-json-btn')?.addEventListener('click', () => {
     if (!lastSingleResponse) return;
     navigator.clipboard.writeText(JSON.stringify(lastSingleResponse, null, 2));
@@ -188,11 +270,42 @@ document.addEventListener('DOMContentLoaded', () => {
 
     try {
       const data = await api.getReviewQueue(5);
-      render.renderReviewQueue(data.items || [], handleReviewAction);
+      let items = [...(data.items || [])];
+
+      // Клиентская синхронизация: гарантируем, что сомнительная одиночная карточка видна в очереди
+      if (lastSingleResponse && lastSingleResponse.needs_review) {
+        const extId = lastSingleResponse.external_id || 'card-single';
+        const alreadyInQueue = items.some(it => String(it.external_id) === String(extId));
+        if (!alreadyInQueue) {
+          const flatAttrs = {};
+          (lastSingleResponse.predictions || []).forEach(p => {
+            if (p.attribute) flatAttrs[p.attribute] = p.value;
+          });
+          const rawTextEl = document.getElementById('raw_text');
+          const title = (rawTextEl ? rawTextEl.value.trim() : '') || extId;
+          const localItem = {
+            external_id: extId,
+            title: title,
+            category: lastSingleResponse.category || 'Электроника',
+            overall_confidence: lastSingleResponse.overall_confidence || 0.5,
+            needs_review: true,
+            status: 'needs_review',
+            status_description: lastSingleResponse.status_description || '',
+            review_reasons: lastSingleResponse.review_reasons || [],
+            missing_required: lastSingleResponse.missing || [],
+            extracted_attributes: flatAttrs,
+            detailed_predictions: lastSingleResponse.predictions || [],
+          };
+          items.unshift(localItem);
+        }
+      }
+
+      render.renderReviewQueue(items, handleReviewAction);
+      const totalCount = Math.max(data.total_in_queue || 0, items.length);
       const countEl = document.getElementById('review-queue-badge');
       if (countEl) {
-        if (data.total_in_queue > 0) {
-          countEl.innerText = data.total_in_queue;
+        if (totalCount > 0) {
+          countEl.innerText = totalCount;
           countEl.classList.remove('hidden');
         } else {
           countEl.innerText = '0';

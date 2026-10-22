@@ -131,6 +131,66 @@ const RenderService = {
       table.appendChild(tr);
     });
 
+    // 6.5. Карта ручной модерации и одобрения (Human-in-the-Loop)
+    const reviewPanel = document.getElementById('single-review-panel');
+    if (reviewPanel) {
+      if (data.needs_review) {
+        reviewPanel.classList.remove('hidden');
+        const reasonsEl = document.getElementById('single-review-reasons-text');
+        const reasonsList = [...(data.review_reasons || [])];
+        if (data.missing && data.missing.length > 0) {
+          reasonsList.unshift(`Пропущены обязательные поля: ${data.missing.join(', ')}`);
+        }
+        if (reasonsEl) {
+          reasonsEl.innerText = reasonsList.join('; ') || 'Требуется подтверждение оператора (низкая уверенность или сработал LLM-фоллбэк)';
+        }
+
+        const fieldsContainer = document.getElementById('single-review-fields');
+        if (fieldsContainer) {
+          fieldsContainer.innerHTML = '';
+          const extAttrs = {};
+          (data.predictions || []).forEach(p => {
+            if (p.attribute) extAttrs[p.attribute] = p.value;
+          });
+          const allAttrs = { ...extAttrs };
+          (data.missing || []).forEach(m => {
+            if (!(m in allAttrs)) allAttrs[m] = '';
+          });
+
+          // Сортируем: сначала обязательные пропущенные, затем остальные
+          const keys = Object.keys(allAttrs).sort((a, b) => {
+            const aMiss = (data.missing || []).includes(a);
+            const bMiss = (data.missing || []).includes(b);
+            if (aMiss && !bMiss) return -1;
+            if (!aMiss && bMiss) return 1;
+            return a.localeCompare(b);
+          });
+
+          keys.forEach(k => {
+            const isMiss = (data.missing || []).includes(k);
+            const val = allAttrs[k] || '';
+            const fieldEl = document.createElement('div');
+            fieldEl.className = 'bg-white rounded-xl p-2.5 border ' +
+              (isMiss ? 'border-red-300 ring-1 ring-red-100 shadow-xs' : 'border-gray-200');
+            fieldEl.innerHTML = `
+              <div class="flex items-center justify-between text-xs mb-1">
+                <span class="font-bold font-mono ${isMiss ? 'text-red-700' : 'text-gray-700'}">${k}</span>
+                ${isMiss ? '<span class="text-[10px] font-bold text-red-600 bg-red-50 px-1.5 py-0.5 rounded">Обязательно</span>' : '<span class="text-[10px] text-gray-400">извлечено</span>'}
+              </div>
+              <input type="text" data-single-attr="${k}" value="${val}"
+                placeholder="${isMiss ? 'Заполните обязательное поле...' : 'Значение...'}"
+                class="single-attr-input w-full text-xs font-semibold text-gray-900 bg-gray-50/50 border ${isMiss ? 'border-red-300 focus:border-red-500 focus:bg-white' : 'border-gray-200 focus:border-blue-500 focus:bg-white'} rounded-lg px-2.5 py-1.5 focus:outline-none transition" />
+            `;
+            fieldsContainer.appendChild(fieldEl);
+          });
+        }
+        const successEl = document.getElementById('single-review-success');
+        if (successEl) successEl.classList.add('hidden');
+      } else {
+        reviewPanel.classList.add('hidden');
+      }
+    }
+
     // 7. JSON-представление
     const jsonViewer = document.getElementById('json-viewer');
     if (jsonViewer) {
