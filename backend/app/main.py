@@ -411,7 +411,7 @@ def root_ui(request: Request):
 
         return JSONResponse({
 
-            "service": "M.Video Product Attribute Extraction API",
+            "service": "E-Commerce Product Attribute Extraction API",
 
             "version": "0.2.1",
 
@@ -475,7 +475,7 @@ def api_info(request: Request) -> dict:
 
     return {
 
-        "service": "M.Video Product Attribute Extraction API",
+        "service": "E-Commerce Product Attribute Extraction API",
 
         "version": "0.2.1",
 

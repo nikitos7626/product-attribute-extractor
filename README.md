@@ -1,15 +1,15 @@
-# М.Видео AI · Автоматическое извлечение и валидация характеристик товаров
+# E-Commerce AI · Автоматическое извлечение и валидация характеристик товаров
 
 [![Python 3.10+](https://img.shields.io/badge/Python-3.10%2B-blue.svg?logo=python&logoColor=white)](https://www.python.org/)
 [![FastAPI](https://img.shields.io/badge/FastAPI-0.115%2B-009688.svg?logo=fastapi&logoColor=white)](https://fastapi.tiangolo.com/)
-[![Tests 130 PASS](https://img.shields.io/badge/Tests-208%20PASS%20(100%25)-brightgreen.svg)](backend/tests/)
-[![Throughput](https://img.shields.io/badge/Throughput->550%20cards%2Fs-blue.svg))(#-производительность-и-бенчмаркинг-throughput)
+[![Tests 208 PASS](https://img.shields.io/badge/Tests-208%20PASS%20(100%25)-brightgreen.svg)](backend/tests/)
+[![Throughput](https://img.shields.io/badge/Throughput->680%20cards%2Fs-blue.svg)](#-производительность-и-бенчмаркинг-throughput)
 [![Macro-F1 0.99](https://img.shields.io/badge/Macro--F1-1.00-success.svg)](output/metrics_report.md)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
 
-> 🌐 **Публичный веб-интерфейс:** [https://tochka-sborki-2026-team-059.hub.gigaschool.ru](https://tochka-sborki-2026-team-059.hub.gigaschool.ru)  
-> 📑 **Интерактивная документация OpenAPI (Swagger):** [https://tochka-sborki-2026-team-059.hub.gigaschool.ru/docs](https://tochka-sborki-2026-team-059.hub.gigaschool.ru/docs)  
-> ⚡ **Скорость экстракции:** `< 1.8 мс` на карточку (> 550 товаров/сек на 1 ядре CPU)
+> 🌐 **Интерактивный UI:** локальный веб-интерфейс `http://localhost:8000`  
+> 📑 **Интерактивная документация OpenAPI (Swagger):** `http://localhost:8000/docs`  
+> ⚡ **Скорость экстракции:** `< 1.5 мс` на карточку (> 680 товаров/сек на 1 ядре CPU)
 
 ---
 
@@ -64,8 +64,8 @@
 ### 1. Установка зависимостей
 ```bash
 # Клонирование из официального репозитория Gitea:
-git clone https://git.hub.gigaschool.ru/tochka-sborki-2026-team-059/project.git
-cd project
+git clone https://github.com/nikitos7626/product-attribute-extractor.git
+cd product-attribute-extractor
 pip install -r requirements.txt
 ```
 *(Или зеркало на GitHub: `git clone https://github.com/nikitos7626/product-attribute-extractor.git`)*
@@ -245,9 +245,9 @@ curl -X GET "http://localhost:8000/api/info"
 | [`scripts/verify_metrics_and_throughput.py`](scripts/verify_metrics_and_throughput.py) | `data/gold_dataset.json` | [`output/verification_report.md`](output/verification_report.md), [`output/verification_report.json`](output/verification_report.json) | Генеративная сквозная верификация всех заявленных метрик (Macro-F1=1.0000, 20 атрибутов, 684.5 cards/s, < 1.8 ms) |
 | [`scripts/evaluate_metrics.py`](scripts/evaluate_metrics.py) | `data/gold_dataset.json` | [`output/metrics_report.md`](output/metrics_report.md), [`output/metrics_report.json`](output/metrics_report.json) | Расчёт строгих per-attribute метрик (Precision, Recall, F1, Coverage) на Gold-бенчмарке М.Видео |
 | [`scripts/export_predictions.py`](scripts/export_predictions.py) | `data/sample_cards.json` | [`output/predictions.json`](output/predictions.json), [`output/predictions.csv`](output/predictions.csv), [`output/sample_prediction.json`](output/sample_prediction.json) | Пакетная выгрузка 900 карточек во всех продукционных форматах со всеми флагами калибровки |
-| [`scripts/evaluate_catalog_sample.py`](scripts/evaluate_catalog_sample.py) | `data/catalog_eval_pool.json` | Консольный срез точности и полноты | Динамическая оценка точности и полноты на случайной выборке реального каталога М.Видео |
+| [`scripts/evaluate_catalog_sample.py`](scripts/evaluate_catalog_sample.py) | `data/catalog_eval_pool.json` | Консольный срез точности и полноты | Динамическая оценка точности и полноты на случайной выборке реального каталога электроники и бытовой техники |
 | [`scripts/review_queue.py`](scripts/review_queue.py) | `output/predictions.json` | [`output/reviewed_predictions.json`](output/reviewed_predictions.json) | Интерактивное рабочее место контент-модератора (HITL) для проверки и редактирования сомнительных карточек |
-| [`scripts/eda_analysis.py`](scripts/eda_analysis.py) | `data/sample_cards.json` / `skus.pkl` | [`output/eda_report.md`](output/eda_report.md), [`output/eda_report.json`](output/eda_report.json) | Разведочный анализ распределения категорий, брендов и полноты атрибутов каталога М.Видео |
+| [`scripts/eda_analysis.py`](scripts/eda_analysis.py) | `data/sample_cards.json` / `skus.pkl` | [`output/eda_report.md`](output/eda_report.md), [`output/eda_report.json`](output/eda_report.json) | Разведочный анализ распределения категорий, брендов и полноты атрибутов каталога электроники и бытовой техники |
 | [`notebooks/eda_mvideo_dataset.ipynb`](notebooks/eda_mvideo_dataset.ipynb) | Каталог М.Видео | Пре-рендеренные визуализации и графики | Интерактивный Jupyter-ноутбук с распределениями и выводами |
 | [`scripts/reproduce_cases.py`](scripts/reproduce_cases.py) | Сложные кейсы селлеров | Вывод в консоль | Верификация устойчивости к состязательному шуму (Title Authority, лимиты апгрейда, инверсия ОС) |
 | [`scripts/verify_dataset_taxonomy.py`](scripts/verify_dataset_taxonomy.py) | `skus.pkl` (опционально) | Консольный аудит | Полная верификация покрытия таксономии и белых списков атрибутов каталога |
@@ -323,7 +323,7 @@ python scripts/evaluate_metrics.py
 python scripts/export_predictions.py --format both
 # Результат сохраняется в output/predictions.json, output/predictions.csv и output/sample_prediction.json
 
-# 3. Разведочный анализ данных (EDA) по каталогу М.Видео:
+# 3. Разведочный анализ данных (EDA) по каталогу электроники и бытовой техники:
 python scripts/eda_analysis.py
 # Отчёт в output/eda_report.md, интерактивный ноутбук: notebooks/eda_mvideo_dataset.ipynb
 
@@ -371,7 +371,7 @@ python scripts/benchmark_throughput.py
 
 | № | Критерий кейса | Реализация в репозитории | Артефакт / Код |
 | :-: | :--- | :--- | :--- |
-| **1** | **Покрытие обязательных сценариев** | Полный комплект артефактов: EDA по каталогу М.Видео, Per-Attribute метрики (Macro-F1 1.0000), экспорт 900 офферов, полная цепочка «произвольная карточка $\to$ предсказания» без локальных зависимостей. | [`notebooks/eda_mvideo_dataset.ipynb`](notebooks/eda_mvideo_dataset.ipynb), [`output/metrics_report.md`](output/metrics_report.md), [`output/predictions.csv`](output/predictions.csv) |
+| **1** | **Покрытие обязательных сценариев** | Полный комплект артефактов: EDA по каталогу электроники и бытовой техники, Per-Attribute метрики (Macro-F1 1.0000), экспорт 900 офферов, полная цепочка «произвольная карточка $\to$ предсказания» без локальных зависимостей. | [`notebooks/eda_mvideo_dataset.ipynb`](notebooks/eda_mvideo_dataset.ipynb), [`output/metrics_report.md`](output/metrics_report.md), [`output/predictions.csv`](output/predictions.csv) |
 | **2** | **Соблюдение ограничений и защита от галлюцинаций** | Программная проверка наличия значений в тексте (`_verify_grounding`), физический валидатор (`AttributeSanityValidator`), безопасное управление секретами (нулевые зашитые ключи, опциональная `API_KEY` авторизация), документирование KB (`v1.4.0`) и моделей (`urchade/gliner_multi-v2.1`). | [`backend/app/extractors/llm_extractor.py`](backend/app/extractors/llm_extractor.py), [`backend/app/extractors/sanity.py`](backend/app/extractors/sanity.py), [`backend/app/main.py`](backend/app/main.py) |
 | **3** | **Сквозной сценарий без заглушек** | Промышленный экспорт предсказаний, детерминированные пути исполнения (Tier 1 $\to$ Tier 2 $\to$ Tier 3), консольный CLI, корректный graceful-fallback при отсутствии внешней KB. | `POST /api/extract/export`, [`backend/run_cli.py`](backend/run_cli.py), [`scripts/export_predictions.py`](scripts/export_predictions.py) |
 | **4** | **Воспроизводимость и переносимость** | Полная переносимость (0 жестко зашитых локальных путей во всех скриптах), запуск в 1 команду, автономная сборка в Docker с оффлайн-кэшированием весов моделей. | [`Dockerfile`](Dockerfile), [`scripts/evaluate_metrics.py`](scripts/evaluate_metrics.py), [`docker-compose.yml`](docker-compose.yml) |
@@ -382,6 +382,6 @@ python scripts/benchmark_throughput.py
 
 ---
 
-## 👥 Команда
-**Точка сборки (`team-059`)** · М.Видео · VolgaDev 2026
+## 👤 Автор проекта
+**Nikita (@nikitos7626)** · Production-Grade E-Commerce NLP Pipeline
 
