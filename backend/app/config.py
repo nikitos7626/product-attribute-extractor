@@ -3,7 +3,7 @@ from pydantic_settings import BaseSettings, SettingsConfigDict
 
 class Settings(BaseSettings):
     """
-    Конфигурация сервиса извлечения характеристик товаров М.Видео AI.
+    Конфигурация сервиса извлечения характеристик товаров E-Commerce AI.
     Все параметры могут быть переопределены через переменные окружения или .env файл.
     """
     model_config = SettingsConfigDict(
@@ -76,8 +76,8 @@ class Settings(BaseSettings):
     gliner_weight_prob: float = 0.60
     regex_title_bonus: float = 0.03
 
-    # Таксономия каталога М.Видео
-    taxonomy_path: str = "data/dictionaries/mvideo_categories.json"
+    # Таксономия каталога товаров
+    taxonomy_path: str = "data/dictionaries/categories.json"
 
     # Лимиты пакетной обработки (Batch Processing Limits)
     max_batch_file_size_bytes: int = 50 * 1024 * 1024  # 50 МБ

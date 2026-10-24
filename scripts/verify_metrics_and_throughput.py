@@ -7,7 +7,7 @@
   • Скорость инференса Fast Mode (< 1.8 мс на карточку)
   • Пропускная способность Throughput (> 550 карточек/сек на 1 ядре CPU)
   • Защита от галлюцинаций (GroundingVerifier Hallucination Rate = 0.0%)
-  • Поддержка всех целевых категорий М.Видео (8 из 8)
+  • Поддержка всех целевых категорий E-Commerce (8 из 8)
   • Автономия (100% offline-инференс без внешних сетевых вызовов)
 
 Генерирует выходные артефакты:
@@ -213,7 +213,7 @@ def main():
     # 5. Save Markdown Report
     md_path = out_dir / "verification_report.md"
     with open(md_path, "w", encoding="utf-8") as f:
-        f.write("# 🎯 Отчёт верификации метрик и производительности М.Видео\n\n")
+        f.write("# 🎯 Отчёт верификации метрик и производительности E-Commerce\n\n")
         f.write(f"**Дата проверки:** {report_data['timestamp']}  \n")
         status_badge = "✅ ВСЕ ЗАЯВЛЕННЫЕ МЕТРИКИ ПОДТВЕРЖДЕНЫ" if all_passed else "⚠️ ЧАСТЬ МЕТРИК ТРЕБУЕТ ВНИМАНИЯ"
         f.write(f"**Итоговый статус:** `{status_badge}`\n\n")

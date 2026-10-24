@@ -355,7 +355,7 @@ async def extract_from_url(
 
         page_title = html.unescape(title_match.group(1)).strip()
 
-        page_title = re.sub(r"\s*[—–|-]\s*(купить в|интернет-магазин|каталог|dns|яндекс|мвидео).*$", "", page_title, flags=re.IGNORECASE).strip()
+        page_title = re.sub(r"\s*[—–|-]\s*(купить в|интернет-магазин|каталог|dns|яндекс|e-commerce).*$", "", page_title, flags=re.IGNORECASE).strip()
 
 
 
@@ -1159,7 +1159,7 @@ def register_brand(alias: str, canonical: str | None = None) -> dict:
 
 
 
-    Динамическая регистрация нового бренда в каталог М.Видео на лету.
+    Динамическая регистрация нового бренда в каталог E-Commerce на лету.
 
 
 
@@ -1570,7 +1570,7 @@ def get_metrics() -> dict:
 
 
 
-    Отчет сгенерирован на эталонном Gold Dataset М.Видео.
+    Отчет сгенерирован на эталонном Gold Dataset E-Commerce.
 
 
 
@@ -1678,7 +1678,7 @@ def get_taxonomy(pipeline: CascadedExtractionPipeline = Depends(get_pipeline)) -
 
 
 
-    Возвращает актуальную таксономию М.Видео: категории, обязательные поля и строгие белые списки.
+    Возвращает актуальную таксономию E-Commerce: категории, обязательные поля и строгие белые списки.
 
 
 

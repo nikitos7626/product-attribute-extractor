@@ -134,7 +134,7 @@ def test_pipeline_with_mocked_llm_enrichment():
 def test_llm_normalization_nested_and_numeric():
     """
     Проверяет, что LLM extractor корректно преобразует сырые числа, единицы и вложенные структуры
-    в стандартные форматы М.Видео (мАч, дюймы, ГБ).
+    в стандартные форматы E-Commerce (мАч, дюймы, ГБ).
     """
     extractor = StrictLlmFallbackExtractor(api_key="test-key")
     mock_resp = '{"battery": 5000, "screen_diagonal": 6.78, "memory_ram": {"capacity": "12 GB"}}'

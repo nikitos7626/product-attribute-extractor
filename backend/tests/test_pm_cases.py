@@ -30,7 +30,7 @@ def test_pm_case_2_iphone_15_pro_max(pipeline):
     assert preds["model"] == "iPhone 15 Pro Max"
     assert preds["memory_rom"] == "512 ГБ"
     assert preds["cpu"] == "A17 Pro"
-    # Батарея автоматически дозаполнена из каталога М.Видео (catalog_kb)
+    # Батарея автоматически дозаполнена из каталога E-Commerce (catalog_kb)
     assert "battery" in preds
     assert res["needs_review"] is False
 

@@ -3,7 +3,7 @@
 и валидацией канонических имен / опечаток (Fuzzy Brand Typo Matcher).
 
 Архитектура:
-1. Канонические бренды М.Видео (4 600+ брендов из brands.csv).
+1. Канонические бренды E-Commerce (4 600+ брендов из brands.csv).
 2. Популярные бренды и их транслиты/опечатки (Samsung, Apple, Xiaomi, LG и т.д.).
 3. Нечеткое сопоставление (Fuzzy Match / SequenceMatcher): опечатки («смасунг», «смачунг»)
    мягко нормализуются в канонический бренд («Samsung») с флагом is_fuzzy_corrected=True.
@@ -82,7 +82,7 @@ def process_file_lock(filepath: str, timeout: float = 10.0):
 
 
 
-# Топ-35 ключевых брендов каталога М.Видео с известными транслитерациями и синонимами
+# Топ-35 ключевых брендов каталога E-Commerce с известными транслитерациями и синонимами
 POPULAR_BRANDS: dict[str, list[str]] = {
     "Samsung": [
         "samsung", "самсунг", "смасунг", "смачунг", "samsung galaxy", "гэлакси", "гелакси", "galaxy", "самсунг гэлакси"
@@ -194,7 +194,7 @@ POPULAR_BRANDS: dict[str, list[str]] = {
 
 class BrandRegistry:
     """
-    Синглтон-реестр брендов каталога М.Видео с потокобезопасным кэшем в памяти (threading.RLock)
+    Синглтон-реестр брендов каталога E-Commerce с потокобезопасным кэшем в памяти (threading.RLock)
     и межпроцессной атомарной блокировкой записи в файл (Process-Safe Atomic File Lock).
     """
 
@@ -239,7 +239,7 @@ class BrandRegistry:
                         self.canonical_whitelist.add(canon)
                         count += 1
 
-            # Обогащаем популярными алиасами и транслитами М.Видео
+            # Обогащаем популярными алиасами и транслитами E-Commerce
             for canon, aliases in POPULAR_BRANDS.items():
                 self.canonical_whitelist.add(canon)
                 for a in aliases:

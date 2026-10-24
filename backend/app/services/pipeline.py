@@ -88,7 +88,7 @@ logger = logging.getLogger(__name__)
 
 
 
-# ПОЛНАЯ ТАКСОНОМИЯ КАТАЛОГА М.ВИДЕО (6 570+ КАТЕГОРИЙ ИЗ skus.pkl)
+# ПОЛНАЯ ТАКСОНОМИЯ КАТАЛОГА E-COMMERCE (6 570+ КАТЕГОРИЙ ИЗ skus.pkl)
 
 
 
@@ -104,7 +104,7 @@ class TaxonomyManager:
 
 
 
-    Менеджер таксономии каталога М.Видео с безопасной обработкой сбоев загрузки
+    Менеджер таксономии каталога E-Commerce с безопасной обработкой сбоев загрузки
 
 
 
@@ -144,7 +144,7 @@ class TaxonomyManager:
 
 
 
-            default_file = Path(getattr(settings, "taxonomy_path", "data/dictionaries/mvideo_categories.json"))
+            default_file = Path(getattr(settings, "taxonomy_path", "data/dictionaries/categories.json"))
 
 
 
@@ -257,7 +257,7 @@ class TaxonomyManager:
 
 
     def _load_fallback_taxonomy(self) -> None:
-        """Загружает встроенный резервный справочник таксономии М.Видео."""
+        """Загружает встроенный резервный справочник таксономии E-Commerce."""
         fallback_map = {
             "1": "Смартфоны", "2": "Ноутбуки", "3": "Телевизоры", "4": "Пылесосы",
             "5": "Холодильники", "6": "Наушники", "7": "Внешние аккумуляторы",
@@ -273,7 +273,7 @@ class TaxonomyManager:
 
 
 
-        """Загружает внешнюю таксономию М.Видео с явным протоколированием статуса."""
+        """Загружает внешнюю таксономию E-Commerce с явным протоколированием статуса."""
 
 
 
@@ -434,11 +434,11 @@ taxonomy_manager = TaxonomyManager.get_instance()
 
 
 
-MVIDEO_TAXONOMY_ID_TO_NAME: dict[str, str] = taxonomy_manager.id_to_name
+CATALOG_TAXONOMY_ID_TO_NAME: dict[str, str] = taxonomy_manager.id_to_name
 
 
 
-MVIDEO_TAXONOMY_NORMALIZED: dict[str, str] = taxonomy_manager.normalized_names
+CATALOG_TAXONOMY_NORMALIZED: dict[str, str] = taxonomy_manager.normalized_names
 
 
 
@@ -454,7 +454,7 @@ MVIDEO_TAXONOMY_NORMALIZED: dict[str, str] = taxonomy_manager.normalized_names
 
 
 
-# ТАКСОНОМИЯ И СХЕМЫ АТРИБУТОВ ПО КАТЕГОРИЯМ КАТАЛОГА М.ВИДЕО
+# ТАКСОНОМИЯ И СХЕМЫ АТРИБУТОВ ПО КАТЕГОРИЯМ КАТАЛОГА E-COMMERCE
 
 
 
@@ -971,7 +971,7 @@ class CascadedExtractionPipeline:
 
 
 
-            и активирует целевую таксономию атрибутов М.Видео.
+            и активирует целевую таксономию атрибутов E-Commerce.
 
 
 
@@ -1650,7 +1650,7 @@ class CascadedExtractionPipeline:
 
 
 
-            # Если категория есть в полном каталоге М.Видео (напр. «Матрасы», «Смесители», «Шины»):
+            # Если категория есть в полном каталоге E-Commerce (напр. «Матрасы», «Смесители», «Шины»):
 
 
 
@@ -2130,15 +2130,15 @@ class CascadedExtractionPipeline:
 
 
 
-        # 5. Проверка по полной таксономии каталога М.Видео (если не попало в специализированные тех-категории):
+        # 5. Проверка по полной таксономии каталога (если не попало в специализированные тех-категории):
 
 
 
-        if raw_cat and raw_cat in MVIDEO_TAXONOMY_NORMALIZED:
+        if raw_cat and raw_cat in CATALOG_TAXONOMY_NORMALIZED:
 
 
 
-            return "default", MVIDEO_TAXONOMY_NORMALIZED[raw_cat]
+            return "default", CATALOG_TAXONOMY_NORMALIZED[raw_cat]
 
 
 
@@ -3675,7 +3675,7 @@ class CascadedExtractionPipeline:
 
 
 
-        # но бренд и модель надежно определены, подтягиваем эталонные спецификации из базы М.Видео.
+        # но бренд и модель надежно определены, подтягиваем эталонные спецификации из базы E-Commerce.
 
 
 
@@ -3823,7 +3823,7 @@ class CascadedExtractionPipeline:
 
 
 
-        # Если после базы М.Видео все еще есть пропущенные обязательные атрибуты,
+        # Если после базы E-Commerce все еще есть пропущенные обязательные атрибуты,
 
 
 

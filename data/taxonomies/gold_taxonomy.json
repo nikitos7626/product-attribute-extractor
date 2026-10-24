@@ -1,6 +1,6 @@
 {
   "smartphones": {
-    "mvideo_categories": [
+    "categories": [
       "Смартфоны"
     ],
     "top_official_attributes": [
@@ -39,7 +39,7 @@
     }
   },
   "laptops": {
-    "mvideo_categories": [
+    "categories": [
       "Ноутбуки"
     ],
     "top_official_attributes": [
@@ -78,7 +78,7 @@
     }
   },
   "tvs": {
-    "mvideo_categories": [
+    "categories": [
       "Телевизоры",
       "Встраиваемый телевизор"
     ],
@@ -118,7 +118,7 @@
     }
   },
   "vacuum_cleaners": {
-    "mvideo_categories": [
+    "categories": [
       "Пылесосы вертикальные",
       "Пылесосы напольные",
       "Роботы-пылесосы"
@@ -159,7 +159,7 @@
     }
   },
   "refrigerators": {
-    "mvideo_categories": [
+    "categories": [
       "Встраиваемые холодильники",
       "Холодильники"
     ],
@@ -199,7 +199,7 @@
     }
   },
   "headphones": {
-    "mvideo_categories": [
+    "categories": [
       "Наушники",
       "Наушники игровые True Wireless",
       "Наушники для компьютеров"

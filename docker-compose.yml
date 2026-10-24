@@ -3,7 +3,7 @@ services:
     build:
       context: .
       dockerfile: Dockerfile
-    container_name: mvideo-nlp-api
+    container_name: ecommerce-nlp-api
     ports:
       - "8000:8000"
     environment:

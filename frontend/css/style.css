@@ -1,13 +1,13 @@
 /* ==========================================================================
-   М.Видео AI — Таблицы стилей интерфейса извлечения характеристик товаров
+   E-Commerce AI — Таблицы стилей интерфейса извлечения характеристик товаров
    ========================================================================== */
 
-/* Брендовые цвета М.Видео */
+/* Брендовые цвета E-Commerce */
 :root {
-  --mvideo-red: #e31235;
-  --mvideo-darkred: #b80c29;
-  --mvideo-dark: #1e2229;
-  --mvideo-light: #f4f5f7;
+  --brand-red: #e31235;
+  --brand-darkred: #b80c29;
+  --brand-dark: #1e2229;
+  --brand-light: #f4f5f7;
 }
 
 /* Плавные переходы элементов интерфейса */
@@ -50,7 +50,7 @@
 
 /* Стилизация области Drag & Drop */
 .drag-over {
-  border-color: var(--mvideo-red) !important;
+  border-color: var(--brand-red) !important;
   background-color: #fef2f2 !important;
 }
 

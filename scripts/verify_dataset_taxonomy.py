@@ -10,7 +10,7 @@ from pathlib import Path
 
 REPO_ROOT = Path(__file__).resolve().parent.parent
 
-parser = argparse.ArgumentParser(description="Верификация таксономии каталога М.Видео")
+parser = argparse.ArgumentParser(description="Верификация таксономии каталога E-Commerce")
 parser.add_argument("--skus-path", type=str, default=None, help="Путь к файлу skus.pkl")
 args = parser.parse_args()
 
@@ -87,7 +87,7 @@ def analyze_category_params(cat_name):
                 param_counter[p['@name']] += 1
     return param_counter
 
-key_mvideo_categories = [
+key_catalog_categories = [
     "Смартфоны",
     "Ноутбуки",
     "Телевизоры",
@@ -98,11 +98,11 @@ key_mvideo_categories = [
     "Микроволновые печи"
 ]
 
-for cat in key_mvideo_categories:
+for cat in key_catalog_categories:
     params = analyze_category_params(cat)
     top_p = [f"{p} ({cnt})" for p, cnt in params.most_common(8)]
     print(f"\nКатегория: «{cat}» ({cat_counts.get(cat, 0):,} офферов в каталоге)")
-    print(f"  Топ параметров в каталоге М.Видео:")
+    print(f"  Топ параметров в каталоге E-Commerce:")
     if top_p:
         for p_str in top_p:
             print(f"    - {p_str}")

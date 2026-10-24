@@ -1,6 +1,6 @@
 # backend/scripts/demo_real_data.py
 """
-Демонстрация работы каскадного пайплайна на реальных товарах из датасета М.Видео (sku_desc.parquet).
+Демонстрация работы каскадного пайплайна на реальных товарах из датасета E-Commerce (sku_desc.parquet).
 
 Запуск:
     cd backend
@@ -80,7 +80,7 @@ REAL_DATASET_CARDS = [
 def main() -> None:
     pipeline = CascadedExtractionPipeline(use_gliner=True)
     print("================================================================================")
-    print(" ТЕСТИРОВАНИЕ КАСКАДНОГО ПАЙПЛАЙНА НА РЕАЛЬНЫХ ТОВАРАХ М.ВИДЕО (sku_desc.parquet)")
+    print(" ТЕСТИРОВАНИЕ КАСКАДНОГО ПАЙПЛАЙНА НА РЕАЛЬНЫХ ТОВАРАХ E-COMMERCE (sku_desc.parquet)")
     print("================================================================================\n")
 
     for card in REAL_DATASET_CARDS:

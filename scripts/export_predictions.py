@@ -132,7 +132,7 @@ def export_predictions(
             json.dump(
                 {
                     "metadata": {
-                        "description": "Компактный образец стандартизированного вывода предсказаний М.Видео AI (3 карточки)",
+                        "description": "Компактный образец стандартизированного вывода предсказаний E-Commerce AI (3 карточки)",
                         "schema_version": "2.2.0",
                         "total_samples": len(sample_items),
                     },
@@ -184,7 +184,7 @@ def export_predictions(
 
 
 if __name__ == "__main__":
-    parser = argparse.ArgumentParser(description="Экспорт предсказаний характеристик товаров М.Видео")
+    parser = argparse.ArgumentParser(description="Экспорт предсказаний характеристик товаров E-Commerce")
     parser.add_argument("--input", default=os.path.join(BASE_DIR, "data", "sample_cards.json"), help="Путь к входному JSON или CSV файлу")
     parser.add_argument("--output-json", default=os.path.join(BASE_DIR, "output", "predictions.json"), help="Путь к результирующему JSON")
     parser.add_argument("--output-csv", default=os.path.join(BASE_DIR, "output", "predictions.csv"), help="Путь к результирующему CSV")

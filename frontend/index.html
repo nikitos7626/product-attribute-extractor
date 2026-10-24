@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>М.Видео AI · Извлечение характеристик товаров</title>
+  <title>E-Commerce AI · Извлечение характеристик товаров</title>
   
   <!-- Внешние библиотеки стилей (Tailwind CDN, FontAwesome) -->
   <script src="https://cdn.tailwindcss.com"></script>
@@ -17,7 +17,7 @@
       theme: {
         extend: {
           colors: {
-            mvideo: {
+            brand: {
               red: '#e31235',
               darkred: '#b80c29',
               dark: '#1e2229',
@@ -35,16 +35,16 @@
   <header class="bg-white border-b border-gray-200 sticky top-0 z-50 shadow-sm">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
       <div class="flex items-center space-x-3">
-        <div class="w-10 h-10 rounded-lg bg-mvideo-red flex items-center justify-center text-white font-extrabold text-xl shadow-md">
+        <div class="w-10 h-10 rounded-lg bg-brand-red flex items-center justify-center text-white font-extrabold text-xl shadow-md">
           M
         </div>
         <div>
-          <span class="text-xl font-bold text-gray-900 tracking-tight">E-Commerce <span class="text-mvideo-red">AI</span></span>
-          <span class="ml-2 text-xs font-semibold uppercase tracking-wider bg-red-100 text-mvideo-red px-2 py-0.5 rounded-full">Enterprise Edition</span>
+          <span class="text-xl font-bold text-gray-900 tracking-tight">E-Commerce <span class="text-brand-red">AI</span></span>
+          <span class="ml-2 text-xs font-semibold uppercase tracking-wider bg-red-100 text-brand-red px-2 py-0.5 rounded-full">Enterprise Edition</span>
         </div>
       </div>
       <div class="flex items-center space-x-4">
-        <a href="/docs" target="_blank" class="text-sm font-medium text-gray-600 hover:text-mvideo-red transition flex items-center">
+        <a href="/docs" target="_blank" class="text-sm font-medium text-gray-600 hover:text-brand-red transition flex items-center">
           <i class="fa-solid fa-code mr-1.5"></i> Swagger API
         </a>
         <div id="api-status" class="flex items-center text-xs text-green-700 bg-green-50 px-2.5 py-1 rounded-full border border-green-200">
@@ -69,13 +69,13 @@
       <!-- Вкладки (Tabs) -->
       <div class="flex p-1 bg-gray-200 rounded-xl space-x-1 self-start md:self-auto text-sm font-semibold">
         <button id="tab-btn-single" class="px-4 py-2 rounded-lg bg-white shadow-sm text-gray-900 transition flex items-center space-x-2">
-          <i class="fa-solid fa-file-lines text-mvideo-red"></i>
+          <i class="fa-solid fa-file-lines text-brand-red"></i>
           <span>Одиночная карточка</span>
         </button>
         <button id="tab-btn-review" class="px-4 py-2 rounded-lg text-gray-600 hover:text-gray-900 transition flex items-center space-x-2">
-          <i class="fa-solid fa-user-check text-mvideo-red"></i>
+          <i class="fa-solid fa-user-check text-brand-red"></i>
           <span>Очередь модерации</span>
-          <span id="review-queue-badge" class="hidden ml-1.5 px-2 py-0.5 text-xs font-bold rounded-full bg-mvideo-red text-white">0</span>
+          <span id="review-queue-badge" class="hidden ml-1.5 px-2 py-0.5 text-xs font-bold rounded-full bg-brand-red text-white">0</span>
         </button>
       </div>
     </div>
@@ -89,7 +89,7 @@
           <div class="bg-white rounded-2xl shadow-sm border border-gray-200 p-6">
             <div class="flex items-center justify-between mb-4">
               <h2 class="text-lg font-bold text-gray-900 flex items-center">
-                <i class="fa-solid fa-file-pen text-mvideo-red mr-2"></i> Входная карточка
+                <i class="fa-solid fa-file-pen text-brand-red mr-2"></i> Входная карточка
               </h2>
               <span class="text-xs text-gray-500">Только текст</span>
             </div>
@@ -97,7 +97,7 @@
             <!-- Быстрые пресеты -->
             <div class="mb-5">
               <div class="flex items-center justify-between mb-2">
-                <label class="text-xs font-bold text-gray-500 uppercase tracking-wider">Примеры каталога М.Видео:</label>
+                <label class="text-xs font-bold text-gray-500 uppercase tracking-wider">Примеры каталога E-Commerce:</label>
               </div>
               <div class="flex flex-wrap gap-1.5">
                 <button type="button" data-preset="samsung" class="text-xs bg-gray-100 hover:bg-gray-200 text-gray-700 px-2.5 py-1 rounded-lg transition font-medium">Samsung A32</button>
@@ -120,11 +120,11 @@
                 </label>
                 <textarea id="raw_text" rows="8" required
                   placeholder="Вставьте заголовок или сплошное описание карточки товара из маркетплейса..."
-                  class="w-full rounded-xl border border-gray-300 p-3 text-sm focus:border-mvideo-red focus:ring-1 focus:ring-mvideo-red transition"></textarea>
+                  class="w-full rounded-xl border border-gray-300 p-3 text-sm focus:border-brand-red focus:ring-1 focus:ring-brand-red transition"></textarea>
               </div>
 
               <button type="submit" id="submit-btn"
-                class="w-full bg-mvideo-red hover:bg-mvideo-darkred text-white font-bold py-3 px-4 rounded-xl shadow-md transition flex items-center justify-center space-x-2 text-sm">
+                class="w-full bg-brand-red hover:bg-brand-darkred text-white font-bold py-3 px-4 rounded-xl shadow-md transition flex items-center justify-center space-x-2 text-sm">
                 <i class="fa-solid fa-wand-magic-sparkles"></i>
                 <span>Извлечь характеристики</span>
               </button>
@@ -246,7 +246,7 @@
             <div class="p-6 bg-gray-50 border-t border-gray-100">
               <div class="flex items-center justify-between mb-2">
                 <span class="text-xs font-bold text-gray-500 uppercase tracking-wider">Машиночитаемый JSON-ответ:</span>
-                <button type="button" id="copy-json-btn" class="text-xs text-gray-600 hover:text-mvideo-red font-medium transition flex items-center">
+                <button type="button" id="copy-json-btn" class="text-xs text-gray-600 hover:text-brand-red font-medium transition flex items-center">
                   <i class="fa-regular fa-copy mr-1"></i> Копировать JSON
                 </button>
               </div>
@@ -263,11 +263,11 @@
         <div class="flex items-center justify-between mb-4">
           <div>
             <h2 class="text-lg font-bold text-gray-900 flex items-center">
-              <i class="fa-solid fa-user-check text-mvideo-red mr-2"></i> Очередь ручной модерации
+              <i class="fa-solid fa-user-check text-brand-red mr-2"></i> Очередь ручной модерации
             </h2>
           </div>
           <div class="flex items-center space-x-2">
-            <button id="clear-review-btn" class="px-3.5 py-2 bg-red-50 hover:bg-red-100 text-mvideo-red font-bold rounded-xl text-xs flex items-center space-x-1.5 transition border border-red-200 shadow-sm" title="Очистить очередь модерации">
+            <button id="clear-review-btn" class="px-3.5 py-2 bg-red-50 hover:bg-red-100 text-brand-red font-bold rounded-xl text-xs flex items-center space-x-1.5 transition border border-red-200 shadow-sm" title="Очистить очередь модерации">
               <i class="fa-solid fa-trash-can"></i>
               <span>Очистить очередь</span>
             </button>

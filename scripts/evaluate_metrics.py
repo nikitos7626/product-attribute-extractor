@@ -173,7 +173,7 @@ def run_evaluation(dataset_path: str, output_dir: str = "output", fast_mode: boo
     # 2. Сохранение Markdown
     md_path = os.path.join(output_dir, "metrics_report.md")
     with open(md_path, "w", encoding="utf-8") as f:
-        f.write("# 📊 Отчёт по качеству извлечения атрибутов М.Видео\n\n")
+        f.write("# 📊 Отчёт по качеству извлечения атрибутов E-Commerce\n\n")
         f.write(f"- **Дата формирования:** {report['timestamp']}\n")
         f.write(f"- **Всего эталонных карточек:** {total_cards}\n")
         f.write(f"- **Точность классификации категорий:** {cat_acc * 100:.1f}%\n")
@@ -189,7 +189,7 @@ def run_evaluation(dataset_path: str, output_dir: str = "output", fast_mode: boo
 
     # 3. Красивый вывод в консоль
     print("=" * 75)
-    print("📊 ИТОГОВЫЙ ОТЧЁТ КАЧЕСТВА ИЗВЛЕЧЕНИЯ ХАРАКТЕРИСТИК (М.ВИДЕО)")
+    print("📊 ИТОГОВЫЙ ОТЧЁТ КАЧЕСТВА ИЗВЛЕЧЕНИЯ ХАРАКТЕРИСТИК (E-COMMERCE)")
     print("=" * 75)
     print(f"Точность категорий (Accuracy):   {cat_acc * 100:.1f}%")
     print(f"Покрытие (Catalog Coverage):     {coverage * 100:.1f}%")
@@ -210,7 +210,7 @@ def run_evaluation(dataset_path: str, output_dir: str = "output", fast_mode: boo
 
 
 if __name__ == "__main__":
-    parser = argparse.ArgumentParser(description="Расчет метрик извлечения атрибутов М.Видео")
+    parser = argparse.ArgumentParser(description="Расчет метрик извлечения атрибутов E-Commerce")
     parser.add_argument("--dataset", default=os.path.join(BASE_DIR, "data", "gold_dataset.json"), help="Путь к gold датасету")
     parser.add_argument("--output-dir", default=os.path.join(BASE_DIR, "output"), help="Каталог сохранения отчётов")
     parser.add_argument("--fast", "--offline", dest="fast_mode", action="store_true", help="Быстрый/автономный режим оценки без загрузки тяжелых ML-моделей")

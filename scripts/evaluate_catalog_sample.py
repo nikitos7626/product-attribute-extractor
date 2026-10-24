@@ -22,7 +22,7 @@ def normalize_val(val: str) -> str:
 
 
 def main():
-    parser = argparse.ArgumentParser(description="Динамическая оценка точности на случайной выборке реального каталога М.Видео")
+    parser = argparse.ArgumentParser(description="Динамическая оценка точности на случайной выборке реального каталога E-Commerce")
     parser.add_argument("--category", type=str, default="smartphones", help="Категория (smartphones, laptops, tvs, tablets, monitors, desktops, headphones, refrigerators, powerbanks, all)")
     parser.add_argument("--size", type=int, default=13, help="Количество случайных карточек для теста (по умолчанию 13)")
     parser.add_argument("--seed", type=int, default=None, help="Сид рандома (для повторяемости, если не указан — случайный каждый раз)")
@@ -56,7 +56,7 @@ def main():
     pipeline = CascadedExtractionPipeline(use_gliner=False, use_llm=False)
 
     print("=" * 85)
-    print(f"🎲 СЛУЧАЙНАЯ ВЫБОРКА: {len(sample_cards)} РЕАЛЬНЫХ ТОВАРОВ ИЗ КАТАЛОГА М.ВИДЕО (категория: {args.category})")
+    print(f"🎲 СЛУЧАЙНАЯ ВЫБОРКА: {len(sample_cards)} РЕАЛЬНЫХ ТОВАРОВ ИЗ КАТАЛОГА E-COMMERCE (категория: {args.category})")
     print("=" * 85)
 
     total_gt_points = 0
@@ -110,7 +110,7 @@ def main():
     precision = (total_exact_matches / total_found_points * 100) if total_found_points else 0
     f1 = (2 * precision * recall / (precision + recall)) if (precision + recall) else 0
 
-    print(f"Всего контрольных точек параметров М.Видео: {total_gt_points}")
+    print(f"Всего контрольных точек параметров E-Commerce: {total_gt_points}")
     print(f"Извлечено системой из текста:               {total_found_points} (Полнота Recall: {recall:.1f}%)")
     print(f"Точно совпало со спецификацией каталога:     {total_exact_matches} (Точность Precision: {precision:.1f}%)")
     print(f"Реальный F1-Score на случайной выборке:      {f1:.1f}%")

@@ -1,12 +1,12 @@
 {
   "metadata": {
-    "description": "Компактный образец стандартизированного вывода предсказаний М.Видео AI (3 карточки)",
+    "description": "Компактный образец стандартизированного вывода предсказаний E-Commerce AI (3 карточки)",
     "schema_version": "2.2.0",
     "total_samples": 3
   },
   "samples": [
     {
-      "external_id": "mvideo-20077299",
+      "external_id": "sku-20077299",
       "title": "Холодильник HAIER CEF535ASG",
       "category": "Холодильники",
       "raw_text": "Холодильник HAIER CEF535ASG",
@@ -87,7 +87,7 @@
       ]
     },
     {
-      "external_id": "mvideo-20077298",
+      "external_id": "sku-20077298",
       "title": "Холодильник HAIER CEF535AWG",
       "category": "Холодильники",
       "raw_text": "Холодильник HAIER CEF535AWG",
@@ -147,7 +147,7 @@
       ]
     },
     {
-      "external_id": "mvideo-20078182",
+      "external_id": "sku-20078182",
       "title": "Холодильник Gorenje NRK620EABXL4",
       "category": "Холодильники",
       "raw_text": "Холодильник Gorenje NRK620EABXL4",

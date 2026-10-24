@@ -68,7 +68,7 @@ else:
     html_standalone = re.sub(r'<script\s+src="js/[^"]+"></script>', '', html_standalone)
     html_standalone = html_standalone.replace("</body>", f"{new_scripts}\n</body>")
 
-standalone_path = REPO_ROOT / "frontend" / "mvideo_ai_standalone.html"
+standalone_path = REPO_ROOT / "frontend" / "ecommerce_ai_standalone.html"
 standalone_path.write_text(html_standalone, encoding="utf-8")
 print(f"Generated standalone HTML at {standalone_path} ({len(html_standalone)} bytes)")
 
@@ -160,7 +160,7 @@ for desktop in DESKTOPS:
     print(f"  -> ZIP archive deployed: {str(target_zip)}")
 
     # 3. Target Standalone HTML
-    target_html = desktop / "mvideo_ai_standalone.html"
+    target_html = desktop / "ecommerce_ai_standalone.html"
     shutil.copy2(standalone_path, target_html)
     print(f"  -> Standalone UI deployed: {str(target_html)}")
 

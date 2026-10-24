@@ -1,6 +1,6 @@
 """
 Сервис каталожного обогащения характеристик (Catalog Model Specs Enricher).
-Использует эталонную базу знаний характеристик моделей М.Видео (catalog_models_kb.json)
+Использует эталонную базу знаний характеристик моделей E-Commerce (catalog_models_kb.json)
 для автоматического дозаполнения недостающих параметров, если продавец не указал их в тексте.
 Поддерживает динамическое самообучение (Auto-Learning Feedback Loop) и регистрацию моделей по model_id.
 """
@@ -80,7 +80,7 @@ EMBEDDED_SEED_MODELS_FALLBACK: dict[str, dict[str, dict[str, str]]] = {
 
 class CatalogEnricher:
     """
-    Обогащает карточку эталонными характеристиками из базы моделей М.Видео.
+    Обогащает карточку эталонными характеристиками из базы моделей E-Commerce.
     Реализует интерфейс KnowledgeBaseInterface с поддержкой версионирования,
     горячей перезагрузки, поиска по model_id и автоматического самообучения (Auto-Learning).
     """
@@ -131,7 +131,7 @@ class CatalogEnricher:
         self._load_kb()
 
     def _load_fallback_seed(self) -> None:
-        """Загружает встроенный резервный справочник эталонных моделей М.Видео при отсутствии или повреждении дискового KB."""
+        """Загружает встроенный резервный справочник эталонных моделей E-Commerce при отсутствии или повреждении дискового KB."""
         with self._lock:
             self.kb = {k: {m_k: dict(m_v) for m_k, m_v in v.items()} for k, v in EMBEDDED_SEED_MODELS_FALLBACK.items()}
             self.models_by_id = {}

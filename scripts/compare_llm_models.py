@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-Скрипт сравнительного бенчмаркинга LLM-моделей для фоллбэка М.Видео AI.
+Скрипт сравнительного бенчмаркинга LLM-моделей для фоллбэка E-Commerce AI.
 Позволяет протестировать и сравнить несколько моделей (GigaChat Pro/Lite, DeepSeek-V3, GPT-4o-mini, Qwen-2.5)
 на выборке популярных и редких товаров с искусственно отключенным или урезанным каталогом (Tier 2.5).
 
@@ -212,10 +212,10 @@ def run_benchmark(
 
     # Формируем Markdown-отчет
     md_lines = [
-        "# Сравнительный отчёт качества LLM Fallback (М.Видео AI)",
+        "# Сравнительный отчёт качества LLM Fallback (E-Commerce AI)",
         f"\n**Дата генерации:** {time.strftime('%Y-%m-%d %H:%M:%S')}",
         f"**Количество тестовых карточек:** {len(BENCHMARK_CARDS)} (смартфоны, ноутбуки, ТВ, техника)",
-        "**Условие тестирования:** Каталог моделей М.Видео (Tier 2.5) отключен, характеристики восполняются моделью из знаний о товаре.",
+        "**Условие тестирования:** Каталог моделей E-Commerce (Tier 2.5) отключен, характеристики восполняются моделью из знаний о товаре.",
         "\n## Сводная таблица сравнения моделей\n",
         "| Модель | Ср. Задержка (мс) | Валидность JSON | Точность атрибутов | Sanity Pass | Оценка |",
         "| :--- | :---: | :---: | :---: | :---: | :---: |",
@@ -266,7 +266,7 @@ def run_benchmark(
 
 
 def main():
-    parser = argparse.ArgumentParser(description="Сравнение моделей LLM Fallback для М.Видео AI")
+    parser = argparse.ArgumentParser(description="Сравнение моделей LLM Fallback для E-Commerce AI")
     parser.add_argument("--api-key", default=os.environ.get("LLM_API_KEY") or settings.llm_api_key, help="API ключ к LLM")
     parser.add_argument("--api-base", default=os.environ.get("LLM_API_BASE") or settings.llm_api_base, help="URL эндпоинта LLM")
     parser.add_argument(

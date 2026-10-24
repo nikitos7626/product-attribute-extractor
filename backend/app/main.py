@@ -109,7 +109,7 @@ app = FastAPI(
 
     title="M.Video Product Attribute Extraction API",
 
-    description="Промышленный сервис извлечения, валидации и нормализации характеристик товаров М.Видео с многоуровневым каскадом (FastRules -> GLiNER Zero-Shot -> Catalog KB -> Strict LLM Guardrail).",
+    description="Промышленный сервис извлечения, валидации и нормализации характеристик товаров E-Commerce с многоуровневым каскадом (FastRules -> GLiNER Zero-Shot -> Catalog KB -> Strict LLM Guardrail).",
 
     version="0.2.1",
 
@@ -331,7 +331,7 @@ def extract_alias(
 
     Основной стандартизированный эндпоинт для автоматических тестеров: POST /extract -> CardOut.
 
-    Дублирует /api/extract для максимальной совместимости со спецификацией М.Видео.
+    Дублирует /api/extract для максимальной совместимости со спецификацией E-Commerce.
 
     """
 
@@ -352,7 +352,7 @@ async def extract_batch_alias(
 ) -> BatchOut:
     """
     Пакетная обработка карточек товаров: POST /extract/batch или POST /batch -> BatchOut.
-    Дублирует /api/extract/batch для максимальной совместимости со спецификацией М.Видео.
+    Дублирует /api/extract/batch для максимальной совместимости со спецификацией E-Commerce.
     """
     return await extract.extract_batch(request=request, file=file, pipeline=pipeline)
 
@@ -387,7 +387,7 @@ def review_override_root_alias(body: ReviewOverrideIn) -> dict:
 
 
 
-@app.get("/", summary="Интерактивный веб-интерфейс М.Видео AI", include_in_schema=False)
+@app.get("/", summary="Интерактивный веб-интерфейс E-Commerce AI", include_in_schema=False)
 
 
 
@@ -395,7 +395,7 @@ def root_ui(request: Request):
 
     """
 
-    Интерактивный веб-интерфейс М.Видео AI.
+    Интерактивный веб-интерфейс E-Commerce AI.
 
     Если запрос отправлен клиентом API или скриптом (Accept: application/json без text/html),
 

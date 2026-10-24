@@ -63,7 +63,7 @@ async def exec_remote(code: str, token: str, base: str = DEFAULT_BASE, ws_base: 
             "  • Origin (GitHub): https://github.com/nikitos7626/product-attribute-extractor.git\n"
             "  • Gitea (Remote):  https://git.hub.gigaschool.ru/tochka-sborki-2026-team-059/project.git\n\n"
             "On the remote VM, run:\n"
-            "  cd ~/project && git pull gitea main && sudo systemctl restart mvideo-nlp\n"
+            "  cd ~/project && git pull gitea main && sudo systemctl restart ecommerce-nlp\n"
         )
         print(msg)
         return msg
@@ -142,9 +142,9 @@ proj_dir = os.path.expanduser("~/project")
 subprocess.run("git fetch origin main && git checkout main && git pull origin main", cwd=proj_dir, shell=True, check=False)
 subprocess.run("git log -n 3 --oneline", cwd=proj_dir, shell=True)
 
-print("\\n=== 2. RESTARTING MVIDEO SERVICE ===")
-subprocess.run("sudo systemctl restart mvideo-nlp", shell=True)
-subprocess.run("sudo systemctl status mvideo-nlp --no-pager", shell=True)
+print("\\n=== 2. RESTARTING ECOMMERCE SERVICE ===")
+subprocess.run("sudo systemctl restart ecommerce-nlp", shell=True)
+subprocess.run("sudo systemctl status ecommerce-nlp --no-pager", shell=True)
 
 print("\\n=== 3. VERIFYING LIVE INFERENCE VIA HTTP ===")
 try:
@@ -177,7 +177,7 @@ subprocess.run("uname -a", shell=True)
 subprocess.run("uptime", shell=True)
 subprocess.run("free -m", shell=True)
 subprocess.run("ss -tulpn | grep 8000", shell=True)
-subprocess.run("sudo systemctl status mvideo-nlp --no-pager", shell=True)
+subprocess.run("sudo systemctl status ecommerce-nlp --no-pager", shell=True)
 """
 
 TEST_CODE = """
