@@ -1,5 +1,6 @@
-from app.services.taxonomy import TaxonomyManager
 from __future__ import annotations
+
+from app.services.taxonomy import TaxonomyManager
 
 
 

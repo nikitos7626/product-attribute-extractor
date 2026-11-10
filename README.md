@@ -13,6 +13,18 @@
 
 ---
 
+## 📸 Веб-интерфейс и API системы
+
+| Извлечение характеристик и скоринг уверенности | Карта ручной модерации (Human-in-the-Loop) |
+| :---: | :---: |
+| ![Извлечение характеристик](docs/screenshots/01_single_extraction.png) | ![Модерация HITL](docs/screenshots/02_hitl_review_single.png) |
+
+| Очередь карточек на проверку модератором | Документация OpenAPI (Swagger UI) |
+| :---: | :---: |
+| ![Очередь модерации](docs/screenshots/03_review_queue.png) | ![Swagger API](docs/screenshots/04_swagger_api.png) |
+
+---
+
 ## 📌 Описание проекта
 
 Промышленный сервис для автоматического структурирования и валидации характеристик товаров e-commerce каталога. Сервис принимает неструктурированный текст селлера (название, описание, технические характеристики) и извлекает нормализованные атрибуты с проверкой физической корректности.
@@ -63,12 +75,10 @@
 
 ### 1. Установка зависимостей
 ```bash
-# Клонирование из официального репозитория Gitea:
 git clone https://github.com/nikitos7626/product-attribute-extractor.git
 cd product-attribute-extractor
 pip install -r requirements.txt
 ```
-*(Или зеркало на GitHub: `git clone https://github.com/nikitos7626/product-attribute-extractor.git`)*
 
 ### 2. Запуск сервиса
 ```bash
